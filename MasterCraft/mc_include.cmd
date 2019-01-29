@@ -273,7 +273,7 @@ var master Fereldrin
 put #tvar master.room %HF.master.room
 put #tvar grind.room %HF.grind.room
 put #tvar work.room %HF.work.room
-put #tvar smelt.room %CF.smelt.room
+put #tvar smelt.room %HF.smelt.room
 put #tvar deed.room 442
 put #tvar supply.room 400
 put #tvar part.room 399
