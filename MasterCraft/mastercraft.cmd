@@ -120,7 +120,7 @@ if "%discipline" = "tailor" then
 {
 	if "%order.pref" = "cloth" then var work.tools needles|scissors|slickstone
 	if "%order.pref" = "leather" then var work.tools needles|slickstone|awl|slickstone
-	if "%order.pref" = "knitted" then var work.tools knitting needles
+	if "%order.pref" = "yarn" then var work.tools knitting needles
 }
 if "%discipline" = "carving" then
 {
@@ -432,7 +432,7 @@ chapter.4:
 	
 chapter.5:
 	var full.order.noun $1
-	if "%discipline" = "tailor" then var order.type knitted
+	if "%discipline" = "tailor" then var order.type yarn
 	if "%discipline" = "carving" then var order.type stone
 	if "%discipline" = "shaping" then var order.type lumber
 	var order.chapter 5
@@ -858,7 +858,6 @@ count.material:
 	var count $0
 	var bigenough 0
 	var itemvolume 0
-	if "%count" = "knitted" then var count yarn
 	action (count) math material.volume add $1;var itemvolume $1 when About (\d+) volumes? of metal was used in this
 	action (count) math material.volume add $1;var itemvolume $1 when \s+(?:Volume|Yards|Piece|Pieces):\s+(\d+)$
 	action (count) math material.volume add $1;var itemvolume $1 when possess a volume of (\d+)\.$
@@ -1121,7 +1120,7 @@ process.order:
 		if "$lefthand" != "Empty" then gosub verb put my $lefthandnoun in my %main.storage
 		if "$righthand" != "Empty" then gosub verb put my $righthandnoun in my %main.storage
 		pause 2
-		if "%order.pref" != "knitted" then
+		if "%order.pref" != "yarn" then
 		{
 			gosub gather.material %order.pref
 			send count my %order.pref
@@ -1139,7 +1138,7 @@ process.order:
 			send .sew
 			waitforre ^SEWING DONE
 		}
-		if "%order.pref" = "knitted" then
+		if "%order.pref" = "yarn" then
 		{
 			gosub gather.material yarn
 			send count my yarn
@@ -1630,8 +1629,8 @@ RepairItem:
 	wait
 	pause .2
 	if "$righthand $lefthand" == "Empty Empty" then return
-	gosub verb give %repair.clerk
-	gosub verb give %repair.clerk
+	gosub verb give $repair.clerk
+	gosub verb give $repair.clerk
 	if matchre("$righthand", "awl|yardstick|slickstone|needles|scissors") then gosub verb put $righthandnoun in my $MC_OUTFITTING.STORAGE
 	if matchre("$righthand", "hammer|tongs|bellows|shovel|rod") then gosub verb put $righthandnoun in my $MC_FORGING.STORAGE
 	if matchre("$righthand", "rasp|rifflers|saw") then gosub verb put $righthandnoun in my $MC_ENGINEERING.STORAGE
@@ -1650,7 +1649,7 @@ ReturnAllItems:
 Ticket:
 	match tool.store You hand
 	match tool.store What is it
-	send give ticket to %repair.clerk
+	send give ticket to $repair.clerk
 	matchwait 15
 
 ticket.pause:
@@ -1919,4 +1918,3 @@ return
 
 return:
 return
-
