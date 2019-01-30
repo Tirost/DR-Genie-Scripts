@@ -129,11 +129,11 @@ if "%discipline" = "carving" then
 }
 if "%discipline" = "shaping" then
 {
-	var work.tools drawknife|shaper|riffler|clamp
+	var work.tools drawknife|shaper|rasp|clamp|carving.knife
 }
 if "%discipline" = "tinkering" then 
 {
-	var work.tools drawknife|shaper|clamp|pliers|tools
+	var work.tools drawknife|shaper|clamp|pliers|tools|carving.knife
 }
 if "%discipline" = "remed" then
 {
