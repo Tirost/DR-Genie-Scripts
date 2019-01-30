@@ -516,8 +516,11 @@ var society.type Alchemy
 return
 
 none:
-put #echo You are not in a valid society
-exit
+if matchre("$scriptlist", "mastercraft") then 
+	{
+	put #echo You are not in a valid society
+	exit
+	}
 return
 
 
