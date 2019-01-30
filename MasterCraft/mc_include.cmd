@@ -146,6 +146,13 @@ location.vars:
 	 var HE.room.list 461|462|463|464|465|466|467|468|469
 	 var HE.master.room 462|461|463|464|465|466
 	 var HE.work.room 467|468|469|464|462
+	#Haven Alchemy
+	 var HA.tools.room 470
+     var HA.supplies.room 472
+     var HA.books.room 482
+     var HA.work.room 479|478|477|475|474|473|481|476
+     var HA.room.list 470|471|473|474|475|481|472|476|479|478|477|480|482
+     var HA.master.room 470|471|473|474|475|481|472|476|479|478|477|480|482
 	#Crossing Forging
 	 var CF.room.list 903|865|962|961|960|902|905|904|906|963|907|908|909
 	 var CF.master.room 903|865|962|961|960|902|905|904|906|963|907|908|909
@@ -248,6 +255,7 @@ check.location:
 	if $zoneid = 30 && matchre("%HF.room.list", "$roomid") then var society Haven.Forging
 	if $zoneid = 30 && matchre("%HO.room.list", "$roomid") then var society Haven.Outfitting
 	if $zoneid = 30 && matchre("%HE.room.list", "$roomid") then var society Haven.Engineering
+	if $zoneid = 30 && matchre("%HA.room.list", "$roomid") then var society Haven.Alchemy
 	if $zoneid = 1 && matchre("%CF.room.list", "$roomid") then var society Crossing.Forging
 	if $zoneid = 1 && matchre("%CO.room.list", "$roomid") then var society Crossing.Outfitting
 	if $zoneid = 1 && matchre("%CE.room.list", "$roomid") then var society Crossing.Engineering
@@ -307,6 +315,17 @@ put #tvar ingot.buy 399
 put #tvar repair.room %haven.repair.room
 put #tvar repair.clerk %haven.repair
 var society.type Engineering
+return
+
+Haven.Alchemy:
+var master Carmifex
+put #tvar master.room %HA.master.room
+put #tvar work.room %HA.work.room
+put #tvar supply.room 472
+put #tvar tool.room 470
+put #tvar repair.room %haven.repair.room
+var repair.clerk %haven.repair
+var society.type Alchemy
 return
 
 Crossing.Forging:
@@ -497,6 +516,8 @@ var society.type Alchemy
 return
 
 none:
+put #echo You are not in a valid society
+exit
 return
 
 
