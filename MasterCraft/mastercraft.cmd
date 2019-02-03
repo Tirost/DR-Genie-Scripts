@@ -318,7 +318,7 @@ if "%discipline" = "tailor" then
 		matchre chapter.2 This logbook is tracking a work order requiring you to craft (a cloth ankleband|a floppy cloth hat|some cloth fingerless gloves|a cloth veil|a cloth armband|a cloth head scarf|some cloth ankle socks|some cloth robes|some cloth socks|a cloth tunic|a cloth belt|a baggy cloth shirt|a cloth headband|a billowing cloth shirt|some elbow-length gloves|a front-laced cloth dress|some pleated cloth gloves|a knee-length cloth dress|some cloth knee socks|a cloth dress|a cloth eyepatch|some baggy cloth pants|a cloth commoner's cloak|a cloth top hat|a cloth dress belt|a cloth dress hat|a segmented cloth belt|some hooded cloth robes|a cloth dunce hat|a cloth cape|a cloth hat|a hooded cloth cloak|some cloth field shoes|a cloth tabard|some cloth slippers|a formal cloth tunic|some elegant cloth gloves|a short-sleeved tunic|a cloth scarf|a cloth dress shirt|a cloth cloak|a cloth gown|a cloth shirt|a floor-length cloth dress|a sleeveless cloth shirt|some cloth dress pants|a cloth sash|a deeply-hooded cloak|a cloth kilt|a cloth shaman's robe|a cloth skirt|some flowing cloth robes|some cloth pants|a cloth mage's robe|a double-wrapped belt) from any (material|fabric)\.
 		matchre chapter.3 This logbook is tracking a work order requiring you to craft (a cloth napkin|a cloth talisman pouch|a cloth rag|a cloth herb pouch|a cloth hip pouch|a cloth carryall|a cloth weapon strap|a cloth knapsack|a cloth gem pouch|a cloth backpack|a cloth towel|a cloth charm bag|a cloth thigh bag|a cloth bandolier|a cloth pouch|a cloth haversack|a cloth utility belt|a cloth duffel bag|a cloth sack|a small cloth rucksack|a cloth bag|a cloth rucksack|a cloth arm pouch) from any (material|fabric)\.
 		matchre chapter.4 This logbook is tracking a work order requiring you to craft (a quilted cloth mask|some insulated cloth pants|a quilted cloth aventail|an insulated cloth hood|a padded cloth mask|a quilted cloth tabard|a padded cloth aventail|a padded cloth mantle|a quilted cloth cap|a padded cloth vest|some quilted cloth gloves|an insulated cloth tasset|some quilted cloth pants|some padded cloth sleeves|an insulated cloth mask|some insulated cloth vambraces|an insulated cloth aventail|a padded cloth tabard|a padded cloth cap|a quilted cloth shirt|some padded cloth gloves|a quilted cloth robe|a quilted cloth hood|an insulated cloth mantle|a quilted cloth tasset|an insulated cloth vest|some quilted cloth vambrace|some insulated cloth sleeves|some padded cloth pants|an insulated cloth tabard|an insulated cloth cap|a padded cloth shirt|some insulated cloth gloves|a quilted cloth hauberk|a padded cloth hood|a padded cloth robe|a quilted cloth mantle|an insulated cloth shirt|a quilted cloth vest|a padded cloth hauberk|a padded cloth tasset|an insulated cloth robe|some quilted cloth sleeves|an insulated cloth hauberk|some padded cloth vambraces) from any (material|fabric)\.
-		matchre chapter.5 This logbook is tracking a work order requiring you to craft (a knitted napkin|a knitted skirt|a knitted armband|a knitted shirt|some knitted socks|some knitted gloves|a knitted ankleband|some knitted legwarmers|a knitted headband|a knitted towel|some knitted mittens|some knitted hose|a knitted hood|a knitted sweater|some knitted booties|a knitted cloak|a knitted hat|a knitted blanket|a knitted scarf|some knitted slippers) from any (material|fabric)\.
+		matchre chapter.5 This logbook is tracking a work order requiring you to craft (a knitted napkin|a knitted skirt|a knitted armband|a knitted shirt|some knitted socks|some knitted gloves|a knitted ankleband|some knitted legwarmers|a knitted headband|a knitted towel|some knitted mittens|some knitted hose|a knitted hood|a knitted sweater|some knitted booties|a knitted cloak|a knitted hat|a knitted blanket|a knitted scarf|some knitted slippers) from any (?:material|fabric)\.
 		matchre chapter.7 This logbook is tracking a work order requiring you to craft (some fingerless gloves|a leather dress belt|a leather ankleband|a segmented belt|a leather armband|a sleeveless leather shirt|a leather belt|a leather shirt|a leather headband|a double-wrapped belt|a leather eyepatch|a leather dress|some elbow-length gloves|a leather tunic|a commoner's cloak|a hooded leather cloak|a leather hat|a leather utility belt|some leather shoes|a leather cape|some leather moccasins|a deeply-hooded cloak|a leather cloak|a leather skirt) from any (cloth|material|leather)\.
 		matchre chapter.8 This logbook is tracking a work order requiring you to craft (a leather weapon strap) from any (material|leather)\.
 		matchre chapter.9 This logbook is tracking a work order requiring you to craft (a rugged leather mask|a thick leather tasset|a rugged leather aventail|a rugged leather jerkin|a thick leather mask|a coarse leather cowl|a thick leather aventail|some coarse greaves|a rugged leather cap|some coarse vambraces|some rugged gloves|a coarse leather tasset|a coarse leather mask|a thick leather vest|a thick leather cap|some thick leather sleeves|some thick gloves|a thick leather jerkin|a rugged leather helm|a rugged leather robe|a coarse leather aventail|a rugged leather coat|a coarse leather cap|a thick leather mantle|some coarse gloves|a coarse leather vest|a thick leather helm|some coarse leather sleeves|a rugged leather cowl|a coarse leather mantle|some rugged greaves|a coarse leather jerkin|some rugged vambraces|a thick leather coat|a rugged leather tasset|some rugged leathers|a coarse leather helm|a thick leather robe|a thick leather cowl|a coarse leather coat|some thick greaves|some thick leathers|some thick vambraces|a coarse leather robe|some rugged leather sleeves|some coarse leathers|a rugged leather vest|a rugged leather mantle) from any (material|leather)\.
@@ -1780,6 +1780,15 @@ lack.material:
 				if "%work.material" = "silk" then var order.num 10
 				var order.type cloth
 				}
+			if "%order.pref" = "yarn" then
+				{
+				var order.num 13
+				var order.type yarn
+				evalmath reqd.order (%maxx.volume-%material.volume)/10
+				evalmath reqd.order ceiling(%reqd.order)
+				var main.storage $MC_OUTFITTING.STORAGE
+				goto purchase.material
+				}
 			if !contains("rat-pelt|cougar-pelt|linen|burlap|wool|silk", "%work.material") then goto lack.material.exit
 			evalmath reqd.order (%mass.volume-%material.volume)/10
 			evalmath reqd.order ceiling(%reqd.order)
@@ -1838,7 +1847,8 @@ first.order:
 			gosub verb put my %order.type in my %main.storage
 			math %order.pref.item.count add 1
 			if matchre("%order.type", "lumber") then math material.volume add 5
-			if matchre("%order.type", "leather|yarn|cloth|stack") then math material.volume add 10
+			if matchre("%order.type", "leather|cloth|stack") then math material.volume add 10
+			if matchre("%order.type", "yarn") then math material.volume add 100
 			if (("%discipline" = "remed") && (!matchre("order.type", "qun pollen|ithor"))) then math herb1.material.volume add 25
 			else math herb1.material.volume add 4
 			if %reqd.order < 1 then return
@@ -1918,3 +1928,4 @@ return
 
 return:
 return
+
