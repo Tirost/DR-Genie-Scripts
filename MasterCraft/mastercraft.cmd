@@ -49,7 +49,7 @@
 # Happy Crafting!
 
 #debug 10
-
+include MC_SETUP.cmd
 include mc_include.cmd
 
 
