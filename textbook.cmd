@@ -8,12 +8,11 @@ action var Playing 1 when ^You begin .* on your .*|^You\'re already playing a so
 action var Playing 0 when ^Your song comes to an end\.|^In the name of love\?|^You stop playing|^You cannot play that|^You finish playing
 
 eval skill tolower(%1)
-if matchre("first", "%1") then goto first
-if matchre("scholarship, "%1) then goto scholarship
+if matchre("first", "%skill") then goto first
+if matchre("scholarship, "%skill") then goto scholarship
 exit
 
 first:
-var skill First_Aid
 evalmath minranks $Scholarship.Ranks - 100
 evalmath maxranks $Scholarship.Ranks + 100
 if %minranks < 0 then var minranks 0
@@ -21,7 +20,6 @@ eval totalcharts count("%ranks", "|")
 goto getranks
 
 scholarship:
-var skill Scholarship
 var maxranks $Scholarship.Ranks
 evalmath minranks $Scholarship.Ranks - 200
 if %minranks < 0 then var minranks 0
