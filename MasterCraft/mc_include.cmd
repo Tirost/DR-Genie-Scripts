@@ -308,7 +308,7 @@ Haven.Engineering:
 var master Paarupensteen
 put #tvar master.room %HE.master.room
 put #tvar work.room %HE.work.room
-put #tvar supply.room 466
+put #tvar supply.room 465
 put #tvar part.room 466
 put #tvar tool.room 465
 put #tvar ingot.buy 399
