@@ -330,6 +330,7 @@ done:
 	include mc_include.cmd
 	
 countcheck:
+if $MC_NOWO then return
 action var temprem $1 when ^You count out (\d+) uses remaining\.
 gosub verb count my $MC.order.noun
 if %temprem > 5 then 
