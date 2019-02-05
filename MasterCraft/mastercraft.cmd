@@ -527,8 +527,10 @@ calc.material:
 		pause 0.1
 		evalmath mass.volume %volume * %order.quantity
 		if $MC_SMALL.ORDERS = 1 then
+			{
 			if (("%work.material" = "bronze") && (%volume > 5)) then goto new.order
 			if (("%work.material" = "steel") && (%volume > 10)) then goto new.order
+			}
 		gosub parts.inv
 		if %%order.pref.item.count > 0 then gosub count.material ingot
 		if %%order.pref.deed.count > 0 then gosub count.material deed
@@ -627,7 +629,7 @@ calc.material:
 		var volume $1
 		action (book) off
 		gosub verb study my book
-			if $MC_DIFFICULTY < 4 then 
+			if (($MC_DIFFICULTY < 4) && (!$MC_NOWO)) then 
 				{
 				gosub verb put my book in my %main.storage
 				math difficultytry add 1
@@ -1099,7 +1101,7 @@ process.order:
 		gosub verb get my %discipline book
 		gosub verb study my book
 		pause .5
-		if $MC_DIFFICULTY < 4 then
+		if (($MC_DIFFICULTY < 4) && (!$MC_NOWO)) then 
 		{
 			gosub verb get %work.material ingot on anvil
 			gosub verb put ingot in $MC_FORGING.STORAGE
@@ -1128,7 +1130,7 @@ process.order:
 			if %volume > $1 then gosub small.mat %order.pref
 			gosub verb get my %discipline book
 			gosub verb study my book
-			if $MC_DIFFICULTY < 4 then
+			if (($MC_DIFFICULTY < 4) && (!$MC_NOWO)) then 
 				{
 				gosub verb put %work.material %order.pref in my %main.storage
 				math difficultytry add 1
@@ -1146,7 +1148,7 @@ process.order:
 			if %volume > $1 then gosub small.mat yarn
 			gosub verb get my %discipline book
 			gosub verb study my book
-				if $MC_DIFFICULTY < 4 then 
+			if (($MC_DIFFICULTY < 4) && (!$MC_NOWO)) then 
 					{
 					gosub verb put %work.material yarn in my %main.storage
 					math difficultytry add 1
@@ -1173,7 +1175,7 @@ process.order:
 			if %volume > $1 then gosub small.mat stack
 			gosub verb get my %discipline book
 			gosub verb study my book
-			if $MC_DIFFICULTY < 4 then
+			if (($MC_DIFFICULTY < 4) && (!$MC_NOWO)) then 
 				{
 				gosub verb put %work.material stack in my %main.storage
 				math difficultytry add 1
@@ -1201,7 +1203,7 @@ process.order:
 			if %volume > $1 then gosub small.mat %order.pref
 			gosub verb get my %discipline book
 			gosub verb study my book
-			if $MC_DIFFICULTY < 4 then
+			if (($MC_DIFFICULTY < 4) && (!$MC_NOWO)) then 
 				{
 				gosub verb put %work.material %order.pref in my %main.storage
 				math difficultytry add 1
@@ -1224,7 +1226,7 @@ process.order:
 			if %volume > $1 then gosub small.mat %order.pref
 			gosub verb get my %discipline book
 			gosub verb study my book
-			if $MC_DIFFICULTY < 4 then
+			if (($MC_DIFFICULTY < 4) && (!$MC_NOWO)) then 
 				{
 				gosub verb put %work.material %order.pref in my %main.storage
 				math difficultytry add 1
@@ -1245,7 +1247,7 @@ process.order:
 			if %volume > $1 then gosub small.mat %herb1
 			gosub verb get my %discipline book
 			gosub verb study my book
-			if $MC_DIFFICULTY < 4 then
+			if (($MC_DIFFICULTY < 4) && (!$MC_NOWO)) then 
 				{
 				gosub verb put %work.material %order.pref in my %main.storage
 				math difficultytry add 1
@@ -1255,9 +1257,13 @@ process.order:
 			send .mix $MC.order.noun 1 %herb1 %herb2
 			waitforre ^ALCHEMY DONE
 	}
-	if $MC_END.EARLY = 1 then gosub expcheck
+	if (($MC_END.EARLY = 1) || ($MC_NOWO = 1)) then gosub expcheck
 	gosub bundle.order
-	if %order.quantity = 0 then goto order.summary
+	if %order.quantity = 0 then 
+		{
+		if $MC_NOWO then goto endearly
+		goto order.summary
+		}
 	goto process.order
 	
 expcheck:
@@ -1272,6 +1278,7 @@ endearly:
 	if matchre("$righthand|$lefthand", "$MC.order.noun") then gosub verb drop my $MC.order.noun
 	gosub untie.early
 	gosub verb put my %discipline logbook in my %main.storage
+	gosub verb open my %remnant.storage
 	put #parse MASTERCRAFT DONE
 	exit
 	
@@ -1282,7 +1289,7 @@ untie.early:
 	matchwait
 
 trash.early:
-var trash $1
+	var trash $1
 	gosub verb put my %trash in bucket
 	if matchre("$righthand|$lefthand", "%trash") then gosub verb drop my %trash
 	goto untie.early
@@ -1297,6 +1304,13 @@ gosub verb put my book in my %main.storage
 return
 	
 bundle.order:
+	if $MC_NOWO then 
+		{
+		gosub verb put my $MC.order.noun in bucket
+		if matchre("$righthand|$lefthand", "$MC.order.noun") then gosub verb drop my $MC.order.noun
+		math order.quantity subtract 1
+		return
+		}
 	action (analyze) on
 	math order.quantity subtract 1
 	send analyze my $MC.order.noun
@@ -1928,4 +1942,3 @@ return
 
 return:
 return
-
