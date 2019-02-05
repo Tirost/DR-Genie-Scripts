@@ -82,6 +82,9 @@ put #var MC_ALC.DIFFICULTY easy
 #	MC_PREFERRED.ROOM: Set as the roomid of where you want to work on your orders
 #	MC_FRIENDLIST: Names of people you want to ignore when looking for an empty room i.e. Johnny|Tim|Barney
 #	MC_ENDEARLY: Set to 1 if you want to stop mastercraft when your mindstate is above 30. Will check after each item. 0 if you don't
+#	MC_NOWO: Set to 1 if you don't want to do work orders. This will still ask the master for a work order to get an item name, it just won't bundle
+#	MC_MAX.ORDER: Maximum number of items to craft, will get a new work order if above this number
+# 	MC_MIN.ORDER: Minimum number of items to craft, will get a new work order if below this number
 put #var MC_REPAIR on
 put #var MC_AUTO.REPAIR on
 put #var MC_GET.COIN on
@@ -89,15 +92,13 @@ put #var MC_REORDER on
 put #var MC_REMNANT.STORAGE canvas sack
 put #var MC.Mark off
 put #var blacklist none
-#put #var MC_WORK.OUTSIDE 0
+put #var MC_WORK.OUTSIDE 0
 #put #var MC_PREFERRED.ROOM 
 #put #var MC_FRIENDLIST
+put #var MC_NOWO 1
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
-
-### DONT MODIFY THIS
-put #var lastToolRepair $gametime
 goto endsetup
 
 #######################################################################
@@ -176,6 +177,9 @@ put #var MC_ALC.DIFFICULTY easy
 #	MC_PREFERRED.ROOM: Set as the roomid of where you want to work on your orders
 #	MC_FRIENDLIST: Names of people you want to ignore when looking for an empty room i.e. Johnny|Tim|Barney
 #	MC_ENDEARLY: Set to 1 if you want to stop mastercraft when your mindstate is above 30. Will check after each item. 0 if you don't
+#	MC_NOWO: Set to 1 if you don't want to do work orders. This will still ask the master for a work order to get an item name, it just won't bundle
+#	MC_MAX.ORDER: Maximum number of items to craft, will get a new work order if above this number
+# 	MC_MIN.ORDER: Minimum number of items to craft, will get a new work order if below this number
 put #var MC_REPAIR on
 put #var MC_AUTO.REPAIR on
 put #var MC_GET.COIN on
@@ -183,15 +187,13 @@ put #var MC_REORDER on
 put #var MC_REMNANT.STORAGE canvas sack
 put #var MC.Mark off
 put #var blacklist none
-#put #var MC_WORK.OUTSIDE 0
+put #var MC_WORK.OUTSIDE 0
 #put #var MC_PREFERRED.ROOM 
 #put #var MC_FRIENDLIST
+put #var MC_NOWO 0
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
-
-### DONT MODIFY THIS
-put #var lastToolRepair $gametime
 goto endsetup
 
 #######################################################################
@@ -270,6 +272,9 @@ put #var MC_ALC.DIFFICULTY easy
 #	MC_PREFERRED.ROOM: Set as the roomid of where you want to work on your orders
 #	MC_FRIENDLIST: Names of people you want to ignore when looking for an empty room i.e. Johnny|Tim|Barney
 #	MC_ENDEARLY: Set to 1 if you want to stop mastercraft when your mindstate is above 30. Will check after each item. 0 if you don't
+#	MC_NOWO: Set to 1 if you don't want to do work orders. This will still ask the master for a work order to get an item name, it just won't bundle
+#	MC_MAX.ORDER: Maximum number of items to craft, will get a new work order if above this number
+# 	MC_MIN.ORDER: Minimum number of items to craft, will get a new work order if below this number
 put #var MC_REPAIR on
 put #var MC_AUTO.REPAIR on
 put #var MC_GET.COIN on
@@ -277,15 +282,13 @@ put #var MC_REORDER on
 put #var MC_REMNANT.STORAGE canvas sack
 put #var MC.Mark off
 put #var blacklist none
-#put #var MC_WORK.OUTSIDE 0
+put #var MC_WORK.OUTSIDE 0
 #put #var MC_PREFERRED.ROOM 
 #put #var MC_FRIENDLIST
+put #var MC_NOWO 0
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
-
-### DONT MODIFY THIS
-put #var lastToolRepair $gametime
 goto endsetup
 
 #######################################################################
@@ -364,6 +367,9 @@ put #var MC_ALC.DIFFICULTY easy
 #	MC_PREFERRED.ROOM: Set as the roomid of where you want to work on your orders
 #	MC_FRIENDLIST: Names of people you want to ignore when looking for an empty room i.e. Johnny|Tim|Barney
 #	MC_ENDEARLY: Set to 1 if you want to stop mastercraft when your mindstate is above 30. Will check after each item. 0 if you don't
+#	MC_NOWO: Set to 1 if you don't want to do work orders. This will still ask the master for a work order to get an item name, it just won't bundle
+#	MC_MAX.ORDER: Maximum number of items to craft, will get a new work order if above this number
+# 	MC_MIN.ORDER: Minimum number of items to craft, will get a new work order if below this number
 put #var MC_REPAIR on
 put #var MC_AUTO.REPAIR on
 put #var MC_GET.COIN on
@@ -371,15 +377,13 @@ put #var MC_REORDER on
 put #var MC_REMNANT.STORAGE canvas sack
 put #var MC.Mark off
 put #var blacklist none
-#put #var MC_WORK.OUTSIDE 0
+put #var MC_WORK.OUTSIDE 0
 #put #var MC_PREFERRED.ROOM 
 #put #var MC_FRIENDLIST
+put #var MC_NOWO 0
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
-
-### DONT MODIFY THIS
-put #var lastToolRepair $gametime
 goto endsetup
 
 #######################################################################
@@ -458,6 +462,9 @@ put #var MC_ALC.DIFFICULTY easy
 #	MC_PREFERRED.ROOM: Set as the roomid of where you want to work on your orders
 #	MC_FRIENDLIST: Names of people you want to ignore when looking for an empty room i.e. Johnny|Tim|Barney
 #	MC_ENDEARLY: Set to 1 if you want to stop mastercraft when your mindstate is above 30. Will check after each item. 0 if you don't
+#	MC_NOWO: Set to 1 if you don't want to do work orders. This will still ask the master for a work order to get an item name, it just won't bundle
+#	MC_MAX.ORDER: Maximum number of items to craft, will get a new work order if above this number
+# 	MC_MIN.ORDER: Minimum number of items to craft, will get a new work order if below this number
 put #var MC_REPAIR on
 put #var MC_AUTO.REPAIR on
 put #var MC_GET.COIN on
@@ -465,15 +472,15 @@ put #var MC_REORDER on
 put #var MC_REMNANT.STORAGE canvas sack
 put #var MC.Mark off
 put #var blacklist none
-#put #var MC_WORK.OUTSIDE 0
+put #var MC_WORK.OUTSIDE 0
 #put #var MC_PREFERRED.ROOM 
 #put #var MC_FRIENDLIST
+put #var MC_NOWO 0
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
-
-### DONT MODIFY THIS
-put #var lastToolRepair $gametime
 goto endsetup
 
 endsetup:
+### DONT MODIFY THIS
+put #var lastToolRepair $gametime
