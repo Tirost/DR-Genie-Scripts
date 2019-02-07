@@ -16,7 +16,7 @@ CHARACTER1:
 #	Variables are case sensitive
 #	MC_FORGING.DISCIPLINE: OPTIONS blacksmith, weapon, armor
 #	MC_FORGING.MATERIAL: Material type adjactive i.e. bronze, steel
-#	MC_FORGING.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_FORGING.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_FORGING.DEED: DEED orders instead of bundling items on or off
 #	MC_SMALL.ORDERS: For only working orders 5 volumes or smaller, 0 for off, 1 for on
 put #var MC_FORGING.STORAGE shoulder pack
@@ -32,7 +32,7 @@ put #var MC_SMALL.ORDERS 0
 #	MC_ENG.DISCIPLINE: OPTIONS carving, shaping, tinkering
 #	MC_ENG.MATERIAL: Material type adjactive i.e. maple, basalt, deer-bone
 #	MC_ENG.PREF: Material type noun i.e. lumber, bone, stone
-#	MC_ENG.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_ENG.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_ENG.DEED: DEED orders instead of bundling items on or off
 put #var MC_ENGINEERING.STORAGE shoulder pack
 put #var MC_ENG.DISCIPLINE carving
@@ -47,7 +47,7 @@ put #var MC_ENG.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS tailor
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_OUTFITTING.STORAGE shoulder pack
 put #var MC_OUT.DISCIPLINE tailor
@@ -62,7 +62,7 @@ put #var MC_OUT.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS remed NOTE: Do not do remedy or remedies. This is the only way to get the book to work for all types
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_ALCHEMY.STORAGE shoulder pack
 put #var MC_ALC.DISCIPLINE remed
@@ -111,7 +111,7 @@ CHARACTER2:
 #	Variables are case sensitive
 #	MC_FORGING.DISCIPLINE: OPTIONS blacksmith, weapon, armor
 #	MC_FORGING.MATERIAL: Material type adjactive i.e. bronze, steel
-#	MC_FORGING.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_FORGING.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_FORGING.DEED: DEED orders instead of bundling items on or off
 #	MC_SMALL.ORDERS: For only working orders 5 volumes or smaller, 0 for off, 1 for on
 put #var MC_FORGING.STORAGE shoulder pack
@@ -127,7 +127,7 @@ put #var MC_SMALL.ORDERS 0
 #	MC_ENG.DISCIPLINE: OPTIONS carving, shaping, tinkering
 #	MC_ENG.MATERIAL: Material type adjactive i.e. maple, basalt, deer-bone
 #	MC_ENG.PREF: Material type noun i.e. lumber, bone, stone
-#	MC_ENG.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_ENG.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_ENG.DEED: DEED orders instead of bundling items on or off
 put #var MC_ENGINEERING.STORAGE shoulder pack
 put #var MC_ENG.DISCIPLINE carving
@@ -142,7 +142,7 @@ put #var MC_ENG.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS tailor
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_OUTFITTING.STORAGE shoulder pack
 put #var MC_OUT.DISCIPLINE tailor
@@ -157,7 +157,7 @@ put #var MC_OUT.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS remed NOTE: Do not do remedy or remedies. This is the only way to get the book to work for all types
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_ALCHEMY.STORAGE shoulder pack
 put #var MC_ALC.DISCIPLINE remed
@@ -206,7 +206,7 @@ CHARACTER3:
 #	Variables are case sensitive
 #	MC_FORGING.DISCIPLINE: OPTIONS blacksmith, weapon, armor
 #	MC_FORGING.MATERIAL: Material type adjactive i.e. bronze, steel
-#	MC_FORGING.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_FORGING.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_FORGING.DEED: DEED orders instead of bundling items on or off
 #	MC_SMALL.ORDERS: For only working orders 5 volumes or smaller, 0 for off, 1 for on
 put #var MC_FORGING.STORAGE shoulder pack
@@ -222,7 +222,7 @@ put #var MC_SMALL.ORDERS 0
 #	MC_ENG.DISCIPLINE: OPTIONS carving, shaping, tinkering
 #	MC_ENG.MATERIAL: Material type adjactive i.e. maple, basalt, deer-bone
 #	MC_ENG.PREF: Material type noun i.e. lumber, bone, stone
-#	MC_ENG.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_ENG.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_ENG.DEED: DEED orders instead of bundling items on or off
 put #var MC_ENGINEERING.STORAGE shoulder pack
 put #var MC_ENG.DISCIPLINE carving
@@ -237,7 +237,7 @@ put #var MC_ENG.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS tailor
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_OUTFITTING.STORAGE shoulder pack
 put #var MC_OUT.DISCIPLINE tailor
@@ -252,7 +252,7 @@ put #var MC_OUT.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS remed NOTE: Do not do remedy or remedies. This is the only way to get the book to work for all types
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_ALCHEMY.STORAGE shoulder pack
 put #var MC_ALC.DISCIPLINE remed
@@ -301,7 +301,7 @@ CHARACTER4:
 #	Variables are case sensitive
 #	MC_FORGING.DISCIPLINE: OPTIONS blacksmith, weapon, armor
 #	MC_FORGING.MATERIAL: Material type adjactive i.e. bronze, steel
-#	MC_FORGING.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_FORGING.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_FORGING.DEED: DEED orders instead of bundling items on or off
 #	MC_SMALL.ORDERS: For only working orders 5 volumes or smaller, 0 for off, 1 for on
 put #var MC_FORGING.STORAGE shoulder pack
@@ -317,7 +317,7 @@ put #var MC_SMALL.ORDERS 0
 #	MC_ENG.DISCIPLINE: OPTIONS carving, shaping, tinkering
 #	MC_ENG.MATERIAL: Material type adjactive i.e. maple, basalt, deer-bone
 #	MC_ENG.PREF: Material type noun i.e. lumber, bone, stone
-#	MC_ENG.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_ENG.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_ENG.DEED: DEED orders instead of bundling items on or off
 put #var MC_ENGINEERING.STORAGE shoulder pack
 put #var MC_ENG.DISCIPLINE carving
@@ -332,7 +332,7 @@ put #var MC_ENG.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS tailor
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_OUTFITTING.STORAGE shoulder pack
 put #var MC_OUT.DISCIPLINE tailor
@@ -347,7 +347,7 @@ put #var MC_OUT.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS remed NOTE: Do not do remedy or remedies. This is the only way to get the book to work for all types
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_ALCHEMY.STORAGE shoulder pack
 put #var MC_ALC.DISCIPLINE remed
@@ -396,7 +396,7 @@ CHARACTER5:
 #	Variables are case sensitive
 #	MC_FORGING.DISCIPLINE: OPTIONS blacksmith, weapon, armor
 #	MC_FORGING.MATERIAL: Material type adjactive i.e. bronze, steel
-#	MC_FORGING.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_FORGING.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_FORGING.DEED: DEED orders instead of bundling items on or off
 #	MC_SMALL.ORDERS: For only working orders 5 volumes or smaller, 0 for off, 1 for on
 put #var MC_FORGING.STORAGE shoulder pack
@@ -412,7 +412,7 @@ put #var MC_SMALL.ORDERS 0
 #	MC_ENG.DISCIPLINE: OPTIONS carving, shaping, tinkering
 #	MC_ENG.MATERIAL: Material type adjactive i.e. maple, basalt, deer-bone
 #	MC_ENG.PREF: Material type noun i.e. lumber, bone, stone
-#	MC_ENG.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_ENG.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_ENG.DEED: DEED orders instead of bundling items on or off
 put #var MC_ENGINEERING.STORAGE shoulder pack
 put #var MC_ENG.DISCIPLINE carving
@@ -427,7 +427,7 @@ put #var MC_ENG.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS tailor
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_OUTFITTING.STORAGE shoulder pack
 put #var MC_OUT.DISCIPLINE tailor
@@ -442,7 +442,7 @@ put #var MC_OUT.DEED off
 #	MC_OUT.DISCIPLINE: OPTIONS remed NOTE: Do not do remedy or remedies. This is the only way to get the book to work for all types
 #	MC_OUT.MATERIAL: Material type adjactive i.e. wool, burlap, rat-pelt
 #	MC_OUT.PREF: Material type noun i.e. yarn, cloth, leather
-#	MC_OUT.DIFFICULTY: Order difficulty east, challenging, hard
+#	MC_OUT.DIFFICULTY: Order difficulty easy, challenging, hard
 #	MC_OUT.DEED: DEED orders instead of bundling items on or off
 put #var MC_ALCHEMY.STORAGE shoulder pack
 put #var MC_ALC.DISCIPLINE remed
