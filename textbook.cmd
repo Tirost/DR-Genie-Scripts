@@ -13,6 +13,7 @@ if matchre("scholarship, "%skill") then goto scholarship
 exit
 
 first:
+var skill First_Aid
 evalmath minranks $Scholarship.Ranks - 100
 evalmath maxranks $Scholarship.Ranks + 100
 if %minranks < 0 then var minranks 0
@@ -20,6 +21,7 @@ eval totalcharts count("%ranks", "|")
 goto getranks
 
 scholarship:
+var skill Scholarship
 var maxranks $Scholarship.Ranks
 evalmath minranks $Scholarship.Ranks - 200
 if %minranks < 0 then var minranks 0
