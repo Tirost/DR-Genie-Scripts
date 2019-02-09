@@ -109,12 +109,26 @@ PAUSE 3
 exit
 
 Barghests:
-put #goto 174
-pause 5
-put #goto 29
-pause 4
-put #goto 44
-pause 5
+move w
+move w
+move w
+move w
+move w
+move w
+move w
+move go gate
+move nw
+move n
+move n
+move n
+move nw
+move go pasture
+move nw
+move w
+move w
+move n
+move climb oak
+move climb middle branch
 goto Practice
 
 Practice:
@@ -134,15 +148,34 @@ if $Athletics.LearningRate = 34 then {
 
 GoHome:
 put stop climb
-put #goto #46
-pause 5
-put #goto 1
-pause 5
-#goto 8
-pause 7
+pause
+move climb lower branch
+move climb trunk
+move s
+move e
+move e
+move se
+move go road
+pause .5
+move se
+move s
+move s
+move s
+move se
+move go gate
+pause .5
+move e
+move e
+move e
+move e
+move e
+move e
+move e
+pause 2
 echo ********************
 echo    YOU'RE HOME
 echo ********************
+put #play MindLocked
 exit
 
 Faldesu:
