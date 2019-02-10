@@ -1,0 +1,127 @@
+I am willing to add official Geniebuff and ritual mode support for other guilds, but since I don't play them, I'll have to rely on other players to provide the information I need.
+
+If your non-cyclic buff or ritual spell is not in the triggers file (or is incorrect), please provide the following information in the Geniehunter support thread: http://www.genieclient.com/bulletin/topic/4644-download-combat-geniehunter-31-and-geniebuff-31/
+
+1.	Post the official spell name and abbreviation as it appears in your SPELLS output.
+2.	The messaging that you see when you cast the spell.
+3.	The messaging that you see when you type POWER while the spell is in effect.
+4.	The messaging that you see when the spell wears off. (You can RELEASE [SPELL] if you don't want to wait.)
+
+-------------------------
+ANALOGOUS PATTERNS
+
+Ease Burden [ease]
+Gauge Flow [gaf]
+Lay Ward [lw]
+Manifest Force [maf]
+
+-------------------------
+CLERIC SPELLS
+
+Benediction
+Major Physical Protection [mapp]
+Minor Physical Protection [mpp]
+Protection from Evil [pfe]
+
+-------------------------
+PALADIN SPELLS
+
+Anti-Stun [as]
+Aspirant's Aegis [aa]
+Banner of Truce [bot]
+Bond Armaments [ba]
+Clarity
+Courage
+Crusader's Challenge [crc]
+Divine Armor [da]
+Divine Guidance [dig]
+Hands of Justice [hoj]
+Heroic Strength [hes]
+Holy Warrior [how]
+Marshal Order [mo]
+Righteous Wrath [rw]
+Rutilor's Edge [rue]
+Sentinel's Resolve [sr]
+Soldier's Prayer [sp]
+Truffenyi's Rally [tr]
+
+-------------------------
+EMPATH SPELLS
+
+Absolution
+Aesandry Darlaeth [ad]
+Aggressive Stance [ags]
+Awaken
+Blood Staunching [bs]
+Circle of Sympathy [cos]
+Cure Disease [cd]
+Flush Poisons [fp]
+Gift of Life [gol]
+Guardian Spirit [gs]
+Heart Link [hl]
+Innocence
+Iron Constitution [ic]
+Mental Focus [mef]
+Perseverance of Peri'el [pop]
+Raise Power [rp]
+Refresh
+Regenerate
+Tranquility
+Vigor
+
+-------------------------
+RANGER SPELLS
+
+Claws of the Cougar [cotc]
+Earth Meld [em]
+Essence of Yew [ey]
+Hands of Lirisa [hol]
+Instinct [inst]
+Memory of Nature [mon]
+Oath of the Firstborn [oath]
+See the Wind [stw]
+Senses of the Tiger [sott]
+Wisdom of the Pack [wotp]
+
+-------------------------
+WARRIOR MAGE SPELLS
+
+Aegis of Granite [aeg]
+Ethereal Shield [es]
+Mantle of Flame [mof]
+Substratum
+Sure Footing [suf]
+Swirling Winds [sw]
+Tailwind [tw]
+Veil of Ice [voi]
+Y'ntrel Sechra [ys]
+
+-------------------------
+BARD SPELLS
+
+Drums of the Snake [drum]
+Eillie's Cry [ecry]
+Harmony
+Misdirection [mis]
+Naming of Tears [name]
+Rage of the Clans [rage]
+Redeemer's Pride [repr]
+
+-------------------------
+MOON MAGE SPELLS
+
+Aura Sight [aus]
+Clear Vision [cv]
+Piercing Gaze [pg]
+Seer's Sense [seer]
+Shadows
+Tenebrous Sense [ts]
+
+-------------------------
+NECROMANCER SPELLS
+
+Ivory Mask [ivm]
+Kura-Silma [ks]
+Obfuscation
+Philosopher's Preservation [php]
+Quicken the Earth [qe]

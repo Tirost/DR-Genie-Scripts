@@ -1,0 +1,46 @@
+Open hunt.cmd. This is the file you need to configure with your preferences. Scroll down to the section "gh_buff.start:" for the section that you need to configure.
+
+For the latest version and additional instructions, see http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
+
+##Specific Spell Info
+##Cage Of Light	-	Must have the Time & Moon Plugin written by pbombard, and make sure you have
+##					Log Game Events checked in the options for that plugin.
+##Benediction	-	Make sure you set the buff.immortal variable
+##Rutilor's Edge	-	Currently does not support offhand use.
+##Bond Armaments	-	Currently does not support offhand use.
+##Quicken the Earth - Should work
+##SET THE FOLLOWING VARIABLES IN THE SCRIPT THAT IS INCLUDING THIS ONE
+##
+##buff.trace	-	Set to YES if you are a Paladin with the Glyph of Mana ability, and you wish to use it in this script.
+##					set to NO if you don't want to use it
+##buff.spell	-	These are the spells you wish to cast in array form.  The spells must be listed to correspond with the variables for the spells
+##					and this is usually the shortened version of the spell name.  ie.  COUR = Courage, AS = Anti Stun,  so the variable would be
+##					COUR|AS
+##buff.prep		-	This is the amount of mana you want to prep the corresponding spell to.  This is also in array form.  Working with the
+##					above example where buff.spell is COUR|AS  buff.prep 12|10  would prepare courage at 12, and anti stun at 10
+##buff.charge.total	-	This is the amount you're going to charge a cambrinth item to.  Array format
+##buff.charge.total2 -  This is the ammount you're going to change a second cambrinth item to.  Array format. Set to 0 (zero)if not using
+##buff.charge.increment	-	This is how much the script will charge the cambrinth per attempt, up to the max. You can either put seperate amounts for each spell
+##							or you can put only 1 amount and that will work for all spells.  Note, if you do it in array format, but put more or less than the number of spells
+##							you're using, it will assume you want to use 1 number for all spells, which will be the first one in the array.
+##							Ie.  buff.charge.increment 12|5|7 or buff.charge.increment 5
+##buff.harness	-	Yes or No, whether to harness or not in script
+##buff.harness.total	-	This is the total amount you are going to harness to.  Can be used in addition to or in place of charging cambrinth
+##buff.harness.increment	-	This is the amount to harness each time up to buff.harness.total amount.   You can either put seperate amounts for each spell
+##							or you can put only 1 amount and that will work for all spells.  Note, if you do it in array format, but put more or less than the number of spells
+##							you're using, it will assume you want to use 1 number for all spells, which will be the first one in the array.
+##							Ie.  buff.harness.increment 12|5|7 or buff.harness.increment 5
+##buff.cambrinth	-	The cambrinth item you are using.  Set to NO to use no cambrinth.
+##buff.secondcambrinth	-	The second cambrinth item you are using.  Set to NO to use no cambrinth.
+##buff.worn	-	Is the cambrinth items specified above worn
+##buff.remove	-	If the cambrinth is set as worn in the above script, do you need to remove it to charge/invoke.  Need roughly 180 ranks or more of
+##					arcana to use a worn cambrinth item w/o removing it.
+##buff.prep.message	-	The messaging for your character when they begin to prepare a spell.
+##buff.continue	-	Set to yes if you want the script to cast all spells before returning to the script that included this one.
+##					IE. If you set to no in geniehunter it will cast a single spell, then return to geniehunter.  If set to yes, it will cast
+##					every spell in the list before returning to geniehunter.  Only set it to yes if you are certain you have enough mana attunement
+##					to handle casting all the spells w/o a break to regain attunement.  Not useful in geniehunter, useful for other scripts.
+##buff.manalevel	-	If using Glyph of Mana it will trace at this level or lower
+##buff.immortal	-	Use this to set which Immortal to cast Benediction at.
+##buff.ba.thrown	-	Set to Yes or No.  Yes only uses the Bond Armaments spell on thrown weapons, No uses it on all
+##OM.DELAY	-	The number of seconds the script will wait before renewing OM.  Will not renew if spell ends.  Number.

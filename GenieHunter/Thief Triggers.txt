@@ -1,0 +1,23 @@
+#trigger {.*closes to melee range on you.|^You close to Melee range|charges} {#var Distance Melee}
+#trigger {.*closes to pole weapon range on you.|^You retreat back to pole range|^You sneak back out to pole range} {#var Distance Pole}
+#trigger {^Centering your mind, you allow your practiced discipline|^You're already using the Hasten meditation\.$|^You are under the influence of the Hasten meditation\.$} {#var hasten ON} {thief}
+#trigger {^Focusing your mind, you attempt to attune your senses to even your most minor movements.$|^You are under the influence of the Dampen meditation,$} {#var dampen ON} {thief}
+#trigger {^Focusing your mind, you look around yourself|^You're already using the Darken meditation\.$|^You are under the influence of the Darken meditation\.$} {#var darken ON} {thief}
+#trigger {^Knowing that a dose of paranoia is healthy|^You're already using the Flight meditation\.$|^You are under the influence of the Flight meditation\.$} {#var flight ON} {thief}
+#trigger {^Purging yourself of all distractions and extraneous thoughts|^You're already using the Elusion meditation\.$|^You are under the influence of the Elusion meditation\.$} {#var elusion ON} {thief}
+#trigger {^Remembering the mantra of mind over matter|^You're already using the Prowess meditation\.$|^You are under the influence of the Prowess meditation\.$} {#var prowess ON} {thief}
+#trigger {^Taking a deep breath, you focus on making your mind and body one|You're already using the Avoidance meditation\.$|^You are under the influence of the Avoidance meditation\.$} {#var avoidance ON} {thief}
+#trigger {^The steadying influence your mind|^You have not recovered from your previous use of the Steady meditation\.$} {#var steady OFF} {thief}
+#trigger {^Willing your body to meet the|^You're already using the Steady meditation\.$|^You are under the influence of the Steady meditation} {#var steady ON} {thief}
+#trigger {^With deep breaths, you recall your training and focus|^You're already using the Focus meditation\.$|^You are under the influence of the Focus meditation\.$} {#var focus ON} {thief}
+#trigger {^You are no longer able to keep your thoughts free from distraction|^You have not recovered from your previous use of the Elusion meditation\.$} {#var elusion OFF} {thief}
+#trigger {^You are not currently under the influence of any meditations\.$} {#var focus OFF;#var hasten OFF;#var prowess OFF;#var darken OFF;#var dampen OFF;#var avoidance OFF;#var steady OFF;#var strike OFF;#var elusion OFF} {thief}
+#trigger {^You are unable to maintain your focus on every movement,$} {#var dampen OFF} {thief}
+#trigger {^You are unable to maintain your focus on the shadows|^You have not recovered from your previous use of the Darken meditation\.$} {#var darken OFF} {thief}
+#trigger {^You calm your body and mind, recalling your training|^You're already using the Strike meditation\.$|^You are under the influence of the Strike meditation\.$} {#var strike ON} {thief}
+#trigger {^You feel mentally fatigued as your heightened paranoia ceases to enhance your knowledge of nearby escape routes\.$|^You have not recovered from your previous use of the Flight meditation\.$} {#var flight OFF} {thief}
+#trigger {^You retreat from combat|^You retreat from combat|^You are already as far away|^You begin to advance|retreats from you} {#var Distance Missile}
+#trigger {^Your concentration fails, and you feel your body perceptibly slow|^You have not recovered from your previous use of the Hasten meditation\.$} {#var hasten OFF} {thief}
+#trigger {^Your concentration runs out, and your rapid analysis|You have not recovered from your previous use of the Avoidance meditation\.$} {#var avoidance OFF} {thief}
+#trigger {^Your cool composure fades, and with it your heightened|^You have not recovered from your previous use of the Strike meditation\.$} {#var strike OFF} {thief}
+#trigger {^Your focused mind falters, and you feel slightly less competent|^You have not recovered from your previous use of the Focus meditation\.$} {#var focus OFF} {thief}
