@@ -4,4 +4,5 @@ gosub automove teller
 gosub bank
 exit
 
-include utility.cmd
+include utility.inc
+include move.inc
