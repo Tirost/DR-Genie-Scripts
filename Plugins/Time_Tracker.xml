@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<Time_Tracker>
+  <Options>
+    <ShowElanthiaTime>False</ShowElanthiaTime>
+    <ShowLongNames>False</ShowLongNames>
+    <UseGameTime>True</UseGameTime>
+    <IncludeAnlasName>False</IncludeAnlasName>
+    <IncludeTimeOfDay>False</IncludeTimeOfDay>
+  </Options>
+  <Calculations>
+    <SunOffset>14061</SunOffset>
+    <KatambaOffset>10573</KatambaOffset>
+    <XibarOffset>3060</XibarOffset>
+    <YavashOffset>-6235</YavashOffset>
+  </Calculations>
+</Time_Tracker>
