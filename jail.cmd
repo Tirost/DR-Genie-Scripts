@@ -1,3 +1,9 @@
+#############################################################
+# STANDALONE JAIL SCRIPT BY SHROOM
+# RUN WHILE IN JAIL OR AFTER - DOES NOT MATTER
+# WILL GET COIN, PAY YOUR FINE AND RECOVER YOUR GEAR
+#############################################################
+
 #debuglevel 5
 var PLEAD guilty
 var BIN_CONTAINER bag
