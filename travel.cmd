@@ -672,6 +672,7 @@ CROSSING:
                 pause
                 gosub FERRYLOGIC
             }
+  if "$zoneid" = "6"  then gosub MOVE cross
   if "$zoneid" = "4a" then gosub MOVE 15
   if "$zoneid" = "4b" then gosub MOVE 1
   if "$zoneid" = "4" && ("%detour" = "dokt") then 
@@ -697,7 +698,10 @@ CROSSING:
                 if "%detour" = "arthe" then gosub MOVE 535
                 if "%detour" = "kaerna" then gosub MOVE 352
                 if "%detour" = "stone" then gosub MOVE 396
+                if "%detour" = "stone" && "$zoneid" = "7" then gosub MOVE 396
+                if "%detour" = "stone" && "$zoneid" = "7" then gosub MOVE 396
                 if "%detour" = "beisswurms" then gosub MOVE 396
+                if "%detour" = "beisswurms" && "$zoneid" = "7" then gosub MOVE 396
                 if "%detour" = "fist" then gosub MOVE 253
                 if "%detour" = "misen" then gosub MOVE 437
                 if "%detour" = "viper" then
@@ -823,6 +827,7 @@ ILITHI:
                 send west
                 wait
             }
+  if "$zoneid" = "112" then gosub MOVE 112
   if "$zoneid" = "123" then gosub MOVE 175
   if "$zoneid" = "42" then gosub MOVE 2
   if "$zoneid" = "59" then gosub MOVE 12
@@ -870,6 +875,7 @@ ILITHI:
   if "$zoneid" = "14b" then gosub MOVE 217
   if "$zoneid" = "11" then gosub MOVE 2
   if "$zoneid" = "7" then gosub MOVE 349
+  if "$zoneid" = "112" then gosub MOVE 112
   if "$zoneid" = "1" then
             {
                 if "$guild" = "Thief" then
@@ -903,6 +909,7 @@ ILITHI:
   if "$zoneid" = "61" && matchre("alfren","%detour") then 
             {
                 gosub MOVE cross
+                pause 0.2
             }
   if "$zoneid" = "60" && matchre("alfren","%detour") then 
             {
@@ -910,7 +917,6 @@ ILITHI:
                 goto ARRIVED
             }
   if "$zoneid" = "60" then gosub MOVE 57
-  if "$zoneid" = "112" then gosub MOVE 112
   if "$zoneid" = "59" then gosub MOVE 12
   if "$zoneid" = "58" then gosub MOVE 2
   if "$zoneid" = "61" then gosub MOVE 130
@@ -2213,6 +2219,7 @@ MOVE.GOTO:
   matchre MOVE.SKIP ^SHOP CLOSED
   matchre MOVE.RETRY ^MOVE FAILED
   matchre MOVE.FAIL ^DESTINATION NOT FOUND
+  matchre MOVE.RETRY ^You will have to climb that\.
   matchre MOVE.RETRY ^You can't go
   matchre MOVE.RETRY ^You're still recovering from your recent attack\.
   matchre MOVE.RETREAT ^You are engaged
