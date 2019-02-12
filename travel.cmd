@@ -1,4 +1,4 @@
-debuglevel 10
+#debuglevel 10
 put #class racial on
 put #class rp on
 put #class arrive off
