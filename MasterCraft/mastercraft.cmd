@@ -664,7 +664,7 @@ calc.material:
 		if "%full.order.noun" = "some blister cream" then var herb2 nemoih
 		if "%full.order.noun" = "some moisturizing ointment" then var herb2 plovik
 		if "%full.order.noun" = "some itch salve" then var herb2 jadice
-		if "%full.order.noun" = "lip balm" then var herb2 nilos
+		if "%full.order.noun" = "some lip balm" then var herb2 nilos
 		if matchre("%full.order.noun", "some neck salve|some neck ungent") then var herb1 georin
 		if matchre("%full.order.noun", "some abdominal salve|some abdominal ungent") then var herb1 nilos
 		if matchre("%full.order.noun", "some chest salve|some chest ungent") then var herb1 plovik
