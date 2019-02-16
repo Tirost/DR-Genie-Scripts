@@ -1,4 +1,4 @@
-#debuglevel 5
+debug 10
 ################################################################################################################################
 # Smart Disarm Script v6.6 - For Dragonrealms - by Shroom
 # Specialized for thieves, works for anyone
@@ -27,10 +27,10 @@
 #####################
 ## YOU MUST SET YOUR CHARACTER'S NAME(S) BELOW
 ## IF ONLY ONE CHARACTER THEN JUST SET CHARACTER1. SET REST TO NULL 
-var CHARACTER1 Shroom
-var CHARACTER2 Alucios
-var CHARACTER3 Valgrind
-var CHARACTER4 Hvinir
+var CHARACTER1 Strongbad
+var CHARACTER2 Cheech
+var CHARACTER3 Chong
+var CHARACTER4 NULL
 ## MAKE SURE TO UPDATE THE VARIABLES THAT ARE SPECIFIC TO EACH DIFFERENT CHARACTER # BELOW 
 if ("$charactername" = "%CHARACTER1") then
 ## DONT CHANGE THIS ABOVE ^^^^^ 
@@ -38,33 +38,33 @@ if ("$charactername" = "%CHARACTER1") then
      {
      ## SET YOUR BAGS WHERE BOXES CAN BE FOUND
      ## AND/OR WHERE YOUR ARMOR/HAND ITEMS CAN BE STOWED
-     var container1 backpack
+     var container1 satchel
      var container2 rucksack
-     var container3 bag
-     var sheath baldric
+     var container3 haversack
+     var sheath NULL
      ## Do you WEAR your GEM POUCH or do you keep them stowed away in your bags?
      ## (YES or NO) - Yes if you wear one, NO if you do not wear a gem pouch
-     var gempouchWorn NO
+     var gempouchWorn YES
      ## DO YOUR GEM POUCHES HAVE SOME WEIRD SYNTAX? SET IT HERE. LEAVE AT GEM POUCH IF NORMAL
-     var gempouch black pouch
+     var gempouch pouch
      ## WHERE DO WE STORE YOUR COMPLETELY FULL, TIED UP GEM POUCHES? (CLOSABLE CONTAINER!)
-     var gempouch.container carryall
+     var gempouch.container bag
      ## TIE YOUR GEM POUCHES? YES OR NO - YES WILL TIE UP ANY FULL POUCHES
-     var tie.pouch NO
+     var tie.pouch YES
      # ANY HAND WORN ARMOR?
-     var knuckles hand claw
+     var knuckles knuckles
      #### ARE YOU USING A LOCKPICK RING or LOCKPICK CASE? (YES OR NO) (Auto-Detects if case or ring)
      var lockpick.ring YES
      # WHERE DO YOU STORE EXTRA LOCKPICKS FOR RESTOCKING YOUR LOCKPICK RING/CASE? (IF ANY - Not necessary to set)
-     var pickstorage util belt
+     var pickstorage robe
      #### DO YOU WANT TO PUT YOUR ARMOR BACK ON AT THE END? (IF IT TOOK ANY OFF FIRST?)
      var wear.armor YES
      #### DO YOU WANT TO USE THE AUTO-HEALER IF YOU GET HURT?? (YES OR NO) 
      #### WARNING: SETTING TO NO WILL SKIP GETTING HEALED SO ITS UP TO YOU TO RECOVER!
-     var autoheal YES
+     var autoheal NO
      # CONTINUE PICKING AFTER MIND LOCK? (YES OR NO) - NO WILL STOP PICKING ONCE MIND LOCKED
      # SET TO YES IF YOU WANT TO CONTINUE PICKING UNTIL ALL THE BOXES ARE GONE AND IGNORE MINDSTATE
-     var keep.picking YES
+     var keep.picking NO
      # MOVE.ROOMS (YES OR NO) - SET TO YES IF YOU PICK BOXES IN A ROOM WITH OTHER PLAYERS
      # THIS WILL MOVE ROOMS WHEN DISARMING AREA-WIDE TRAPS THAT CAN HURT/EFFECT OTHERS
      var MOVE.ROOMS NO
@@ -76,12 +76,14 @@ if ("$charactername" = "%CHARACTER1") then
      ## Special Request - Pet box CREATOR
      #DISARM ONLY?? (YES OR NO) (Skips lockpicking/looting COMPLETELY - this is ONLY for if you just want to MAKE some pet boxes)
      var disarmOnly NO
-     ## Set the special bag to put only disarmed boxes in
-     var disarmBag white back
+ 	 if %1 = "%disarmBag" then var disarmOnly YES
+    ## Set the special bag to put only disarmed boxes in
+     var disarmBag bag
      ## PICK PET BOXES - (YES or NO) - If YES, Gets all Boxes from your "disarmBag" (var above this) 
      ## WILL ONLY PICK BLIND AND THEN PUT AWAY WHEN LOCKED
      ## NOT RESPONSIBLE FOR YOU NOT HAVING DISARMED BOXES AND BLOWING YOUR FACE OFF 
-     var PET.BOXES YES
+     var PET.BOXES NO
+	 if %1 = "pet" then var PET.BOXES YES
      ###################################
      # THIEF ONLY VARIABLES
      ###################################
@@ -106,25 +108,25 @@ if ("$charactername" = "%CHARACTER2") then
      {
      ## SET YOUR BAGS WHERE BOXES CAN BE FOUND
      ## AND/OR WHERE YOUR ARMOR/HAND ITEMS CAN BE STOWED
-     var container1 backpack
-     var container2 haversack
-     var container3 duffel.bag
-     var sheath bag
+     var container1 bag
+     var container2 NULL
+     var container3 NULL
+     var sheath NULL
      ## Do you WEAR your GEM POUCH or do you keep them stowed away in your bags?
      ## (YES or NO) - Yes if you wear one, NO if you do not wear a gem pouch
-     var gempouchWorn NO
+     var gempouchWorn YES
      ## DO YOUR GEM POUCHES HAVE SOME WEIRD SYNTAX? SET IT HERE. LEAVE AT GEM POUCH IF NORMAL
-     var gempouch black pouch
+     var gempouch pouch
      ## WHERE DO WE STORE YOUR COMPLETELY FULL, TIED UP GEM POUCHES? (CLOSABLE CONTAINER!)
-     var gempouch.container leather pouch
+     var gempouch.container bag
      ## TIE YOUR GEM POUCHES? YES OR NO - YES WILL TIE UP ANY FULL POUCHES
-     var tie.pouch NO
+     var tie.pouch YES
      # ANY HAND WORN ARMOR?
-     var knuckles knuckle
+     var knuckles handwraps
      #### ARE YOU USING A LOCKPICK RING or LOCKPICK CASE? (YES OR NO) (Auto-Detects if case or ring)
      var lockpick.ring YES
      # WHERE DO YOU STORE EXTRA LOCKPICKS FOR RESTOCKING YOUR LOCKPICK RING/CASE? (IF ANY - Not necessary to set)
-     var pickstorage kit
+     var pickstorage robe
      #### DO YOU WANT TO PUT YOUR ARMOR BACK ON AT THE END? (IF IT TOOK ANY OFF FIRST?)
      var wear.armor YES
      # CONTINUE PICKING AFTER MIND LOCK? (YES OR NO) - NO WILL STOP PICKING ONCE MIND LOCKED
@@ -132,7 +134,7 @@ if ("$charactername" = "%CHARACTER2") then
      var keep.picking NO
      #### DO YOU WANT TO USE THE AUTO-HEALER IF YOU GET HURT?? (YES OR NO) 
      #### WARNING: SETTING TO NO WILL SKIP GETTING HEALED SO ITS UP TO YOU TO RECOVER!
-     var autoheal YES
+     var autoheal NO
      # MOVE.ROOMS (YES OR NO) - SET TO YES IF YOU PICK BOXES IN A ROOM WITH OTHER PLAYERS
      # THIS WILL MOVE ROOMS WHEN DISARMING AREA-WIDE TRAPS THAT CAN HURT/EFFECT OTHERS
      var MOVE.ROOMS NO
@@ -144,12 +146,14 @@ if ("$charactername" = "%CHARACTER2") then
      #Special Request - Pet box Creator
      #DISARM ONLY?? (YES OR NO) (Skips lockpicking/looting COMPLETELY - this is ONLY for if you just want to make some pet boxes)
      var disarmOnly NO
+ 	 if %1 = "%disarmBag" then var disarmOnly YES
      ## Set the special bag to put only disarmed boxes in
-     var disarmBag white back
+     var disarmBag bag
      ## PICK PET BOXES - (YES or NO) - If YES, Gets all Boxes from your "disarmBag" (var above this) 
      ## WILL ONLY PICK BLIND AND THEN PUT AWAY WHEN LOCKED
      ## NOT RESPONSIBLE FOR YOU NOT HAVING DISARMED BOXES AND BLOWING YOUR FACE OFF 
      var PET.BOXES NO
+	 if %1 = "pet" then var PET.BOXES YES
      ###################################
      # THIEF ONLY VARIABLES
      ###################################
@@ -174,30 +178,30 @@ if ("$charactername" = "%CHARACTER3") then
      {
      ## SET YOUR BAGS WHERE BOXES CAN BE FOUND
      ## AND/OR WHERE YOUR ARMOR/HAND ITEMS CAN BE STOWED
-     var container1 carryall
-     var container2 haversack
-     var container3 duffel.bag
-     var sheath bag
+     var container1 bag
+     var container2 ruck
+     var container3 NULL
+     var sheath NULL
      ## Do you WEAR your GEM POUCH or do you keep them stowed away in your bags?
      ## (YES or NO) - Yes if you wear one, NO if you do not wear a gem pouch
      var gempouchWorn NO
      ## DO YOUR GEM POUCHES HAVE SOME WEIRD SYNTAX? SET IT HERE. LEAVE AT GEM POUCH IF NORMAL
-     var gempouch black pouch
+     var gempouch pouch
      ## WHERE DO WE STORE YOUR COMPLETELY FULL, TIED UP GEM POUCHES? (CLOSABLE CONTAINER!)
-     var gempouch.container green pouch
+     var gempouch.container bag
      ## TIE YOUR GEM POUCHES? YES OR NO - YES WILL TIE UP ANY FULL POUCHES
-     var tie.pouch NO
+     var tie.pouch YES
      # ANY HAND WORN ARMOR?
-     var knuckles knuckle
+     var knuckles knuckles
      #### ARE YOU USING A LOCKPICK RING or LOCKPICK CASE? (YES OR NO) (Auto-Detects if case or ring)
      var lockpick.ring YES
      # WHERE DO YOU STORE EXTRA LOCKPICKS FOR RESTOCKING YOUR LOCKPICK RING/CASE? (IF ANY - Not necessary to set)
-     var pickstorage pouch
+     var pickstorage ruck
      #### DO YOU WANT TO PUT YOUR ARMOR BACK ON AT THE END? (IF IT TOOK ANY OFF FIRST?)
      var wear.armor YES
      #### DO YOU WANT TO USE THE AUTO-HEALER IF YOU GET HURT?? (YES OR NO) 
      #### WARNING: SETTING TO NO WILL SKIP GETTING HEALED SO ITS UP TO YOU TO RECOVER!
-     var autoheal YES
+     var autoheal NO
      # CONTINUE PICKING AFTER MIND LOCK? (YES OR NO) - NO WILL STOP PICKING ONCE MIND LOCKED
      # SET TO YES IF YOU WANT TO CONTINUE PICKING UNTIL ALL THE BOXES ARE GONE AND IGNORE MINDSTATE
      var keep.picking NO
@@ -212,12 +216,14 @@ if ("$charactername" = "%CHARACTER3") then
      #Special Request - Pet box Creator
      #DISARM ONLY?? (YES OR NO) (Skips lockpicking/looting COMPLETELY - this is ONLY for if you just want to make some pet boxes)
      var disarmOnly NO
+ 	 if %1 = "%disarmBag" then var disarmOnly YES
      ## Set the special bag to put only disarmed boxes in
-     var disarmBag white back
+     var disarmBag bag
      ## PICK PET BOXES - (YES or NO) - If YES, Gets all Boxes from your "disarmBag" (var above this) 
      ## WILL ONLY PICK BLIND AND THEN PUT AWAY WHEN LOCKED
      ## NOT RESPONSIBLE FOR YOU NOT HAVING DISARMED BOXES AND BLOWING YOUR FACE OFF 
      var PET.BOXES NO
+ 	 if %1 = "pet" then var PET.BOXES YES
      ###################################
      # THIEF ONLY VARIABLES
      ###################################
@@ -280,13 +286,15 @@ if ("$charactername" = "%CHARACTER4") then
      #Special Request - Pet box Creator
      #DISARM ONLY?? (YES OR NO) (Skips lockpicking/looting COMPLETELY - this is ONLY for if you just want to make some pet boxes)
      var disarmOnly NO
-     ## Set the special bag to put only disarmed boxes in
+  	 if %1 = "%disarmBag" then var disarmOnly YES
+    ## Set the special bag to put only disarmed boxes in
      var disarmBag white back
      ## PICK PET BOXES - (YES or NO) - If YES, Gets all Boxes from your "disarmBag" (var above this) 
      ## WILL ONLY PICK BLIND AND THEN PUT AWAY WHEN LOCKED
      ## NOT RESPONSIBLE FOR YOU NOT HAVING DISARMED BOXES AND BLOWING YOUR FACE OFF 
      var PET.BOXES NO
-     ###################################
+	 if %1 = "pet" then var PET.BOXES YES
+      ###################################
      # THIEF ONLY VARIABLES
      ###################################
      # SET THE KHRI YOU WANT TO USE (IGNORE IF NON-THIEF)
@@ -446,6 +454,7 @@ INIT:
      pause 0.001
      if_1 then
      {
+		if (matchre("%1", "pet|PET|Pet|%disarmbag")) then GOTO TOP
           var user %1
           var GIVEBOX YES
           send whisper %user Give me a second to prepare. When ready I'll whisper you and then hand me a new box.
@@ -613,13 +622,13 @@ hand_Check:
      goto armor_Check1
 armor_Check1:
           matchre armor_Check1 ^\.\.\.wait|^Sorry, you may only type
-          matchre remove_Armor (armet|gauntlet|gloves|shield|claw guards|mail gloves|platemail legs|parry stick|handwraps|\bhat\b|hand claws|jacket|armwraps|footwraps|aegis|buckler|\bhood\b|\bcowl\b|\bheater|pavise|scutum|shield|sipar|\btarge\b|aventail|backplate|balaclava|barbute|bascinet|breastplate|\bcap\b|coat|\bcowl|cuirass|fauld|greaves|hauberk|helm|\bhood\b|jerkin|leathers|lorica|mantle|(?<!crimson leather )mask|morion|pants|steel plate(?! armor| gauntlets| gloves | greaves)|(field|fluted|full|half) \bplate\b|handguards|robe|sallet|shirt|sleeves|ticivara|tabard|tasset|thorakes|\blid\b|vambraces|vest|collar|coif|mitt|steel mail|(field|chain|leather|bone|quilted|reed|black|plate|combat|body|clay|lamellar|steel|mail|pale|polished|shadow|Suit of|suit|woven|yeehar-hide|kidskin|gladiatorial|battle|tomiek|glaes|pale|ceremonial|Sinuous|trimmed|carapace|Zaulguum-skin) \barmor\b)
+          matchre remove_Armor (armet|gauntlet|gloves|shield|claw guards|mail gloves|platemail legs|parry stick|handwraps|\bhat\b|hand claws|jacket|armwraps|footwraps|aegis|buckler|\bhood\b|\bcowl\b|\bheater|pavise|scutum|shield|sipar|\btarge\b|aventail|backplate|balaclava|barbute|bascinet|breastplate|\bcap\b|coat|\bcowl|cuirass|fauld|greaves|hauberk|helm|\bhood\b|jerkin|leathers|lorica|mantle|(?<!crimson leather )mask|morion|pants|steel plate(?! armor| gauntlets| gloves| greaves| helm)|(field|fluted|full|half) \bplate\b|handguards|robe|sallet|shirt|sleeves|ticivara|tabard|tasset|thorakes|\blid\b|vambraces|vest|collar|coif|mitt|steel mail|(field|chain|leather|bone|quilted|reed|black|plate|combat|body|clay|lamellar|steel|mail|pale|polished|shadow|Suit of|suit|woven|yeehar-hide|kidskin|gladiatorial|battle|tomiek|glaes|pale|ceremonial|Sinuous|trimmed|carapace|Zaulguum-skin) \barmor\b)
           matchre armor_None You have nothing of that sort|You are wearing nothing of that sort|You aren't wearing anything
           put inv armor
 	matchwait 3
 armor_Checking:
           matchre armor_Check1 ^\.\.\.wait|^Sorry, you may only type
-          matchre remove_Armor (armet|gauntlet|gloves|shield|claw guards|mail gloves|platemail legs|parry stick|handwraps|\bhat\b|hand claws|jacket|armwraps|footwraps|aegis|buckler|\bhood\b|\bcowl\b|\bheater|pavise|scutum|shield|sipar|\btarge\b|aventail|backplate|balaclava|barbute|bascinet|breastplate|\bcap\b|coat|\bcowl|cuirass|fauld|greaves|hauberk|helm|\bhood\b|jerkin|leathers|lorica|mantle|(?<!crimson leather )mask|morion|pants|steel plate(?! armor| gauntlets| gloves | greaves)|(field|fluted|full|half) \bplate\b|handguards|robe|sallet|shirt|sleeves|ticivara|tabard|tasset|thorakes|\blid\b|vambraces|vest|collar|coif|mitt|steel mail|(field|chain|leather|bone|quilted|reed|black|plate|combat|body|clay|lamellar|steel|mail|pale|polished|shadow|Suit of|suit|woven|yeehar-hide|kidskin|gladiatorial|battle|tomiek|glaes|pale|ceremonial|Sinuous|trimmed|carapace|Zaulguum-skin) \barmor\b)
+          matchre remove_Armor (armet|gauntlet|gloves|shield|claw guards|mail gloves|platemail legs|parry stick|handwraps|\bhat\b|hand claws|jacket|armwraps|footwraps|aegis|buckler|\bhood\b|\bcowl\b|\bheater|pavise|scutum|shield|sipar|\btarge\b|aventail|backplate|balaclava|barbute|bascinet|breastplate|\bcap\b|coat|\bcowl|cuirass|fauld|greaves|hauberk|helm|\bhood\b|jerkin|leathers|lorica|mantle|(?<!crimson leather )mask|morion|pants|steel plate(?! armor| gauntlets| gloves| greaves| helm)|(field|fluted|full|half) \bplate\b|handguards|robe|sallet|shirt|sleeves|ticivara|tabard|tasset|thorakes|\blid\b|vambraces|vest|collar|coif|mitt|steel mail|(field|chain|leather|bone|quilted|reed|black|plate|combat|body|clay|lamellar|steel|mail|pale|polished|shadow|Suit of|suit|woven|yeehar-hide|kidskin|gladiatorial|battle|tomiek|glaes|pale|ceremonial|Sinuous|trimmed|carapace|Zaulguum-skin) \barmor\b)
           matchre Armor_Complete You have nothing of that sort|You are wearing nothing of that sort|You aren't wearing anything
           put inv armor
 	matchwait 4
@@ -873,6 +882,7 @@ get_For_Disarm:
 		matchwait
 
 weapon:
+    if (toupper("%PET.BOXES") = "YES") then GOTO pick_Cont
      var LAST WEAPON
      pause 0.2
      pause 0.1
@@ -929,16 +939,18 @@ disarm_ID:
      pause 0.001
 	pause 0.1
      pause 0.1
-     matchre Stop_Play ^You are a bit too busy performing
-     matchre ID_FAIL ^You get the distinct feeling your careless|This is not likely to be a good
-	matchre disarm_ID ^\.\.\.wait|^Sorry, you may only type
-     matchre Not_Box ^You don't see any reason to attempt to disarm that
-	matchre weapon hinders your attempt|knuckles|handwraps|hand claws
-	matchre disarm_ID fails to reveal to you|^You are still stunned
-	matchre HEALTH You're in no shape
-	matchre Disarmed You guess it is already disarmed
-     matchre RETURN Surely any fool|Even your memory can|Roundtime|Somebody has already located
-	#matchre return coffer|trunk|chest|strongbox|skippet|caddy|crate|casket|box
+
+	if (toupper("%PET.BOXES") = "YES") then GoSub RETREAT 
+		matchre Stop_Play ^You are a bit too busy performing
+		matchre ID_FAIL ^You get the distinct feeling your careless|This is not likely to be a good
+		matchre disarm_ID ^\.\.\.wait|^Sorry, you may only type
+		matchre Not_Box ^You don't see any reason to attempt to disarm that
+		matchre weapon hinders your attempt|knuckles|handwraps|hand claws
+		matchre disarm_ID fails to reveal to you|^You are still stunned
+		matchre HEALTH You're in no shape
+		matchre Disarmed You guess it is already disarmed
+		matchre RETURN Surely any fool|Even your memory can|Roundtime|Somebody has already located
+		#matchre return coffer|trunk|chest|strongbox|skippet|caddy|crate|casket|box
 	send disarm ID
 	matchwait 12
      return
@@ -1128,6 +1140,7 @@ pick:
 	put pick anal
 	matchwait
 pick_Cont:
+	var multi_lock OFF
 	if ((toupper("%lockpick.ring") != "YES") && ("$righthand" = "Empty")) then gosub get_Pick
      if (toupper("%GIVEBOX") != "YES") then
      	{
@@ -1142,16 +1155,19 @@ pick_Cont:
      pause 0.001
      pause 0.001
 	pause 0.1
-	if (%pickloop > 15) then goto toss_Box
-	if (%pickloop > 6) then var mode careful
-	if ((%pickloop > 2) && ("%mode" = "quick")) then var mode normal
-	if ((%pickloop > 2) && ("%mode" = "blind")) then var mode quick
-     if (toupper("%PET.BOXES") = "YES") then var mode blind
+	if ((%pickloop > 15) && (toupper("%GIVEBOX") = "NO")) then goto toss_Box
+	if ((%pickloop > 6) && (toupper("%GIVEBOX") = "NO")) then var mode careful
+	if ((%pickloop > 2) && ("%mode" = "quick") && (toupper("%GIVEBOX") = "NO")) then var mode normal
+	if ((%pickloop > 2) && ("%mode" = "blind") && (toupper("%GIVEBOX") = "NO")) then var mode quick
+    if (toupper("%PET.BOXES") = "YES") then {
+		var mode blind
+		GoSub RETREAT 
+	}
 		matchre pick_Cont ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
 		matchre weapon hinders your attempt|knuckles|handwraps|hand claws
 		matchre pick_cont You are unable to make
 		matchre get_Pick Find a more appropriate tool
-		matchre return With a soft click|not even locked|Roundtime|^Pick what
+		matchre return With a soft click|Roundtime|^Pick what|not even locked
 	put pick %mode
 	matchwait
 
@@ -1380,13 +1396,14 @@ dismantle:
      pause 0.5
      pause 0.4
      if ("$righthand" = "Empty") && ("$lefthand" = "Empty") then return
+    if (toupper("%PET.BOXES") = "YES") then GoSub RETREAT 
 		matchre dismantle ^\.\.\.wait|^Sorry, you may only type
-          matchre dismantle next 15 seconds|something inside it
-          matchre drop_box You can not dismantle
+        matchre dismantle next 15 seconds|something inside it
+        matchre drop_box You can not dismantle
 		matchre open_Box You must first open
 		matchre disarm_sub You must first disarm
 		matchre return Roundtime|Unable to locate|^Dismantle what\?
-          matchre return ^You must be holding
+        matchre return ^You must be holding
 	put disman my %disarmit %dismantle
 	matchwait
 
@@ -2104,8 +2121,7 @@ ENSURE_IN_CITY:
 	if ("$zoneid" = "65") then gosub AUTOMOVE shard
 	if ("$zoneid" = "66") then gosub AUTOMOVE east
 	if ("$zoneid" = "69") then gosub AUTOMOVE shard
-     if ("$zoneid" = "116") then gosub AUTOMOVE raven
-     if ("$zoneid" = "116") then gosub AUTOMOVE raven
+     if ("$zoneid" = "116") then gosub AUTOMOVE healer
 GO_AUTOHEALER:
      pause 0.1
      action goto AUTOPATH_LEAVE when crosses $charactername's name from the list|^Shalvard says, "Please get up|Shalvard looks around and says, "Kindly leave|Yolesi suddenly yells|^Kaiva crosses your name off|you look fine and healthy to me|^You sit up|^Arthianne nudges you|I think you don't really need healing|you are well|Quentin whispers, "Just between you and me and the Queen|^Atladene says to you, "You don't need healing
@@ -2955,3 +2971,14 @@ return_p:
 RETURN:
      delay 0.0001
      return
+	 
+	 
+	 
+## **********
+RETREAT:
+		matchre RETURN ^You should stop practicing
+		matchre RETURN ^You retreat from combat.|^You are already as far away as you can get!
+		matchre RETREAT ^\.\.\.wait|^Sorry\,
+	send retreat
+	matchwait 1
+	GOTO RETREAT 
