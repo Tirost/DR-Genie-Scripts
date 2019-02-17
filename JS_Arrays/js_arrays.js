@@ -179,6 +179,10 @@ function doPush(arrayname, item) {
 		{
 		item = getVar(item.replace(/%/,""));
 		}
+	if (item[0] == "$")
+		{
+		item = getGlobal(item.replace(/$/,""));
+		}
 	if (list[0] == "undefined")
 		{
 			list[0] = item;
@@ -217,6 +221,10 @@ function doUnshift(arrayname, item) {
 	if (item[0] == "%")
 		{
 		item = getVar(item.replace(/%/,""));
+		}
+	if (item[0] == "$")
+		{
+		item = getGlobal(item.replace(/$/,""));
 		}
 	if (list[0] == "undefined")
 		{
