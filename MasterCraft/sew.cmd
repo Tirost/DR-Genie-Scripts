@@ -72,7 +72,7 @@ first.cut:
 		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
 		gosub verb get my scissors
 	}
-	matchre excess You carefully cut off the excess material and set it on the ground.
+	matchre excess You carefully cut off the excess material and set it (on the|in your|at your) (\S+).$
 	matchre work Roundtime: \d+
 	send cut my %material with my scissor
 	matchwait
