@@ -32,7 +32,7 @@ action var tool slickstone when ^A deep crease develops along the fabric.*|The f
 action var tool awl when needs holes punched.*|requires some holes punched
 #action var tool assemble when ASSEMBLE Ingredient1 WITH Ingredient2
 action var tool done when Applying the final touches, you complete working
-action var excessloc $2 when and You carefully cut off the excess material and set it (on the|in your|at your) (\S+).$
+action var excessloc $2 when You carefully cut off the excess material and set it (on the|in your|at your) (\S+).$
 action var tool needle when ^measure my \S+ with my yardstick|^rub my \S+ with my slickstone|poke my \S+ with my pins|^poke my \S+ with my awl|^cut my \S+ with my scissors|pushing it with a needle and thread
 action GOTO unfinished when That tool does not seem suitable for that task.
 action (work) goto Retry when \.\.\.wait|type ahead
