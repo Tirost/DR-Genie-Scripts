@@ -1267,10 +1267,10 @@ process.order:
 	goto process.order
 	
 expcheck:
-	if (matchre("%discipline", "weapon|armor|blacksmith") && ($Forging.LearningRate > 30)) then goto endearly
-	if (matchre("%discipline", "tailor") && ($Outfitting.LearningRate > 30)) then goto endearly
-	if (matchre("%discipline", "carving|shaping|tinkering") && ($Engineering.LearningRate > 30)) then goto endearly
-	if (matchre("%discipline", "remed") && ($Alchemy.LearningRate > 30)) then goto endearly
+	if (matchre("%discipline", "weapon|armor|blacksmith") && ($Forging.LearningRate > 25)) then goto endearly
+	if (matchre("%discipline", "tailor") && ($Outfitting.LearningRate > 25)) then goto endearly
+	if (matchre("%discipline", "carving|shaping|tinkering") && ($Engineering.LearningRate > 25)) then goto endearly
+	if (matchre("%discipline", "remed") && ($Alchemy.LearningRate > 25)) then goto endearly
 	return
 
 endearly:
@@ -1734,12 +1734,12 @@ lack.material:
 		#evalmath reqd.order ceiling(%reqd.order)
 		if "%work.material" = "bronze" then
 			{
-			if %volume > 5 then evalmath reqd.order ceiling(((%order.quantity*%volume) - %material.volume)/5)
+			if ((%volume > 5) || (%material.volume = 0)) then evalmath reqd.order ceiling(((%order.quantity*%volume) - %material.volume)/5)
 			else evalmath reqd.order %order.quantity-%bigenough
 			}
 		if "%work.material" = "steel" then
 			{
-			if %volume > 10 then evalmath reqd.order ceiling(((%order.quantity*%volume) - %material.volume)/10)
+			if ((%volume > 10) || (%material.volume = 0)) then evalmath reqd.order ceiling(((%order.quantity*%volume) - %material.volume)/10)
 			else evalmath reqd.order %order.quantity-%bigenough
 			}
 		var main.storage $MC_FORGING.STORAGE
@@ -1942,3 +1942,4 @@ return
 
 return:
 return
+
