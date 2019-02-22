@@ -863,7 +863,7 @@ var ccount 0
 
 automove_1:
 pause 1
-if matchre("%movement(%ccount)", "travel") then goto travelmove
+if matchre("%movement(%ccount)", "travel") then goto autotravelmove
 match automove_1 YOU HAVE FAILED
 match automove_1 You can't go there
 match automove_1 MOVE FAILED
@@ -873,7 +873,7 @@ matchwait 200
 put #mapper reset
 goto automove_1
 
-travelmove:
+autotravelmove:
 put %movement(%ccount)
 waitfor REACHED YOUR DESTINATION
 goto autoreturn
@@ -1002,7 +1002,7 @@ return
 #############
 
 ReturnCaravan:
-if %location != "Crossing" then echo YOU NEED TO BE IN THE CROSSING GUILD TO GET YOUR CARAVAN BACK.
+if "%location" != "Crossing" then echo YOU NEED TO BE IN THE CROSSING GUILD TO GET YOUR CARAVAN BACK.
 gosub automove CARAVAN STABLE
 gosub put return caravan
 put #var caravan 1
