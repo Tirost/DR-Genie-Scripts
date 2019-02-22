@@ -24,7 +24,7 @@ action var Action push when addition of some purl stitching|some purl stitches|^
 action var Action turn when add some ribbing|Some ribbing should be added|so ribbing can be added to the knitting process
 action var Action cast when be cast off the needles
 action (work) goto Retry when \.\.\.wait|type ahead
-action goto done when ^Applying the final touches
+action var Action done when ^Applying the final touches
 action (work) off
 
 if contains("$righthandnoun", "knitting needle") then send swap
@@ -65,8 +65,10 @@ excess:
 Action:
 	action (work) on
 	save %Action
+	if "%Action" = "done" then goto done
 	send %Action my needle
-	waitforre ^Roundtime:
+	pause 0.5
+	pause 0.5
 	goto Action
 
 Retry:
