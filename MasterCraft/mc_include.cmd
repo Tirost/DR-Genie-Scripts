@@ -324,7 +324,7 @@ put #tvar work.room %HA.work.room
 put #tvar supply.room 472
 put #tvar tool.room 470
 put #tvar repair.room %haven.repair.room
-var repair.clerk %haven.repair
+put #tvar repair.clerk %haven.repair
 var society.type Alchemy
 return
 
@@ -339,7 +339,7 @@ put #tvar supply.room 906
 put #tvar part.room 905
 put #tvar tool.room 905
 put #tvar repair.room %crossing.repair.room
-var repair.clerk %crossing.repair
+put #tvar repair.clerk %crossing.repair
 var society.type Forging
 return 
 
@@ -352,7 +352,7 @@ put #tvar part.room 914
 #order parts
 put #tvar tool.room 913
 put #tvar repair.room %crossing.repair.room
-var repair.clerk %crossing.repair
+put #tvar repair.clerk %crossing.repair
 var society.type Outfitting
 return
 
@@ -365,7 +365,7 @@ put #tvar part.room 851
 put #tvar tool.room 851
 put #tvar ingot.buy 906
 put #tvar repair.room %crossing.repair.room
-var repair.clerk %crossing.repair
+put #tvar repair.clerk %crossing.repair
 var society.type Engineering
 return
 
@@ -376,7 +376,7 @@ put #tvar work.room %CA.work.room
 put #tvar supply.room 933
 put #tvar tool.room 931
 put #tvar repair.room %crossing.repair.room
-var repair.clerk %crossing.repair
+put #tvar repair.clerk %crossing.repair
 var society.type Alchemy
 return
 
@@ -596,7 +596,9 @@ automovecont:
 	 match return YOU HAVE ARRIVED
 	 match automovecont1 YOU HAVE FAILED
 	 put #goto %toroom
-	 matchwait
+	 matchwait 90
+	 put #mapper reset
+	 goto automovecont
 
 automovecont1:
 	 pause
@@ -633,7 +635,7 @@ verb.a:
 	match verb.p type ahead
 	match verb.p ...wait
 	matchre verb.d (You get|You put|You pick up|Get what\?|You count out|What were you|You move|You glance down|Just give it to me again if you want|You drop|Roundtime|STOW HELP|completely undamaged and does not need repair|cannot figure out how to do that|not damaged enough to warrant repair|bundle them with your logbook and then give|you just received a work order|You turn your book|You study|You scan|You notate|You hand|You slide|You place|You have no idea how to craft|The book is already turned|What were you referring|You realize you have items bundled with the logbook)
-	matchre verb.d ^The clerk counts|Searching methodically|Perhaps you should be holding that|You find your jar|You close|You open|The (\S+) can only hold|The attendant|You measure out|You carefully break off|You may purchase|^You hand|"There isn't a scratch on that|"I don't repair those here\."|That is already|You are already holding|What were you referring
+	matchre verb.d ^The clerk counts|Searching methodically|Perhaps you should be holding that|You find your jar|You .*close|You .*open|The (\S+) can only hold|The attendant|You measure out|You carefully break off|You may purchase|^You hand|"There isn't a scratch on that|"I don't repair those here\."|That is already|You are already holding|What were you referring
 	matchre verb.s You need a free hand
 	send %verb
 	matchwait
