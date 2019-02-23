@@ -483,4 +483,4 @@ goto endsetup
 
 endsetup:
 ### DONT MODIFY THIS
-put #var lastToolRepair $gametime
+if !def(lastToolRepair) then put #var lastToolRepair $gametime
