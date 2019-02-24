@@ -95,7 +95,7 @@ put #var blacklist none
 put #var MC_WORK.OUTSIDE 0
 #put #var MC_PREFERRED.ROOM 
 #put #var MC_FRIENDLIST
-put #var MC_NOWO 1
+put #var MC_NOWO 0
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
