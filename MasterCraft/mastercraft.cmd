@@ -1400,7 +1400,7 @@ combine.check:
 	var combine.storage $1
 	var combine.temp $2
 	if "%order.pref" = "bone" then var combine.temp stack
-	if contains("$righthand|$lefthand", "book") then gosub verb put book in %combine.storage
+	if contains("$righthand|$lefthand", "book") then gosub verb put book in %main.storage
    	if matchre("%discipline", "weapon|armor|blacksmith") then
         {
         if matchre("$righthand|$lefthand", "%combine.temp") then gosub verb put my %combine.temp in my %combine.storage
@@ -1413,7 +1413,7 @@ combine.check:
     #action (combine) off
     if %%order.pref.item.count > 1 then 
 		{
-		if contains("$righthand|$lefthand", "book") then gosub verb put book in %combine.storage
+		if contains("$righthand|$lefthand", "book") then gosub verb put book in %main.storage
 		gosub combine
 		}
     if matchre("$righthand|$lefthand", "%combine.temp") then gosub verb put my %combine.temp in my %combine.storage
@@ -1448,7 +1448,7 @@ combine:
 combine.end:
     if matchre("$righthand|$lefthand", "%combine.temp") then gosub verb put %combine.temp in %combine.storage
     if matchre("$righthand|$lefthand", "%combine.temp") then gosub verb put %combine.temp in %combine.storage
-    gosub verb get %discipline book from %combine.storage
+    gosub verb get %discipline book from %main.storage
     unvar combine.temp
     unvar combine.storage
     return
