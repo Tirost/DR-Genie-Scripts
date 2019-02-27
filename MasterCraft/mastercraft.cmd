@@ -672,7 +672,7 @@ calc.material:
 		if matchre("%full.order.noun", "some limb salve|some limb ungent") then var herb1 jadice 
 		if matchre("%full.order.noun", "a neck potion|some neck tonic") then var herb1 riolur
 		if matchre("%full.order.noun", "a chest potion|some chest tonic") then var herb1 root
-		if matchre("%full.order.noun", "a back potion|some back tonic") then var herb1 junilar
+		if matchre("%full.order.noun", "a back potion|some back tonic") then var herb1 junliar
 		if matchre("%full.order.noun", "an eye potion|some eye potion") then var herb1 aevaes
 		if matchre("%full.order.noun", "some face ointment|some face poultices") then var herb1 pollen
 		if matchre("%full.order.noun", "some body ointment|some body poultices") then var herb1 genich
@@ -1828,7 +1828,7 @@ lack.material:
 		if "%order.type" = "nilos" then var order.num 6
 		if "%order.type" = "georin" then var order.num 7
 		if "%order.type" = "riolur" then var order.num 8
-		if "%order.type" = "junilar" then var order.num 9
+		if "%order.type" = "junliar" then var order.num 9
 		if "%order.type" = "aevaes" then var order.num 10
 		if "%order.type" = "genich" then var order.num 11
 		if "%order.type" = "ojhenik" then var order.num 12
@@ -1864,7 +1864,7 @@ first.order:
 			if matchre("%order.type", "lumber") then math material.volume add 5
 			if matchre("%order.type", "leather|cloth|stack") then math material.volume add 10
 			if matchre("%order.type", "yarn") then math material.volume add 100
-			if (("%discipline" = "remed") && (!matchre("order.type", "qun pollen|ithor"))) then math herb1.material.volume add 25
+			if (("%discipline" = "remed") && (!matchre("order.type", "qun pollen|ithor"))) then math %herb1.material.volume add 25
 			else math herb1.material.volume add 4
 			if %reqd.order < 1 then return
             goto first.order
