@@ -1732,16 +1732,16 @@ lack.material:
 		if !contains("bronze|steel", "%work.material") then goto lack.material.exit
 		#evalmath reqd.order %reqd.volume/5
 		#evalmath reqd.order ceiling(%reqd.order)
-		if "%work.material" = "bronze" then
-			{
-			if ((%volume > 5) || (%material.volume = 0)) then evalmath reqd.order ceiling(((%order.quantity*%volume) - %material.volume)/5)
-			else evalmath reqd.order %order.quantity-%bigenough
-			}
-		if "%work.material" = "steel" then
-			{
-			if ((%volume > 10) || (%material.volume = 0)) then evalmath reqd.order ceiling(((%order.quantity*%volume) - %material.volume)/10)
-			else evalmath reqd.order %order.quantity-%bigenough
-			}
+		if "%work.material" = "bronze" then evalmath reqd.order ceiling((((%order.quantity-%bigenough)*%volume) - %material.volume)/5)
+			#{
+			#if ((%volume > 5) || (%material.volume = 0)) then evalmath reqd.order ceiling(((%order.quantity*%volume) - %material.volume)/5)
+			#else evalmath reqd.order %order.quantity-%bigenough
+			#}
+		if "%work.material" = "steel" then evalmath reqd.order ceiling((((%order.quantity-%bigenough)*%volume) - %material.volume)/10)
+			#{
+			#if ((%volume > 10) || (%material.volume = 0)) then evalmath reqd.order ceiling(((%order.quantity*%volume) - %material.volume)/10)
+			#else evalmath reqd.order %order.quantity-%bigenough
+			#}
 		var main.storage $MC_FORGING.STORAGE
 		var order.type ingot
 		goto purchase.material
@@ -1875,8 +1875,8 @@ first.order:
         math reqd.order subtract 1
         gosub verb put my %order.type in my %main.storage
 		math %order.pref.item.count add 1
-		if "%material.type" = "bronze" then math material.volume add 5
-		if "%material.type" = "steel" then math material.volume add 10
+		if "%work.material" = "bronze" then math material.volume add 5
+		if "%work.material" = "steel" then math material.volume add 10
         if %reqd.order < 1 then return
         goto first.order
         }
