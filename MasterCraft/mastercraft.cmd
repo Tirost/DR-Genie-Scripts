@@ -1003,7 +1003,8 @@ purchase.assemble:
 
 purchase.assemble2:
 	if "%assemble2" = "NULL" then return
-	if $roomid != $supply.room then 
+	if (matchre("%discipline", "weapon|armor|blacksmith") && matchre("%assemble", "strips|backing|backing|padding|hilt|haft|cord|pole|handle|boss") && ($roomid != $part.room)) then gosub automove $part.room
+	elseif $roomid != $supply.room then 
 		{
 		if "%assemble2" = "mechanism" && $roomid != $ingot.buy then gosub automove $ingot.buy
 		if "%assemble2" != "mechanism" then gosub automove $supply.room
@@ -1030,7 +1031,7 @@ purchase.assemble2:
 	math asmCount2 subtract 1
 	pause .2
 	if "%assemble2" != "mechanism" then gosub verb put my %assemble2 in my %main.storage
-	if "%assemble2" = mechanism" then gosub verb put my ingot in my %main.storage
+	if "%assemble2" = "mechanism" then gosub verb put my ingot in my %main.storage
 	if %asmCount2 = 0 then return
 	gosub purchase.assemble2
 	return
