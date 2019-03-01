@@ -672,7 +672,7 @@ calc.material:
 		if matchre("%full.order.noun", "some limb salve|some limb ungent") then var herb1 jadice 
 		if matchre("%full.order.noun", "a neck potion|some neck tonic") then var herb1 riolur
 		if matchre("%full.order.noun", "a chest potion|some chest tonic") then var herb1 root
-		if matchre("%full.order.noun", "a back potion|some back tonic") then var herb1 junliar
+		if matchre("%full.order.noun", "a back potion|some back tonic") then var herb1 junilar
 		if matchre("%full.order.noun", "an eye potion|some eye potion") then var herb1 aevaes
 		if matchre("%full.order.noun", "some face ointment|some face poultices") then var herb1 pollen
 		if matchre("%full.order.noun", "some body ointment|some body poultices") then var herb1 genich
@@ -984,6 +984,7 @@ purchase.assemble:
 	if "%assemble" = "NULL" then return
 	if matchre("%discipline", "weapon|armor|blacksmith") && matchre("%assemble", "strips|backing|backing|padding|hilt|haft|cord|pole|handle|boss") && $roomid != $part.room then gosub automove $part.room
 	else if $roomid != $supply.room then gosub automove $supply.room
+	purchase.assemble_1:
 	if "%discipline" = "tailor" then
 	{
 				action (order) on
@@ -998,8 +999,7 @@ purchase.assemble:
 	pause .2
 	gosub verb put my %assemble in my %main.storage
 	if %asmCount1 = 0 then return
-	gosub purchase.assemble
-	return
+	goto purchase.assemble_1
 
 purchase.assemble2:
 	if "%assemble2" = "NULL" then return
@@ -1009,6 +1009,7 @@ purchase.assemble2:
 		if "%assemble2" = "mechanism" && $roomid != $ingot.buy then gosub automove $ingot.buy
 		if "%assemble2" != "mechanism" then gosub automove $supply.room
 		}
+	purchase.assemble2_1:
 	if matchre("%discipline", "tailor|tinkering") then
 	{
 		if "%discipline" = "tailor" then
@@ -1033,8 +1034,7 @@ purchase.assemble2:
 	if "%assemble2" != "mechanism" then gosub verb put my %assemble2 in my %main.storage
 	if "%assemble2" = "mechanism" then gosub verb put my ingot in my %main.storage
 	if %asmCount2 = 0 then return
-	gosub purchase.assemble2
-	return
+	goto purchase.assemble2_1
 
 purchase:
 	var purchase $0
@@ -1441,6 +1441,7 @@ combine:
     if %%order.pref.item.count = 1 then goto combine.end
     gosub verb get %combine.temp from %combine.storage
     send combine
+	pause 1
     math %order.pref.item.count subtract 1
 	if !matchre("$lefthand|$righthand", "Empty") then goto combine.end
 	pause 0.5
@@ -1828,7 +1829,7 @@ lack.material:
 		if "%order.type" = "nilos" then var order.num 6
 		if "%order.type" = "georin" then var order.num 7
 		if "%order.type" = "riolur" then var order.num 8
-		if "%order.type" = "junliar" then var order.num 9
+		if "%order.type" = "junilar" then var order.num 9
 		if "%order.type" = "aevaes" then var order.num 10
 		if "%order.type" = "genich" then var order.num 11
 		if "%order.type" = "ojhenik" then var order.num 12
@@ -1864,8 +1865,7 @@ first.order:
 			if matchre("%order.type", "lumber") then math material.volume add 5
 			if matchre("%order.type", "leather|cloth|stack") then math material.volume add 10
 			if matchre("%order.type", "yarn") then math material.volume add 100
-			if (("%discipline" = "remed") && (!matchre("order.type", "qun pollen|ithor"))) then math %herb1.material.volume add 25
-			else math herb1.material.volume add 4
+			if ("%discipline" = "remed") then math %herb1.material.volume add 25
 			if %reqd.order < 1 then return
             goto first.order
             }
