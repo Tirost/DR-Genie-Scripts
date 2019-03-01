@@ -184,17 +184,21 @@ location.vars:
 	 var LPF.master.room 248|238|239|240|241|242|243|244|245|246|247|253|252
 	 var LPF.work.room 251|250|249
 	 var LPF.grind.room 252|253|247
-	#Ratha Forging
-	 var RF.room.list 818|819|820|821|822|823|824|825|826|827|828|829|830|831|832
-	 var RF.master.room 819|820|821|822|823|824|825|826|827|828|829|830|831|832
-	 var RF.work.room 830|831|832
-	 var RF.grind.room 821|822|823
-	#Ratha Outfitting
-	var RO.room.list 850|851|852|846|843|845|847|848|849|844|841|839|840|842
-	var RO.master.room 844|841|839|840|842
-	var RO.work.room 845|846
-	var RO.wheel.room 847|848|849
-	var RO.loom.room 850|851|852
+    #Ratha Forging
+     var RF.room.list 818|819|820|821|822|823|824|825|826|827|828|829|830|831|832
+     var RF.master.room 819|820|821|822|823|824|825|826|827|828|829|830|831|832
+     var RF.work.room 830|831|832
+     var RF.grind.room 821|822|823
+    #Ratha Outfitting
+    var RO.room.list 850|851|852|846|843|845|847|848|849|844|841|839|840|842
+    var RO.master.room 844|841|839|840|842|843|845|846
+    var RO.work.room 845|846
+    var RO.wheel.room 847|848|849
+    var RO.loom.room 850|851|852
+    #Ratha Engineering
+     var RE.room.list 853|854|855|856|857|858|859|860|861|862
+     var RE.master.room 853|854|855|856|857|858|859
+     var RE.work.room 860|861|862
 	#Shard Forging
 	 var SF.room.list 644|661|645|648|648|649|650|651|652|653|654|655|656|657|658|659|660|646
 	 var SF.master.room 644|645|649|650|653|654|655|658|646|661
@@ -243,6 +247,8 @@ location.vars:
 	 var crossing.repair Rangu
 	 var haven.repair.room 398
 	 var haven.repair clerk
+	 var ratha.repair.room 854
+     var ratha.repair Glarstan
 
 	 var Master.Found 0
 	 action instant var Master.Found 1 when ^Heavily muscled for an Elf, Fereldrin|^Yalda is a plump Dwarf|^Standing at an imposing height, the Gor'Tog surveys |^Serric is a muscular Human|^Juln is a muscular Dwarf|^Hagim is slight Gnome man|^Paarupensteen is a balding plump Halfling|^Milline is a tall Elothean woman|^Talia is a honey-brown haired Human|^This well-muscled Elf stands taller than 
@@ -262,6 +268,7 @@ check.location:
 	if $zoneid = 1 && matchre("%CA.room.list", "$roomid") then var society Crossing.Alchemy
 	if $zoneid = 90 && matchre("%RF.room.list", "$roomid") then var society Ratha.Forging
 	if $zoneid = 90 && matchre("%RO.room.list", "$roomid") then var society Ratha.Outfitting
+	if $zoneid = 90 && matchre("%RE.room.list", "$roomid") then var society Ratha.Engineering
 	if $zoneid = 67 && matchre("%SF.room.list", "$roomid") then var society Shard.Forging
 	if $zoneid = 67 && matchre("%SA.room.list", "$roomid") then var society Shard.Alchemy
 	if $zoneid = 116 && matchre("%HibF.room.list", "$roomid") then var society Hib.Forging
@@ -414,6 +421,9 @@ put #tvar deed.room 829
 put #tvar supply.room 829
 put #tvar part.room 819
 put #tvar tool.room 819
+put #tvar smelt.room 826|827|828
+put #tvar repair.room %ratha.repair.room
+put #tvar repair.clerk %ratha.repair
 var society.type Forging
 return
 
@@ -424,7 +434,22 @@ put #tvar work.room %RO.work.room
 put #tvar supply.room 844
 put #tvar part.room 844
 put #tvar tool.room 842
+put #tvar repair.room %ratha.repair.room
+put #tvar repair.clerk %ratha.repair
 var society.type Outfitting
+return
+
+Ratha.Engineering:
+var master Master
+put #tvar master.room %RE.master.room
+put #tvar work.room %RE.work.room
+put #tvar supply.room 858
+put #tvar part.room 857
+put #tvar tool.room 857
+put #tvar ingot.buy 829
+put #tvar repair.room %ratha.repair.room
+var #tvar repair.clerk %ratha.repair
+var society.type Engineering
 return
 
 Shard.Forging:
