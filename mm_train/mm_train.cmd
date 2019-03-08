@@ -1,4 +1,4 @@
-﻿#Moon Mage training script. - Genie3 v6.01 BETA
+#Moon Mage training script. - Genie3 v6.02
 ##Change log:
 ## v1.0 : Initial release
 ## v1.x : Archived v1.1 - v1.6
@@ -16,6 +16,8 @@
 ##			  Relocated all action definitions to the top of the script for
 ##			  consistency.
 ## v6.01  Fixed an issue with the obs.count variable not getting the correct value.
+## v6.02  Fixed an issue with certain descriptions not showing. Also automated toggle
+##				for Time Tracker Plugin and removed option for the Prediciton Interpreter.
 ##
 
 include js_arrays.js
@@ -454,6 +456,7 @@ Astro.Begin:
 
 Pred.Day:
 	eval obs.count count("%obs.day","|")
+	var obs.levels %levels.day
 	if %astro.count > %obs.count then var astro.count 0
 	eval this.level element("%obs.levels", "%astro.count")
 	if %circle < %this.level then
@@ -515,7 +518,7 @@ Obs:
 	match get.tele is too faint for you to pick out with your naked eye.
 	matchre predict You learned something useful|predict from your observation|Although you don't gain a complete view of the future|Too many futures cloud your mind - you learn nothing|you still learned from your observation|you still learned
 	matchre obs You see nothing regarding the future
-	matchre next.obs You learn nothing of the future
+	matchre next.obs You learn nothing of the future|too close to the sun
 	match astro.begin is foiled by
 	matchre return You are unable to make use of this latest observation|fruitless|I could not find what you are referring to|no telescope
 	if %need.tele = 1 then
@@ -751,8 +754,8 @@ Predict_Wait:
 		}
 	if matchre("$MM_WAIT_MODE", "juggle") then
 		{
-		if $righthand = Empty then send get my %jugglie
-		send juggle my %jugglie
+		if $righthand = Empty then send get my $MM_JUGGLIE
+		send juggle my $MM_JUGGLIE
 		pause
 		pause 0.5
 		goto Predict_Wait
@@ -969,8 +972,9 @@ Setup:
 		put #var MM_TRAIN_JUGGLE ON
 		put #var MM_USE_HARNESS ON
 		put #var MM_USE_CAMBRINTH ON
-		put #var MM_TT_PLUGIN OFF
-		
+		if def("Time.isDay") then put #var MM_TT_PLUGIN ON
+		else put #var MM_TT_PLUGIN OFF		
+
 		##Moonmage Triggers for Moon states.
 		put #trigger {^Katamba is a.+moon and is not visible\.} {#var moonKatamba Down;#parse @Update Moons}
 		put #trigger {^Katamba is nowhere to be seen\.} {#var moonKatamba Down;#parse @Update Moons}
@@ -1010,191 +1014,202 @@ Setup:
 		put #trigger {by two miniature luminescent versions of the moons Yavash and Katamba\.} {#var moonYavash Up;#var moonKatamba Up;#var moonXibar Down;#parse @Update Moons}
 		put #trigger {by two miniature luminescent versions of the moons Yavash and Xibar\.} {#var moonXibar Up;#var moonYavash Up;#var moonKatamba Down;#parse @Update Moons}
 		}
-	var MAIN Magic|Astrology|Extra|Done
-	var ASTROLOGY Train Astrology|CV Prep|PG Prep|Divination Tool|Deal Times|TT Plugin|Wait Mode|Wait Script|Back
-	var MAGIC Train Magic|Warding Spell|Warding Prep|Augmentation Spell|Augmentation Prep|Utility Spell|Utility Prep|Harness|Use Harness|Cambrinth|Charge|Use Cambrinth|Back
-	var EXTRA Train Mech|Mech Material|Train Forage|Collect Item|Train Juggle|Jugglie|Back
-	var TOGGLES TRAIN|USE|PLUGIN
-	var MENU_WINDOW Moonmage Training Menu
-	var CV_PREP_DESC This is the mana amount to prepare the Clear Vision Spell during the Astrology section.
-	var PG_PREP_DESC This is the mana amount to prepare the Piercing Gaze Spell during the Astrology section.
-	var DIVINATION_TOOL_DESC This is the method used to make predicitons. The standard form is 'visions'. (Please note that Bowls and Tokka Decks are still currently disabled for the 3.0 update.)
-	var DEAL_TIMES_DESC This is how many cards to deal from your Tokka Deck for predicitons. Must be between 3 and 6.
-	var TT_PLUGIN_DESC This toggles the script to utilize the Time and Moon Tracker plugin. Leave this to OFF if you do not have this plugin.
-	var WAIT_MODE_DESC This sets an option to perform other various tasks during the cooldown on observations. The current options are: juggle (practices with juggling), sigil (studies sigils in sigilbooks- Must have a book with sigils scribed!) and script (must set the 'Wait Script' variable!).
-	var WAIT_SCRIPT_DESC This is the name (note the filename ONLY) of the script to run during the observation cooldown.
-	var WARDING_SPELL_DESC This spell will be used to train Warding. Possible spells are: Psychic Shield [psy], Cage of Light [col]
-	var WARDING_PREP_DESC This is the mana amount to prepare the Warding Spell during the Magic section.
-	var AUGMENTATION_SPELL_DESC This spell will be used to train Augmentation. Possible spells are: Clear Vision [cv], Piercing Gaze [pg], Aura Sight [aus], Tenebrous Sense [ts], Shadows, Seer's Sense [seer]
-	var AUGMENTATION_PREP_DESC This is the mana amount to prepare the Augmentation Spell during the Magic section.
-	var UTILITY_SPELL_DESC This spell will be used to train Utility. Possible spells are: Refractive Field [rf], Steps of Vaun [sov], Shadowing, Shadow Servant [ss], Contingency, Seer's Sense [seer]
-	var UTILITY_PREP_DESC This is the mana amount to prepare the Utility Spell during the Magic section.
-	var HARNESS_DESC This is the mana amount to harness before casting spells during the Magic section.
-	var USE_HARNESS_DESC This toggles whether or not to utilize harnessed mana during the Magic section.
-	var CAMBRINTH_DESC This is the noun of the cambrinth item you wish to use during the Magic section.
-	var CHARGE_DESC This is the amount of mana to charge your cambrith item with during the Magic section.
-	var USE_CAMBRINTH_DESC This toggles whether or not to utilize cambrinth during the Magic section.
-	var TRAIN_MECH_DESC This toggles whether or not to train Mechanical Lore while other experience drains.
-	var MECH_MATERIAL_DESC This is the material utilize for braiding during Mechanical Lore training, ie.: grass, vines, etc.
-	var TRAIN_FORAGE_DESC This toggles whether to train Outdoorsmanship through collecting while other experience drains.
-	var COLLECT_ITEM_DESC This is the material collected during Outdoorsmanship training. ie.: rock, branch, vine, etc.
-	var TRAIN_JUGGLE_DESC This toggles whether to train Perception through juggline while other experience drains.
-	var JUGGLIE_DESC This is the noun of the juggle item you wish to use to train Perception.
-	put #var selection MAIN
-	
-	pause 1
-	echo
-	echo ################
-	put #echo cyan All typed user input MUST be preceeded by tilde (~) character.
-	echo ################
+		
+		
+		#Menus
+		var MAIN Magic|Astrology|Extra|Done
+		var ASTROLOGY Train Astrology|CV Prep|PG Prep|Divination Tool|Deal Times|Wait Mode|Wait Script|Back
+		var MAGIC Train Magic|Warding Spell|Warding Prep|Augmentation Spell|Augmentation Prep|Utility Spell|Utility Prep|Harness|Use Harness|Cambrinth|Charge|Use Cambrinth|Back
+		var EXTRA Train Mech|Mech Material|Train Forage|Collect Item|Train Juggle|Jugglie|Back
+		var TOGGLES TRAIN|USE
+		
+		#Menu Window
+		var MENU_WINDOW Moonmage Training Menu
+		
+		#Description Variables
+		##Magic Variable Descriptions		
+		var TRAIN_MAGIC_DESC This toggles whether or not to train Magic skills.
+		var WARDING_SPELL_DESC This spell will be used to train Warding. Possible spells are: Psychic Shield [psy], Cage of Light [col]
+		var WARDING_PREP_DESC This is the mana amount to prepare the Warding Spell during the Magic section.
+		var AUGMENTATION_SPELL_DESC This spell will be used to train Augmentation. Possible spells are: Clear Vision [cv], Piercing Gaze [pg], Aura Sight [aus], Tenebrous Sense [ts], Shadows, Seer's Sense [seer]
+		var AUGMENTATION_PREP_DESC This is the mana amount to prepare the Augmentation Spell during the Magic section.
+		var UTILITY_SPELL_DESC This spell will be used to train Utility. Possible spells are: Refractive Field [rf], Steps of Vaun [sov], Shadowing, Shadow Servant [ss], Contingency, Seer's Sense [seer]
+		var UTILITY_PREP_DESC This is the mana amount to prepare the Utility Spell during the Magic section.
+		var HARNESS_DESC This is the mana amount to harness before casting spells during the Magic section.
+		var USE_HARNESS_DESC This toggles whether or not to utilize harnessed mana during the Magic section.
+		var CAMBRINTH_DESC This is the noun of the cambrinth item you wish to use during the Magic section.
+		var CHARGE_DESC This is the amount of mana to charge your cambrith item with during the Magic section.
+		var USE_CAMBRINTH_DESC This toggles whether or not to utilize cambrinth during the Magic section.
+
+		##Astrology Variables Descriptions
+		var CV_PREP_DESC This is the mana amount to prepare the Clear Vision Spell during the Astrology section.
+		var PG_PREP_DESC This is the mana amount to prepare the Piercing Gaze Spell during the Astrology section.
+		var DIVINATION_TOOL_DESC This is the method used to make predicitons. The standard form is 'visions'.
+		var DEAL_TIMES_DESC This is how many cards to deal from your Tokka Deck for predicitons. Must be between 3 and 6.
+		var WAIT_MODE_DESC This sets an option to perform other various tasks during the cooldown on observations. The current options are: juggle (practices with juggling), sigil (studies sigils in sigilbooks- Must have a book with sigils scribed!) and script (must set the 'Wait Script' variable!).
+		var WAIT_SCRIPT_DESC This is the name (note the filename ONLY) of the script to run during the observation cooldown.
+		
+		##Misc Variables Descriptions
+		var TRAIN_MECH_DESC This toggles whether or not to train Mechanical Lore while other experience drains.
+		var MECH_MATERIAL_DESC This is the material utilize for braiding during Mechanical Lore training, ie.: grass, vines, etc.
+		var TRAIN_FORAGE_DESC This toggles whether to train Outdoorsmanship through collecting while other experience drains.
+		var COLLECT_ITEM_DESC This is the material collected during Outdoorsmanship training. ie.: rock, branch, vine, etc.
+		var TRAIN_JUGGLE_DESC This toggles whether to train Perception through juggline while other experience drains.
+		var JUGGLIE_DESC This is the noun of the juggle item you wish to use to train Perception.
+		
+		put #tvar selection MAIN
+		
+		pause 1
+		echo
+		echo ################
+		put #echo cyan All typed user input MUST be preceeded by tilde (~) character.
+		echo ################
 
 MenuDisplay:
-	var last.selection $selection
-	counter set 0
-	pause 0.3
-	gosub Menu.Build "%$selection" "selection" "continue.script" "" "%MENU_WINDOW"
-	waitforre continue.script
-	put #var selection {#eval toupper("$selection")}
-	if $selection = BACK then
-		{
-		put #var selection MAIN
-		goto MenuDisplay
-		}
-	if $selection = DONE then gosub CheckVars "%MAGIC|%ASTROLOGY|%EXTRA"
-	if ($selection = MAGIC || $selection = ASTROLOGY || $selection = EXTRA) then goto MenuDisplay
-	if $selection = DIVINATION TOOL then
-		{
-		send #echo ">%this.window" cyan Possible values for $selection are:
-		send #echo ">%this.window" cyan prism, bowl, mirror, deck, bones, chart, visions
-		}
-	put #var selection {#eval replacere("$selection", " ", "_")}
-	gosub GlobalSet "%$selection_DESC"
-
-CheckVars:
-	var SETTABLES $1
-	eval SETTABLES toupper("%SETTABLES")
-	eval SETTABLES replacere("%SETTABLES", " ", "_")
-	eval SET_AMOUNT count("%SETTABLES", "|")
-	var UNSET
-	if %c > %SET_AMOUNT then
-		{
-		if (count("%UNSET", "|") > 0) then
+		var last.selection $selection
+		counter set 0
+		pause 0.3
+		gosub Menu.Build "%$selection" "selection" "continue.script" "%MENU_WINDOW"
+		waitforre continue.script
+		put #var selection {#eval toupper("$selection")}
+		if $selection = BACK then
 			{
-			counter set 0
-			eval UNSET replacere("%UNSET", "^|", "")
-			eval UNSET_AMOUNT count("%UNSET", "|")
-			eval UNSET replacere("%UNSET", "_", " ")
-			put #echo cyan You are missing the following Globals. Please set them before continuing!
-			goto Missing.Globals
+			put #tvar selection MAIN
+			goto MenuDisplay
 			}
-		put #var MM_IS_SETUP 1
-		put #window remove "Moonmage Training Menu"
-		put #echo cyan Script setup complete. Run default values with the command '.mm_train'
-		put #echo cyan To run the setup again, run the command '.mm_train setup'
-		exit
-		}
-	goto CheckGlobal
+		if $selection = DONE then gosub CheckVars "%MAGIC|%ASTROLOGY|%EXTRA"
+		if ($selection = MAGIC || $selection = ASTROLOGY || $selection = EXTRA) then goto MenuDisplay
+		if $selection = DIVINATION TOOL then
+			{
+			send #echo ">%this.window" cyan Possible values for $selection are:
+			send #echo ">%this.window" cyan prism, bowl, mirror, deck, bones, chart, visions
+			}
+		put #var selection {#eval replacere("$selection", " ", "_")}
+		gosub GlobalSet "%$selection_DESC"
+		
+CheckVars:
+		var SETTABLES $1
+		eval SETTABLES toupper("%SETTABLES")
+		eval SETTABLES replacere("%SETTABLES", " ", "_")
+		eval SET_AMOUNT count("%SETTABLES", "|")
+		var UNSET
+	  if %c > %SET_AMOUNT then
+	  	{
+	  	if (count("%UNSET", "|") > 0) then
+	  		{
+	  		counter set 0
+	  		eval UNSET replacere("%UNSET", "^|", "")
+	  		eval UNSET_AMOUNT count("%UNSET", "|")
+	  		eval UNSET replacere("%UNSET", "_", " ")
+	  		put #echo cyan You are missing the following Globals. Please set them before continuing!
+	  		goto Missing.Globals
+	  		}
+			put #var MM_IS_SETUP 1
+			put #window remove "Moonmage Training Menu"
+			put #echo cyan Script setup complete. Run default values with the command '.mm_train'
+			put #echo cyan To run the setup again, run the command '.mm_train setup'
+			if matchre("$scriptlist", "mm_train.cmd") then put #script resume mm_train
+			exit
+			}
+			goto CheckGlobal
 
 CheckGlobal:
-	if !(def("MM_%SETTABLES(%c)") || (%SETTABLES(%c) = BACK)) then var UNSET %UNSET|%SETTABLES(%c)
-	counter add 1
-	if %c > %SET_AMOUNT then goto CheckVars
-	goto CheckGlobal
+		if !(def("MM_%SETTABLES(%c)") || (%SETTABLES(%c) = BACK)) then var UNSET %UNSET|%SETTABLES(%c)
+		counter add 1
+		if %c > %SET_AMOUNT then goto CheckVars
+		goto CheckGlobal
 
 Missing.Globals:
-	put #echo lime %UNSET(%c)
-	counter add 1
-	if %c < %UNSET_AMOUNT then goto Missing.Globals
-	put #var selection MAIN
-	goto MenuDisplay
-
-#############################
-##     Script Utilities    ##
-#############################
-
+		put #echo lime %UNSET(%c)
+		counter add 1
+		if %c < %UNSET_AMOUNT then goto Missing.Globals
+		put #tvar selection MAIN
+		goto MenuDisplay
+		
 exit
 
 Menu.Build:
-	##Menu Building Routine
-	##Function - Builds a numbered menu of options in link format that saves option information into a variable.
-	##pre - First parameter must be an array of the option names/values. Second parameter is the name of the
-	##	target global variable to store the result of the link click. Third parameyer is a string
-	##	that will be parsed to continue the script after the menu item has been selected. Fourth parameter
-	##	is a string or array of items that are exceptions to be excluded from the menu list. Fifth parameter is a
-	##	window name to echo output to (leave out to echo to Game window).
-	##post - Value of clicked link is stored in target global variable.
-	
-	action (input) var input $1;put #parse input.done when ~(.*)
-	
-	if !%c then
-		{		
-		var this.array $1
-		var target.variable $2
-		var script.trigger $3
-		var exceptions $4
-		if !($5 = "") then 
-			{
-			var this.window $5
-			put #window add "%this.window"
-			put #window open "%this.window"
-			put #clear %this.window
-			send #echo ">%this.window" cyan $selection Menu
-			send #echo ">%this.window"
-			}
-		else var this.window Game
-		var this.option 0
-		eval array.length count("%this.array","|")
-		}
-	if %c > %array.length then
-		{
-		var this.option 0
-		counter set 0
-		return
-		}
-	var this.choice %this.array(%c)
-	if matchre("%exceptions","%this.choice") then
-		{
+##Menu Building Routine
+##Function - Builds a numbered menu of options in link format that saves option information into a variable.
+##pre - First parameter must be an array of the option names/values. Second parameter is the name of the
+##	target global variable to store the result of the link click. Third parameyer is a string
+##	that will be parsed to continue the script after the menu item has been selected. Fourth parameter is a
+##  window name to echo output to (leave out to echo to Game window).
+##	Fifth parameter is a string or array of items that are exceptions to be excluded from the menu list.
+##	
+##post - Value of clicked link is stored in target global variable.
+
+		action (input) var input $1;put #parse input.done when ~(.*)
+
+		if !%c then
+				{		
+				var this.array $1
+				var target.variable $2
+				var script.trigger $3
+				if $4 != "" then 
+						{
+						var this.window $4
+						put #window add "%this.window"
+						put #window open "%this.window"
+						put #clear %this.window
+						send #echo ">%this.window" cyan $selection Menu
+						send #echo ">%this.window"
+						}
+				else var this.window Game
+				if $5 != "" then var exceptions $5
+				var this.option 0
+				eval array.length count("%this.array","|")
+				}
+		if %c > %array.length then
+				{
+				var this.option 0
+				counter set 0
+				return
+				}
+		var this.choice %this.array(%c)
+		if matchre("%exceptions","%this.choice") then
+				{
+				counter add 1
+				goto menu.build
+				}
 		counter add 1
+		math this.option add 1
+		send #link ">%this.window" "%this.option. - %this.choice" "#var %target.variable %this.choice;#parse %script.trigger"
 		goto menu.build
-		}
-	counter add 1
-	math this.option add 1
-	send #link ">%this.window" "%this.option. - %this.choice" "#var %target.variable %this.choice;#parse %script.trigger"
-	goto menu.build
-
+		
 GlobalSet:
-	put #clear "%this.window"
-	var extra_message $1
-	action (input) on
-	if matchre("$selection", "%TOGGLES") then goto TOGGLE
-	if !(%extra_message = "") then put #echo ">%this.window" cyan %extra_message
-	put #echo ">%this.window" cyan Enter value for $selection:
-	waitforre input.done
-	put #var MM_$selection %input
-	action (input) off
-	put #clear "%this.window"
-	put #echo ">%this.window" cyan $selection has been set to: %input
-	put #echo ">%this.window"
-	send #link ">%this.window" "Click to continue..." "#parse %script.trigger"
-	waitforre %script.trigger
-	put #var selection %last.selection
-	goto MenuDisplay
-
+		put #clear "%this.window"
+		var extra_message $1
+		action (input) on
+		if matchre("$selection", "%TOGGLES") then goto TOGGLE
+		if !(%extra_message = "") then put #echo ">%this.window" cyan %extra_message
+		put #echo ">%this.window" cyan Enter value for $selection:
+		waitforre input.done
+		put #var MM_$selection %input
+		action (input) off
+		put #clear "%this.window"
+		put #echo ">%this.window" cyan $selection has been set to: %input
+		put #echo ">%this.window"
+		send #link ">%this.window" "Click to continue..." "#parse %script.trigger"
+		waitforre %script.trigger
+		put #var selection %last.selection
+		goto MenuDisplay
+		
 Toggle:
-	if $MM_$selection = ON then var TOGGLE_TO OFF
-	else var TOGGLE_TO ON
-	action (input) on
-	pause 0.3
-	send #clear "%this.window"
-	pause 0.3
-	if !(%extra_message = "") then put #echo ">%this.window" cyan %extra_message
-	send #echo ">%this.window" cyan Variable $selection is currently set to $MM_$selection.
-	send #echo ">%this.window" cyan Do you want to change it to %TOGGLE_TO?
-	send #echo ">%this.window"
-	send #link ">%this.window" "Yes" "#echo $selection has been set to %TOGGLE_TO;#var MM_$selection %TOGGLE_TO;#var selection %last.selection;#parse %script.trigger"
-	send #link ">%this.window" "No" "#echo No changes made, returning to menu.;#var selection %last.selection;#parse %script.trigger"
-	waitforre %script.trigger
-	send #clear "%this.window"
-	send #link ">%this.window" "Click to continue..." "#parse %script.trigger" 
-	waitforre %script.trigger
-	goto MenuDisplay
+		if $MM_$selection = ON then var TOGGLE_TO OFF
+		else var TOGGLE_TO ON
+		action (input) on
+		pause 0.3
+		send #clear "%this.window"
+		pause 0.3
+		if !(%extra_message = "") then put #echo ">%this.window" cyan %extra_message
+		send #echo ">%this.window" cyan Variable $selection is currently set to $MM_$selection.
+		send #echo ">%this.window" cyan Do you want to change it to %TOGGLE_TO?
+		send #echo ">%this.window"
+		send #link ">%this.window" "Yes" "#clear >%this.window;#echo $selection has been set to %TOGGLE_TO;#var MM_$selection %TOGGLE_TO;#var selection %last.selection;#parse %script.trigger"
+		send #link ">%this.window" "No" "#clear >%this.window;#echo No changes made, returning to menu.;#var selection %last.selection;#parse %script.trigger"
+		waitforre %script.trigger
+		put #clear "%this.window"
+		send #link ">%this.window" "Click to continue..." "#parse %script.trigger" 
+		waitforre %script.trigger
+		goto MenuDisplay
