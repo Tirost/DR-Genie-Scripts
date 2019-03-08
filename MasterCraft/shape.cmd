@@ -120,7 +120,7 @@ first.carve:
 			 gosub ToolStow
 			 gosub ToolGet
 			}
-			 matchre excess You carefully separate out the excess material and place it on the ground.
+			 matchre excess You carefully separate out the excess material and place it (on the ground|at your feet).
 			 matchre work Roundtime: \d+
 			 send scrape my lumber with %Action
 			matchwait
