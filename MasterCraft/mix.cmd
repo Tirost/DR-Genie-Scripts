@@ -10,7 +10,7 @@ var alcohol.gone 0
 var water.gone 0
 var catalyst.gone 0
 var special NULL
-#include mc_include.cmd
+include mc_include.cmd
 
 action var tool mix when appears free of defects that would
 action var tool mix when You do not see anything that would prevent
@@ -57,8 +57,8 @@ if matchre("$MC.order.noun", "%solid") then
 unfinished:
 	if !matchre("$righthand|$lefthand", "%bowl") then 
 		{
-		gosub verb get my %bowl
-		if matchre("$lefthand", "%bowl") then gosub verb swap
+		gosub GET my %bowl
+		if matchre("$lefthand", "%bowl") then gosub PUT swap
 		}
 	send look in my %bowl
 	waitforre (^In the (.*)\.$|^I could not find|^There is nothing in there)
@@ -67,28 +67,36 @@ unfinished:
 	{
 		send analyze my $MC.order.noun
 		waitforre ^You.*analyze
-		if !contains("$righthandnoun", "%bowl") then send swap
+		if !contains("$righthandnoun", "%bowl") then gosub PUT swap
 		pause 1
 		goto work
 	}
 
 first.mix:
-	if !matchre("%bowl", "($righthand|$lefthand)") then
+	if !matchre("$righthand|$lefthand", "%bowl") then
 		{
-		gosub verb put $1 in %alchemy.storage
-		gosub verb get my %bowl
-		if matchre("$lefthand", "%bowl") then gosub verb swap
+		var temp $1
+		if matchre("$1", "mortar|pestle|bowl|sieve|stick" then PUT_IT %temp in %tool.storage
+		else gosub PUT_IT %temp in %alchemy.storage
+		gosub GET my %bowl
+		if matchre("$lefthand", "%bowl") then gosub PUT swap
 		}
-	if !matchre("%herb1", "($righthand|$lefthand)") then
+	if !matchre("$righthand|$lefthand", "%herb1") then
 		{
-		gosub verb put $1 in %alchemy.storage
-		gosub verb get my %herb1
+		var temp $1
+		if matchre("$1", "mortar|pestle|bowl|sieve|stick" then PUT_IT %temp in %tool.storage
+		else gosub PUT_IT %temp in %alchemy.storage
+		gosub GET my %herb1
 		}
-	gosub verb put my %herb1 in my %bowl
+	gosub PUT_IT my %herb1 in my %bowl
 	pause 0.5
-	if "$lefthand" != "Empty" then gosub verb put $lefthandnoun in %alchemy.storage
+	if "$lefthand" != "Empty" then 
+		{
+		if matchre("mortar|pestle|bowl|sieve|stick", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+		else gosub PUT_IT $lefthandnoun in %alchemy.storage
+		}
 	pause 0.5
-	gosub verb get my %mixer
+	gosub GET my %mixer
 	pause 0.5
 	if "%tool.mix" = "crush" then send %tool.mix my %herb1 in my %bowl with my %mixer
 	else send %tool.mix my %bowl with my %mixer
@@ -108,8 +116,12 @@ mix:
 	gosub specialcheck
 	if !contains("$lefthandnoun", "%mixer") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my %alchemy.storage
-		gosub verb get my %mixer
+		if "$lefthand" != "Empty" then
+			{
+			if matchre("mortar|pestle|bowl|sieve|stick", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %alchemy.storage
+			}
+		gosub GET my %mixer
 	}
 	if "%tool.mix" = "crush" then send %tool.mix my $MC.order.noun in my %bowl with my %mixer
 	else send %tool.mix my %bowl with my %mixer
@@ -121,8 +133,12 @@ sieve:
 	gosub specialcheck
 	if !contains("$lefthandnoun", "sieve") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my %alchemy.storage
-		gosub verb get my sieve
+		if "$lefthand" != "Empty" then
+			{
+			if matchre("mortar|pestle|bowl|sieve|stick", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %alchemy.storage
+			}
+		gosub GET my sieve
 	}
 	send push my $MC.order.noun with my sieve
 	pause 5
@@ -144,8 +160,12 @@ water:
 	if %water.gone = 1 then gosub new.tool
 	if !contains("$lefthandnoun", "water") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my %alchemy.storage
-		gosub verb get my water from my %alchemy.storage
+		if "$lefthand" != "Empty" then
+			{
+			if matchre("mortar|pestle|bowl|sieve|stick", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %alchemy.storage
+			}
+		gosub GET my water from my %alchemy.storage
 	}
 	var tool mix
 	send pour part water in my %bowl
@@ -157,8 +177,12 @@ alcohol:
 	if %alcohol.gone = 1 then gosub new.tool
 	if !contains("$lefthandnoun", "alcohol") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my %alchemy.storage
-		gosub verb get my alcohol from my %alchemy.storage
+		if "$lefthand" != "Empty" then
+			{
+			if matchre("mortar|pestle|bowl|sieve|stick", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %alchemy.storage
+			}
+		gosub GET my alcohol from my %alchemy.storage
 	}
 	send pour part alcohol in my %bowl
 	pause 0.5
@@ -169,8 +193,12 @@ catalyst:
 	if %catalyst.gone = 1 then gosub new.tool
 	if !contains("$lefthandnoun", "nugget") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my %alchemy.storage
-		gosub verb get my coal nugget from my %alchemy.storage
+		if "$lefthand" != "Empty" then
+			{
+			if matchre("mortar|pestle|bowl|sieve|stick", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %alchemy.storage
+			}
+		gosub GET my coal nugget from my %alchemy.storage
 	}
 	send put nugget in my %bowl
 	pause 0.5
@@ -180,8 +208,12 @@ catalyst:
 add.herb:
 	if !contains("$lefthandnoun", "%herb2") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my %alchemy.storage
-		gosub verb get my %herb2 from my %alchemy.storage
+		if "$lefthand" != "Empty" then
+			{
+			if matchre("mortar|pestle|bowl|sieve|stick", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %alchemy.storage
+			}
+		gosub GET my %herb2 from my %alchemy.storage
 	}
 	send put %herb2 in my %bowl
 	pause 0.5
@@ -205,43 +237,41 @@ if contains("$scriptlist", "mastercraft") then
 	if %water.gone = 1 then
 	{
 		gosub automove Alchemy suppl
-		if !("$righthand" = "Empty" || "$lefthand" = "Empty") then send put my %bowl in my %alchemy.storage
+		if !("$righthand" = "Empty" || "$lefthand" = "Empty") then send put my %bowl in my %tool.storage
 		action (order) on
-		send order
-		waitfor You see the following
+		pause 0.5
+		gosub ORDER
 		action (order) off
-		gosub purchase order %water.order
-		send put my water in my %alchemy.storage
-		if "$righthandnoun" != "%bowl" && "$lefthandnoun" != "%bowl" then send get my %bowl from my %alchemy.storage
+		gosub ORDER %water.order
+		gosub PUT_IT my water in my %alchemy.storage
+		if "$righthandnoun" != "%bowl" && "$lefthandnoun" != "%bowl" then send get my %bowl from my %tool.storage
 		pause .5
 		var water.gone 0
 	}
 	if %alcohol.gone = 1 then
 	{
 		gosub automove Alchemy suppl
-		if !("$righthand" = "Empty" || "$lefthand" = "Empty") then send put my %bowl in my %alchemy.storage
+		if !("$righthand" = "Empty" || "$lefthand" = "Empty") then send put my %bowl in my %tool.storage
 		action (order) on
 		pause 1
-		send order
-		waitfor You see the following
+		gosub ORDER
 		action (order) off
-		gosub purchase order %alcohol.order
-		send put my alcohol in my %alchemy.storage
-		if "$righthandnoun" != "%bowl" && "$lefthandnoun" != "%bowl" then send get my %bowl from my %alchemy.storage
+		gosub ORDER %alcohol.order
+		gosub PUT_IT my alcohol in my %alchemy.storage
+		if "$righthandnoun" != "%bowl" && "$lefthandnoun" != "%bowl" then send get my %bowl from my %tool.storage
 		var alcohol.gone 0
 	}
 	if %catalyst.gone = 1 then
 	{
 		gosub automove Forging suppl
-		if !("$righthand" = "Empty" || "$lefthand" = "Empty") then send put my %bowl in my %alchemy.storage
+		if !("$righthand" = "Empty" || "$lefthand" = "Empty") then send put my %bowl in my %tool.storage
 		action (order) on
 		pause 1
-		send order
-		waitfor You see the following
+		gosub ORDER
 		action (order) off
-		gosub purchase order %catalyst.order
-		gosub verb put my coal in my %alchemy.storage
-		if "$righthandnoun" != "%bowl" && "$lefthandnoun" != "%bowl" then send get my %bowl from my %alchemy.storage
+		gosub ORDER %catalyst.order
+		gosub PUT_IT my coal in my %alchemy.storage
+		if "$righthandnoun" != "%bowl" && "$lefthandnoun" != "%bowl" then send get my %bowl from my %tool.storage
 		var catalyst.gone 0
 	}
 	gosub automove %temp.room
@@ -257,18 +287,6 @@ put #parse MIX DONE
 put #parse ALCHEMY DONE
 exit
 } 
-
-purchase:
-	var purchase $0
-	goto purchase2
-purchase.p:
-    pause 0.5
-purchase2:
-		matchre purchase.p type ahead|...wait|Just order it again
-		matchre lack.coin you don't have enough coins|you don't have that much
-		matchre return pay the sales clerk|takes some coins from you
-		put %purchase
-    matchwait
 
 lack.coin:
 	if "%get.coin" = "off" then goto lack.coin.exit
@@ -297,14 +315,12 @@ Retry:
 	
 repeat:
 	math mix.repeat subtract 1
-	send put my $MC.order.noun in my %alchemy.storage
-	waitforre ^You put
-	send get my Remedies book
-	send study my book
+	gosub PUT_IT my $MC.order.noun in my %alchemy.storage
+	gosub GET my Remedies book
+	gosub STUDY study my book
 	waitforre Roundtime
-	send put my book in my %alchemy.storage
-	send get my %material
-	waitforre ^You get
+	gosub PUT_IT my book in my %alchemy.storage
+	gosub GET my %material
 	var tool mix
 	goto first.cut
 	
@@ -313,99 +329,35 @@ done:
 	if %water.gone = 1 then gosub new.tool
 	if %catalyst.gone = 1 then gosub new.tool
 	if %alcohol.gone = 1 then gosub new.tool
-	gosub verb put my $lefthandnoun in my %alchemy.storage
-	wait
-	pause 1
-	gosub verb get my $MC.order.noun from my %bowl
+	if "$lefthand" != "Empty" then
+			{
+			if matchre("mortar|pestle|bowl|sieve|stick", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %alchemy.storage
+			}
+	gosub GET my $MC.order.noun from my %bowl
 	if %mix.repeat > 1 then 
 		{
-		gosub verb put $MC.order.noun in %alchemy.storage 
+		gosub PUT_IT $MC.order.noun in %alchemy.storage 
 		goto repeat
 		}
-	gosub verb put my $righthandnoun in my %alchemy.storage
+	if "$righthand" != "Empty" then
+			{
+			if matchre("mortar|pestle|bowl|sieve|stick", "$righthandnoun") then gosub PUT_IT $righthandnoun in %tool.storage
+			else gosub PUT_IT $righthandnoun in %alchemy.storage
+			}
 	gosub countcheck
 	put #parse ALCHEMY DONE
 	exit
 	
-	include mc_include.cmd
-	
 countcheck:
 if $MC_NOWO then return
 action var temprem $1 when ^You count out (\d+) uses remaining\.
-gosub verb count my $MC.order.noun
+gosub PUT count my $MC.order.noun
 if %temprem > 5 then 
 	{
-	gosub verb mark my $MC.order.noun at 5
-	gosub verb break my $MC.order.noun
-	gosub verb empty left
-	gosub verb swap
+	gosub PUT mark my $MC.order.noun at 5
+	gosub PUT break my $MC.order.noun
+	gosub PUT empty left
+	gosub PUT swap
 	}
 return
-	
-
-blister cream 5 red flower, nemoih root, water, catalyst
-head salve 5 nemoih root, water, catalyst
-head ungent 5 nemoih root, water, catalyst
-moisturizing ointment 5 red flower, plovik leaves, alcohol, catalyst
-chest salve 5 plovik leaves, water, catalyst
-chest ungent 5 plovik leaves, water, catalyst
-itch salve 5 red flower, jadice flower, water, catalyst
-limb salve 5 jadice flower, water, catalyst
-limb ungent 5 jadice flower, water, catalyst
-lip balm 5 red flower, nilos grass, water, catalyst
-abdominal salve 5 nilos grass, water, catalyst
-abdominal ungent 5 nilos grass, water, catalyst
-neck salve 5 georin grass, water, catalyst
-neck ungent 5 georin grass, water, catalyst
-neck potion 5 riolur leaves, water, catalyst
-neck tonic 5 riolur leaves, water, catalyst
-back potion 5 junliar stem, water, catalyst
-back tonic 5 junliar stem, water, catalyst
-eye potion 5 aevaes leaves, water, catalyst
-eye tonic 5 aevaes leaves, water, catalyst
-body ointment 5 genich stem, alcohol, catalyst
-body poultices 5 genich stem, alcohol, catalyst
-body draught 5 ojhenik root, alcohol, catalyst
-body elixir 5 ojhenik root, alcohol, catalyst
-chest potion 5 ithor root, water, catalyst
-chest tonic 5 ithor root, water, catalyst
-face ointment 5 qun pollen, alcohol, catalyst
-face poultices 5 qun pollen, alcohol, catalyst
-
-
-mouth wash 5 blue flower, riolur leaves, water, catalyst
-eye wash 5 blue flower, aevaes leaves, water, catalyst
-hangover potion 5 blue flower, ojhenik root, water, catalyst
-
-wart salve 5 red flower, sufil sap, water, catalyst
-stomach tonic 5 blue flower, muljin sap, water, catalyst
-refreshment elixir 5 blue flower, belradi moss, water, catalyst
-vigor poultices 5 red flower, diocia sap, water, catalyst
-back salve 5 hulnik grass, water, catalyst
-eye salve 5 sufil sap, water, catalyst
-skin salve 5 aloe leaves, water, catalyst
-back ungent 5 hulnik grass, water, catalyst
-eye ungent 5 sufil sap, water, catalyst
-skin ungent 5 aloe leaves, water, catalyst
-abdomen potion 5 muljin sap, water, catalyst
-head potion 5 eghmok moss, water, catalyst
-skin potion 5 lujeakave root, water, catalyst
-limb potion 5 yelith root, water, catalyst
-abdominal tonic 5 muljin sap, water, catalyst
-head tonic 5 eghmok moss, water, catalyst
-skin tonic 5 lujeakave root, water, catalyst
-limb tonic 5 yelith root, water, catalyst
-limb ointment 5 blocil berries, alcohol, catalyst
-skin ointment 5 cebi root, alcohol, catalyst
-general purpose ointment 5 diocia sap, alcohol, catalyst
-skin poultices 5 cebi root, alcohol, catalyst
-limb poultices 5 blocil berries, alcohol, catalyst
-general poultices 5 diocia sap, alcohol, catalyst
-face draught 5 hulij leaves, alcohol, catalyst
-limb draught 5 nuloe stem, alcohol, catalyst
-skin draught 5 hisan flower, alcohol, catalyst
-general purpose draught 5 belradi moss, alcohol, catalyst
-skin elixir 5 hisan flower, alcohol, catalyst
-limb elixir 5 nuloe stem, alcohol, catalyst
-face elixir 5 hulij leaves, alcohol, catalyst
-general elixir 5 belradi moss, alcohol, catalyst 
