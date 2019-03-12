@@ -1,13 +1,9 @@
 #Metal Smelting
 debug 10
+include mc_include.cmd
 var material %1
-var matstow $MC_FORGING.STORAGE
-
-if "$righthand $lefthand" != "Empty Empty" then 
-		{
-		put $righthandnoun in my $MC_FORGING.STORAGE
-		put $lefthandnoun in my $MC_FORGING.STORAGE
-		}
+var matstow %tool.storage
+gosub EMPTY_HANDS
 
 
 action INSTANT goto finish when ^At last the metal appears to be thoroughly mixed and you pour it into an ingot mold
@@ -18,7 +14,7 @@ echo Usage is: .smelt <material>
 SmeltStart:
 	action (settype) on
 	action (settype) var mattype $1 when %material (\w+) 
-	send look in my %matstow
+	send look in my $MC_FORGING.STORAGE
 	pause 1
 	action (settype) off
 	match putmat You get
@@ -41,12 +37,12 @@ PutMat:
 	matchwait
 
 TooMuch:
-	gosub verb put my %material %mattype in my %matstow
+	gosub PUT_IT my %material %mattype in my $MC.FORGING.STORAGE
 	goto gettool
 
 GetTool:
 	pause 1
-	gosub verb get my rod
+	gosub GET my rod
 	goto stir
 
 Stir:
@@ -56,7 +52,7 @@ Stir:
 	match fuel needs more fuel
 	match bellows stifled coals
 	match bellows unable to consume its fuel
-	mstch smeltstart You can only mix a crucible if it has something inside of it.
+	match smeltstart You can only mix a crucible if it has something inside of it.
 	match stir Roundtime
 	send stir cruc with rod
 	matchwait
@@ -64,21 +60,21 @@ Stir:
 Fuel:
 	pause
 	pause 1
-	gosub verb get my shov
+	gosub GET my shov
 	send push fuel with shov
 	pause
 	pause 1
-	gosub verb put $lefthand in my %matstow
+	gosub PUT_IT $lefthand in my %matstow
 	goto stir
 
 Bellows:
 	pause
 	pause 1
-	gosub verb get my bell
+	gosub GET my bell
 	send push bell
 	pause
 	pause 1
-	gosub verb put $lefthand in my %matstow
+	gosub PUT_IT $lefthand in my %matstow
 	goto stir
 
 Turn:
@@ -90,13 +86,11 @@ Turn:
 Finish:
 	pause
 	pause 1
-	gosub verb put ing in my %matstow
-	gosub verb put $righthand in my %matstow
+	if matchre("$righthand|$lefthand", "ingot") then gosub PUT_IT ing in my $MC.FORGING.STORAGE
+	gosub PUT_IT $righthand in my %matstow
 	goto end
 
 End:
 	put #parse SMELTING DONE
 	Echo All material used. Script complete.
 	exit
-
-include mc_include.cmd
