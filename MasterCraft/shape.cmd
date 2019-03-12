@@ -24,7 +24,8 @@ var ArrowheadMats (tooth|fang|horn|claw|tusk)
 
 include mc_include.cmd
 if_1 put #var MC.order.noun %1
-if_2 var enhance ON
+if_2 var shape.repeat %2
+if_3 var enhance ON
 
 var Action drawknife
 var stain.gone 0
@@ -65,7 +66,7 @@ unfinished:
 	{
 		send analyze my $MC.order.noun
 		waitforre ^You.*analyze
-		if !contains("$lefthandnoun", "$MC.order.noun") then gosub verb swap
+		if !contains("$lefthandnoun", "$MC.order.noun") then gosub PUT swap
 		pause 1
 		goto work
 	}
@@ -80,7 +81,7 @@ first.carve:
 	{
 		var MarkIt NO
 		var Action clamp
-		if contains("$righthandnoun", "bow") then gosub verb swap		
+		if contains("$righthandnoun", "bow") then gosub PUT swap		
 		pause 1
 		goto work
 	}
@@ -94,10 +95,10 @@ first.carve:
 			var MarkIt NO
 			
 			pause 1
-			gosub verb get my shafts
+			gosub GET my shafts
 			pause 2
 			
-			if contains("$righthandnoun", "shafts") then gosub verb swap
+			if contains("$righthandnoun", "shafts") then gosub PUT swap
 			pause 1
 			if !contains("$righthandnoun", "shaper") then
 			{
@@ -113,7 +114,7 @@ first.carve:
 		{
 			var Action drawknife
 			var excessmats lumber
-			if contains("$righthandnoun", "lumber") then gosub verb swap
+			if contains("$righthandnoun", "lumber") then gosub PUT swap
 			pause 1
 			if !contains("$righthandnoun", "drawknife") then
 			{
@@ -131,9 +132,9 @@ excess:
 	pause
 	 gosub ToolStow
 	 wait
-	 gosub verb get %excessmats
+	 gosub GET %excessmats
 	 wait
-	 gosub verb put my %excessmats in my $MC_ENGINEERING.STORAGE
+	 gosub PUT_IT my %excessmats in my $MC_ENGINEERING.STORAGE
 	 wait
 	 goto work
 	 
@@ -151,7 +152,12 @@ fouledup:
 ToolStow:
 	pause .5
 	if "%BELTTOOLS" = "YES" then send tie my $righthandnoun to my belt
-	else gosub verb put my $righthandnoun in my $MC_ENGINEERING.STORAGE
+	else 
+		{
+		if matchre("knife|drawknife|rasp|shaper|clamp", "$righthandnoun") then
+		gosub PUT_IT my $righthand in my %tool.storage
+		else gosub PUT_IT my $righthandnoun in my $MC_ENGINEERING.STORAGE
+		}
 	###Reset BELTTOOLS for a new Tool
 	var BELTTOOLS NO
 	return
@@ -159,9 +165,9 @@ ToolStow:
 ToolGet:
 	pause .5
 	###Action var will contain the tool to be used next
-	put get my %Action
 		match Untie You pull at it
 		match ToolGot You get
+	put get my %Action
 	matchwait
 	
 Untie:
@@ -229,7 +235,7 @@ assemble:
 	{
 	 pause 1
 	 gosub ToolStow
-	 gosub verb get my %assemble
+	 gosub GET my %assemble
 	}
 	 ###send assemble my $MC.order.noun with my %assemble
 	 send assemble my %assemble with my $MC.order.noun
@@ -261,16 +267,16 @@ glue:
 	return
 	
 shaft:
-	if !matchre("$righthand|$lefthand", "lumber") then gosub verb get my lumber
+	if !matchre("$righthand|$lefthand", "lumber") then gosub GET my lumber
 	pause 0.5
-	gosub verb get my shaper
+	gosub GET my shaper
 	pause 0.5
 	shapeshaft:
 	pause 0.5
 	put shape my lumber into bolt shaft
 	pause 0.5
 	pause 0.5
-	gosub verb put my shafts in my $MC_ENGINEERING.STORAGE
+	gosub PUT_IT my shafts in my $MC_ENGINEERING.STORAGE
 	repeat:
 	match done What were you referring to
 	matchre shapeshaft You get|You pickup
@@ -278,7 +284,7 @@ shaft:
 	matchwait
 	
 arrowheads:
-	gosub verb get my %ArrowheadTool
+	gosub GET my %ArrowheadTool
 	
 arrowhead_material:
 		match arrowhead_make You get
@@ -289,7 +295,7 @@ arrowhead_material:
 arrowhead_make:
 	send shape %1
 	pause 5
-	gosub verb put my arrowh in my $MC_ENGINEERING.STORAGE
+	gosub PUT_IT my arrowh in my $MC_ENGINEERING.STORAGE
 	pause 1
 	goto arrowhead_material
 
@@ -297,51 +303,34 @@ new.tool:
 	if !contains("$scriptlist", "mastercraft.cmd") then return
 	 var temp.room $roomid
 	 gosub check.location
-	 if !("$righthand" = "Empty" || "$lefthand" = "Empty") then gosub verb put my $MC.order.noun in my $MC_ENGINEERING.STORAGE
+	 if !("$righthand" = "Empty" || "$lefthand" = "Empty") then gosub PUT_IT my $MC.order.noun in my $MC_ENGINEERING.STORAGE
 	if %stain.gone = 1 then
 		{
 		 gosub automove $tool.room
 		 action (order) on
-		 gosub verb order
+		 gosub ORDER
 		 pause .5
 		 action (order) off
-		 gosub purchase order %stain.order
-		 gosub verb put my stain in my $MC_ENGINEERING.STORAGE
+		 gosub ORDER %stain.order
+		 gosub PUT_IT my stain in my $MC_ENGINEERING.STORAGE
 		 var stain.gone 0
 		}
 	if %glue.gone = 1 then
 		{
 		 gosub automove $tool.room
 		 action (order) on
-		 gosub verb order
+		 gosub ORDER
 		 pause .5
 		 action (order) off
-		 gosub purchase order %glue.order
-		 gosub verb put my glue in my $MC_ENGINEERING.STORAGE
-		 if ("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") then gosub verb get my $MC.order.noun from my $MC_ENGINEERING.STORAGE
+		 gosub ORDER %glue.order
+		 gosub PUT_IT my glue in my $MC_ENGINEERING.STORAGE
+		 if ("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") then gosub GET my $MC.order.noun from my $MC_ENGINEERING.STORAGE
 		 var glue.gone 0
 		}
-	 if ("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") then gosub verb get my $MC.order.noun from my $MC_ENGINEERING.STORAGE
+	 if ("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") then gosub GET my $MC.order.noun from my $MC_ENGINEERING.STORAGE
 	 gosub automove %temp.room
 	 unvar temp.room
 	return
-
-purchase:
-     var purchase $0
-     goto purchase2
-purchase.p:
-     pause 0.5
-purchase2:
-     matchre purchase.p type ahead|...wait|Just order it again
-	 matchre lack.coin you don't have enough coins|you don't have that much
-     matchre return pay the sales clerk|takes some coins from you
-	 put %purchase
-    matchwait
-
-lack.coin:
-	 if contains("$scriptlist", "mastercraft.cmd") then put #parse LACK COIN
-	 else echo *** You need some startup coin to purchase stuff! Go to the bank and try again!
-	exit
 
 Retry:
 	pause 1
@@ -350,14 +339,26 @@ Retry:
 
 return:
 	return
+	
+repeat:
+	math shape.repeat subtract 1
+	gosub PUT_IT my $MC.order.noun in my $MC_ENGINEERING.STORAGE
+	gosub GET my shaping book
+	gosub STUDY my book
+	gosub PUT_IT my book in my $MC_ENGINEERING.STORAGE
+	gosub GET my lumber
+	var Action drawknife
+	goto first.carve
+
 
 done:
 	if %stain.gone = 1 then gosub new.tool
 	if %glue.gone = 1 then gosub new.tool
 	 gosub ToolStow
 	 wait
-	if "$lefthandnoun" = "$MC.order.noun" then gosub verb swap
+	if "$lefthandnoun" = "$MC.order.noun" then gosub PUT swap
 	pause 1
 	if ("%MarkIt" = "YES") then gosub mark
+	if %shape.repeat > 1 then goto repeat
 	 put #parse SHAPING DONE
 	exit
