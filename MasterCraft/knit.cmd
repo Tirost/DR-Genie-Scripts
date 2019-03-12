@@ -33,9 +33,8 @@ if !contains("$lefthandnoun", "knitting needle") then
 	{
 	 if contains("$lefthandnoun", "yarn") then send swap
 	 if !matchre("$righthand|$lefthand", "yarn") then send get my yarn
-	 if "$lefthandnoun" != "" then send put my $lefthandnoun in my %outfitting.storage
-	 send get knitt need from my %outfitting.storage
-	 waitforre ^You get
+	 if "$lefthandnoun" != "" then gosub PUT_IT my $lefthandnoun in my %outfitting.storage
+	 gosub GET knitt need from my %tool.storage
 	}
 
 unfinished:
@@ -91,7 +90,7 @@ repeat:
 done:
 	 gosub mark
 	 if %sew.repeat > 1 then goto repeat
-	send put my needle in my %outfitting.storage
+	send put my needle in my %tool.storage
 	waitforre ^You put
 	put #parse KNITTING DONE
 	exit
