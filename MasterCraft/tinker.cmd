@@ -1,4 +1,4 @@
-debug 10
+#debug 10
 ###
 # Tinkering by Dasffion
 # Based off Shpaing by Arvedui Iorlas
@@ -79,8 +79,7 @@ unfinished:
 	{
 		send analyze my $MC.order.noun
 		waitforre ^You.*analyze
-		if !contains("$lefthandnoun", "$MC.order.noun") then send swap
-		pause 1
+		if !contains("$lefthandnoun", "$MC.order.noun") then gosub PUT swap
 		goto work
 	}
 
@@ -91,9 +90,9 @@ first.carve:
 	if $needmechanisms > 0 then 
 		{
 		gosub PRESS
-		put get my lumber from my $MC_ENGINEERING.STORAGE
+		gosub GET my lumber from my $MC_ENGINEERING.STORAGE
 		pause 0.5
-		put swap
+		gosub PUT swap
 		pause 0.5
 		}
 
@@ -102,7 +101,7 @@ first.carve:
 	{
 		var MarkIt NO
 		var Action clamp
-		if contains("$righthandnoun", "bow") then send swap		
+		if contains("$righthandnoun", "bow") then gosub PUT swap		
 		pause 1
 		goto work
 	}
@@ -115,12 +114,9 @@ first.carve:
 			var excessmats shafts
 			var MarkIt NO
 			
-			pause 1
-			send get my shafts
-			pause 2
+			gosub GET my shafts
 			
-			if contains("$righthandnoun", "shafts") then send swap
-			pause 1
+			if contains("$righthandnoun", "shafts") then gosub PUT swap
 			if !contains("$righthandnoun", "shaper") then
 			{
 			 gosub ToolStow
@@ -135,7 +131,7 @@ first.carve:
 		{
 			var Action drawknife
 			var excessmats lumber
-			if contains("$righthandnoun", "lumber") then send swap
+			if contains("$righthandnoun", "lumber") then gosub PUT swap
 			pause 1
 			if !contains("$righthandnoun", "drawknife") then
 			{
@@ -155,9 +151,9 @@ excess:
 	pause
 	 gosub ToolStow
 	 wait
-	 send get %excessmats
+	 gosub GET %excessmats
 	 wait
-	 send put my %excessmats in my $MC_ENGINEERING.STORAGE
+	 gosub PUT_IT my %excessmats in my $MC_ENGINEERING.STORAGE
 	 wait
 	 goto work
 	 
@@ -175,19 +171,24 @@ fouledup:
 restudy:
 	send stow drawknife
 	pause 0.5
-	put get tinkering book from my $MC_ENGINEERING.STORAGE
+	gosub GET tinkering book from my $MC_ENGINEERING.STORAGE
 	pause 0.2
-	put study my book
+	gosub STUDY my book
 	pause 0.5
 	pause 0.5
-	send put my book in my $MC_ENGINEERING.STORAGE
-	send get my drawknife
+	gosub PUT_IT my book in my $MC_ENGINEERING.STORAGE
+	gosub GET my drawknife
 	goto WORK
 
 ToolStow:
 	pause .5
 	if "%BELTTOOLS" = "YES" then send tie my $righthandnoun to my belt
-	else send put my $righthandnoun in my $MC_ENGINEERING.STORAGE
+	else 
+		{
+		if matchre("knife|rasp|drawknife|tools|shovel|shaper|clamp|pliers", "$righthandnoun") then
+		gosub PUT_IT my $righthand in my %tool.storage
+		else gosub PUT_IT my $righthandnoun in my $MC_ENGINEERING.STORAGE
+		}
 	###Reset BELTTOOLS for a new Tool
 	var BELTTOOLS NO
 	return
@@ -195,9 +196,10 @@ ToolStow:
 ToolGet:
 	pause .5
 	###Action var will contain the tool to be used next
-	send get my %Action
-		match Untie You pull at it
-		match ToolGot You get
+
+	match Untie You pull at it
+	match ToolGot You get
+	put GET my %Action
 	matchwait 1
 	put #echo You have no %Action, get some and try again!
 	exit
@@ -215,10 +217,10 @@ press:
 	pause 1
 	if $Engineering.Ranks < 100 then var pressset 1
 	if matchre("$Engineering.Ranks", "(\d)\d\d" then var pressset $1
-	if matchre("$righthandnoun|$lefthandnoun", "lumber") then send put my lumber in my $MC_ENGINEERING.STORAGE
-	if !matchre("$righthandnoun|$lefthandnoun", "ingot") then send get my ingot
+	if matchre("$righthandnoun|$lefthandnoun", "lumber") then gosub PUT_IT my lumber in my $MC_ENGINEERING.STORAGE
+	if !matchre("$righthandnoun|$lefthandnoun", "ingot") then gosub GET my ingot
 	pause 0.5
-	if !match("$lefthandnoun", "ingot") then send swap
+	if !match("$lefthandnoun", "ingot") then gosub PUT swap
 	pause 0.5
 	send turn press to %pressset
 	waitfor You dial
@@ -233,7 +235,7 @@ mechcombine:
 mechcombine_1:
 	match presscount What were you referring to
 	match mechcombine_2 You get
-	send get my mech from my $MC_ENGINEERING.STORAGE
+	put get my mech from my $MC_ENGINEERING.STORAGE
 	matchwait 1
 	goto %lastlabel
 	
@@ -256,7 +258,7 @@ presscount:
 	goto mechcount
 
 foundit:
-	send put my mech in my $MC_ENGINEERING.STORAGE
+	gosub PUT_IT my mech in my $MC_ENGINEERING.STORAGE
 	if %mechnumber >= $totalmechanisms then 
 		{
 		put #var needmechanisms 0
@@ -300,9 +302,9 @@ plierspress:
 	return
 	
 toosmall:
-	put put ingot in buck
+	gosub PUT_IT ingot in buck
 	pause 0.5
-	send get my ingot
+	gosub GET my ingot
 	goto %Action
 
 pull:
@@ -392,14 +394,14 @@ assemble:
 	{
 	 pause 1
 	 gosub ToolStow
-	 send get my %assemble
+	 gosub GET my %assemble
 	 waitforre ^You get
 	}
 	 ###send assemble my $MC.order.noun with my %assemble
 	 send assemble my %assemble with my $MC.order.noun
 	 pause 1
 	 if matchre("%assemble", "mechanism") then gosub assemblemech
-	 if matchre("$righthandnoun", "%assemble") then send put my %assemble in my $MC_ENGINEERING.STORAGE
+	 if matchre("$righthandnoun", "%assemble") then gosub PUT_IT my %assemble in my $MC_ENGINEERING.STORAGE
 	 pause 0.5
 	 send analyze my $MC.order.noun
 	 pause 1
@@ -434,36 +436,36 @@ glue:
 	return
 	
 shaft:
-	if !matchre("$righthand|$lefthand", "lumber") then send get my lumber
+	if !matchre("$righthand|$lefthand", "lumber") then gosub GET my lumber
 	pause 0.5
-	send get my shaper
+	gosub GET my shaper
 	pause 0.5
 	shapeshaft:
 	pause 0.5
 	put shape my lumber into bolt shaft
 	pause 0.5
 	pause 0.5
-	put put my shafts in my $MC_ENGINEERING.STORAGE
+	gosub PUT_IT my shafts in my $MC_ENGINEERING.STORAGE
 	repeat:
 	match done What were you referring to
 	matchre shapeshaft You get|You pickup
-	send get lumber
+	send lumber
 	matchwait
 	
 arrowheads:
-	send get my %ArrowheadTool
+	gosub GET my %ArrowheadTool
 	
 arrowhead_material:
 	pause 0.5
-	send get my %1
 		match arrowhead_make You get
 		match done What were you
+	send GET my %1
 	matchwait
 
 arrowhead_make:
 	send shape %1 into bolthead
 	pause 5
-	send put my bolth in my $MC_ENGINEERING.STORAGE
+	gosub PUT_IT my bolth in my $MC_ENGINEERING.STORAGE
 	pause 1
 	goto arrowhead_material
 
@@ -474,51 +476,32 @@ new.tool:
 	if %stain.gone = 1 then
 		{
 		 gosub automove %tool.room
-		 if !("$righthand" = "Empty" || "$lefthand" = "Empty") then send put my $MC.order.noun in my $MC_ENGINEERING.STORAGE
+		 if !("$righthand" = "Empty" || "$lefthand" = "Empty") then gosub PUT_IT my $MC.order.noun in my $MC_ENGINEERING.STORAGE
 		 action (order) on
-		 send order
+		 gosub ORDER
 		 pause .5
 		 action (order) off
-		 gosub purchase order %stain.order
-		 send put my stain in my $MC_ENGINEERING.STORAGE
-		 waitforre ^You put
-		 if ("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") then send get my $MC.order.noun from my $MC_ENGINEERING.STORAGE
+		 gosub ORDER %stain.order
+		 gosub PUT_IT my stain in my $MC_ENGINEERING.STORAGE
+		 if ("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") then gosub GET my $MC.order.noun from my $MC_ENGINEERING.STORAGE
 		 var stain.gone 0
 		}
 	if %glue.gone = 1 then
 		{
 		 gosub automove %tool.room
-		 if !("$righthand" = "Empty" || "$lefthand" = "Empty") then send put my $MC.order.noun in my $MC_ENGINEERING.STORAGE
+		 if !("$righthand" = "Empty" || "$lefthand" = "Empty") then gosub PUT_IT my $MC.order.noun in my $MC_ENGINEERING.STORAGE
 		 action (order) on
-		 send order
+		 gosub ORDER
 		 pause .5
 		 action (order) off
-		 gosub purchase order %glue.order
-		 send put my glue in my $MC_ENGINEERING.STORAGE
-		 waitforre ^You put
-		 if ("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") then send get my $MC.order.noun from my $MC_ENGINEERING.STORAGE
+		 gosub ORDER %glue.order
+		 gosub PUT_IT my glue in my $MC_ENGINEERING.STORAGE
+		 if ("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") then gosub GET my $MC.order.noun from my $MC_ENGINEERING.STORAGE
 		 var glue.gone 0
 		}
 	 gosub automove %temp.room
 	 unvar temp.room
 	return
-
-purchase:
-     var purchase $0
-     goto purchase2
-purchase.p:
-     pause 0.5
-purchase2:
-     matchre purchase.p type ahead|...wait|Just order it again
-	 matchre lack.coin you don't have enough coins|you don't have that much
-     matchre return pay the sales clerk|takes some coins from you
-	 put %purchase
-    matchwait
-
-lack.coin:
-	 if contains("$scriptlist", "mastercraft.cmd") then put #parse LACK COIN
-	 else echo *** You need some startup coin to purchase stuff! Go to the bank and try again!
-	exit
 
 Retry:
 	pause 1
@@ -533,7 +516,7 @@ done:
 	if %glue.gone = 1 then gosub new.tool
 	 gosub ToolStow
 	 wait
-	if "$lefthandnoun" = "$MC.order.noun" then send swap
+	if "$lefthandnoun" = "$MC.order.noun" then gosub PUT swap
 	pause 1
 	if ("%MarkIt" = "YES") then gosub mark
 	 put #parse TINKERING DONE
