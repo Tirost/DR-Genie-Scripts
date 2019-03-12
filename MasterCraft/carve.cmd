@@ -34,7 +34,7 @@ var assemble
 if "$MC_ENG.PREF" = "bone" then 
 	{
     var rock stack
-    var chisel bone saw
+    var chisel saw
 	var hand my
 	}
 if "$MC_ENG.PREF" = "stone" then 
@@ -52,7 +52,7 @@ action var Action carve when ^carve .* with my %chisel|^scrape .* with my rasp|^
 action (work) goto Retry when \.\.\.wait|type ahead
 action goto done when ^Applying the final touches|You cannot figure out how to do that
 
-action (order) var polish.order $1 when (\d+)\)\..*jar of surface polish.*(Lirums|Kronars|Dokoras)
+action (order) put #tvar polish.order $1 when (\d+)\)\..*jar of surface polish.*(Lirums|Kronars|Dokoras)
 action var polish.gone 1 when ^The polish is all used up, so you toss it away.
 
 action var assemble $1 when another finished \S+ shield (handle)
@@ -72,20 +72,21 @@ unfinished:
 	{
 	send analyze $MC.order.noun
 	waitforre ^You.*analyze
-	if !contains("$lefthandnoun", "$MC.order.noun") then gosub verb swap
+	if !contains("$lefthandnoun", "$MC.order.noun") then gosub PUT swap
 	pause 1
 	goto work
 	}
 
 first.carve:
-	if contains("$righthandnoun", "%rock") then gosub verb swap
+	if contains("$righthandnoun", "%rock") then gosub PUT swap
 	pause 1
-	if ((contains("$lefthandnoun", "%rock")) && ("%rock" != "stack")) then gosub verb drop my $lefthandnoun
+	if ((contains("$lefthandnoun", "%rock")) && ("%rock" != "stack")) then gosub PUT drop my $lefthandnoun
 	pause 1
 	if !contains("$righthandnoun", "%chisel") then
 	{
-	 gosub verb put my $righthandnoun in my %engineering.storage
-	 gosub verb get my %chisel
+	 if matchre("%chisel|rasp|riffler", "$righthandnoun") then gosub PUT_IT $righthandnoun in my %tool.storage
+	 else gosub PUT_IT my $righthandnoun in my %engineering.storage
+	 gosub GET my %chisel
 	}
 	 matchre excess and place the excess (.+) off to the side|cut off the excess material
 	 matchre work Roundtime: \d+
@@ -99,22 +100,22 @@ excess:
 	 var extra $0
 	 if "%extra" = "pebble" then
 	 {
-	 gosub verb get pebble
-	 gosub verb put my pebble in my %engineering.storage
+	 gosub GET pebble
+	 gosub PUT_IT my pebble in my %engineering.storage
 	 goto work
 	 }
-	 gosub verb get packet
+	 gosub GET packet
 	 send push %extra with my packet
-	 gosub verb stow my packet
-	 gosub verb get deed
-	 gosub verb put my deed in my %engineering.storage
+	 gosub PUT_IT my packet in my %engineering.storage
+	 gosub GET deed
+	 gosub PUT_IT my deed in my %engineering.storage
 	 goto work
 	}
 	else
 	{
-	 gosub verb put my %chisel in my %engineering.storage
-	 gosub verb get stack
-	 gosub verb put my stack in my %engineering.storage
+	 gosub PUT_IT my %chisel in my %engineering.storage
+	 gosub GET stack
+	 gosub PUT_IT my stack in my %engineering.storage
 	 goto work
 	}
 	 
@@ -128,8 +129,9 @@ carve:
 	if "%assemble" != "" then gosub assemble
 	if !contains("$righthandnoun", "%chisel") then
 	{
-	 gosub verb put my $righthandnoun in my %engineering.storage
-	 gosub verb get my %chisel
+	 if matchre("%chisel|rasp|riffler", "$righthandnoun") then gosub PUT_IT $righthandnoun in my %tool.storage
+	 else gosub PUT_IT my $righthandnoun in my %engineering.storage
+	 gosub GET my %chisel
 	}
 	 send carve %hand $MC.order.noun with my %chisel
 	 pause 1
@@ -138,8 +140,9 @@ carve:
 riffler:
 	if !contains("$righthandnoun", "riffler") then
 	{
-	 gosub verb put my $righthandnoun in my %engineering.storage
-	 gosub verb get my riffler
+	 if matchre("%chisel|rasp|riffler", "$righthandnoun") then gosub PUT_IT $righthandnoun in  my %tool.storage
+	 else gosub PUT_IT my $righthandnoun in my %engineering.storage
+	 gosub GET my riffler
 	}
 	 send rub %hand $MC.order.noun with my riffler
 	 pause 1
@@ -148,8 +151,10 @@ riffler:
 rasp:
 	if !contains("$righthandnoun", "rasp") then
 	{
-	 gosub verb put my $righthandnoun in my %engineering.storage
-	 gosub verb get my rasp
+	 if matchre("%chisel|rasp|riffler", "$righthandnoun") then gosub PUT_IT $righthandnoun in my %tool.storage
+	 else 
+	 gosub PUT_IT my $righthandnoun in my %engineering.storage
+	 gosub GET my rasp
 	}
 	 send scrape %hand $MC.order.noun with my rasp
 	 pause 1
@@ -159,8 +164,10 @@ polish:
 	if %polish.gone = 1 then gosub new.tool
 	if !contains("$righthandnoun", "polish") then
 	{
-	 gosub verb put my $righthandnoun in my %engineering.storage
-	 gosub verb get my polish
+	 if matchre("%chisel|rasp|riffler", "$righthandnoun") then gosub PUT_IT $righthandnoun in my %tool.storage
+	 else 
+	 gosub PUT_IT my $righthandnoun in my %engineering.storage
+	 gosub GET my polish
 	}
 	 send apply %hand polish to my $MC.order.noun
 	 pause 1
@@ -170,8 +177,10 @@ assemble:
 	if "$righthandnoun" != "%assemble" then
 	{
 	 pause 1
-	 gosub verb put my $righthandnoun in my %engineering.storage
-	 gosub verb get my %assemble
+	 if matchre("%chisel|rasp|riffler", "$righthandnoun") then gosub PUT_IT $righthandnoun in my %tool.storage
+	 else 
+	 gosub PUT_IT my $righthandnoun in my %engineering.storage
+	 gosub GET my %assemble
 	}
 	 send assemble %hand $MC.order.noun with my %assemble
 	 pause 1
@@ -187,36 +196,18 @@ new.tool:
 	if %polish.gone = 1 then
 		{
 		 gosub automove $tool.room
-		 if !("$righthand" = "Empty" || "$lefthand" = "Empty") then gosub verb put my $MC.order.noun in my %engineering.storage
+		 if !("$righthand" = "Empty" || "$lefthand" = "Empty") then gosub PUT_IT my $MC.order.noun in my %engineering.storage
 		 action (order) on
-		 gosub verb order
-		 waitfor You may purchase
+		 gosub ORDER
 		 action (order) off
-		 gosub purchase order %polish.order
-		 gosub verb put my polish in my %engineering.storage
-		 if (("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") && ("%rock" = "stack")) then gosub verb get my $MC.order.noun from my %engineering.storage
+		 gosub ORDER $polish.order
+		 gosub PUT_IT my polish in my %engineering.storage
+		 if (("$righthandnoun" != "$MC.order.noun" && "$lefthandnoun" != "$MC.order.noun") && ("%rock" = "stack")) then gosub GET my $MC.order.noun from my %engineering.storage
 		 var polish.gone 0
 		}
 	 gosub automove %temp.room
 	 unvar temp.room
 	return
-
-purchase:
-     var purchase $0
-     goto purchase2
-purchase.p:
-     pause 0.5
-purchase2:
-     matchre purchase.p type ahead|...wait|Just order it again
-	 matchre lack.coin you don't have enough coins|you don't have that much
-     matchre return pay the sales clerk|takes some coins from you
-	 put %purchase
-    matchwait
-
-lack.coin:
-	 if contains("$scriptlist", "mastercraft.cmd") then put #parse LACK COIN
-	 else echo *** You need some startup coin to purchase stuff! Go to the bank and try again!
-	exit
 
 Retry:
 	pause 1
@@ -228,9 +219,11 @@ return:
 
 done:
 	if %polish.gone = 1 then gosub new.tool
-	 gosub verb put my $righthandnoun in my %engineering.storage
+	 if matchre("%chisel|rasp|riffler", "$righthandnoun") then gosub PUT_IT $righthandnoun in my %tool.storage
+	 else 
+	 gosub PUT_IT my $righthandnoun in my %engineering.storage
 	 wait
-	if "$lefthandnoun" = "$MC.order.noun" then gosub verb swap
+	if "$lefthandnoun" = "$MC.order.noun" then gosub PUT swap
 	pause 1
 	 gosub mark
 	 put #parse CARVING DONE
