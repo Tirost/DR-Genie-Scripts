@@ -35,6 +35,7 @@ action var tool done when Applying the final touches, you complete working
 action var excessloc $2 when You carefully cut off the excess material and set it (on the|in your|at your) (\S+).$
 action var tool needle when ^measure my \S+ with my yardstick|^rub my \S+ with my slickstone|poke my \S+ with my pins|^poke my \S+ with my awl|^cut my \S+ with my scissors|pushing it with a needle and thread
 action GOTO unfinished when That tool does not seem suitable for that task.
+action send get $MC.order.noun when ^You must be holding the .* to do that\.
 action (work) goto Retry when \.\.\.wait|type ahead
 action (work) off
 
@@ -69,8 +70,12 @@ first.cut:
 	pause 1
  	if !contains("$lefthandnoun", "scissors") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
-		gosub verb get my scissors
+		if "$lefthand" != "Empty" then 
+			{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+			}
+		gosub GET my scissors
 	}
 	matchre excess You carefully cut off the excess material and set it (on the|in your|at your) (\S+).$
 	matchre work Roundtime: \d+
@@ -79,8 +84,12 @@ first.cut:
 
 excess:
 	pause 1
-	if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
-	gosub verb get %material
+	if "$lefthand" != "Empty" then 
+		{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+		}
+	gosub GET %material
 	send put %material in my $MC_OUTFITTING.STORAGE
 	waitforre ^You put
 
@@ -96,8 +105,12 @@ needle:
 	if %thread.gone = 1 then gosub new.tool
 	if !contains("$lefthandnoun", "needles") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
-		gosub verb get my sewing needle
+		if "$lefthand" != "Empty" then 
+		{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+		}
+		gosub GET my sewing needle
 	}
 	send push my $MC.order.noun with my needle
 	pause 1
@@ -107,8 +120,12 @@ yardstick:
 	if "%assemble" != "" then gosub assemble
 	if !contains("$lefthandnoun", "yardstick") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
-		gosub verb get my yardstick from my $MC_OUTFITTING.STORAGE
+	if "$lefthand" != "Empty" then 
+		{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+		}
+		gosub GET my yardstick from my $MC_OUTFITTING.STORAGE
 	}
 	send measure my $MC.order.noun with my yardstick
 	pause 1
@@ -118,8 +135,12 @@ slickstone:
 	if "%assemble" != "" then gosub assemble
 	if !contains("$lefthandnoun", "slickstone") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
-		gosub verb get my slickstone
+	if "$lefthand" != "Empty" then 
+		{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+		}
+		gosub GET my slickstone
 	}
 	send rub my $MC.order.noun with my slickstone
 	pause 1
@@ -130,8 +151,12 @@ pins:
 	if %pins.gone = 1 then gosub new.tool
 	if !contains("$lefthandnoun", "pins") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
-		gosub verb get my pins
+	if "$lefthand" != "Empty" then 
+		{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+		}
+		gosub GET my pins
 	}
 	send poke my $MC.order.noun with my pins
 	pause 1
@@ -141,8 +166,12 @@ scissors:
 	if "%assemble" != "" then gosub assemble
 	if !contains("$lefthandnoun", "scissors") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
-		gosub verb get my scissors
+	if "$lefthand" != "Empty" then 
+		{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+		}
+		gosub GET my scissors
 	}
 	send cut my $MC.order.noun with my scissors
 	pause 1
@@ -152,8 +181,12 @@ awl:
 	if "%assemble" != "" then gosub assemble
 	if !contains("$lefthandnoun", "awl") then
 	{
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
-		gosub verb get my awl
+	if "$lefthand" != "Empty" then 
+		{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+		}
+		gosub GET my awl
 	}
 	send poke my $MC.order.noun with my awl
 	pause 1
@@ -163,8 +196,12 @@ assemble:
 	if "$lefthandnoun" != "%assemble" then
 	{
 		pause 1
-		if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
-		gosub verb get my %assemble
+	if "$lefthand" != "Empty" then 
+		{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+		}
+		gosub GET my %assemble
 	}
 	send assemble my $MC.order.noun with my %assemble
 	pause 1
@@ -183,11 +220,10 @@ if contains("$scriptlist", "mastercraft.cmd") then
 	{
 		gosub automove outfitting tool
 		action (order) on
-		send order
-		waitfor You may purchase
+		gosub ORDER
 		action (order) off
-		gosub purchase order %pins.order
-		gosub verb put my pins in my $MC_OUTFITTING.STORAGE
+		gosub ORDER %pins.order
+		gosub PUT_IT my pins in my $MC_OUTFITTING.STORAGE
 		pause .5
 		var pins.gone 0
 	}
@@ -196,17 +232,16 @@ if contains("$scriptlist", "mastercraft.cmd") then
 		gosub automove outfitting suppl
 		action (order) on
 		pause 1
-		send order
-		waitfor You may purchase
+		gosub ORDER
 		action (order) off
-		gosub purchase order %thread.order
+		gosub ORDER %thread.order
 		pause 1
 		send put my thread on my needles
 		waitforre ^You carefully thread
 		var thread.gone 0
 	}
 	gosub automove %temp.room
-	if !matchre("$righthand|$lefthand", "$MC.order.noun") then gosub verb get my $MC.order.noun from my $MC_OUTFITTING.STORAGE
+	if !matchre("$righthand|$lefthand", "$MC.order.noun") then gosub GET my $MC.order.noun from my $MC_OUTFITTING.STORAGE
 	pause 0.5
 	unvar temp.room
 	action (work) on
@@ -219,34 +254,6 @@ put #parse SEWING DONE
 exit
 } 
 
-purchase:
-	var purchase $0
-	goto purchase2
-purchase.p:
-    pause 0.5
-purchase2:
-		matchre purchase.p type ahead|...wait|Just order it again
-		matchre lack.coin you don't have enough coins|you don't have that much
-		matchre return pay the sales clerk|takes some coins from you
-		put %purchase
-    matchwait
-
-lack.coin:
-	if "%get.coin" = "off" then goto lack.coin.exit
-	action (withdrawl) goto lack.coin.exit when (^The clerk flips through her ledger|^The clerk tells you)
-	gosub automove teller
-	send withd 5 gold
-	waitfor The clerk counts
-	gosub automove %temp.room
-	var need.coin 0
-	action remove (^The clerk flips through her ledger|^The clerk tells you)
-	pause 1
-	goto %purchaselabel
-
-lack.coin.exit:
-	echo You need some startup coin to purchase stuff! Go to the bank and try again!
-	put #parse Need coin
-	exit
 
 return:
 return
@@ -257,11 +264,11 @@ Retry:
 	
 repeat:
 	math sew.repeat subtract 1
-	gosub verb put my $MC.order.noun in my $MC_OUTFITTING.STORAGE
-	gosub verb get my tailor book
+	gosub PUT_IT my $MC.order.noun in my $MC_OUTFITTING.STORAGE
+	gosub GET my tailor book
 	gosub verb study my book
-	gosub verb put my book in my $MC_OUTFITTING.STORAGE
-	gosub verb get my %material
+	gosub PUT_IT my book in my $MC_OUTFITTING.STORAGE
+	gosub GET my %material
 	var tool needle
 	goto first.cut
 
@@ -269,7 +276,11 @@ repeat:
 done:
 	if %pins.gone = 1 then gosub new.tool
 	if %thread.gone = 1 then gosub new.tool
-	gosub verb put my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+	if "$lefthand" != "Empty" then 
+		{
+			if matchre("scissors|slickstone|yardstick|awl", "$lefthandnoun") then gosub PUT_IT my $lefthand in my %tool.storage
+			else gosub PUT_IT my $lefthandnoun in my $MC_OUTFITTING.STORAGE
+		}
 	gosub mark
 	pause 1
 	if %sew.repeat > 1 then goto repeat
