@@ -14,14 +14,14 @@ include mc_include.cmd
 
 
 action var action turn when ^It seems to be picking up speed now but is still rather slow.|^Straining a bit less you add force to the grindstone, making it spin even faster
+action var action turn when ^The grdining wheel needs to be spinning
 action var action push when ^Straining a bit less you maintain force to the grindstone, keeping it spinning fast.
 action var action oil when ^With grinding complete, the metal now needs protection by pouring oil on it.
 action var action Done when Applying the final touches, you complete working
 
 if "$lefthandnoun" != "$MC.order.noun" && "$righthandnoun" != "$MC.order.noun" then
 	{
-	 send put $lefthandnoun in my %forging.storage
-	 send put $righthandnoun in my %forging.storage
+	 gosub EMPTY_HANDS
 	 pause .5
 	 send get $MC.order.noun
 	}
