@@ -89,19 +89,18 @@ small.ingot:
 
 ingot.grab:
 	 pause 1
-	 gosub verb put my hammer in my %forging.storage
-	if "%excessloc" != "ground" then gosub verb get ingot from my %excessloc
-	if "%excessloc" = "feet" then gosub verb get ingot
+	 gosub PUT_IT my hammer in my %tool.storage
+	if "%excessloc" != "ground" then gosub GET ingot from my %excessloc
+	if "%excessloc" = "feet" then gosub GET ingot
 	if %small.ingot = 1 then
 	{
-		if %worn.tongs = 1 then send wear my tongs
-		else send put my tong in my %forging.storage
-		waitforre ^You put|^You sling
+		if %worn.tongs = 1 then GOSUB WEAR my tongs
+		else gosub PUT_IT my tong in my %tool.storage
 		put #parse SMALL INGOT
 		exit
 	}		
-	 gosub verb put my ingot in my %forging.storage
-	 gosub verb get my hammer from my %forging.storage
+	 gosub PUT_IT my ingot in my %forging.storage
+	 gosub GET my hammer from my %tool.storage
 
 
 work:
@@ -133,15 +132,22 @@ poundcheck:
 	pause 1
 	if !contains("$righthandnoun", "hammer") then
 	{
-	 if "$righthandnoun" != "" then gosub verb put my $righthandnoun in my %forging.storage
-	 gosub verb get hammer from my %forging.storage
+	 	if "$righthand" != "Empty" then
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$righthandnoun") then gosub PUT_IT $righthandnoun in %tool.storage
+			else gosub PUT_IT $righthandnoun in %main.storage
+			}
+	 gosub GET hammer from my %tool.storage
 	}
 	if !contains("$lefthandnoun", "tongs") then
 	{
-	 if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my %forging.storage
-	 if %worn.tongs = 1 then send hold my tongs
-	 else send get tongs from my %forging.storage
-	 waitforre ^You get|^You sling
+	 	 if "$leftthand" != "Empty" then
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %main.storage
+			}
+	 if %worn.tongs = 1 then gosub HOLD my tongs
+	 else gosub GET tongs from my %tool.storage
 	}
 	return
 
@@ -151,10 +157,13 @@ shovel:
 	{
 		if !contains("$lefthandnoun", "tongs") then
 		{
-		 if "$lefthandnoun" != "" then gosub verb put my $lefthandnoun in my %forging.storage
-		 if %worn.tongs = 1 then send hold my tongs
-		 else send get tongs from my %forging.storage
-		 waitforre ^You get|^You sling
+		 if "$leftthand" != "Empty" then
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %main.storage
+			}
+		 if %worn.tongs = 1 then gosub HOLD my tongs
+		 else gosub GET tongs from my %tool.storage
 		}
 	 if %tongs.adj = 0 then send adjust my tongs
 	}
@@ -162,8 +171,12 @@ shovel:
 	{
 	 if !contains("$righthandnoun", "shovel") then
 		{
-		 gosub verb put my $righthandnoun in my %forging.storage
-		 gosub verb get my shovel
+		if "$rightthand" != "Empty" then
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$righthandnoun") then gosub PUT_IT $righthandnoun in %tool.storage
+			else gosub PUT_IT $righthandnoun in %main.storage
+			}
+		 gosub GET my shovel
 		}
 	}
 	 send push fuel with my %shovel
@@ -173,8 +186,12 @@ shovel:
 bellows:
 	if !contains("$righthandnoun", "bellows") then
 	{
-	 gosub verb put my $righthandnoun in my %forging.storage
-	 gosub verb get my bellows
+		if "$rightthand" != "Empty" then
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$righthandnoun") then gosub PUT_IT $righthandnoun in %tool.storage
+			else gosub PUT_IT $righthandnoun in %main.storage
+			}
+	 gosub GET my bellows
 	}
 	 send push my bellows
 	 pause 1
@@ -197,16 +214,24 @@ pliers:
 	var item.anvil 0
 	if !contains("$righthandnoun", "pliers") then
 	{
-	 gosub verb put my $righthandnoun in my %forging.storage
-	 gosub verb get my pliers
+		if "$rightthand" != "Empty" then
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$righthandnoun") then gosub PUT_IT $righthandnoun in %tool.storage
+			else gosub PUT_IT $righthandnoun in %main.storage
+			}
+	 gosub GET my pliers
 	}
 	send look on anvil
 	pause 1
 	if "$lefthandnoun" != "" && %item.anvil = 1 then
 	{
 	 if ("$lefthandnoun" = "tongs" && %worn.tongs = 1) then send wear my tongs
-	 else gosub verb put my $lefthandnoun in my %forging.storage
-	 gosub verb get $MC.order.noun from anvil
+	 else
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %main.storage
+			}
+	 gosub GET $MC.order.noun from anvil
 	 var item.anvil 0
 	}
 	 send pull my $MC.order.noun with my pliers
@@ -216,56 +241,80 @@ pliers:
 oil:
 	if !contains("$righthandnoun", "flask of oil") then
 	{
-	 gosub verb put my $righthandnoun in my %forging.storage
-	 gosub verb get my oil from my %forging.storage
+	 	if "$rightthand" != "Empty" then
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$righthandnoun") then gosub PUT_IT $righthandnoun in %tool.storage
+			else gosub PUT_IT $righthandnoun in %main.storage
+			}
+	 gosub GET my oil from my %forging.storage
 	}
 	send look on anvil
 	pause 1
 	if "$lefthandnoun" != "" && %item.anvil = 1 then
 	{
 	 if ("$lefthandnoun" = "tongs" && %worn.tongs = 1) then send wear my tongs
-	 else gosub verb put my $lefthandnoun in my %forging.storage
-	 gosub verb get $MC.order.noun from anvil
+	 else
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %main.storage
+			}
+	 gosub GET $MC.order.noun from anvil
 	 var item.anvil 0
 	}
 	if !contains("$lefthandnoun", "$MC.order.noun") then
 	{
 	 if ("$lefthandnoun" = "tongs" && %worn.tongs = 1) then send wear my tongs
-	 else gosub verb put my $lefthandnoun in my %forging.storage
-	 gosub verb get my $MC.order.noun from my %forging.storage
+	 else
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %main.storage
+			}
+	 gosub GET my $MC.order.noun from my %forging.storage
 	}
-	 send pour oil on $MC.order.noun
+	 send pour oil on my $MC.order.noun
 	 waitforre ^Roundtime
 	 pause 1
-	 gosub verb put my oil in my %forging.storage
+	 gosub PUT_IT my oil in my %forging.storage
 	 gosub mark
 	return
 
 rehammer:
-	 gosub verb put my $MC.order.noun on anvil
+	 gosub PUT_IT my $MC.order.noun on anvil
 	 var tool hammer
 	return
 
 assemble:
 	if !contains("$righthandnoun", "%assemble") then
 	{
-	 gosub verb put my $righthandnoun in my %forging.storage
-	 gosub verb get my %assemble from my %forging.storage
+		if "$rightthand" != "Empty" then
+			{
+			if matchre("$righthand", "hammer|pliers|tongs|bellows|shovel") then gosub PUT_IT $righthandnoun in %tool.storage
+			else gosub PUT_IT $righthandnoun in %main.storage
+			}
+	 gosub GET my %assemble from my %forging.storage
 	}
 	send look on anvil
 	pause 1
 	if "$lefthandnoun" != "" && %item.anvil = 1 then
 	{
 	 if ("$lefthandnoun" = "tongs" && %worn.tongs = 1) then send wear my tongs
-	 else gosub verb put my $lefthandnoun in my %forging.storage
-	 gosub verb get $MC.order.noun from anvil
+	 else
+			{
+			if matchre("$lefthand", "hammer|pliers|tongs|bellows|shovel") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %main.storage
+			}
+	 gosub GET $MC.order.noun from anvil
 	 var item.anvil 0
 	}
 	if !matchre("$lefthandnoun", "$MC.order.noun") then
 	{
 	 if ("$lefthandnoun" = "tongs" && %worn.tongs = 1) then send wear my tongs
-	 else gosub verb put my $lefthandnoun in my %forging.storage
-	 gosub verb get my $MC.order.noun
+	 else
+			{
+			if matchre("$lefthand", "hammer|pliers|tongs|bellows|shovel") then PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %main.storage
+			}
+	 gosub GET my $MC.order.noun
 	}
 	 send assemble my $MC.order.noun with my %assemble
 	 pause 1
@@ -279,30 +328,35 @@ Retry:
 	
 repeat:
 	 math pound.repeat subtract 1
-	 gosub verb put my $MC.order.noun in my %forging.storage
-	 gosub verb get my book
-	 gosub verb study my book
-	 pause 1
-	 gosub verb get my ingot
-	 gosub verb put ingot on anvil
+	 gosub PUT_IT my $MC.order.noun in my %forging.storage
+	 gosub GET my book
+	 gosub STUDY my book
+	 gosub GET my ingot
+	 gosub PUT_IT ingot on anvil
 	goto first.pound
 
 done:
 	pause .5
 	send look on anvil
 	pause 2
-	if ("$righthandnoun" != "" && !contains("$righthandnoun", "$MC.order.noun")) then gosub verb put my $righthandnoun in my %forging.storage
+	if ("$righthandnoun" != "" && !contains("$righthandnoun", "$MC.order.noun")) then 		
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$righthandnoun") then gosub PUT_IT $righthandnoun in %tool.storage
+			else gosub PUT_IT $righthandnoun in %main.storage
+			}
 	if ("$lefthandnoun" != ""  && !contains("$lefthandnoun", "$MC.order.noun")) then
 	{
-	 if ("$lefthandnoun" = "tongs" && %worn.tongs = 1) then send wear my tongs
-	 else send put my $lefthandnoun in my %forging.storage
-	 waitforre ^You put|^You sling
+	 if ("$lefthandnoun" = "tongs" && %worn.tongs = 1) then gosub WEAR my tongs
+	 else
+			{
+			if matchre("hammer|pliers|tongs|bellows|shovel", "$lefthandnoun") then gosub PUT_IT $lefthandnoun in %tool.storage
+			else gosub PUT_IT $lefthandnoun in %main.storage
+			}
 	}
 	pause 1
-	if %item.anvil = 1 then gosub verb get $MC.order.noun from anvil
+	if %item.anvil = 1 then gosub GET $MC.order.noun from anvil
 	var item.anvil 0
 	 pause 1
 	 if %pound.repeat > 1 then goto repeat
 	 put #parse POUNDING DONE
 	exit
-#include mc_include.cmd
