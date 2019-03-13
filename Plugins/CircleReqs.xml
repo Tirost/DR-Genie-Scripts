@@ -1,0 +1,2256 @@
+<?xml version="1.0"?>
+<Reqs ver="1.0">
+	<Guild name="Barbarian">
+		<Shortname>barbarian</Shortname>
+		<Shortname>barbaria</Shortname>
+		<Shortname>barbari</Shortname>
+		<Shortname>barbar</Shortname>
+		<Shortname>barba</Shortname>
+		<Shortname>barb</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Mastery">
+			<Skill>Melee Mastery</Skill>
+			<Skill>Ranged Mastery</Skill>
+		</Skillset>
+		<Skillset name="Magic">
+			<Skill>Arcana</Skill>
+			<Skill>Augmentation</Skill>
+			<Skill>Debilitation</Skill>
+			<Skill>Warding</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Scholarship</Skill>
+		</Skillset>
+		<Req type="Hard" name="Parry Ability" Skillset="Weapon">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Inner Fire" Skillset="Magic">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Evasion" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Tactics" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="1st Armor" Skillset="Armor">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="2nd Armor" Skillset="Armor">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="1st Weapon" Skillset="Weapon">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>5</Circles11-30>
+			<Circles31-70>6</Circles31-70>
+			<Circles71-100>6</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="2nd Weapon" Skillset="Weapon">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>5</Circles11-30>
+			<Circles31-70>6</Circles31-70>
+			<Circles71-100>6</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="3rd Weapon" Skillset="Weapon">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Weapon" Skillset="Weapon">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="1st Mastery" Skillset="Mastery">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>5</Circles11-30>
+			<Circles31-70>6</Circles31-70>
+			<Circles71-100>6</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="1st Supernatural" Skillset="Magic">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="2nd Supernatural" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="1st Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="2nd Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="3rd Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="1st Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Bard">
+		<Shortname>bard</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Magic">
+			<Skill>Arcana</Skill>
+			<Skill>Attunement</Skill>
+			<Skill>Augmentation</Skill>
+			<Skill>Debilitation</Skill>
+			<Skill>Warding</Skill>
+			<Skill>Utility</Skill>
+			<Skill>Sorcery</Skill>
+			<Skill>Targeted Magic</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>Evasion</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+			<Skill>Thievery</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Scholarship</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Parry Ability">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Performance">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>5</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Tactics">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Armor" Skillset="Armor">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Weapon" Skillset="Weapon">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Weapon" Skillset="Weapon">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Magic" Skillset="Magic">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Magic" Skillset="Magic">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Magic" Skillset="Magic">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Magic" Skillset="Magic">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Cleric">
+		<Shortname>cleric</Shortname>
+		<Shortname>cleri</Shortname>
+		<Shortname>cler</Shortname>
+		<Shortname>cle</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Magic">
+			<Skill>Arcana</Skill>
+			<Skill>Attunement</Skill>
+			<Skill>Augmentation</Skill>
+			<Skill>Debilitation</Skill>
+			<Skill>Warding</Skill>
+			<Skill>Utility</Skill>
+			<Skill>Targeted Magic</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>Evasion</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Scholarship</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Shield Usage">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Parry Ability">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Theurgy">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Augmentation">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Armor" Skillset="Armor">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Weapon" Skillset="Weapon">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Weapon" Skillset="Weapon">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Magic" Skillset="Magic">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>5</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Magic" Skillset="Magic">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Magic" Skillset="Magic">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Lore" Skillset="Lore">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Empath">
+		<Shortname>empath</Shortname>
+		<Shortname>empat</Shortname>
+		<Shortname>empa</Shortname>
+		<Shortname>emp</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Magic">
+			<Skill>Attunement</Skill>
+			<Skill>Arcana</Skill>
+			<Skill>Targeted Magic</Skill>
+			<Skill>Augmentation</Skill>
+			<Skill>Debilitation</Skill>
+			<Skill>Utility</Skill>
+			<Skill>Warding</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>Evasion</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Scholarship">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="Hard" name="First Aid">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Empathy">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>5</Circles11-30>
+			<Circles31-70>6</Circles31-70>
+			<Circles71-100>6</Circles71-100>
+			<Circles101-150>7</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Outdoorsmanship">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Magic" Skillset="Magic">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Magic" Skillset="Magic">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Magic" Skillset="Magic">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up></Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Moon Mage">
+		<Shortname>moon mage</Shortname>
+		<Shortname>moonmage</Shortname>
+		<Shortname>moonmag</Shortname>
+		<Shortname>moonma</Shortname>
+		<Shortname>moonm</Shortname>
+		<Shortname>moon</Shortname>
+		<Shortname>mmage</Shortname>
+		<Shortname>mm</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Magic">
+			<Skill>Arcana</Skill>
+			<Skill>Attunement</Skill>
+			<Skill>Augmentation</Skill>
+			<Skill>Debilitation</Skill>
+			<Skill>Warding</Skill>
+			<Skill>Utility</Skill>
+			<Skill>Sorcery</Skill>
+			<Skill>Targeted Magic</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>Evasion</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Astrology">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Scholarship">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Magic" Skillset="Magic">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>5</Circles31-70>
+			<Circles71-100>6</Circles71-100>
+			<Circles101-150>7</Circles101-150>
+			<Circles151Up>18</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Magic" Skillset="Magic">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Magic" Skillset="Magic">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Magic" Skillset="Magic">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="6th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="7th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Survival" Skillset="Survival">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Necromancer">
+		<Shortname>necromancer</Shortname>
+		<Shortname>necromance</Shortname>
+		<Shortname>necromanc</Shortname>
+		<Shortname>necroman</Shortname>
+		<Shortname>necroma</Shortname>
+		<Shortname>necrom</Shortname>
+		<Shortname>necro</Shortname>
+		<Shortname>necr</Shortname>
+		<Shortname>nec</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Magic">
+			<Skill>Arcana</Skill>
+			<Skill>Attunement</Skill>
+			<Skill>Augmentation</Skill>
+			<Skill>Debilitation</Skill>
+			<Skill>Warding</Skill>
+			<Skill>Utility</Skill>
+			<Skill>Sorcery</Skill>
+			<Skill>Targeted Magic</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>Evasion</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+			<Skill>Thievery</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Scholarship</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Small Edged">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Targeted Magic">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Thanatology">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Armor" Skillset="Armor">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Magic" Skillset="Magic">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Magic" Skillset="Magic">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Magic" Skillset="Magic">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Magic" Skillset="Magic">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>5</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>5</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="6th Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="7th Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Paladin">
+		<Shortname>paladin</Shortname>
+		<Shortname>paladi</Shortname>
+		<Shortname>palad</Shortname>
+		<Shortname>pala</Shortname>
+		<Shortname>pal</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Magic">
+			<Skill>Arcana</Skill>
+			<Skill>Attunement</Skill>
+			<Skill>Augmentation</Skill>
+			<Skill>Debilitation</Skill>
+			<Skill>Warding</Skill>
+			<Skill>Utility</Skill>
+			<Skill>Targeted Magic</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Scholarship</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Defending">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Parry Ability">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Evasion">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Shield Usage">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Scholarship">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Tactics">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Armor" Skillset="Armor">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>5</Circles11-30>
+			<Circles31-70>5</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Armor" Skillset="Armor">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Weapon" Skillset="Weapon">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Weapon" Skillset="Weapon">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Magic" Skillset="Magic">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Magic" Skillset="Magic">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Magic" Skillset="Magic">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Ranger">
+		<Shortname>ranger</Shortname>
+		<Shortname>range</Shortname>
+		<Shortname>rang</Shortname>
+		<Shortname>ran</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Magic">
+			<Skill>Arcana</Skill>
+			<Skill>Attunement</Skill>
+			<Skill>Augmentation</Skill>
+			<Skill>Debilitation</Skill>
+			<Skill>Warding</Skill>
+			<Skill>Utility</Skill>
+			<Skill>Targeted Magic</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>Evasion</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Scouting</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+			<Skill>Thievery</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Scholarship</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Defending">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Parry Ability">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Scouting">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Armor" Skillset="Armor">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Armor" Skillset="Armor">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Weapon" Skillset="Weapon">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Weapon" Skillset="Weapon">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Magic" Skillset="Magic">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Magic" Skillset="Magic">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Magic" Skillset="Magic">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="6th Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="7th Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="8th Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Thief">
+		<Shortname>thief</Shortname>
+		<Shortname>thie</Shortname>
+		<Shortname>thi</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>Backstab</Skill>
+			<Skill>Evasion</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+			<Skill>Thievery</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Scholarship</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Parry Ability">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Thievery">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Stealth">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Armor" Skillset="Armor">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Weapon" Skillset="Weapon">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Weapon" Skillset="Weapon">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>5</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="6th Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="7th Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="8th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Trader">
+		<Shortname>trader</Shortname>
+		<Shortname>trade</Shortname>
+		<Shortname>trad</Shortname>
+		<Shortname>tra</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>Evasion</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+			<Skill>Thievery</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Scholarship</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Trading">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>5</Circles11-30>
+			<Circles31-70>6</Circles31-70>
+			<Circles71-100>6</Circles71-100>
+			<Circles101-150>7</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Appraisal">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Armor" Skillset="Armor">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Armor" Skillset="Armor">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Weapon" Skillset="Weapon">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="6th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+	</Guild>
+	<Guild name="Warrior Mage">
+		<Shortname>warrior mage</Shortname>
+		<Shortname>warriormage</Shortname>
+		<Shortname>warriormag</Shortname>
+		<Shortname>warriorm</Shortname>
+		<Shortname>wmage</Shortname>
+		<Shortname>wm</Shortname>
+		<Skillset name="Armor">
+			<Skill>Brigandine</Skill>
+			<Skill>Chain Armor</Skill>
+			<Skill>Light Armor</Skill>
+			<Skill>Plate Armor</Skill>
+			<Skill>Shield Usage</Skill>
+		</Skillset>
+		<Skillset name="Weapon">
+			<Skill>Small Edged</Skill>
+			<Skill>Large Edged</Skill>
+			<Skill>Twohanded Edged</Skill>
+			<Skill>Small Blunt</Skill>
+			<Skill>Large Blunt</Skill>
+			<Skill>Twohanded Blunt</Skill>
+			<Skill>Slings</Skill>
+			<Skill>Bow</Skill>
+			<Skill>Crossbow</Skill>
+			<Skill>Staves</Skill>
+			<Skill>Polearms</Skill>
+			<Skill>Light Thrown</Skill>
+			<Skill>Heavy Thrown</Skill>
+			<Skill>Brawling</Skill>
+		</Skillset>
+		<Skillset name="Magic">
+			<Skill>Arcana</Skill>
+			<Skill>Attunement</Skill>
+			<Skill>Augmentation</Skill>
+			<Skill>Debilitation</Skill>
+			<Skill>Warding</Skill>
+			<Skill>Utility</Skill>
+			<Skill>Targeted Magic</Skill>
+		</Skillset>
+		<Skillset name="Survival">
+			<Skill>Athletics</Skill>
+			<Skill>Evasion</Skill>
+			<Skill>First Aid</Skill>
+			<Skill>Locksmithing</Skill>
+			<Skill>Outdoorsmanship</Skill>
+			<Skill>Perception</Skill>
+			<Skill>Skinning</Skill>
+			<Skill>Stealth</Skill>
+		</Skillset>
+		<Skillset name="Lore">
+			<Skill>Alchemy</Skill>
+			<Skill>Appraisal</Skill>
+			<Skill>Enchanting</Skill>
+			<Skill>Engineering</Skill>
+			<Skill>Forging</Skill>
+			<Skill>Mechanical Lore</Skill>
+			<Skill>Outfitting</Skill>
+			<Skill>Performance</Skill>
+			<Skill>Scholarship</Skill>
+			<Skill>Tactics</Skill>
+		</Skillset>
+		<Req type="Hard" name="Defending">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Parry Ability">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="Hard" name="Summoning">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>5</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Targeted Magic">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="Soft" name="Scholarship">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Armor" Skillset="Armor">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Weapon" Skillset="Weapon">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Weapon" Skillset="Weapon">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Weapon" Skillset="Weapon">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Magic" Skillset="Magic">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>5</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Magic" Skillset="Magic">
+			<Circles1-10>4</Circles1-10>
+			<Circles11-30>4</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>5</Circles71-100>
+			<Circles101-150>6</Circles101-150>
+			<Circles151Up>15</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Magic" Skillset="Magic">
+			<Circles1-10>3</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>4</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>3</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="5th Magic" Skillset="Magic">
+			<Circles1-10>0</Circles1-10>
+			<Circles11-30>0</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>4</Circles71-100>
+			<Circles101-150>5</Circles101-150>
+			<Circles151Up>13</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="4th Survival" Skillset="Survival">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>1</Circles11-30>
+			<Circles31-70>1</Circles31-70>
+			<Circles71-100>2</Circles71-100>
+			<Circles101-150>2</Circles101-150>
+			<Circles151Up>5</Circles151Up>
+		</Req>
+		<Req type="N" name="Primary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>3</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>4</Circles101-150>
+			<Circles151Up>10</Circles151Up>
+		</Req>
+		<Req type="N" name="Secondary Lore" Skillset="Lore">
+			<Circles1-10>2</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+		<Req type="N" name="Tertiary Lore" Skillset="Lore">
+			<Circles1-10>1</Circles1-10>
+			<Circles11-30>2</Circles11-30>
+			<Circles31-70>2</Circles31-70>
+			<Circles71-100>3</Circles71-100>
+			<Circles101-150>3</Circles101-150>
+			<Circles151Up>8</Circles151Up>
+		</Req>
+	</Guild>
+</Reqs>

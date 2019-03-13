@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Sort ver="1.0">
+  <SkillGroup name="Combat" skillset="all">
+    <Shortname>combat</Shortname>
+    <Shortname>comba</Shortname>
+    <Shortname>comb</Shortname>
+    <Shortname>com</Shortname>
+    <Skill>Shield Usage</Skill>
+    <Skill>Light Armor</Skill>
+    <Skill>Chain Armor</Skill>
+    <Skill>Brigandine</Skill>
+    <Skill>Plate Armor</Skill>
+    <Skill>Defending</Skill>
+    <Skill>Endurance</Skill>
+    <Skill>Parry Ablity</Skill>
+    <Skill>Small Edged</Skill>
+    <Skill>Large Edged</Skill>
+    <Skill>Twohanded Edged</Skill>
+    <Skill>Small Blunt</Skill>
+    <Skill>Large Blunt</Skill>
+    <Skill>Twohanded Blunt</Skill>
+    <Skill>Slings</Skill>
+    <Skill>Bow</Skill>
+    <Skill>Crossbow</Skill>
+    <Skill>Staves</Skill>
+    <Skill>Polearms</Skill>
+    <Skill>Light Thrown</Skill>
+    <Skill>Heavy Thrown</Skill>
+    <Skill>Brawling</Skill>
+    <Skill>Offhand Weapon</Skill>
+    <Skill>Melee Mastery</Skill>
+    <Skill>Missle Mastery</Skill>
+    <Skill>Expertise</Skill>
+    <Skill>Targeted Magic</Skill>
+    <Skill>Debilitation</Skill>
+    <Skill>Warding</Skill>
+    <Skill>Evasion</Skill>
+    <Skill>Backstab</Skill>
+    <Skill>Tactics</Skill>
+  </SkillGroup>
+  <SkillGroup name="Offense" skillset="all">
+    <Shortname>offense</Shortname>
+    <Shortname>offens</Shortname>
+    <Shortname>offen</Shortname>
+    <Shortname>offe</Shortname>
+    <Shortname>off</Shortname>
+    <Skill>Small Edged</Skill>
+    <Skill>Large Edged</Skill>
+    <Skill>Twohanded Edged</Skill>
+    <Skill>Small Blunt</Skill>
+    <Skill>Large Blunt</Skill>
+    <Skill>Twohanded Blunt</Skill>
+    <Skill>Slings</Skill>
+    <Skill>Bow</Skill>
+    <Skill>Crossbow</Skill>
+    <Skill>Staves</Skill>
+    <Skill>Polearms</Skill>
+    <Skill>Light Thrown</Skill>
+    <Skill>Heavy Thrown</Skill>
+    <Skill>Brawling</Skill>
+    <Skill>Offhand Weapon</Skill>
+    <Skill>Melee Mastery</Skill>
+    <Skill>Missle Mastery</Skill>
+    <Skill>Expertise</Skill>
+    <Skill>Targeted Magic</Skill>
+    <Skill>Debilitation</Skill>
+    <Skill>Backstab</Skill>
+    <Skill>Tactics</Skill>
+  </SkillGroup>
+  <SkillGroup name="Defense" skillset="all">
+    <Shortname>defense</Shortname>
+    <Shortname>defens</Shortname>
+    <Shortname>defen</Shortname>
+    <Shortname>defe</Shortname>
+    <Shortname>def</Shortname>
+    <Skill>Shield Usage</Skill>
+    <Skill>Light Armor</Skill>
+    <Skill>Chain Armor</Skill>
+    <Skill>Brigandine</Skill>
+    <Skill>Plate Armor</Skill>
+    <Skill>Defending</Skill>
+    <Skill>Endurance</Skill>
+    <Skill>Parry Ablity</Skill>
+    <Skill>Warding</Skill>
+    <Skill>Evasion</Skill>
+    <Skill>Tactics</Skill>
+  </SkillGroup>
+  <SkillGroup name="Crafting" skillset="lore">
+    <Shortname>crafting</Shortname>
+    <Shortname>craftin</Shortname>
+    <Shortname>crafti</Shortname>
+    <Shortname>craft</Shortname>
+    <Shortname>craf</Shortname>
+    <Shortname>cra</Shortname>
+    <Skill>Forging</Skill>
+    <Skill>Engineering</Skill>
+    <Skill>Outfitting</Skill>
+    <Skill>Alchemy</Skill>
+    <Skill>Enchanting</Skill>
+  </SkillGroup>
+</Sort>
