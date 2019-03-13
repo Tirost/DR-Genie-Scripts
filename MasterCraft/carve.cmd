@@ -140,7 +140,7 @@ carve:
 riffler:
 	if !contains("$righthandnoun", "riffler") then
 	{
-	 if matchre("%chisel|rasp|riffler", "$righthandnoun") then gosub PUT_IT $righthandnoun in  my %tool.storage
+	 if matchre("%chisel|rasp|riffler", "$righthandnoun") then gosub PUT_IT $righthandnoun in my %tool.storage
 	 else gosub PUT_IT my $righthandnoun in my %engineering.storage
 	 gosub GET my riffler
 	}
