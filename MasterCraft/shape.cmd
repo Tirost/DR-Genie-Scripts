@@ -190,7 +190,7 @@ drawknife:
 	return
 
 carving.knife:
-	if !contains("$righthandnoun", "carving.knife") then
+	if !matchre("$righthand", "carving.knife") then
 	{
 	 gosub ToolStow
 	 gosub ToolGet
