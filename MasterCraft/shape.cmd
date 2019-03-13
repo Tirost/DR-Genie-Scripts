@@ -155,7 +155,7 @@ ToolStow:
 	else 
 		{
 		if matchre("knife|drawknife|rasp|shaper|clamp", "$righthandnoun") then
-		gosub PUT_IT my $righthand in my %tool.storage
+		gosub PUT_IT my $righthandnoun in my %tool.storage
 		else gosub PUT_IT my $righthandnoun in my $MC_ENGINEERING.STORAGE
 		}
 	###Reset BELTTOOLS for a new Tool
