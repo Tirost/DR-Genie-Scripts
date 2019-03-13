@@ -186,7 +186,7 @@ ToolStow:
 	else 
 		{
 		if matchre("knife|rasp|drawknife|tools|shovel|shaper|clamp|pliers", "$righthandnoun") then
-		gosub PUT_IT my $righthand in my %tool.storage
+		gosub PUT_IT my $righthandnoun in my %tool.storage
 		else gosub PUT_IT my $righthandnoun in my $MC_ENGINEERING.STORAGE
 		}
 	###Reset BELTTOOLS for a new Tool
@@ -395,7 +395,7 @@ assemble:
 	 pause 1
 	 gosub ToolStow
 	 gosub GET my %assemble
-	 waitforre ^You get
+	 gosub GET my %assemble
 	}
 	 ###send assemble my $MC.order.noun with my %assemble
 	 send assemble my %assemble with my $MC.order.noun
