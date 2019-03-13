@@ -1,7 +1,8 @@
-debug 10
-#MasterCraft - by the player of Jaervin Ividen
+#debug 10
+# Mastercraft by Dasffion
+# Based on MasterCraft - by the player of Jaervin Ividen
 # A crafting script suite...
-#v 0.1.6
+#v 1.0.0
 #
 # Script Usage: .mastercraft								--to only do one work order
 #				.mastercraft <no. of orders>				--to perform more than one
@@ -35,6 +36,7 @@ debug 10
 #		sew.cmd
 #		knit.cmd
 #		carve.cmd
+#		enchant.cmd
 #		shape.cmd
 #		smelt.cmd
 #		grind.cmd
@@ -54,7 +56,6 @@ include mc_include.cmd
 
 
 #TO-DO LIST
-#Add tolower checks on all user imputed variables to make case sensitivity a non-issue
 #Write up stone material management. Sift through deeds to find appropriate size and workability.
 #Look at way to change thread in sew based on thickness
 #Tempering, balancing, honing, sealing, reinforcing scripts.
@@ -1406,7 +1407,8 @@ bundle.order:
 	if "%deed.order" != "on" then
 	{
 		gosub GET my %society.type logbook from my %main.storage
-		send bundle my $MC.order.noun with my logbook
+		if !matchre("$righthand", "logbook") then gosub PUT swap
+		send bundle my $lefthand with my logbook
 		pause 0.5
 	}
 	else gosub deed.order
@@ -1602,7 +1604,8 @@ turn.in:
 	matchre turn.in ^You can't give it to someone who's not here
 	matchre check.for.order ^The work order isn't yet complete
 	send give %master
-	matchwait
+	matchwait 30
+	goto turn.in
 turn.in1:
 	pause .5
 	math orders.completed add 1
