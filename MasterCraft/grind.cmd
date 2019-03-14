@@ -19,7 +19,7 @@ action var action push when ^Straining a bit less you maintain force to the grin
 action var action oil when ^With grinding complete, the metal now needs protection by pouring oil on it.
 action var action Done when Applying the final touches, you complete working
 
-if "$lefthandnoun" != "$MC.order.noun" && "$righthandnoun" != "$MC.order.noun" then
+if !matchre("$lefthand|$righthand", "$MC.order.noun") then
 	{
 	 gosub EMPTY_HANDS
 	 pause .5
