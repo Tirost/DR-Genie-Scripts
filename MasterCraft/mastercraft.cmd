@@ -515,6 +515,7 @@ turn.page:
 			if (($MC_DIFFICULTY < 4) && (!$MC_NOWO)) then 
 				{
 				math difficultytry add 1
+				pause 0.5
 				goto new.order
 				}
 	goto calc.material
@@ -1818,6 +1819,7 @@ new.tool:
 
 lack.coin:
 	if "%get.coin" = "off" then goto lack.coin.exit
+	var temp.room $roomid
 	action (withdrawl) goto lack.coin.exit when (^The clerk flips through her ledger|^The clerk tells you)
 	gosub automove teller
 	gosub PUT withd 5 gold
