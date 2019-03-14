@@ -73,7 +73,7 @@ put #trigger {quickly realize the design is far beyond your abilities\.$} {#var 
 if "%society.type" = "Forging" then
 	{
 	 eval discipline tolower($MC_FORGING.DISCIPLINE)
-	 if !matchre("%discipline", "blacksmith|weapon|armor") then goto discfail
+	 if !matchre("blacksmith|weapon|armor", "%discipline") then goto discfail
 	 eval work.difficulty tolower($MC_FORGING.DIFFICULTY)
 	 eval work.material tolower($MC_FORGING.MATERIAL)
 	 eval order.pref tolower(ingot)
@@ -85,7 +85,7 @@ if "%society.type" = "Forging" then
 if "%society.type" = "Outfitting" then
 	{
 	 eval discipline tolower($MC_OUT.DISCIPLINE)
-	 if !matchre("%discipline", "tailor") then goto discfail
+	 if "%discipline" != "tailor" then goto discfail
 	 eval work.difficulty tolower($MC_OUT.DIFFICULTY)
 	 eval work.material tolower($MC_OUT.MATERIAL)
 	 eval order.pref tolower($MC_OUT.PREF)
@@ -97,7 +97,7 @@ if "%society.type" = "Outfitting" then
 if "%society.type" = "Engineering" then
 	{
 	 eval discipline tolower($MC_ENG.DISCIPLINE)
-	 if !matchre("%discipline", "carving|shaping|tinkering") then goto discfail
+	 if !matchre("carving|shaping|tinkering", "%discipline") then goto discfail
 	 eval work.difficulty tolower($MC_ENG.DIFFICULTY)
 	 eval work.material tolower($MC_ENG.MATERIAL)
 	 eval deed.size
@@ -110,7 +110,7 @@ if "%society.type" = "Engineering" then
 if "%society.type" = "Alchemy" then
 	{
 	 eval discipline tolower($MC_ALC.DISCIPLINE)
-	 if !matchre("%discipline", "remed") then goto discfail
+	 if "%discipline" != "remed" then goto discfail
 	 eval work.difficulty tolower($MC_ALC.DIFFICULTY)
 	 var work.material
 	 var deed.size
@@ -123,7 +123,7 @@ if "%society.type" = "Alchemy" then
 if "%society.type" = "Enchanting" then
 	{
 	 eval discipline tolower($MC_ENCHANTING.DISCIPLINE)
-	 if !matchre("%discipline", "artif") then goto discfail
+	 if "%discipline" != "artif" then goto discfail
 	 eval work.difficulty tolower($MC_ENCHANTING.DIFFICULTY)
 	 var work.material
 	 var deed.size
