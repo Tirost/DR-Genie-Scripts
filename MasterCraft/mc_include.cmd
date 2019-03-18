@@ -55,6 +55,7 @@ eval repair tolower($MC_REPAIR)
 eval auto.repair tolower($MC_AUTO.REPAIR)
 eval get.coin tolower($MC_GET.COIN)
 eval reorder tolower($MC_REORDER)
+var alltools saw|chisel|carving knife|rasp|riffler|clamp|needles|drawknife|slickstone|hammer|tongs|bellows|pliers|shovel|bowl|mixing stick|pestle|mortar|sieve|loop|burin|yardstick|tools|awl|rod
 put #unvar repair.room
 put #trigger {completely understand all facets of the design\.$} {#var MC_DIFFICULTY 6}
 put #trigger {comprehend all but several minor details in the text\.$} {#var MC_DIFFICULTY 5}
@@ -221,6 +222,10 @@ location.vars:
      var RE.room.list 853|854|855|856|857|858|859|860|861|862
      var RE.master.room 853|854|855|856|857|858|859
      var RE.work.room 860|861|862
+	#Ratha Alchemy
+     var RA.room.list 863|864|865|866|867|868|869|870|871|872|873
+     var RA.master.room 863|864|865|866|867|868|869|870
+     var RA.work.room 871|872|873	
 	#Shard Forging
 	 var SF.room.list 644|661|645|648|648|649|650|651|652|653|654|655|656|657|658|659|660|646
 	 var SF.master.room 644|645|649|650|653|654|655|658|646|661
@@ -292,6 +297,7 @@ check.location:
 	if $zoneid = 90 && matchre("%RF.room.list", "$roomid") then var society Ratha.Forging
 	if $zoneid = 90 && matchre("%RO.room.list", "$roomid") then var society Ratha.Outfitting
 	if $zoneid = 90 && matchre("%RE.room.list", "$roomid") then var society Ratha.Engineering
+	if $zoneid = 90 && matchre("%RA.room.list", "$roomid") then var society Ratha.Alchemy
 	if $zoneid = 67 && matchre("%SF.room.list", "$roomid") then var society Shard.Forging
 	if $zoneid = 67 && matchre("%SA.room.list", "$roomid") then var society Shard.Alchemy
 	if $zoneid = 116 && matchre("%HibF.room.list", "$roomid") then var society Hib.Forging
@@ -484,6 +490,17 @@ put #tvar ingot.buy 829
 put #tvar repair.room %ratha.repair.room
 var #tvar repair.clerk %ratha.repair
 var society.type Engineering
+return
+
+Ratha.Alchemy:
+var master Master
+put #tvar master.room %RA.master.room
+put #tvar work.room %RA.work.room
+put #tvar supply.room 865
+put #tvar tool.room 864
+put #tvar repair.room %ratha.repair.room
+var repair.clerk %ratha.repair
+var society.type Alchemy
 return
 
 Shard.Forging:
@@ -715,8 +732,8 @@ ingot:
 #### EMPTY HANDS SUB
 EMPTY_HANDS:
      pause 0.0001
-     if (("$righthand" != "Empty") && (matchre("$righthand", "saw|chisel|carving knife|rasp|riffler|clamp|needles|slickstone|hammer|tongs|bellows|pliers|shovel|bowl|mixing stick|pestle|mortar|sieve|loop|burin|yardstick|tools|awl|rod"))) then echo WORKS
-     if (("$righthand" != "Empty") && (matchre("$lefthand", "saw|chisel|carving knife|rasp|riffler|clamp|needles|slickstone|hammer|tongs|bellows|pliers|shovel|bowl|mixing stick|pestle|mortar|sieve|loop|burin|yardstick|tools|awl|rod"))) then echo WORKS
+     if (("$righthand" != "Empty") && (matchre("$righthand", "%alltools"))) then PUT_IT $righthandnoun in my %tool.storage
+     if (("$righthand" != "Empty") && (matchre("$lefthand", "%alltools"))) then PUT_IT $lefthandnoun in my %tool.storage
      if ("$righthand" != "Empty") then gosub PUT_IT $righthandnoun in %main.storage
      if ("$lefthand" != "Empty") then gosub PUT_IT $lefthandnoun in %main.storage
      return
