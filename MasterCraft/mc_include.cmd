@@ -55,7 +55,9 @@ eval repair tolower($MC_REPAIR)
 eval auto.repair tolower($MC_AUTO.REPAIR)
 eval get.coin tolower($MC_GET.COIN)
 eval reorder tolower($MC_REORDER)
-var alltools saw|chisel|carving knife|rasp|riffler|clamp|needles|drawknife|slickstone|hammer|tongs|bellows|pliers|shovel|bowl|mixing stick|pestle|mortar|sieve|loop|burin|yardstick|tools|awl|rod
+var alltoos $MC_HAMMER|$MC_SHOVEL|$MC_TONGS|$MC_PLIERS|$MC_BELLOWS|$MC_STIRROD|$MC_CHISEL|$MC_SAW|$MC_RASP|$MC_RIFFLER|$MC_TINKERTOOL|$MC_CARVINGKNIFE|$MC_SHAPER|$MC_DRAWKNIFE|$MC_CLAMP|$MC_NEEDLES|$MC_SCISSORS|$MC_SLICKSTONE|$MC_YARDSTICK|$MC_AWL|$MC_BOWL|$MC_MORTAR|$MC_STICK|$MC_PESTLE|$MC_SIEVE|$MC_BURIN|$MC_LOOP
+eval alltools tolower(%alltools)
+#var alltools saw|chisel|carving knife|rasp|riffler|clamp|needles|drawknife|slickstone|hammer|tongs|bellows|pliers|shovel|bowl|mixing stick|pestle|mortar|sieve|loop|burin|yardstick|tools|awl|rod
 put #unvar repair.room
 put #trigger {completely understand all facets of the design\.$} {#var MC_DIFFICULTY 6}
 put #trigger {comprehend all but several minor details in the text\.$} {#var MC_DIFFICULTY 5}
@@ -732,11 +734,41 @@ ingot:
 #### EMPTY HANDS SUB
 EMPTY_HANDS:
      pause 0.0001
-     if (("$righthand" != "Empty") && (matchre("$righthand", "%alltools"))) then PUT_IT $righthandnoun in my %tool.storage
-     if (("$righthand" != "Empty") && (matchre("$lefthand", "%alltools"))) then PUT_IT $lefthandnoun in my %tool.storage
+     if (("$righthand" != "Empty") && (matchre("$righthand", "%alltools"))) then gosub PUT_IT $righthandnoun in my %tool.storage
+     if (("$righthand" != "Empty") && (matchre("$lefthand", "%alltools"))) then gosub PUT_IT $lefthandnoun in my %tool.storage
      if ("$righthand" != "Empty") then gosub PUT_IT $righthandnoun in %main.storage
      if ("$lefthand" != "Empty") then gosub PUT_IT $lefthandnoun in %main.storage
      return
+	 
+ToolCheckRight:
+	var tools $0
+	if "$righthand" = "Empty" then
+		{
+		gosub GET MY %tools
+		return
+		}
+	if !matchre("%tools", "$righthandnoun") then
+		{
+		gosub STOW_RIGHT
+		gosub GET my %tools
+		}
+	return
+	
+ToolCheckLeft:
+	var tools $0
+	if "$lefthand" = "Empty" then
+		{
+		if (matchre("%tools", "tongs" && %worn.tongs = 1) then gosub HOLD my %tools
+		else gosub GET MY %tools
+		return
+		}
+	if !matchre("%tools", "$lefthandnoun") then
+		{
+		gosub STOW_LEFT
+		gosub GET my %tools
+		}
+	return	
+
 	 ### ORDERING SUB, FOR SHOPS
 ORDER:
      var Order $0
@@ -922,12 +954,18 @@ GET:
      matchre RETURN ^What were you referring to\?
      matchre RETURN ^You grab .*(?:\.|\!|\?)
      matchre RETURN ^As best it can\, .* moves in your direction\.
+	 matchre UNTIE ^You pull at it
      send get %Get
      matchwait 15
      put #echo >$Log Crimson $datetime *** MISSING MATCH IN GET! (utility.inc) ***
      put #echo >$Log Crimson $datetime Get = %Get
      put #log $datetime MISSING MATCH IN GET (utility.inc)
      return
+
+UNTIE:
+	send untie %Get
+	var BELTTOOLS 1
+	return
  
 #### HOLD SUB
 HOLD:
@@ -988,28 +1026,35 @@ STOW:
      return
 	 
 STOW_LEFT:
-	var LOCATION STOW_LEFT
-	 matchre WAIT ^\.\.\.wait|^Sorry\,
-     matchre IMMOBILE ^You don't seem to be able to move to do that
-     matchre WEBBED ^You can't do that while entangled in a web
-     matchre STUNNED ^You are still stunned
-     matchre WEAR_CHECK ^.* is too long to fit in .*\.
-     matchre STOW_LEFT1 ^You put .*\.
-     matchre STOW_LEFT1 already in your inventory
-     matchre STOW_LEFT1 ^You open your pouch and put .* inside\, closing it once more\.
-     matchre STOW_LEFT1 ^What were you referring to\?
-     matchre STOW_LEFT1 ^Stow what\?  Type 'STOW HELP' for details\.
-     matchre STOW.UNLOAD ^You should unload
-     send stow LEFT
-     matchwait 15
-     put #echo >$Log Crimson $datetime *** MISSING MATCH IN STOW! (utility.inc) ***
-     put #echo >$Log Crimson $datetime Stow = %Stow
-     put #log $datetime MISSING MATCH IN STOW (utility.inc)
-     goto STOW_LEFT1
+	if matchre("%alltools", "$lefthandnoun") then 
+		{
+		if %BELTTOOLS = 1 then 
+			{
+			var BELTTOOLS 0
+			send tie my $lefthandnoun to my belt
+			pause 0.5
+			if "$lefthand" != "Empty" then gosub PUT_IT my $righthandnoun in my %tool.storage
+			}
+		else gosub PUT_IT my $lefthandnoun in my %tool.storage
+		}
+	else gosub PUT_IT my $lefthandnoun in my %main.storage
+	return
 	 
-STOW_LEFT1:
-	var LOCATION STOW_1
-	goto STOW_1
+STOW_RIGHT:
+	if matchre("%alltools", "$righthandnoun") then 		
+		{
+		if %BELTTOOLS = 1 then 
+			{
+			var BELTTOOLS 0
+			send tie my $righthandnoun to my belt
+			pause 0.5
+			if "$righthand" != "Empty" then gosub PUT_IT my $righthandnoun in my %tool.storage
+			}
+		else gosub PUT_IT my $righthandnoun in my %tool.storage
+		}
+	else gosub PUT_IT my $righthandnoun in my %main.storage
+	return
+	 
 		
 #### WEAR SUB
 WEAR_CHECK:

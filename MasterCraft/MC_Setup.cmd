@@ -114,6 +114,43 @@ put #var MC_NOWO 0
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
+#######################################################################
+##########################  TOOL VARIABLES  ###########################
+#######################################################################
+## These should match what is shown in your hands. If you're having trouble knowing what to put hold it in your right
+## hand and #echo $righthand copy what is shown and paste that.
+#FORGING
+put #var MC_HAMMER silversteel mallet
+put #var MC_SHOVEL glaes-edged shovel
+put #var MC_TONGS muracite tongs
+put #var MC_PLIERS hooked pliers
+put #var MC_BELLOWS leather bellows
+put #var MC_STIRROD stirring rod
+#ENGINEERING
+put #var MC_CHISEL iron chisel
+put #var MC_SAW bone saw
+put #var MC_RASP iron rasp
+put #var MC_RIFFLER square riffler
+put #var MC_TINKERTOOL tools
+put #var MC_CARVINGKNIFE carving knife
+put #var MC_SHAPER wood shaper
+put #var MC_DRAWKNIFE metal drawknife
+put #var MC_CLAMP metal clamps
+#OUTFITTING
+put #var MC_NEEDLES sewing needles
+put #var MC_SCISSORS ka'hurst scissors
+put #var MC_SLICKSTONE slickstone
+put #var MC_YARDSTICK silversteel yardstick
+put #var MC_AWL uthamar awl
+#ALCHEMY
+put #var MC_BOWL purpleheart bowl
+put #var MC_MORTAR stone mortar
+put #var MC_STICK mixing stick
+put #var MC_PESTLE belzune pestle
+put #var MC_SIEVE wirework sieve
+#ENCHANTING
+put #var MC_BURIN burin
+put #var MC_LOOP loop
 goto endsetup
 
 #######################################################################
@@ -224,6 +261,41 @@ put #var MC_NOWO 1
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
+#######################################################################
+##########################  TOOL VARIABLES  ###########################
+#######################################################################
+#FORGING
+put #var MC_HAMMER silversteel mallet
+put #var MC_SHOVEL wide shovel
+put #var MC_TONGS box-jaw tongs
+put #var MC_PLIERS hooked pliers
+put #var MC_BELLOWS corrugated-hide bellows
+put #var MC_STIRROD stirring rod
+#ENGINEERING
+put #var MC_CHISEL iron chisel
+put #var MC_SAW bone saw
+put #var MC_RASP iron rasp
+put #var MC_RIFFLER square riffler
+put #var MC_TINKERTOOL tools
+put #var MC_CARVINGKNIFE carving knife
+put #var MC_SHAPER wood shaper
+put #var MC_DRAWKNIFE metal drawknife
+put #var MC_CLAMP metal clamps
+#OUTFITTING
+put #var MC_NEEDLES sewing needles
+put #var MC_SCISSORS ka'hurst scissors
+put #var MC_SLICKSTONE slickstone
+put #var MC_YARDSTICK silversteel yardstick
+put #var MC_AWL uthamar awl
+#ALCHEMY
+put #var MC_BOWL alabaster bowl
+put #var MC_MORTAR stone mortar
+put #var MC_STICK mixing stick
+put #var MC_PESTLE grooved pestle
+put #var MC_SIEVE wire sieve
+#ENCHANTING
+put #var MC_BURIN burin
+put #var MC_LOOP loop
 goto endsetup
 
 #######################################################################
@@ -334,6 +406,41 @@ put #var MC_NOWO 1
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
+#######################################################################
+##########################  TOOL VARIABLES  ###########################
+#######################################################################
+#FORGING
+put #var MC_HAMMER silversteel mallet
+put #var MC_SHOVEL wide shovel
+put #var MC_TONGS box-jaw tongs
+put #var MC_PLIERS hooked pliers
+put #var MC_BELLOWS corrugated-hide bellows
+put #var MC_STIRROD stirring rod
+#ENGINEERING
+put #var MC_CHISEL iron chisel
+put #var MC_SAW bone saw
+put #var MC_RASP iron rasp
+put #var MC_RIFFLER square riffler
+put #var MC_TINKERTOOL tools
+put #var MC_CARVINGKNIFE carving knife
+put #var MC_SHAPER wood shaper
+put #var MC_DRAWKNIFE metal drawknife
+put #var MC_CLAMP metal clamps
+#OUTFITTING
+put #var MC_NEEDLES sewing needles
+put #var MC_SCISSORS ka'hurst scissors
+put #var MC_SLICKSTONE slickstone
+put #var MC_YARDSTICK silversteel yardstick
+put #var MC_AWL uthamar awl
+#ALCHEMY
+put #var MC_BOWL alabaster bowl
+put #var MC_MORTAR stone mortar
+put #var MC_STICK mixing stick
+put #var MC_PESTLE grooved pestle
+put #var MC_SIEVE wire sieve
+#ENCHANTING
+put #var MC_BURIN burin
+put #var MC_LOOP loop
 goto endsetup
 
 #######################################################################
@@ -445,6 +552,41 @@ put #var MC_NOWO 0
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 3
 put #var MC_MIN.ORDER 1
+#######################################################################
+##########################  TOOL VARIABLES  ###########################
+#######################################################################
+#FORGING
+put #var MC_HAMMER silversteel mallet
+put #var MC_SHOVEL wide shovel
+put #var MC_TONGS box-jaw tongs
+put #var MC_PLIERS hooked pliers
+put #var MC_BELLOWS corrugated-hide bellows
+put #var MC_STIRROD stirring rod
+#ENGINEERING
+put #var MC_CHISEL iron chisel
+put #var MC_SAW bone saw
+put #var MC_RASP iron rasp
+put #var MC_RIFFLER square riffler
+put #var MC_TINKERTOOL tools
+put #var MC_CARVINGKNIFE carving knife
+put #var MC_SHAPER wood shaper
+put #var MC_DRAWKNIFE metal drawknife
+put #var MC_CLAMP metal clamps
+#OUTFITTING
+put #var MC_NEEDLES sewing needles
+put #var MC_SCISSORS ka'hurst scissors
+put #var MC_SLICKSTONE slickstone
+put #var MC_YARDSTICK silversteel yardstick
+put #var MC_AWL uthamar awl
+#ALCHEMY
+put #var MC_BOWL alabaster bowl
+put #var MC_MORTAR stone mortar
+put #var MC_STICK mixing stick
+put #var MC_PESTLE grooved pestle
+put #var MC_SIEVE wire sieve
+#ENCHANTING
+put #var MC_BURIN burin
+put #var MC_LOOP loop
 goto endsetup
 
 #######################################################################
@@ -556,6 +698,41 @@ put #var MC_NOWO 0
 put #var MC_END.EARLY 0
 put #var MC_MAX.ORDER 4
 put #var MC_MIN.ORDER 3
+#######################################################################
+##########################  TOOL VARIABLES  ###########################
+#######################################################################
+#FORGING
+put #var MC_HAMMER silversteel mallet
+put #var MC_SHOVEL wide shovel
+put #var MC_TONGS box-jaw tongs
+put #var MC_PLIERS hooked pliers
+put #var MC_BELLOWS corrugated-hide bellows
+put #var MC_STIRROD stirring rod
+#ENGINEERING
+put #var MC_CHISEL iron chisel
+put #var MC_SAW bone saw
+put #var MC_RASP iron rasp
+put #var MC_RIFFLER square riffler
+put #var MC_TINKERTOOL tools
+put #var MC_CARVINGKNIFE carving knife
+put #var MC_SHAPER wood shaper
+put #var MC_DRAWKNIFE metal drawknife
+put #var MC_CLAMP metal clamps
+#OUTFITTING
+put #var MC_NEEDLES sewing needles
+put #var MC_SCISSORS ka'hurst scissors
+put #var MC_SLICKSTONE slickstone
+put #var MC_YARDSTICK silversteel yardstick
+put #var MC_AWL uthamar awl
+#ALCHEMY
+put #var MC_BOWL alabaster bowl
+put #var MC_MORTAR stone mortar
+put #var MC_STICK mixing stick
+put #var MC_PESTLE grooved pestle
+put #var MC_SIEVE wire sieve
+#ENCHANTING
+put #var MC_BURIN burin
+put #var MC_LOOP loop
 goto endsetup
 
 endsetup:
