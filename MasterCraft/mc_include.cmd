@@ -57,6 +57,9 @@ eval get.coin tolower($MC_GET.COIN)
 eval reorder tolower($MC_REORDER)
 var alltools $MC_HAMMER|$MC_SHOVEL|$MC_TONGS|$MC_PLIERS|$MC_BELLOWS|$MC_STIRROD|$MC_CHISEL|$MC_SAW|$MC_RASP|$MC_RIFFLER|$MC_TINKERTOOL|$MC_CARVINGKNIFE|$MC_SHAPER|$MC_DRAWKNIFE|$MC_CLAMP|$MC_NEEDLES|$MC_SCISSORS|$MC_SLICKSTONE|$MC_YARDSTICK|$MC_AWL|$MC_BOWL|$MC_MORTAR|$MC_STICK|$MC_PESTLE|$MC_SIEVE|$MC_BURIN|$MC_LOOP
 eval alltools tolower(%alltools)
+eval alltools replacere("%alltools", "\|+", "|")
+eval alltools replacere("%alltools", "^\|", "")
+eval alltools replacere("%alltools", "\|$", "")
 #var alltools saw|chisel|carving knife|rasp|riffler|clamp|needles|drawknife|slickstone|hammer|tongs|bellows|pliers|shovel|bowl|mixing stick|pestle|mortar|sieve|loop|burin|yardstick|tools|awl|rod
 put #unvar repair.room
 put #trigger {completely understand all facets of the design\.$} {#var MC_DIFFICULTY 6}
