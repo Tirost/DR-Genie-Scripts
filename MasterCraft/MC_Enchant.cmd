@@ -20,7 +20,7 @@ action var tool sigil;var sigil $1 when ^You need another (\S+) .*sigil to conti
 action var tool imbue when ^Then continue the process with the casting of an imbue spell|Once finished you sense an imbue spell will be required to continue enchanting.
 action var tool done when With the enchantment complete|With the enchanting process completed
 action put #tvar prepared 1 when ^You feel fully prepared
-action (work) goto Retry when \.\.\.wait|type ahead
+#action (work) goto Retry when \.\.\.wait|type ahead
 action (work) off
 var main.storage $MC_ENCHANTING.STORAGE
 
@@ -76,9 +76,7 @@ imbue:
 	if "$MC_IMBUE" = "ROD" then
 		{
 		gosub GET imbue rod
-		send wave rod at $MC.order.noun
-		pause 0.5
-		pause 0.5
+		gosub Action wave rod at $MC.order.noun
 		}
 	if ("$MC_IMBUE" = "SPELL") then 
 		{
@@ -98,7 +96,7 @@ sigil:
 	
 fount:
 	gosub GET my fount
-	put wave fount at $MC.order.noun
+	send wave fount at $MC.order.noun
 	return
 	
 scribe:
@@ -106,15 +104,11 @@ scribe:
 	gosub specialcheck
 	pause 0.5
 	if "%tool" != "scribe" then goto %tool
-	send scribe $MC.order.noun on braz with my $MC_BURIN
-	pause 0.5
-	pause 0.5
+	gosub Action scribe $MC.order.noun on braz with my $MC_BURIN
 	goto work
 	
 meditate:
-	send meditate fount on braz
-	pause 0.5
-	pause 0.5
+	gosub Action meditate fount on braz
 	var special NULL
 	return
 	
@@ -122,23 +116,16 @@ focus:
 	if def(MC_FOCUS.WAND) then
 		{
 		gosub GET $MC_FOCUS.WAND
-		send wave $MC_FOCUS.WAND at $MC.order.noun
-		pause 0.5
-		pause 0.5
-		pause 0.5
+		gosub Action wave $MC_FOCUS.WAND at $MC.order.noun
 		gosub PUT_IT $MC_FOCUS.WAND in %tool.storage
 		}
-	else send focus $MC.order.noun
-	pause 0.5
-	pause 0.5
+	else gosub Action focus $MC.order.noun
 	var special NULL
 	return
 
 loop:
 	gosub ToolCheckLeft $MC_LOOP
-	send push $MC.order.noun on brazier with my $MC_LOOP
-	pause 0.5
-	pause 0.5
+	gosub Action push $MC.order.noun on brazier with my $MC_LOOP
 	gosub STOW_LEFT
 	var special NULL
 	return

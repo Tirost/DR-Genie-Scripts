@@ -771,6 +771,15 @@ ToolCheckLeft:
 		gosub GET my %tools
 		}
 	return	
+	
+Action:
+var command $0
+Action_1:
+matchre Action_1 ^\.\.\.wait|type ahead
+matchre RETURN ^Roundtime\:?|^\[Roundtime\:?|^\(Roundtime\:?
+send %command
+matchwait 10
+return
 
 	 ### ORDERING SUB, FOR SHOPS
 ORDER:

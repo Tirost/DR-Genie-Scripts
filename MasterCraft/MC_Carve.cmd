@@ -49,7 +49,7 @@ action var Action rasp when and determine it is no longer level|has developed an
 action var Action polish when some discolored areas on|applying some polish to 
 action var Action carve when ^carve .* with my %chisel|^scrape .* with my rasp|^rub .* with my riffler|^apply my polish to .*|appears free of defects that would impede further carving|anything that would prevent carving|ready for further carving
 #action var Action assemble when ^\[Ingredients can
-action (work) goto Retry when \.\.\.wait|type ahead
+#action (work) goto Retry when \.\.\.wait|type ahead
 action goto done when ^Applying the final touches|You cannot figure out how to do that
 
 action (order) put #tvar polish.order $1 when (\d+)\)\..*jar of surface polish.*(Lirums|Kronars|Dokoras)
@@ -123,26 +123,26 @@ goto work
 carve:
 	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckRight %chisel
-	 send carve %hand $MC.order.noun with my %chisel
-	 pause 1
+	 gosub Action carve %hand $MC.order.noun with my %chisel
 	return
 
 
 riffler:
+	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckRight $MC_RIFFLER
 	var Action carve
-	 send rub %hand $MC.order.noun with my $MC_RIFFLER
-	 pause 1
+	 gosub Action rub %hand $MC.order.noun with my $MC_RIFFLER
 	return
 
 rasp:
+	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckRight $MC_RASP
 	var Action carve
-	 send scrape %hand $MC.order.noun with my $MC_RASP
-	 pause 1
+	 gosub Action scrape %hand $MC.order.noun with my $MC_RASP
 	return
 
 polish:
+	if "%assemble" != "" then gosub assemble
 	if %polish.gone = 1 then gosub new.tool
 	if !contains("$righthandnoun", "polish") then
 	{
@@ -150,8 +150,7 @@ polish:
 	 gosub GET my polish
 	}
 	var Action carve
-	 send apply %hand polish to my $MC.order.noun
-	 pause 1
+	 gosub Action apply %hand polish to my $MC.order.noun
 	return
 
 assemble:
@@ -162,9 +161,6 @@ assemble:
 	 gosub GET my %assemble
 	}
 	 send assemble %hand $MC.order.noun with my %assemble
-	 pause 1
-	 send analyze %hand $MC.order.noun
-	 pause 1
 	 var assemble
 	return
 

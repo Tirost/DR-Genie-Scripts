@@ -36,7 +36,7 @@ action var excessloc $2 when You carefully cut off the excess material and set i
 action var tool needle when ^measure my \S+ with my yardstick|^rub my \S+ with my slickstone|poke my \S+ with my pins|^poke my \S+ with my awl|^cut my \S+ with my scissors|pushing it with a needle and thread
 action GOTO unfinished when That tool does not seem suitable for that task.
 action send get $MC.order.noun when ^You must be holding the .* to do that\.
-action (work) goto Retry when \.\.\.wait|type ahead
+#action (work) goto Retry when \.\.\.wait|type ahead
 action (work) off
 
 action (order) var thread.order $1 when (\d+)\)\..*yards of cotton thread.*(Lirums|Kronars|Dokoras)
@@ -92,24 +92,21 @@ needle:
 	if "%assemble" != "" then gosub assemble
 	if %thread.gone = 1 then gosub new.tool
 	gosub ToolCheckLeft $MC_NEEDLES
-	send push my $MC.order.noun with my $MC_NEEDLES
-	pause 1
+	gosub Action push my $MC.order.noun with my $MC_NEEDLES
 	return
 
 yardstick:
 	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckLeft $MC_YARDSTICK
 	var tool needle
-	send measure my $MC.order.noun with my $MC_YARDSTICK
-	pause 1
+	gosub Action measure my $MC.order.noun with my $MC_YARDSTICK
 	return
 
 slickstone:
 	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckLeft $MC_SLICKSTONE
 	var tool needle
-	send rub my $MC.order.noun with my $MC_SLICKSTONE
-	pause 1
+	gosub Action rub my $MC.order.noun with my $MC_SLICKSTONE
 	return
 
 pins:
@@ -121,24 +118,21 @@ pins:
 		gosub GET my pins
 	}
 	var tool needle
-	send poke my $MC.order.noun with my pins
-	pause 1
+	gosub Action poke my $MC.order.noun with my pins
 	return
 	
 scissors:
 	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckLeft $MC_SCISSORS
 	var tool needle
-	send cut my $MC.order.noun with my $MC_SCISSORS
-	pause 1
+	gosub Action cut my $MC.order.noun with my $MC_SCISSORS
 	return
 
 awl:
 	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckLeft $MC_AWL
 	var tool needle
-	send poke my $MC.order.noun with my $MC_AWL
-	pause 1
+	gosub Action poke my $MC.order.noun with my $MC_AWL
 	return
 	
 assemble:
@@ -211,7 +205,7 @@ repeat:
 	math sew.repeat subtract 1
 	gosub PUT_IT my $MC.order.noun in my $MC_OUTFITTING.STORAGE
 	gosub GET my tailor book
-	gosub verb study my book
+	gosub Study my book
 	gosub PUT_IT my book in my $MC_OUTFITTING.STORAGE
 	gosub GET my %material
 	var tool needle

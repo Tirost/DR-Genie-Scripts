@@ -23,7 +23,7 @@ action var Action knit when ^push my needle|^turn my needle|^cast my needle|^kni
 action var Action push when addition of some purl stitching|some purl stitches|^Some purl stitching
 action var Action turn when add some ribbing|Some ribbing should be added|so ribbing can be added to the knitting process
 action var Action cast when be cast off the needles
-action (work) goto Retry when \.\.\.wait|type ahead
+#action (work) goto Retry when \.\.\.wait|type ahead
 action var Action done when ^Applying the final touches
 action (work) off
 
@@ -42,13 +42,13 @@ unfinished:
 	waitforre ^You.*analyze
 	if !matchre("$MC_NEEDLES", "$lefthandnoun") then send swap
 	pause 1
-	goto Action
+	goto KnitAction
 	}
 
 first.cut:
 	 var Action knit
 	 matchre excess You carefully cut off the excess
-	 matchre Action Roundtime: \d+
+	 matchre KnitAction Roundtime: \d+
 	 send knit my yarn with my $MC_NEEDLES
 	matchwait
 
@@ -56,30 +56,25 @@ excess:
 	 send put my yarn in my %outfitting.storage
 	waitforre ^You put
 	
-Action:
+KnitAction:
 	action (work) on
 	save %Action
 	if "%Action" = "done" then goto done
-	send %Action my needle
-	pause 0.5
-	pause 0.5
-	goto Action
+	gosub Action %Action my needle
+	goto KnitAction
 
 Retry:
 	pause 1
 	var Action %s
-	goto Action
+	goto KnitAction
 
 repeat:
 	math sew.repeat subtract 1
-	send put my $MC.order.noun in my %outfitting.storage
-	waitforre ^You put
-	send get my tailor book
-	send study my book
-	waitforre Roundtime
-	send put my book in my %outfitting.storage
-	send get my yarn
-	waitforre ^You get
+	gosub PUT_IT my $MC.order.noun in my %outfitting.storage
+	gosub GET my tailor book
+	gosub STUDY my book
+	gosub PUT_IT my book in my %outfitting.storage
+	gosub GET my yarn
 	goto first.cut
 
 done:

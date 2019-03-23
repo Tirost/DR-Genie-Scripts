@@ -28,7 +28,7 @@ action var special alcohol when  ^You need another splash of alcohol to continue
 action var special catalyst when ^You need another catalyst material to
 action var special add.herb when You need another prepared herb to
 action var tool done when ^Applying the final touches, you complete working
-action (work) goto Retry when \.\.\.wait|type ahead
+#action (work) goto Retry when \.\.\.wait|type ahead
 action (work) off
 var alchemy.storage $MC_ALCHEMY.STORAGE
 
@@ -79,8 +79,8 @@ first.mix:
 	pause 0.5
 	gosub GET my %mixer
 	pause 0.5
-	if "%tool.mix" = "crush" then send %tool.mix %herb1 in my %bowl with my %mixer
-	else send %tool.mix my %bowl with my %mixer
+	if "%tool.mix" = "crush" then gosub Action %tool.mix %herb1 in my %bowl with my %mixer
+	else gosub Action %tool.mix my %bowl with my %mixer
 	pause 5
 	goto work
 
@@ -96,9 +96,8 @@ work:
 mix:
 	gosub specialcheck
 	gosub ToolCheckLeft %mixer
-	if "%tool.mix" = "crush" then send %tool.mix $MC.order.noun in my %bowl with my %mixer
-	else send %tool.mix my %bowl with my %mixer
-	pause 5
+	if "%tool.mix" = "crush" then gosub Action %tool.mix $MC.order.noun in my %bowl with my %mixer
+	else gosub Action %tool.mix my %bowl with my %mixer
 	return
 	
 
@@ -106,22 +105,19 @@ sieve:
 	gosub specialcheck
 	gosub ToolCheckLeft $MC_SIEVE
 	var tool mix
-	send push my $MC.order.noun with my $MC_SIEVE
-	pause 5
+	gosub Action push my $MC.order.noun with my $MC_SIEVE
 	return
 	
 smell:
 	gosub specialcheck
 	var tool mix
-	send smell my $MC.order.noun
-	pause 5
+	gosub Action smell my $MC.order.noun
 	return
 	
 turn:
 	gosub specialcheck
 	var tool mix
-	send turn my %bowl
-	pause 5
+	gosub Action turn my %bowl
 	return
 	
 water:
@@ -163,8 +159,7 @@ add.herb:
 	return
 	
 analyze:
-	send analyze my $MC.order.noun
-	waitforre ^You.*analyze
+	gosub Action analyze my $MC.order.noun
 	goto work
 	
 specialcheck:
@@ -261,7 +256,6 @@ repeat:
 	gosub PUT_IT my $MC.order.noun in my %alchemy.storage
 	gosub GET my Remedies book
 	gosub STUDY study my book
-	waitforre Roundtime
 	gosub PUT_IT my book in my %alchemy.storage
 	gosub GET my %material
 	var tool mix

@@ -48,7 +48,7 @@ action var assemble $1 $2 when another finished (long|short) leather (cord)
 action var assemble $1 $2 when another finished (long|short) wooden (pole)
  
 action var Action assemble when ^\[Ingredients can|You must assemble|appears ready to be reinforced|appears ready to be strengthened
-action (work) goto Retry when \.\.\.wait|type ahead
+#action (work) goto Retry when \.\.\.wait|type ahead
 action goto done when ^Applying the final touches|You cannot figure out how to do that
 
 action (order) var stain.order $1 when (\d+)\)\..*some wood stain.*(Lirums|Kronars|Dokoras)
@@ -143,36 +143,31 @@ fouledup:
 
 drawknife:
 	gosub ToolCheckRight $MC_DRAWKNIFE
-	 send scrape my $MC.order.noun with my $MC_DRAWKNIFE
-	 pause 1
+	 gosub action scrape my $MC.order.noun with my $MC_DRAWKNIFE
 	return
 
 carving.knife:
 	gosub ToolCheckRight $MC_CARVINGKNIFE
 	var Action drawknife
-	 send carve my $MC.order.noun with my $MC_CARVINGKNIFE
-	 pause 1
+	 gosub action carve my $MC.order.noun with my $MC_CARVINGKNIFE
 	return
 
 rasp:
 	gosub ToolCheckRight $MC_RASP
 	var Action drawknife
-	 send scrape my $MC.order.noun with my $MC_RASP
-	 pause 1
+	 gosub action scrape my $MC.order.noun with my $MC_RASP
 	return
 
 shaper:
 	gosub ToolCheckRight $MC_SHAPER
 	var Action drawknife
-	 send shape my $MC.order.noun with my $MC_SHAPER
-	 pause 1
+	 gosub action shape my $MC.order.noun with my $MC_SHAPER
 	return
 	
 clamp:
 	gosub ToolCheckRight $MC_CLAMPS
 	var Action drawknife
-	 send push my $MC.order.noun with my $MC_CLAMPS
-	 pause 1
+	 gosub action push my $MC.order.noun with my $MC_CLAMPS
 	return
 
 assemble:
@@ -185,7 +180,7 @@ assemble:
 	 ###send assemble my $MC.order.noun with my %assemble
 	 send assemble my %assemble with my $MC.order.noun
 	 pause 1
-	 send analyze my $MC.order.noun
+	 gosub action analyze my $MC.order.noun
 	 pause 1
 	return
 
@@ -193,7 +188,7 @@ stain:
 	if %stain.gone = 1 then gosub new.tool
 	gosub ToolCheckRight stain
 	var Action drawknife
-	 send apply my stain to my $MC.order.noun
+	 gosub action apply my stain to my $MC.order.noun
 	 pause 1
 	return
 
@@ -201,8 +196,7 @@ glue:
 	if %glue.gone = 1 then gosub new.tool
 	gosub ToolCheckRight glue
 	var Action drawknife
-	 send apply my glue to my $MC.order.noun
-	 pause 1
+	 gosub action apply my glue to my $MC.order.noun
 	return
 	
 shaft:
@@ -226,8 +220,8 @@ arrowheads:
 	gosub GET my %ArrowheadTool
 	
 arrowhead_material:
-		match arrowhead_make You get
-		match done What were you
+	match arrowhead_make You get
+	match done What were you
 	send get my %1
 	matchwait
 
@@ -300,3 +294,5 @@ done:
 	if %shape.repeat > 1 then goto repeat
 	 put #parse SHAPING DONE
 	exit
+
+

@@ -116,16 +116,14 @@ work:
 analyze:
 	 pause
 	 pause 1
-	 send analyze $MC.order.noun
-	 pause 1
+	 gosub Action analyze $MC.order.noun
 	goto work
 
 hammer:
 	 gosub poundcheck
 	 if %tongs.adj = 1 then send adjust my tongs
 	 pause .5
-	 send pound $MC.order.noun on anvil with my $MC_HAMMER
-	 pause 1
+	 gosub Action pound $MC.order.noun on anvil with my $MC_HAMMER
 	return
 
 poundcheck:
@@ -143,15 +141,13 @@ shovel:
 	}
 	else gosub ToolCheckRight $MC_SHOVEL
 	var tool hammer
-	 send push fuel with my %shovel
-	 pause .5
+	 gosub Action push fuel with my %shovel
 	return
 
 bellows:
 	gosub ToolCheckRight $MC_BELLOWS
 	var tool hammer
-	 send push my $MC_BELLOWS
-	 pause 1
+	 gosub Action push my $MC_BELLOWS
 	return
 
 tongs:
@@ -159,13 +155,11 @@ tongs:
 	 if %swap.tongs = 1 && %tongs.adj = 1 then send adjust my $MC_TONGS
 	 pause .5
 	 var tool hammer
-	 send turn $MC.order.noun on anvil with my $MC_TONGS
-	 pause 1
+	 gosub Action turn $MC.order.noun on anvil with my $MC_TONGS
 	return
 
 tub:
-	 send push tub
-	 pause 1
+	 gosub Action push tub
 	return
 
 pliers:
@@ -181,7 +175,7 @@ pliers:
 		var item.anvil 0
 		}
 		var tool hammer
-	send pull my $MC.order.noun with my $MC_PLIERS
+	gosub Action pull my $MC.order.noun with my $MC_PLIERS
 	pause 1
 	return
 
@@ -206,9 +200,7 @@ oil:
 	 else gosub STOW_LEFT
 	 gosub GET my $MC.order.noun from my %forging.storage
 	}
-	 send pour oil on my $MC.order.noun
-	 waitforre ^Roundtime
-	 pause 1
+	 gosub Action pour oil on my $MC.order.noun
 	 gosub PUT_IT my oil in my %forging.storage
 	 gosub mark
 	return

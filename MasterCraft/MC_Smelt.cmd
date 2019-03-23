@@ -41,13 +41,10 @@ TooMuch:
 	goto gettool
 
 GetTool:
-	pause 1
 	gosub GET my $MC_STIRROD
 	goto stir
 
 Stir:
-	pause
-	pause 1
 	match turn crucible's sides
 	match fuel needs more fuel
 	match bellows stifled coals
@@ -58,34 +55,22 @@ Stir:
 	matchwait
 
 Fuel:
-	pause
-	pause 1
 	gosub GET my $MC_SHOVEL
-	send push fuel with $MC_SHOVEL
-	pause
-	pause 1
+	gosub Action push fuel with $MC_SHOVEL
 	gosub STOW_LEFT
 	goto stir
 
 Bellows:
-	pause
-	pause 1
 	gosub GET my $MC_BELLOWS
-	send push $MC_BELLOWS
-	pause
-	pause 1
+	gosub Action push $MC_BELLOWS
 	gosub STOW_LEFT
 	goto stir
 
 Turn:
-	pause
-	pause 1
 	send turn cruc
 	goto stir
 
 Finish:
-	pause
-	pause 1
 	if matchre("$righthand|$lefthand", "ingot") then gosub PUT_IT ing in my $MC_FORGING.STORAGE
 	gosub STOW_RIGHT
 	goto end

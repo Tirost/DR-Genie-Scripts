@@ -58,7 +58,7 @@ action var assemble $1 $2 when another finished (long|short) wooden (pole)
 action var assemble lenses when You need another lenses to continue crafting
 
 action var Action assemble when ^\[Ingredients can|You must assemble|appears ready to be reinforced|appears ready to be strengthened
-action (work) goto Retry when \.\.\.wait|type ahead
+#action (work) goto Retry when \.\.\.wait|type ahead
 action goto done when ^Applying the final touches
 action goto restudy when ^You cannot figure out how to do that
 
@@ -77,8 +77,7 @@ unfinished:
 	pause 2
 	if contains("$0", "unfinished") then
 	{
-		send analyze my $MC.order.noun
-		waitforre ^You.*analyze
+		gosub Action analyze my $MC.order.noun
 		if !contains("$lefthandnoun", "$MC.order.noun") then gosub PUT swap
 		goto work
 	}
@@ -154,18 +153,13 @@ work:
 	goto work
 	
 fouledup:
-	send analyze my $MC.order.noun
-	pause 1
+	gosub Action analyze my $MC.order.noun
 	goto work
 	
 restudy:
 	gosub EMPTY_HANDS
-	pause 0.5
 	gosub GET tinkering book from my $MC_ENGINEERING.STORAGE
-	pause 0.2
 	gosub STUDY my book
-	pause 0.5
-	pause 0.5
 	gosub PUT_IT my book in my $MC_ENGINEERING.STORAGE
 	gosub GET my $MC_DRAWKNIFE
 	goto WORK
@@ -190,6 +184,7 @@ pressaction:
 mechcombine:
 	gosub STOW_RIGHT
 mechcombine_1:
+	matchre mechcombine_1 \.\.\.wait|type ahead
 	match presscount What were you referring to
 	match mechcombine_2 You get
 	put get my mech from my $MC_ENGINEERING.STORAGE
@@ -226,8 +221,7 @@ foundit:
 shovel:
 	save shovel
 	gosub ToolCheckRight $MC_SHOVEL
-	 send push fuel with my $MC_SHOVEL
-	 pause 1
+	 gosub Action push fuel with my $MC_SHOVEL
 	return
 	
 plierspress:
@@ -241,6 +235,8 @@ plierspress:
 		}
 	gosub ToolCheckRight $MC_PLIERS
 	var Action Plierspress
+	plierspress_1:
+	 matchre plierspress_1 \.\.\.wait|type ahead
 	 match return The unfinished mechanism
 	 match toosmall You need at least 5 volume of metal for the press
 	 send push my ingot with press
@@ -263,57 +259,48 @@ pull:
 		gosub shovel
 		var Action pull
 		}
-		send pull mechanism with press
-		pause 1
+		gosub Action pull mechanism with press
 		return
 
 drawknife:
 	gosub ToolCheckRight $MC_DRAWKNIFE
-	 send scrape my $MC.order.noun with my $MC_DRAWKNIFE
-	 pause 1
+	 gosub Action scrape my $MC.order.noun with my $MC_DRAWKNIFE
 	return
 
 carving.knife:
 	gosub ToolCheckRight $MC_CARVINGKNIFE
 	var Action drawknife
-	 send carve my $MC.order.noun with my $MC_CARVINGKNIFE
-	 pause 1
+	 gosub Action carve my $MC.order.noun with my $MC_CARVINGKNIFE
 	return
 
 rasp:
 	gosub ToolCheckRight $MC_RASP
 	var Action drawknife
-	 ###send rub my $MC.order.noun with my rasp
-	 send scrape my $MC.order.noun with my $MC_RASP
-	 pause 1
+	 gosub Action scrape my $MC.order.noun with my $MC_RASP
 	return
 
 shaper:
 	gosub ToolCheckRight $MC_SHAPER
 	var Action drawknife
-	 send shape my $MC.order.noun with my $MC_SHAPER
-	 pause 1
+	 gosub Action shape my $MC.order.noun with my $MC_SHAPER
 	return
 
 tools:
 	gosub ToolCheckRight $MC_TINKERTOOL
 	var Action drawknife
-	 send adjust my $MC.order.noun with my $MC_TINKERTOOL
-	 pause 1
+	 gosub Action adjust my $MC.order.noun with my $MC_TINKERTOOL
 	return
 	
 clamp:
 	gosub ToolCheckRight $MC_CLAMP
 	var Action drawknife
-	 send push my $MC.order.noun with my $MC_CLAMP
-	 pause 1
+	 gosub Action push my $MC.order.noun with my $MC_CLAMP
 	return
 	
 pliers:
 	gosub ToolCheckRight $MC_PLIERS
 	var Action drawknife
-	 send pull my $MC.order.noun with my $MC_PLIERS
-	 pause 1
+	 gosub Action pull my $MC.order.noun with my $MC_PLIERS
 	return
 
 assemble:
@@ -329,8 +316,7 @@ assemble:
 	 pause 1
 	 if matchre("$righthandnoun", "%assemble") then gosub PUT_IT my %assemble in my $MC_ENGINEERING.STORAGE
 	 pause 0.5
-	 send analyze my $MC.order.noun
-	 pause 1
+	 gosub Action analyze my $MC.order.noun
 	return
 	
 assemblemech:
@@ -343,30 +329,25 @@ stain:
 	if %stain.gone = 1 then gosub new.tool
 	gosub ToolCheckRight stain
 	var Action drawknife
-	 send apply my stain to my $MC.order.noun
-	 pause 1
+	 gosub Action apply my stain to my $MC.order.noun
 	return
 
 glue:
 	if %glue.gone = 1 then gosub new.tool
 	gosub ToolCheckRight glue
 	var Action drawknife
-	 send apply my glue to my $MC.order.noun
-	 pause 1
+	 gosub Action apply my glue to my $MC.order.noun
 	return
 	
 shaft:
 	if !matchre("$righthand|$lefthand", "lumber") then gosub GET my lumber
-	pause 0.5
 	gosub GET my $MC_SHAPER
-	pause 0.5
 	shapeshaft:
 	pause 0.5
-	put shape my lumber into bolt shaft
-	pause 0.5
-	pause 0.5
+	gosub Action shape my lumber into bolt shaft
 	gosub PUT_IT my shafts in my $MC_ENGINEERING.STORAGE
 	repeat:
+	matchre repeat \.\.\.wait|type ahead
 	match done What were you referring to
 	matchre shapeshaft You get|You pickup
 	send lumber
@@ -377,16 +358,15 @@ arrowheads:
 	
 arrowhead_material:
 	pause 0.5
+	matchre arrowhead_material \.\.\.wait|type ahead
 		match arrowhead_make You get
 		match done What were you
 	send GET my %1
 	matchwait
 
 arrowhead_make:
-	send shape %1 into bolthead
-	pause 5
+	gosub Action shape %1 into bolthead
 	gosub PUT_IT my bolth in my $MC_ENGINEERING.STORAGE
-	pause 1
 	goto arrowhead_material
 
 new.tool:

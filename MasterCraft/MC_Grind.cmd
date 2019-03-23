@@ -29,26 +29,25 @@ if !matchre("$lefthand|$righthand", "$MC.order.noun") then
 pause .5	
 	var action turn
 	
-Action:
+GrindAction:
 	pause .5
 	gosub %action
-	goto Action
+	goto GrindAction
 
 turn:
 	pause .5
-	send turn grindstone
+	gosub Action turn grindstone
 	return
 
 push:
 	pause .5
-	send push grindstone with my $MC.order.noun
+	gosub Action push grindstone with my $MC.order.noun
 	return
 
 oil:
 	pause .5
-	 send get my oil
-	 send pour my oil on my $MC.order.noun
-	 pause .5
+	 gosub GET my oil
+	 gosub Action pour my oil on my $MC.order.noun
 	return
 
 lack.coin:
@@ -58,7 +57,7 @@ lack.coin:
 
 done:
 	pause .5
-	 send put my oil in my %forging.storage
+	 gosub PUT_IT my oil in my %forging.storage
 	 gosub mark
 	 pause .5
 	 send #parse GRINDING DONE
