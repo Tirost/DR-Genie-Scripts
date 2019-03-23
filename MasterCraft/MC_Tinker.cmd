@@ -275,12 +275,14 @@ drawknife:
 
 carving.knife:
 	gosub ToolCheckRight $MC_CARVINGKNIFE
+	var Action drawknife
 	 send carve my $MC.order.noun with my $MC_CARVINGKNIFE
 	 pause 1
 	return
 
 rasp:
 	gosub ToolCheckRight $MC_RASP
+	var Action drawknife
 	 ###send rub my $MC.order.noun with my rasp
 	 send scrape my $MC.order.noun with my $MC_RASP
 	 pause 1
@@ -288,24 +290,28 @@ rasp:
 
 shaper:
 	gosub ToolCheckRight $MC_SHAPER
+	var Action drawknife
 	 send shape my $MC.order.noun with my $MC_SHAPER
 	 pause 1
 	return
 
 tools:
 	gosub ToolCheckRight $MC_TINKERTOOL
+	var Action drawknife
 	 send adjust my $MC.order.noun with my $MC_TINKERTOOL
 	 pause 1
 	return
 	
 clamp:
 	gosub ToolCheckRight $MC_CLAMP
+	var Action drawknife
 	 send push my $MC.order.noun with my $MC_CLAMP
 	 pause 1
 	return
 	
 pliers:
 	gosub ToolCheckRight $MC_PLIERS
+	var Action drawknife
 	 send pull my $MC.order.noun with my $MC_PLIERS
 	 pause 1
 	return
@@ -336,6 +342,7 @@ assemblemech:
 stain:
 	if %stain.gone = 1 then gosub new.tool
 	gosub ToolCheckRight stain
+	var Action drawknife
 	 send apply my stain to my $MC.order.noun
 	 pause 1
 	return
@@ -343,6 +350,7 @@ stain:
 glue:
 	if %glue.gone = 1 then gosub new.tool
 	gosub ToolCheckRight glue
+	var Action drawknife
 	 send apply my glue to my $MC.order.noun
 	 pause 1
 	return

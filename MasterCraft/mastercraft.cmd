@@ -562,7 +562,9 @@ calc.material:
 			if (("%work.material" = "steel") && (%volume > 10)) then goto new.order
 			}
 		gosub parts.inv
+		if %%order.pref.item.count > 11 then var %%order.pref.item.count 11
 		if %%order.pref.item.count > 0 then gosub count.material ingot
+		if %%order.pref.deed.count > 11 then var %%order.pref.deed.count 11
 		if %%order.pref.deed.count > 0 then gosub count.material deed
 		if %bigenough < %order.quantity then gosub lack.material
 		if %mass.volume > %material.volume then gosub lack.material
@@ -596,7 +598,9 @@ calc.material:
 		var mass.volume %volume
 		math mass.volume multiply %order.quantity
 		gosub parts.inv
+		if %%order.pref.item.count > 11 then var %%order.pref.item.count 11
 		if %%order.pref.item.count > 0 then gosub count.material %order.pref
+		if %%order.pref.deed.count > 11 then var %%order.pref.deed.count 11
 		if %%order.pref.deed.count > 0 then gosub count.material deed
 		if %mass.volume > %material.volume then gosub lack.material
 		gosub combine.check "%main.storage" %order.pref
@@ -635,8 +639,10 @@ calc.material:
 		pause 0.1
 		var mass.volume %volume
 		math mass.volume multiply %order.quantity
-		gosub parts.inv
+		gosub parts.inv		
+		if %%order.pref.item.count > 11 then var %%order.pref.item.count 11
 		if %%order.pref.item.count > 0 then gosub count.material stack
+		if %%order.pref.deed.count > 11 then var %%order.pref.deed.count 11
 		if %%order.pref.deed.count > 0 then gosub count.material deed
 		if %mass.volume > %material.volume then gosub lack.material
 		gosub combine.check "%main.storage" %order.pref
@@ -669,9 +675,11 @@ calc.material:
 		var mass.volume %volume
 		math mass.volume multiply %order.quantity
 		if %mass.volume > 70 then goto new.order
-		gosub parts.inv
+		gosub parts.inv		
+		if %%order.pref.item.count > 11 then var %%order.pref.item.count 11
 		if %%order.pref.item.count > 0 then gosub count.material lumber
 		if "%assemble2" = "mechanism" then gosub count.material mechanism
+		if %%order.pref.deed.count > 11 then var %%order.pref.deed.count 11
 		if %%order.pref.deed.count > 0 then gosub count.material deed
 		if %mass.volume > %material.volume then gosub lack.material	
 		gosub combine.check "%main.storage" %order.pref
@@ -715,6 +723,7 @@ calc.material:
 		var %herb1.material.volume 0
 		var %herb2.material.volume 0
 		gosub parts.inv
+		if %%herb1.item.count > 11 then var %%herb1.item.count 11
 		if %%herb1.item.count > 0 then 
 			{
 			gosub count.material %herb1
@@ -887,7 +896,7 @@ parts.inv:
 	var lenses.count 0
 
 
-	action (forging) math ingot.item.count add 1 when ^\s*(?:an?|some).*(%work.material) ingot
+	action (forging) math ingot.item.count add 1 when ^\s*(?:an?|some)(?! deed).*(%work.material) ingot
 	action (forging) math %order.pref.deed.count add 1 when \s+a deed for (?:an?|some).*(%work.material).*(ingot)
 	action (forging) math long.pole.count add 1 when a long \S+ pole
 	action (forging) math short.pole.count add 1 when a short \S+ pole

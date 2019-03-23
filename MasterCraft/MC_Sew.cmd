@@ -69,6 +69,7 @@ first.cut:
 	if !contains("leather|cloth", "$righthandnoun") then send swap
 	pause 1
 	gosub ToolCheckLeft $MC_SCISSORS
+	var tool needle
 	matchre excess You carefully cut off the excess material and set it (on the|in your|at your) (\S+).$
 	matchre work Roundtime: \d+
 	send cut my %material with my $MC_SCISSORS
@@ -98,6 +99,7 @@ needle:
 yardstick:
 	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckLeft $MC_YARDSTICK
+	var tool needle
 	send measure my $MC.order.noun with my $MC_YARDSTICK
 	pause 1
 	return
@@ -105,6 +107,7 @@ yardstick:
 slickstone:
 	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckLeft $MC_SLICKSTONE
+	var tool needle
 	send rub my $MC.order.noun with my $MC_SLICKSTONE
 	pause 1
 	return
@@ -117,6 +120,7 @@ pins:
 	if "$lefthand" != "Empty" then gosub STOW_LEFT
 		gosub GET my pins
 	}
+	var tool needle
 	send poke my $MC.order.noun with my pins
 	pause 1
 	return
@@ -124,6 +128,7 @@ pins:
 scissors:
 	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckLeft $MC_SCISSORS
+	var tool needle
 	send cut my $MC.order.noun with my $MC_SCISSORS
 	pause 1
 	return
@@ -131,6 +136,7 @@ scissors:
 awl:
 	if "%assemble" != "" then gosub assemble
 	gosub ToolCheckLeft $MC_AWL
+	var tool needle
 	send poke my $MC.order.noun with my $MC_AWL
 	pause 1
 	return

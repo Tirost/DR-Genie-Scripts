@@ -105,18 +105,21 @@ mix:
 sieve:
 	gosub specialcheck
 	gosub ToolCheckLeft $MC_SIEVE
+	var tool mix
 	send push my $MC.order.noun with my $MC_SIEVE
 	pause 5
 	return
 	
 smell:
 	gosub specialcheck
+	var tool mix
 	send smell my $MC.order.noun
 	pause 5
 	return
 	
 turn:
 	gosub specialcheck
+	var tool mix
 	send turn my %bowl
 	pause 5
 	return
@@ -133,6 +136,7 @@ water:
 alcohol:
 	if %alcohol.gone = 1 then gosub new.tool
 	gosub ToolCheckLeft alcohol
+	var tool mix
 	send pour part alcohol in my %bowl
 	pause 0.5
 	if !contains("$lefthandnoun", "alcohol") then var alcohol.gone 1
@@ -145,6 +149,7 @@ catalyst:
 		if "$lefthand" != "Empty" then gosub STOW_LEFT
 		gosub GET my coal nugget from my %alchemy.storage
 	}
+	var tool mix
 	send put nugget in my %bowl
 	pause 0.5
 	if !contains("$lefthandnoun", "nugget") then var catalyst.gone 1
@@ -152,6 +157,7 @@ catalyst:
 
 add.herb:
 	gosub ToolCheckLeft %herb2
+	var tool mix
 	send put %herb2 in my %bowl
 	pause 0.5
 	return

@@ -130,12 +130,14 @@ carve:
 
 riffler:
 	gosub ToolCheckRight $MC_RIFFLER
+	var Action carve
 	 send rub %hand $MC.order.noun with my $MC_RIFFLER
 	 pause 1
 	return
 
 rasp:
 	gosub ToolCheckRight $MC_RASP
+	var Action carve
 	 send scrape %hand $MC.order.noun with my $MC_RASP
 	 pause 1
 	return
@@ -147,6 +149,7 @@ polish:
 	 gosub STOW_RIGHT
 	 gosub GET my polish
 	}
+	var Action carve
 	 send apply %hand polish to my $MC.order.noun
 	 pause 1
 	return
