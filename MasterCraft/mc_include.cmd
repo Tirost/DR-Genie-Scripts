@@ -737,8 +737,8 @@ ingot:
 #### EMPTY HANDS SUB
 EMPTY_HANDS:
      pause 0.0001
-     if (("$righthand" != "Empty") && (matchre("$righthand", "%alltools"))) then gosub PUT_IT $righthandnoun in my %tool.storage
-     if (("$righthand" != "Empty") && (matchre("$lefthand", "%alltools"))) then gosub PUT_IT $lefthandnoun in my %tool.storage
+     if (("$righthand" != "Empty") && (matchre("%alltools", "$righthandnoun"))) then gosub PUT_IT $righthandnoun in my %tool.storage
+     if (("$righthand" != "Empty") && (matchre("%alltools", "$lefthandnoun"))) then gosub PUT_IT $lefthandnoun in my %tool.storage
      if ("$righthand" != "Empty") then gosub PUT_IT $righthandnoun in %main.storage
      if ("$lefthand" != "Empty") then gosub PUT_IT $lefthandnoun in %main.storage
      return
