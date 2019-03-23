@@ -37,7 +37,7 @@ PutMat:
 	matchwait
 
 TooMuch:
-	gosub PUT_IT my %material %mattype in my $MC.FORGING.STORAGE
+	gosub PUT_IT my %material %mattype in my $MC_FORGING.STORAGE
 	goto gettool
 
 GetTool:
@@ -86,7 +86,7 @@ Turn:
 Finish:
 	pause
 	pause 1
-	if matchre("$righthand|$lefthand", "ingot") then gosub PUT_IT ing in my $MC.FORGING.STORAGE
+	if matchre("$righthand|$lefthand", "ingot") then gosub PUT_IT ing in my $MC_FORGING.STORAGE
 	gosub STOW_RIGHT
 	goto end
 
