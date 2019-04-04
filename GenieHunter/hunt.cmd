@@ -5648,6 +5648,7 @@ DO_ANALYZE:
 	matchre ANALYZE_DONE ^Roundtime|^You recall your combo|^Your analysis
 	matchre ADVANCE ^You must be closer
 	matchre FACE ^Analyze what|^You fail to find any
+	matchre RETURN ^You have just recently completed that attack combination, and cannot repeat it so soon.
 	action (combos) on
 	send analyze %barb.tact
 	matchwait 10
