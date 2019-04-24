@@ -3,13 +3,14 @@ ECHO
 ECHO
 ECHO ***********************************************
 ECHO ***
-ECHO ***                   Progressive Stealing v1.57c
-ECHO ***                  By:  Kalic & Challeirra
-ECHO ***
+ECHO ***                   Progressive Stealing v1.6
+ECHO ***                  By:  Kalic & Challeirra & another
+ECHO ***                    (Now DR 3.0 Compatible)
 ECHO ***********************************************
 ECHO
-ECHO http://elanthipedia.com/wiki/Progressive_Stealing_(script)
-ECHO
+ECHO http://elanthipedia.org/wiki/Progressive_Stealing_(script)
+ECHO Was recently updated to be compatable with DR 3.0
+ECHO May have bugs, user be ware.
 ECHO
 IF_1 GOTO SKIPREMINDER
 ECHO *** Don't forget you can run this script with the modifiers EASY, HARD, LESS, or MORE!
@@ -30,22 +31,48 @@ ECHO
 # been consolidated here for ease of replacement, and their
 # explanations follow. Variables in CAPS must match the available
 # toggles or the script will break.
-
+#
+#
+# Original Working SF Vars
+#
+#
+#    setVariable name another
+#    setVariable largeitem1 <item>
+#    setVariable largeitem2 <item>
+#    setVariable DropOrStow STOW
+#    setVariable container1 backpack
+#    setVariable container2 backpack
+#    setVariable action MARK
+#    setVariable clanoption YES
+#    setVariable flee NO
+#    setVariable shardpass gibberish
+#    setVariable riverpass gibberish
+#    setVariable PutOrSlip PUT
+#    setVariable skulk noskulk
+#    setVariable sneak yes
+#
+#
+# Genies Outdated Steal Script Vars Setup (which I haven't gotten to 
+# damned work yet either.  Bleh.
+#
+#
     var name $charactername
-    var largeitem1 $STEAL_LARGE_ITEM1
+    var largeitem1 $STEAL_LARGE_ITEM1 
     var largeitem2 $STEAL_LARGE_ITEM2
-    var DropOrStow $STEAL_DROP_OR_STOW
-    var container1 $STEAL_CONTAINER1
-    var container2 $STEAL_CONTAINER2
-    var armor.stow $STEAL_ARMOR_STOW
-    var action $STEAL_ACTION
-    var clanoption $STEAL_CLAN_OPTION
-    var flee $STEAL_FLEE
+    var DropOrStow $STEAL_DROP_OR_STOW STOW
+    var container1 $STEAL_CONTAINER1 haversack
+    var container2 $STEAL_CONTAINER2 pack
+    var armor.stow $STEAL_ARMOR_STOW saddlebag
+    var action $STEAL_ACTION MARK
+    var clanoption $STEAL_CLAN_OPTION YES
+    var flee $STEAL_FLEE NO
     var shardpass $SHARD_PASS
     var riverpass $HAVEN_PASS
-    var PutOrSlip $STEAL_PUT_OR_SLIP
-    var skulk $STEAL_SKULK
-    var sneak $STEAL_SNEAK
+    var PutOrSlip $STEAL_PUT_OR_SLIP SLIP
+    var skulk $STEAL_SKULK NO
+    var sneak $STEAL_SNEAK YES
+
+
 
 # Name:
 # What is your name? This will be used to retrieve your item sack if
@@ -114,31 +141,29 @@ ECHO
 ##################################################################
 
 
-		var armor.types (parry stick|handwraps|hand claws|footwraps|aegis|buckler|heater|pavise|scutum|shield|sipar|targe|aventail|backplate|balaclava|barbute|bascinet|breastplate|\bcap\b|coat|cowl|cuirass|fauld|gauntlet|gloves|greaves|hauberk|helm|\bhood\b|jerkin|leathers|lorica|mantle|mask|morion|pants|\bplate\b|handguards|robe|sallet|shirt|sleeves|tabard|tasset|thorakes|vambraces|vest|collar|coif|mitt|armor)
-    var startlocation waitandsee
-    var itemlocation  
-    var Difficulty 0
-    var Quantity 0
-    var DiffMod false
-    var QuantMod false
-    var MRS shopcheck1
-    var LorM leave
-    var TravelOrShop travel
-    var BinOrBucket bucket
-    var percentsign %
-    var Profit normal
-    var npcoption yes
-    var update 1.57c
-    var labelerr help
-    var arrest false
-    var Quant Quant
-    var swap 1
-    var stealsettings %0
-    #GOTO %stealinghelp
-	
+    setVariable startlocation waitandsee
+    setVariable itemlocation  
+    setVariable Difficulty 0
+    setVariable Quantity 0
+    setVariable DiffMod false
+    setVariable QuantMod false
+    setVariable MRS shopcheck1
+    setVariable LorM leave
+    setVariable TravelOrShop travel
+    setVariable BinOrBucket bucket
+    setVariable percentsign %
+    setVariable Profit normal
+    setVariable npcoption yes
+    setVariable update 1.57
+    setVariable labelerr help
+    setVariable arrest false
+    setVariable swap 1
+    setVariable stealsettings %0%
+    GOTO %stealinghelp%
+
     NOTFIRSTRUN:
-    if_1 GOTO %1
-    var labelerr realerror
+    if_1 GOTO %1%
+    setVariable labelerr realerror
     put set !roombrief
     waitfor Ok.
     GOTO SETTINGS.REPORT
@@ -153,34 +178,34 @@ ECHO
 
     EASY:
         SHIFT
-        var DiffMod true
-        counter set %Difficulty
+        setVariable DiffMod true
+        counter set %Difficulty%
         counter subtract 1
-        var Difficulty %c
+        setVariable Difficulty %c%
         GOTO NOTFIRSTRUN
 
     HARD:
         SHIFT
-        var DiffMod true
-        counter set %Difficulty
+        setVariable DiffMod true
+        counter set %Difficulty%
         counter add 1
-        var Difficulty %c
+        setVariable Difficulty %c%
         GOTO NOTFIRSTRUN
 
     LESS:
         SHIFT
-        var QuantMod true
-        counter set %Quantity
+        setVariable QuantMod true
+        counter set %Quantity%
         counter subtract 1
-        var Quantity %c
+        setVariable Quantity %c%
         GOTO NOTFIRSTRUN
 
     MORE:
         SHIFT
-        var QuantMod true
-        counter set %Quantity
+        setVariable QuantMod true
+        counter set %Quantity%
         counter add 1
-        var Quantity %c
+        setVariable Quantity %c%
         GOTO NOTFIRSTRUN
 
     FOR:
@@ -189,70 +214,70 @@ ECHO
 
     STOW:
         SHIFT
-        var DropOrStow stow
+        setVariable DropOrStow stow
         GOTO NOTFIRSTRUN
 
     DROP:
         SHIFT
-        var DropOrStow drop
+        setVariable DropOrStow drop
         GOTO NOTFIRSTRUN
 
     MARK:
         SHIFT
-        var action mark
+        setVariable action mark
         GOTO NOTFIRSTRUN
 
     POWER:
         SHIFT
-        var action power
+        setVariable action power
         GOTO NOTFIRSTRUN
 
     PERC:
         SHIFT
-        var action perc
+        setVariable action perc
         GOTO NOTFIRSTRUN
 
     STEAL:
         SHIFT
-        var action steal
+        setVariable action steal
         GOTO NOTFIRSTRUN
 
     PAUSE:
         SHIFT
-        var action pause
+        setVariable action pause
         GOTO NOTFIRSTRUN
 
     PUT:
         SHIFT
-        var PutOrSlip put
+        setVariable PutOrSlip put
         GOTO NOTFIRSTRUN
 
     SLIP:
         SHIFT
-        var PutOrSlip slip
+        setVariable PutOrSlip slip
         GOTO NOTFIRSTRUN
 
     SKULK:
         SHIFT
-        var skulk skulk
+        setVariable skulk skulk
         GOTO NOTFIRSTRUN
 
     SNEAK:
         SHIFT
-        var sneak YES
+        setVariable sneak YES
         GOTO NOTFIRSTRUN
 
     NOSNEAK:
         SHIFT
-        var sneak NO
+        setVariable sneak NO
         GOTO NOTFIRSTRUN
 
     PROFIT:
         SHIFT
-        var Profit profit
-        GOTO PROFIT.%DropOrStow
+        setVariable Profit profit
+        GOTO PROFIT.%DropOrStow%
     PROFIT.DROP:
-        var DropOrStow stow
+        setVariable DropOrStow stow
         ECHO ***********************************************
         ECHO *** You have selected to run this script for profit. Your
         ECHO *** drop/stow toggle has been overridden and changed to STOW.
@@ -280,69 +305,69 @@ ECHO
         GOTO REPORT.NAME
 
     REPORT.NAME:
-        ECHO *** NAME:       Your name is %name.
+        ECHO *** NAME:       Your name is %name%.
 
     REPORT.LARGEITEMS:
         ECHO *** ITEMS:      If arrested (and applicable), script will try to retrieve the following items from your sack:
-        ECHO ***                %largeitem1        %largeitem2
-        GOTO REPORT.DIFFMOD.%DiffMod
+        ECHO ***                %largeitem1%        %largeitem2%
+        GOTO REPORT.DIFFMOD.%DiffMod%
 
     REPORT.DIFFMOD.FALSE:
         ECHO *** DIFFICULTY: NORMAL - You have not modified difficulty settings.
-        GOTO REPORT.QUANTMOD.%QuantMod
+        GOTO REPORT.QUANTMOD.%QuantMod%
     REPORT.DIFFMOD.TRUE:
-        ECHO *** DIFFICULTY: %Difficulty added to your skill bracket.
-        GOTO REPORT.QUANTMOD.%QuantMod
+        ECHO *** DIFFICULTY: %Difficulty% added to your skill bracket.
+        GOTO REPORT.QUANTMOD.%QuantMod%
 
     REPORT.QUANTMOD.FALSE:
         ECHO *** QUANTITY:   NORMAL - You have not modified quantity settings.
-        GOTO REPORT.%DropOrStow.%Profit
+        GOTO REPORT.%DropOrStow%.%Profit%
     REPORT.QUANTMOD.TRUE:
-        ECHO *** QUANTITY:   %Quantity added to the number of items you steal (min attempts 1, max attempts 6).
-        GOTO REPORT.%DropOrStow.%Profit
+        ECHO *** QUANTITY:   %Quantity% added to the number of items you steal (min attempts 1, max attempts 6).
+        GOTO REPORT.%DropOrStow%.%Profit%
 
     REPORT.DROP.NORMAL:
     REPORT.DROP.PROFIT:
         ECHO *** DROP:       You will drop stolen items.
-        GOTO REPORT.ACTION.%action
+        GOTO REPORT.ACTION.%action%
     REPORT.STOW.PROFIT:
         ECHO *** PROFIT:     The items you steal will be selected for their pawning profitability if possible.
     REPORT.STOW.NORMAL:
-        ECHO *** STOW:       You will %PutOrSlip stolen items to pawn and/or bin in the following containers:
-        ECHO ***                %container1        %container2
-        GOTO REPORT.ACTION.%action
+        ECHO *** STOW:       You will %PutOrSlip% stolen items to pawn and/or bin in the following containers:
+        ECHO ***                %container1%        %container2%
+        GOTO REPORT.ACTION.%action%
 
     REPORT.ACTION.MARK:
         ECHO *** MARK:       You will mark items before attempting to steal them.
-        GOTO REPORT.SNEAK.%sneak
+        GOTO REPORT.SNEAK.%sneak%
     REPORT.ACTION.POWER:
         ECHO *** POWER:      You will perceive power before stealing in each shop.
-        GOTO REPORT.SNEAK.%sneak
+        GOTO REPORT.SNEAK.%sneak%
     REPORT.ACTION.PERC:
         ECHO *** PERC:       You will perceive health before stealing in each shop.
-        GOTO REPORT.SNEAK.%sneak
+        GOTO REPORT.SNEAK.%sneak%
     REPORT.ACTION.STEAL:
         ECHO *** NO EXTRAS:  You are not set to mark or use power perception or perceive health.
-        GOTO REPORT.SNEAK.%sneak
+        GOTO REPORT.SNEAK.%sneak%
     REPORT.ACTION.PAUSE:
         ECHO *** PAUSE:      You will wait in each shop for user confirmation before stealing.
-        GOTO REPORT.SNEAK.%sneak
+        GOTO REPORT.SNEAK.%sneak%
 
     REPORT.SNEAK.YES:
     REPORT.SNEAK.SNEAK:
         ECHO *** SNEAKING:   YES - You WILL hide and sneak in and out of shops.
-        GOTO REPORT.CLANS.%clanoption
+        GOTO REPORT.CLANS.%clanoption%
     REPORT.SNEAK.NO:
     REPORT.SNEAK.NOSNEAK:
         ECHO *** SNEAKING:   NO - You will NOT hide and sneak in and out of shops.
-        GOTO REPORT.CLANS.%clanoption
+        GOTO REPORT.CLANS.%clanoption%
 
     REPORT.CLANS.YES:
         ECHO *** CLANS:      YES - Clans, if any, WILL be included in your stealing route.
-        GOTO REPORT.FLEE.%flee
+        GOTO REPORT.FLEE.%flee%
     REPORT.CLANS.NO:
         ECHO *** CLANS:      NO - Clans will NOT be included in your stealing route.
-        GOTO REPORT.FLEE.%flee
+        GOTO REPORT.FLEE.%flee%
 
     REPORT.FLEE.YES:
         ECHO *** AUTO-EXIT:  YES - You WILL automatically exit the game if killed or inexplicably stunned.
@@ -353,7 +378,7 @@ ECHO
 
     REPORT.PASSWORDS:
         ECHO *** PASSWORDS:  If you are a thief, you will use the following guild passwords:
-        ECHO ***                SHARD: %shardpass        HAVEN: %riverpass
+        ECHO ***                SHARD: %shardpass%        HAVEN: %riverpass%
 
     SETTINGS.REPORT.END:
         ECHO ***********************************************
@@ -366,21 +391,20 @@ ECHO
         GOTO CONTAINER.COMPARE
 
     CONTAINER.COMPARE:
-        match CONTAINER.IDENTICAL %container2
+        match CONTAINER.IDENTICAL %container2%
         match CONTAINER.DIFFERENT notidentical
-        gosub UniversalMatch
-        put echo %container1 notidentical
-        matchwait
+        put echo %container1% notidentical
+        GOTO UniversalMatch
     CONTAINER.IDENTICAL:
-        var swap 3
+        setVariable swap 3
     CONTAINER.DIFFERENT:
-        GOTO LOWERCASE.%PutOrSlip
+        GOTO LOWERCASE.%PutOrSlip%
 
     LOWERCASE.PUT:
-        var PutOrSlip put
+        setVariable PutOrSlip put
         GOTO CITYCHECKER
     LOWERCASE.SLIP:
-        var PutOrSlip slip
+        setVariable PutOrSlip slip
         GOTO CITYCHECKER
 
 
@@ -410,62 +434,61 @@ ECHO
         matchre SETHAVEN /Beeanna|Adaerna|Thringol|Tibvaov|Crin's Herbal|City Togs|Friar Othorp|Bantheld|Seli's/
         match SETHORSE Zaldi Taipa
         match BADLOCATION Obvious
-        gosub UniversalMatch
         put look
-        matchwait
+        GOTO UniversalMatch
 
     SETCROSSING:
-        var citycode CROSS
-        var provcode ZOL
-        var lethcross CROSS
+        setVariable citycode CROSS
+        setVariable provcode ZOL
+        setVariable lethcross CROSS
         GOTO CLASS
 
     SETARTHE:
-        var citycode ARTHE
-        var provcode ZOL
-        var lethcross CROSS
+        setVariable citycode ARTHE
+        setVariable provcode ZOL
+        setVariable lethcross CROSS
         GOTO CLASS
 
     SETTIGER:
-        var citycode TIGER
-        var provcode ZOL
-        var lethcross CROSS
+        setVariable citycode TIGER
+        setVariable provcode ZOL
+        setVariable lethcross CROSS
         GOTO CLASS
 
     SETLETH:
-        var citycode LETH
-        var provcode ZOL
-        var lethcross LETH
+        setVariable citycode LETH
+        setVariable provcode ZOL
+        setVariable lethcross LETH
         GOTO CLASS
 
     SETHAVEN:
-        var citycode HAVEN
-        var provcode THG
+        setVariable citycode HAVEN
+        setVariable provcode THG
         GOTO CLASS
 
     SETRATHA:
-        var citycode RATHA
-        var provcode QIR
+        setVariable citycode RATHA
+        setVariable provcode QIR
         GOTO CLASS
 
     SETAESRY:
-        var citycode AESRY
-        var provcode QIR
+        setVariable citycode AESRY
+        setVariable provcode QIR
         GOTO CLASS
 
     SETSHARD:
-        var citycode SHARD
-        var provcode ILI
+        setVariable citycode SHARD
+        setVariable provcode ILI
         GOTO CLASS
 
     SETSTEEL:
-        var citycode STEEL
-        var provcode ILI
+        setVariable citycode STEEL
+        setVariable provcode ILI
         GOTO CLASS
 
     SETHORSE:
-        var citycode HORSE
-        var provcode ILI
+        setVariable citycode HORSE
+        setVariable provcode ILI
         GOTO CLASS
 
     BADLOCATION:
@@ -488,8 +511,7 @@ ECHO
         match ILI.BADLOCATION ili
         match QIR.BADLOCATION qir
         match FRF.BADLOCATION frf
-        gosub UniversalMatch
-        matchwait
+        GOTO UniversalMatch
 
     FRF.BADLOCATION:
         ECHO
@@ -515,29 +537,27 @@ ECHO
         match EMPATH Guild: Empath
         match NONTHIEF Encumbrance
         match CLASS ...wait
-        gosub UniversalMatch
         put info
-        matchwait
+        GOTO UniversalMatch
 
     THIEF:
-        var class thief
-        var BinOrBucket bin
+        setVariable class thief
+        setVariable BinOrBucket bin
         GOTO HANDCHECK
 
     NONTHIEF:
-        var class nonthief
+        setVariable class nonthief
         GOTO HANDCHECK
 
     EMPATH:
-        var class empath
+        setVariable class empath
         GOTO HANDCHECK
 
     HANDCHECK:
         match STOWHANDS You glance down to see
         match ARMORCHECK You glance down at your empty
-        gosub UniversalMatch
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     STOWHANDS:
         put stow left
@@ -546,9 +566,8 @@ ECHO
         wait
         match HANDWARN You glance down to see
         match ARMORCHECK You glance down at your empty
-        gosub UniversalMatch
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     HANDWARN:
         ECHO ***********************************************
@@ -556,31 +575,20 @@ ECHO
         ECHO *** can't be stowed. Fix and type "CONT".
         ECHO ***********************************************
         match ARMORCHECK CONT
-        gosub UniversalMatch
-        matchwait
+        GOTO UniversalMatch
 
     ARMORCHECK:
-        matchre remove_And_Stow_1 \s+%armor.types
+        match ARMORWARN All of your armor
         match SKILLCHECK You aren't wearing
-        gosub UniversalMatch
-        put inv combat
-        matchwait
-         
-    remove_And_Stow_1:
-			var armor $1
-		
-		remove_Armor_1:
-			var LAST remove_Armor_1
-			matchre stow_Armor_1 You work|You remove|You pull|You take|You loosen|You sling|You slide
-			put remove %armor
-			matchwait
+        put inv armor
+        GOTO UniversalMatch
 
-		stow_Armor_1:
-			var LAST stow_Armor_1
-			match ARMORCheck You put your
-			matchre stow_Armor_2 any more room in|closed|no matter how you arrange
-			put put %armor in my %armor.stow
-			matchwait	
+    ARMORWARN:
+        ECHO ***********************************************
+        ECHO *** WARNING: You are wearing armor. Fix and type "CONT".
+        ECHO ***********************************************
+        match ARMORCHECK CONT
+        GOTO UniversalMatch
 
 
 ##################################################################
@@ -602,20 +610,20 @@ ECHO
 # are universal and so kept here. 
 
     SKILLCHECK:
-        matchre BEGGAR /y:      |y:     1/
-        matchre RANK1 /y:     [2-3][0-9] /
-        matchre RANK2 /y:     [4-5]/
-        matchre RANK3 /y:     [6-9]/
-        matchre RANK4 /y:    1[0-4]/
-        matchre RANK5 /y:    1[5-9]/
-        matchre RANK6 /y:    2[0-4]/
-        matchre RANK7 /y:    2[5-9]/
-        matchre RANK8 /y:    3[0-4]/
-        matchre RANK9 /y:    3[5-9]/
-        matchre RANK10 /y:    [4-9]|y:   [1-9]/
+        matchre BEGGAR /Thievery:      |Thievery:     1/
+        matchre RANK1 /Thievery:     [2-3][0-9] /
+        matchre RANK2 /Thievery:     [4-5]/
+        matchre RANK3 /Thievery:     [6-9]/
+        matchre RANK4 /Thievery:    1[0-4]/
+        matchre RANK5 /Thievery:    1[5-9]/
+        matchre RANK6 /Thievery:    2[0-4]/
+        matchre RANK7 /Thievery:    2[5-9]/
+        matchre RANK8 /Thievery:    3[0-4]/
+        matchre RANK9 /Thievery:    3[5-9]/
+        matchre RANK10 /Thievery:    [4-9]|g:   [1-9]/
         counter set 0
-        gosub UniversalMatch
         put skill thievery
+        GOTO UniversalMatch
 
     RANK10:
         counter add 1
@@ -641,56 +649,56 @@ ECHO
 
     RANKADJUSTER:
         pause 1
-        counter add %Difficulty
-        GOTO %provcode.RANK.%c
+        counter add %Difficulty%
+        GOTO %provcode%.RANK.%c%
 
     RANKREPORT:
         ECHO
         ECHO
         ECHO ***********************************************
-        ECHO ***                  %skillrange: Altering course...
+        ECHO ***                  %skillrange%: Altering course...
         ECHO ***********************************************
         ECHO
         pause 2
         counter set 0
-        GOTO BAGS.%DropOrStow
+        GOTO BAGS.%DropOrStow%
 
     BAGS.STOW:
         matchre COUNTTOOHIGH /Sell[0-9][0-9][0-9]|Bin[0-9][0-9][0-9]|Bin[5-9][0-9]/
-        put echo %Sell%SellItemCount %Bin%BinItemCount
+        put echo Sell%SellItemCount% Bin%BinItemCount%
     BAGS.STOW.1:
         counter add 1
-        var container %container%c
+        setVariable container %percentsign%container%c%
         match BAGFULL lot of other stuff
-        matchre BAGWARN /%SellItem1|%SellItem2|%SellItem3|%SellItem4|%SellItem5|%SellItem16|%SellItem7|%SellItem8/
-        matchre BAGWARN /%SellItem9|%SellItem10|%SellItem11|%SellItem12|%SellItem13|%SellItem14|%SellItem15|%SellItem16/
-        matchre BAGWARN /%SellItem17|%SellItem18|%SellItem19|%SellItem20|%SellItem21|%SellItem22|%SellItem23/
-        matchre BAGWARN /%SellItem24|%SellItem25|%SellItem26|%SellItem27|%SellItem28|%SellItem29|%SellItem30/
-        matchre BAGWARN /%SellItem31|%SellItem32|%SellItem33|%SellItem34|%SellItem35|%SellItem36|%SellItem37/
-        matchre BAGWARN /%SellItem38|%SellItem39|%SellItem40|%SellItem41|%SellItem42|%SellItem43|%SellItem44/
-        matchre BAGWARN /%SellItem45|%SellItem46|%SellItem47|%SellItem48|%SellItem49|%SellItem50|%SellItem51/
-        matchre BAGWARN /%SellItem52|%SellItem53|%SellItem54|%SellItem55|%SellItem56|%SellItem57|%SellItem58/
-        matchre BAGWARN /%SellItem59|%SellItem60|%SellItem61|%SellItem62|%SellItem63|%SellItem64|%SellItem65/
-        matchre BAGWARN /%SellItem66|%SellItem67|%SellItem68|%SellItem69|%SellItem70|%SellItem71|%SellItem72/
-        matchre BAGWARN /%SellItem73|%SellItem74|%SellItem75|%SellItem76|%SellItem77|%SellItem78|%SellItem79/
-        matchre BAGWARN /%SellItem80|%SellItem81|%SellItem82|%SellItem83|%SellItem84|%SellItem85|%SellItem86/
-        matchre BAGWARN /%SellItem87|%SellItem88|%SellItem89|%SellItem90|%SellItem91|%SellItem92|%SellItem93%/
-        matchre BAGWARN /%SellItem94|%SellItem95|%SellItem96|%SellItem97|%SellItem98|%SellItem99%/
-        matchre BAGWARN /%BinItem1|%BinItem2|%BinItem3|%BinItem4|%BinItem5|%BinItem16|%BinItem7%/
-        matchre BAGWARN /%BinItem8|%BinItem9|%BinItem10|%BinItem11|%BinItem12|%BinItem13|%BinItem14%/
-        matchre BAGWARN /%BinItem15|%BinItem16|%BinItem17|%BinItem18|%BinItem19|%BinItem20|%BinItem21%/
-        matchre BAGWARN /%BinItem22|%BinItem23|%BinItem24|%BinItem25|%BinItem26|%BinItem27|%BinItem28%/
-        matchre BAGWARN /%BinItem29|%BinItem30|%BinItem31|%BinItem32|%BinItem33|%BinItem34|%BinItem35%/
-        matchre BAGWARN /%BinItem36|%BinItem37|%BinItem38|%BinItem39|%BinItem40|%BinItem41|%BinItem42%/
-        matchre BAGWARN /%BinItem43|%BinItem44|%BinItem45|%BinItem46|%BinItem47|%BinItem48|%BinItem49%/
-        GOTO %provcode.BAGCHECK
+        matchre BAGWARN /%SellItem1%|%SellItem2%|%SellItem3%|%SellItem4%|%SellItem5%|%SellItem16%|%SellItem7%|%SellItem8%/
+        matchre BAGWARN /%SellItem9%|%SellItem10%|%SellItem11%|%SellItem12%|%SellItem13%|%SellItem14%|%SellItem15%|%SellItem16%/
+        matchre BAGWARN /%SellItem17%|%SellItem18%|%SellItem19%|%SellItem20%|%SellItem21%|%SellItem22%|%SellItem23%/
+        matchre BAGWARN /%SellItem24%|%SellItem25%|%SellItem26%|%SellItem27%|%SellItem28%|%SellItem29%|%SellItem30%/
+        matchre BAGWARN /%SellItem31%|%SellItem32%|%SellItem33%|%SellItem34%|%SellItem35%|%SellItem36%|%SellItem37%/
+        matchre BAGWARN /%SellItem38%|%SellItem39%|%SellItem40%|%SellItem41%|%SellItem42%|%SellItem43%|%SellItem44%/
+        matchre BAGWARN /%SellItem45%|%SellItem46%|%SellItem47%|%SellItem48%|%SellItem49%|%SellItem50%|%SellItem51%/
+        matchre BAGWARN /%SellItem52%|%SellItem53%|%SellItem54%|%SellItem55%|%SellItem56%|%SellItem57%|%SellItem58%/
+        matchre BAGWARN /%SellItem59%|%SellItem60%|%SellItem61%|%SellItem62%|%SellItem63%|%SellItem64%|%SellItem65%/
+        matchre BAGWARN /%SellItem66%|%SellItem67%|%SellItem68%|%SellItem69%|%SellItem70%|%SellItem71%|%SellItem72%/
+        matchre BAGWARN /%SellItem73%|%SellItem74%|%SellItem75%|%SellItem76%|%SellItem77%|%SellItem78%|%SellItem79%/
+        matchre BAGWARN /%SellItem80%|%SellItem81%|%SellItem82%|%SellItem83%|%SellItem84%|%SellItem85%|%SellItem86%/
+        matchre BAGWARN /%SellItem87%|%SellItem88%|%SellItem89%|%SellItem90%|%SellItem91%|%SellItem92%|%SellItem93%/
+        matchre BAGWARN /%SellItem94%|%SellItem95%|%SellItem96%|%SellItem97%|%SellItem98%|%SellItem99%/
+        matchre BAGWARN /%BinItem1%|%BinItem2%|%BinItem3%|%BinItem4%|%BinItem5%|%BinItem16%|%BinItem7%/
+        matchre BAGWARN /%BinItem8%|%BinItem9%|%BinItem10%|%BinItem11%|%BinItem12%|%BinItem13%|%BinItem14%/
+        matchre BAGWARN /%BinItem15%|%BinItem16%|%BinItem17%|%BinItem18%|%BinItem19%|%BinItem20%|%BinItem21%/
+        matchre BAGWARN /%BinItem22%|%BinItem23%|%BinItem24%|%BinItem25%|%BinItem26%|%BinItem27%|%BinItem28%/
+        matchre BAGWARN /%BinItem29%|%BinItem30%|%BinItem31%|%BinItem32%|%BinItem33%|%BinItem34%|%BinItem35%/
+        matchre BAGWARN /%BinItem36%|%BinItem37%|%BinItem38%|%BinItem39%|%BinItem40%|%BinItem41%|%BinItem42%/
+        matchre BAGWARN /%BinItem43%|%BinItem44%|%BinItem45%|%BinItem46%|%BinItem47%|%BinItem48%|%BinItem49%/
+        GOTO %provcode%.BAGCHECK
 
     BAGS.STOW.2:
-        var container %container1
-        GOTO SNEAK.%sneak
+        setVariable container %container1%
+        GOTO SNEAK.%sneak%
 
     BAGS.DROP:
-        GOTO SNEAK.%sneak
+        GOTO SNEAK.%sneak%
 
     BEGGAR:
         pause 1
@@ -710,7 +718,7 @@ ECHO
 
     BAGWARN:
         ECHO ***********************************************
-        ECHO *** WARNING: Your %container appears to contain items
+        ECHO *** WARNING: Your %container% appears to contain items
         ECHO *** that will be pawned or binned.  This MAY include items
         ECHO *** saved from previous runs that did not reach the pawn
         ECHO *** shop or thief bin. If you are SURE nothing important to 
@@ -720,9 +728,8 @@ ECHO
         ECHO *** a partial match, like a "pine strongbox" for a "pin,"
         ECHO *** but we are trying to be extra careful with your items.
         ECHO ***********************************************
-        match BAGS.STOW.%c good positive attitude
-        gosub UniversalMatch
-        matchwait
+        match BAGS.STOW.%c% good positive attitude
+        GOTO UniversalMatch
 
     BAGFULL:
         ECHO ***********************************************
@@ -733,8 +740,8 @@ ECHO
         GOTO END
 
     COUNTTOOHIGH:
-        var BinItemCount 0
-        var SellItemCount 0
+        setVariable BinItemCount 0
+        setVariable SellItemCount 0
         ECHO ***********************************************
         ECHO *** Due to lack of pawning/binning, the script has accumulated
         ECHO *** too many item variables for it to match against the contents
@@ -755,26 +762,25 @@ ECHO
 
     SNEAK.SNEAK:
     SNEAK.YES:
-        var sneak sneak
-        GOTO KHRICHECK.%class
+        setVariable sneak sneak
+        GOTO KHRICHECK.%class%
 
     SNEAK.NOSNEAK:
     SNEAK.NO:
-        var sneak nosneak
-        GOTO KHRICHECK.%class
+        setVariable sneak nosneak
+        GOTO KHRICHECK.%class%
 
     KHRICHECK.NONTHIEF:
     KHRICHECK.EMPATH:
-        GOTO %citycode
+        GOTO %citycode%
 
     KHRICHECK.THIEF:
         wait
-        match KHRISTART You are not
-        match KHRISTOP You are under
-        match %citycode Please rephrase
-        gosub UniversalMatch
+        match KHRISTART you are not
+        match KHRISTOP you are under
+        match %citycode% Please rephrase
         put khri check
-        matchwait
+        GOTO UniversalMatch
 
     KHRISTOP:
         put khri stop
@@ -788,9 +794,8 @@ ECHO
         matchre KHRI40 /n: +[4-5][0-9] /
         matchre KHRI20 /n: +[1-3][0-9] /
         matchre KHRI0 /n: +[0-9] /
-        gosub UniversalMatch
         put focus
-        matchwait
+        GOTO UniversalMatch
 
     KHRI0:
         counter add 30
@@ -805,13 +810,13 @@ ECHO
     KHRI100:
         counter add 30
         ECHO ***********************************************
-        ECHO *** Pausing %c seconds for concentration
+        ECHO *** Pausing %c% seconds for concentration
         ECHO ***********************************************
-        pause %c
+        pause %c%
         GOTO KHRISTART
 
     KHRISTART:
-        put khri start %skulk
+        put khri start %skulk%
         wait
         put khri start focus
         wait
@@ -827,23 +832,22 @@ ECHO
         wait
         put khri start dampen
         wait
-        GOTO SLIPCHECK.%sneak
+        GOTO SLIPCHECK.%sneak%
 
     SLIPCHECK.SNEAK:
         pause 1
         match SLIP2 SNEAK
-        match %citycode noslip
-        gosub UniversalMatch
+        match %citycode% noslip
         put slip help
         put echo noslip
-        matchwait
+        GOTO UniversalMatch
 
     SLIPCHECK.NOSNEAK:
-        GOTO %citycode
+        GOTO %citycode%
 
     SLIP2:
-        var sneak sneak
-        GOTO %citycode
+        setVariable sneak sneak
+        GOTO %citycode%
 
 
 ##################################################################
@@ -854,25 +858,23 @@ ECHO
 
 
     SETSTORE:
-        var shopdiff %%storecode%Quant
+        setVariable shopdiff %percentsign%%storecode%Quant
         match FIXSTART waitandsee
-        match SETSTORE.%Profit okstart
-        gosub UniversalMatch
-        put echo %startlocation okstart
-        matchwait
+        match SETSTORE.%Profit% okstart
+        put echo %startlocation% okstart
+        GOTO UniversalMatch
 
     SETSTORE.PROFIT:
-        var item %%storecode%P
-        unvar %%storecode%P
+        setVariable item %percentsign%%storecode%P
+        deleteVariable %storecode%P
         match SETSTORE.NORMAL %storecode%P
-        match %MRS nonprofit
-        gosub UniversalMatch
-        put echo %item nonprofit
-        matchwait
+        match %MRS% nonprofit
+        put echo %item% nonprofit
+        GOTO UniversalMatch
 
     SETSTORE.NORMAL:
-        var item %%storecode
-        GOTO %MRS
+        setVariable item %percentsign%%storecode%
+        GOTO %MRS%
 
 # Outside every shop, we run %MRS, which is set to SHOPCHECK
 # unless we are under MOVEON or RESUME circumstances. SHOPCHECK
@@ -884,29 +886,28 @@ ECHO
 # from the shop and should skip it.
 
     SHOPCHECK1:
-        var MRS shopcheck
+        setvariable MRS shopcheck
         GOTO SHOPCHECK2
 
     SHOPCHECK:
-        GOTO SHOP.%TravelOrShop
+        GOTO SHOP.%TravelOrShop%
       SHOP.TRAVEL:
-        var TravelOrShop shop
+        setVariable TravelOrShop shop
       SHOP.SHOP:
-        match MOVEON.STARTLOC %startlocation
+        match MOVEON.STARTLOC %startlocation%
     SHOPCHECK2:
         match MOVEON.HEALTH hand which appears completely useless
         match LEAVE nothing
-        match GOODSHOP.%DropOrStow Time Development
+        match GOODSHOP.%DropOrStow% Time Development
         match MOVEON.EXP mind lock
-        gosub UniversalMatch
         put health
-        put echo %storecode %item %update
+        put echo %storecode% %item% %update%
         put skill thievery
-        matchwait
+        GOTO UniversalMatch
 
 # Before entering the shop, here we set the counter which we will
 # use with the STEALCOUNT labels to see how many times the person
-# should steal and has stolen in each shop. %Quantity adds or
+# should steal and has stolen in each shop. %Quantity% adds or
 # subtracts if applicable based on the use of MORE or LESS.
 # Here, it will be further modified by %shopdiff as set by each
 # shop's quantity adjustment. The result is multiplied by 100, and
@@ -916,73 +917,68 @@ ECHO
 # have stolen per shop. 
 
     GOODSHOP.STOW:
-        counter set %SellItemCount
+        counter set %SellItemCount%
         counter add 1
-        var SellItemCount %c
-        var SellItem%c %item
+        setVariable SellItemCount %c
+        setVariable SellItem%c% %item%
     GOODSHOP.DROP:
-        counter set %Quantity
-        counter add %shopdiff
+        counter set %Quantity%
+        counter add %shopdiff%
         counter multiply 100
-        var StealCount %c
-        GOTO ENTER.%sneak
+        setVariable StealCount %c%
+        GOTO ENTER.%sneak%
 
     ENTER.SNEAK:
         pause 1
-        matchre ENTER.SNEAK /...wait|had time to find another/
+        matchre ENTER.SNEAK /\.\.\.wait|had time to find another/
         matchre ENTER.SLIP /You melt|You slip|You blend|But you/
         matchre ENTER.NOSNEAK /ruining your|Behind what/
         match HUMSTOP too busy performing
-        gosub UniversalMatch
         put hide
-        matchwait
+        GOTO UniversalMatch
 
     ENTER.SLIP:
         pause 1
         match ENTER.SLIP ...wait
         match ENTER.SNEAK Sneaking is an
         match ENTER.NOSNEAK You can't sneak
-        matchre ACTION.%action /You sneak|In which direction/
-        gosub UniversalMatch
-        put sneak %entrance
-        matchwait
+        matchre ACTION.%action% /You sneak|In which direction/
+        put sneak %entrance%
+        GOTO UniversalMatch
 
     ENTER.NOSNEAK:
         pause 1
         matchre MOVEERROR /You can't go there|referring/
         match HIDE Obvious
-        gosub UniversalMatch
-        put go %entrance
-        matchwait
+        put go %entrance%
+        GOTO UniversalMatch
 
     HIDE:
         pause 1
-        matchre HIDE /...wait|had time to find another/
-        matchre ACTION.%action /ruining your|Behind what|You melt|You slip|You blend|But you|You look around/
-        gosub UniversalMatch
+        matchre HIDE /\.\.\.wait|had time to find another/
+        matchre ACTION.%action% /ruining your|Behind what|You melt|You slip|You blend|But you|You look around/
         put hide
-        matchwait
+        GOTO UniversalMatch
 
     ACTION.STEAL:
         pause 1
         counter set 0
-        var StowStatus 1
-        var StealOrNext next
+        setVariable StowStatus 1
+        setVariable StealOrNext next
         match ACTION.STEAL ...wait
         match ENTER.NOSNEAK nailed to the ground
-        matchre %DropOrStow.ITEM /Guards!|begins to shout|trivial|should back off/
+        matchre %DropOrStow%.ITEM /Guards!|begins to shout|trivial|should back off/
         matchre NEXT /You haven't picked|You can't steal/
         match HANDSFULL You need at least one
         match STEALCOUNT Roundtime
-        gosub UniversalMatch
-        put steal %item %itemlocation
-        matchwait
+        put steal %item% %itemlocation%
+        GOTO UniversalMatch
 
     STEALCOUNT:
-        counter set %StealCount
+        counter set %StealCount%
         counter add 1
-        var StealCount %c
-        GOTO STEALCOUNT%c
+        setVariable StealCount %c%
+        GOTO STEALCOUNT%c%
 
 # Has completed 1st/3rd/5th steal, is about to attempt again before double stow
     STEALCOUNT201:
@@ -1004,9 +1000,9 @@ ECHO
     STEALCOUNT504:
     STEALCOUNT604:
         counter set 2
-        var StowStatus 2
-        var StealOrNext rehide
-        GOTO %DropOrStow.ITEM
+        setVariable StowStatus 2
+        setVariable StealOrNext rehide
+        GOTO %DropOrStow%.ITEM
 
 # Has completed 1st/3rd/5th steal, is finished, and is about to stow the odd item
     STEALCOUNT-599:
@@ -1020,17 +1016,17 @@ ECHO
     STEALCOUNT303:
     STEALCOUNT505:
         counter set 1
-        var StowStatus 1
-        GOTO %DropOrStow.ITEM
+        setVariable StowStatus 1
+        GOTO %DropOrStow%.ITEM
 
 # Has completed 2nd/4th/6th steal, is finished, and is about to double stow
     STEALCOUNT202:
     STEALCOUNT404:
     STEALCOUNT606:
         counter set 2
-        var StowStatus 2
-        var StealOrNext next
-        GOTO %DropOrStow.ITEM
+        setVariable StowStatus 2
+        setVariable StealOrNext next
+        GOTO %DropOrStow%.ITEM
 
     STEALCOUNT1301:
         counter subtract 100
@@ -1046,7 +1042,7 @@ ECHO
         counter subtract 100
     STEALCOUNT701:
         counter subtract 100
-        GOTO STEALCOUNT%c
+        GOTO STEALCOUNT%c%
 
     STOW.REPEAT:
         counter add 1
@@ -1055,97 +1051,90 @@ ECHO
     STOW.1:
         pause 1
         counter subtract 1
-        matchre STOW.REPEAT /...wait|You silently slip out/
-        matchre STOW.%c /You put|Perhaps you should|into your/
+        matchre STOW.REPEAT /\.\.\.wait|You silently slip out/
+        matchre STOW.%c% /You put|Perhaps you should|into your/
         match SLIPTOPUT Slipping and falling 
         matchre CONTAINER.SWAP /any more room|no matter how you|to fit in the/
         matchre DROP.ITEM /referring|Slip how|capable|You need a/
-        gosub UniversalMatch
-        put %PutOrSlip my %item in my %container
-        matchwait
+        put %PutOrSlip% my %item% in my %container%
+        GOTO UniversalMatch
     STOW.0:
     STOW.-1:
-        GOTO %StealOrNext
+        GOTO %StealOrNext%
 
     CONTAINER.SWAP:
-        GOTO CONTAINER.%swap
+        GOTO CONTAINER.%swap%
     CONTAINER.1:
-        var swap 2
-        var container %container2
-        counter set %StowStatus
+        setVariable swap 2
+        setVariable container %container2%
+        counter set %StowStatus%
         GOTO STOW.ITEM
     CONTAINER.2:
-        var swap 1
-        var container %container1
+        setVariable swap 1
+        setVariable container %container1%
     CONTAINER.3:
         GOTO DROP.ITEM
 
     DROP.ITEM:
         match DROP.ITEM ...wait
-        match %StealOrNext empty hands
+        match %StealOrNext% empty hands
         match EMPTYRIGHT right hand and nothing
         matchre EMPTYBOTH /right hand and a|right hand and some/
         match EMPTYLEFT in your left hand.
-        gosub UniversalMatch
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     EMPTYBOTH:
         match LOWER If you still wish
         match EMPTYRIGHT You drop
-        gosub UniversalMatch
         put empty left
-        matchwait
+        GOTO UniversalMatch
 
     EMPTYRIGHT:
         match LOWER If you still wish
-        match %StealOrNext You drop
-        gosub UniversalMatch
+        match %StealOrNext% You drop
         put empty right
-        matchwait
+        GOTO UniversalMatch
 
     EMPTYLEFT:
         match LOWER If you still wish
-        match %StealOrNext You drop
-        gosub UniversalMatch
+        match %StealOrNext% You drop
         put empty left
-        matchwait
+        GOTO UniversalMatch
 
     HANDSFULL:
-        var StealOrNext action.steal
+        setVariable StealOrNext action.steal
         counter add 1
-        GOTO %DropOrStow.ITEM
+        GOTO %DropOrStow%.ITEM
 
     LOWER:
-        put lower my %item
+        put lower my %item%
         wait
         GOTO DROP.ITEM
 
     SLIPTOPUT:
-        var PutOrSlip put
+        setVariable PutOrSlip put
         GOTO STOW.REPEAT
 
     REHIDE:
         pause 1
-        matchre REHIDE /...wait|had time to find another/
+        matchre REHIDE /\.\.\.wait|had time to find another/
         matchre JAILCHECK.REHIDE /Maybe you should|You look around/
         matchre ACTION.STEAL /You melt|You slip|You blend|But you|ruining your/
-        gosub UniversalMatch
         put hide
-        matchwait
+        GOTO UniversalMatch
 
     NEXT:
-        GOTO NEXT.%sneak
+        GOTO NEXT.%sneak%
 
     NEXT.SNEAK:
         pause 1
-        matchre NEXT.SNEAK /...wait|had time to find another/
+        matchre NEXT.SNEAK /\.\.\.wait|had time to find another/
         matchre NEXT.SLIP /You melt|You slip|You blend|But you/
         matchre JAILCHECK.NEXT /Maybe you should|You look around/
         match RUNTONEXT ruining your
-        gosub UniversalMatch
         put hide
-        matchwait
+        GOTO UniversalMatch
 
     NEXT.SLIP:
         pause 1
@@ -1154,9 +1143,8 @@ ECHO
         matchre JAILCHECK.NEXT /Maybe you should|You look around/
         matchre ALTLEAVE /You can't sneak|Sneaking isn't allowed|In which direction/
         match LEAVE Obvious
-        gosub UniversalMatch
         put sneak out
-        matchwait
+        GOTO UniversalMatch
 
     NEXT.NOSNEAK:
         GOTO RUNTONEXT
@@ -1165,12 +1153,12 @@ ECHO
     LEAVE.MOVEON:
     LEAVE.SHOPCHECK:
     LEAVE.SHOPCHECK1:
-        var itemlocation  
-        GOTO LEAVE.%storecode
+        setVariable itemlocation  
+        GOTO LEAVE.%storecode%
 
     ALTLEAVE:
-        var itemlocation  
-        GOTO ALTLEAVE.%storecode
+        setVariable itemlocation  
+        GOTO ALTLEAVE.%storecode%
 
 
 ##################################################################
@@ -1192,11 +1180,10 @@ ECHO
     ACTION.MARK:
         pause 1
         match ACTION.MARK ...wait
-        matchre NEXT.%sneak /Mark what|you are being watched|reason to call the guards|beyond foolish|pretty sure you'll be caught|likely be futile|gavel echoes through|taste of bitter failure|a long shot|chances to lift it|quite the struggle|looks your way suspiciously|Guards!/
+        matchre NEXT.%sneak% /Mark what|you are being watched|reason to call the guards|beyond foolish|pretty sure you'll be caught|likely be futile|gavel echoes through|taste of bitter failure|a long shot|chances to lift it|quite the struggle|looks your way suspiciously|Guards!/
         matchre ACTION.STEAL /Roundtime|You trace|You can not|to take unwanted notice of you/
-        gosub UniversalMatch
-        put mark %item %itemlocation
-        matchwait
+        put mark %item% %itemlocation%
+        GOTO UniversalMatch
 
     PREPERC:
         pause 2
@@ -1206,17 +1193,15 @@ ECHO
         match PREPERC You're not ready to
         matchre NOPERC /You aren't trained|USAGE/
         matchre ACTION.STEAL /You close your eyes|interfering|stops you from being able/
-        gosub UniversalMatch
         put perc health
-        matchwait
-        
+        GOTO UniversalMatch
     NOPERC:
         ECHO ***********************************************
         ECHO ***       Not able to perceive health.
         ECHO ***     Trying power perception instead.
         ECHO ***********************************************
         pause 1
-        var action power
+        setVariable action power
         GOTO ACTION.POWER
 
     ACTION.POWER:
@@ -1225,17 +1210,15 @@ ECHO
         matchre MMPOWER.SET /Xibar|Yavash|Katamba/
         matchre NOPOWER /You aren't trained|USAGE/
         matchre ACTION.STEAL /Roundtime|stops you from being able/i
-        gosub UniversalMatch
         put power
-        matchwait
-        
+        GOTO UniversalMatch
     NOPOWER:
         ECHO ***********************************************
         ECHO ***    Non-magic user set to perceive power.
         ECHO ***       De-activating power perception.
         ECHO ***********************************************
         pause 1
-        var action steal
+        setVariable action steal
         GOTO ACTION.STEAL
 
     MMPOWER.SET:
@@ -1244,10 +1227,10 @@ ECHO
         ECHO ***        moon mage power perception.
         ECHO ***********************************************
         pause 1
-        var action mmpower
-        var mmanalyze predict analyze
-        var mmpower %mmanalyze
-        var mmrotate 0
+        setVariable action mmpower
+        setVariable mmanalyze predict analyze
+        setVariable mmpower %mmanalyze%
+        setVariable mmrotate 0
         GOTO ACTION.STEAL
 
     ACTION.MMPOWER:
@@ -1256,60 +1239,58 @@ ECHO
         match MMANALYZEOFF but you detect no active predictions.
         match MMUNHIDE You will have to reveal yourself
         match MMROTATE Roundtime
-        gosub UniversalMatch
-        put %mmpower
-        matchwait
+        put %mmpower%
+        GOTO UniversalMatch
 
     MMROTATE:
-        var counthold %c
-        counter set %mmrotate
+        setVariable counthold %c%
+        counter set %mmrotate%
         counter add 1
-        var mmrotate %c
-        counter set %counthold
-        GOTO MM%mmrotate
+        setVariable mmrotate %c%
+        counter set %counthold%
+        GOTO MM%mmrotate%
 
     MMUNHIDE:
         put unhide
         GOTO ACTION.MMPOWER
     MMHIDE:
-        matchre MMHIDE /...wait|had time to find another/
+        matchre MMHIDE /\.\.\.wait|had time to find another/
         matchre ACTION.STEAL /ruining your|Behind what|You melt|You slip|You blend|But you|You look around/
-        gosub UniversalMatch
         put hide
-        matchwait
+        GOTO UniversalMatch
 
     MMANALYZEOFF:
-        var mmanalyze perc planet
-        var mmpower %mmanalyze
+        setVariable mmanalyze perc planet
+        setVariable mmpower %mmanalyze%
         GOTO ACTION.MMPOWER
 
     MM1:
-        var mmpower perc moonlight
+        setVariable mmpower perc moonlight
         GOTO MMHIDE
     MM2:
-        var mmpower perc psychic
+        setVariable mmpower perc psychic
         GOTO ACTION.MMPOWER
     MM3:
-        var mmpower perc perception
+        setVariable mmpower perc perception
         GOTO ACTION.MMPOWER
     MM4:
-        var mmpower perc transduction
+        setVariable mmpower perc transduction
         GOTO ACTION.MMPOWER
     MM5:
-        var mmpower perc stellar
+        setVariable mmpower perc stellar
         GOTO ACTION.MMPOWER
     MM6:
-        var mmpower perc xibar
+        setVariable mmpower perc xibar
         GOTO ACTION.STEAL
     MM7:
-        var mmpower perc yavash
+        setVariable mmpower perc yavash
         GOTO ACTION.MMPOWER
     MM8:
-        var mmpower perc katamba
+        setVariable mmpower perc katamba
         GOTO ACTION.MMPOWER
     MM9:
-        var mmpower %mmanalyze
-        var mmrotate 0
+        setVariable mmpower %mmanalyze%
+        setVariable mmrotate 0
         GOTO ACTION.STEAL
 
 
@@ -1323,46 +1304,43 @@ ECHO
 
 
     CROSS.BEGGAR:
-        var npcname beggar
-        GOTO NPC.%npcoption
+        setVariable npcname beggar
+        GOTO NPC.%npcoption%
     CROSS.MINSTREL:
-        var npcname minstrel
-        GOTO NPC.%npcoption
+        setVariable npcname minstrel
+        GOTO NPC.%npcoption%
     CROSS.VETERAN:
-        var npcname veteran
-        GOTO NPC.%npcoption
+        setVariable npcname veteran
+        GOTO NPC.%npcoption%
     RATHA.SAILOR:
-        var npcname sailor
-        GOTO NPC.%npcoption
+        setVariable npcname sailor
+        GOTO NPC.%npcoption%
 
     NPC.NO:
-        GOTO %citycode.%c
+        GOTO %citycode%.%c%
 
     NPC.YES:
     NPC.1:
-        matchre NPC.1 /...wait|had time to find another/
+        matchre NPC.1 /\.\.\.wait|had time to find another/
         match NPC.2 Roundtime
-        match %citycode.%c You look around
-        gosub UniversalMatch
+        match %citycode%.%c% You look around
         put hide
-        matchwait
+        GOTO UniversalMatch
 
     NPC.2:
         match NPC.2 ...wait
-        match %citycode.%c Roundtime
+        match %citycode%.%c% Roundtime
         match NPC.STAND you go sprawling
-        matchre %citycode.%c /You can't steal|alas, it is empty|You haven't picked|begins to shout/
-        gosub UniversalMatch
-        put steal %npcname
-        matchwait
+        matchre %citycode%.%c% /You can't steal|alas, it is empty|You haven't picked|begins to shout/
+        put steal %npcname%
+        GOTO UniversalMatch
 
     NPC.STAND:
-        match %citycode.%c You stand
-        matchre NPC.STAND /...wait|type ahead|Roundtime/i
-        gosub UniversalMatch
+        match %citycode%.%c% You stand
+        matchre NPC.STAND /\.\.\.wait|type ahead|Roundtime/i
         put kneel
         put stand
-        matchwait
+        GOTO UniversalMatch
 
 
 ##################################################################
@@ -1373,11 +1351,11 @@ ECHO
 
 
     START:
-        var startlocation %storecode
-        GOTO %citycode.%c
+        setVariable startlocation %storecode%
+        GOTO %citycode%.%c%
 
     FIXSTART:
-        var startlocation %storecode
+        setVariable startlocation %storecode%
         GOTO SETSTORE
 
     HUMSTOP:
@@ -1388,48 +1366,42 @@ ECHO
         matchre JAILWAIT /jail|heavily barred door|Holding Cell|Guardhouse|Great Tower, Cell|Gallows Tree, Cell/i
         matchre ENTER.NOSNEAK /It appears to be the local tobacco shop|a Halfling-sized burrow/
         matchre PREPLEA /Justice/
-        match ACTION.%action Obvious
-        gosub UniversalMatch
+        match ACTION.%action% Obvious
         put look
-        matchwait
+        GOTO UniversalMatch
 
     JAILCHECK.REHIDE:
         matchre JAILWAIT /jail|heavily barred door|Holding Cell|Guardhouse|Great Tower, Cell|Gallows Tree, Cell/i
         matchre PREPLEA /Justice/
         match ACTION.STEAL Obvious
-        gosub UniversalMatch
         put look
-        matchwait
+        GOTO UniversalMatch
 
     JAILCHECK.NEXT:
         matchre JAILWAIT /jail|heavily barred door|Holding Cell|Guardhouse|Great Tower, Cell|Gallows Tree, Cell/i
-        matchre ALTLEAVE.%storecode /Shaefferty|Chabalu|Froissart|Windawn|Marachek|Beeanna|Feta|Yulugri|Sklaar'ishht|Woodbyne|Enescu/
+        matchre ALTLEAVE.%storecode% /Shaefferty|Chabalu|Froissart|Windawn|Marachek|Beeanna|Feta|Yulugri|Sklaar'ishht|Woodbyne|Enescu/
         matchre PREPLEA /Justice/
-        match NEXT.%sneak Obvious
-        gosub UniversalMatch
+        match NEXT.%sneak% Obvious
         put look
-        matchwait
+        GOTO UniversalMatch
 
     JAILWAIT:
-        var ResumeStore %storecode
-        var MRS resume
-        var CountdownType resume
-        sub UniversalMatch
-        matchwait
+        setVariable ResumeStore %storecode%
+        setVariable MRS resume
+        setVariable CountdownType resume
+        GOTO UniversalMatch
 
     PREPLEA:
-        var ResumeStore %storecode
-        var MRS resume
-        var CountdownType resume
-        
+        setVariable ResumeStore %storecode%
+        setVariable MRS resume
+        setVariable CountdownType resume
     PLEA:
-        var arrest true
-        match %citycode.FREE You plead for forgiveness!
-        match %citycode.DEBT you do not have
-        matchre %citycode.FREE /You are free to go|Your things are dumped on the ground/
-        gosub UniversalMatch
+        setVariable arrest true
+        match %citycode%.FREE You plead for forgiveness!
+        match %citycode%.DEBT you do not have
+        matchre %citycode%.FREE /You are free to go|Your things are dumped on the ground/
         put plead innocent
-        matchwait
+        GOTO UniversalMatch
 
 # The TRAVEL label is run almost every time you move. It adds 1
 # to the counter, and if you successfully move and no other
@@ -1444,9 +1416,9 @@ ECHO
 # to stop and steal from them before moving on. 
 
     TRAVEL:
-        GOTO TRAVEL.%TravelOrShop
+        GOTO TRAVEL.%TravelOrShop%
     TRAVEL.SHOP:
-        var TravelOrShop travel
+        setVariable TravelOrShop travel
     TRAVEL.TRAVEL:
         counter add 1
         match MOVEERROR You can't go there.
@@ -1457,20 +1429,19 @@ ECHO
         match CROSS.VETERAN a grizzled old war veteran
         match RATHA.SAILOR an old sailor
         match RATHA.SAILOR a peg-legged sailor
-        matchre %citycode.%c /Obvious|It's pitch dark/
-        gosub UniversalMatch
-        matchwait
+        matchre %citycode%.%c% /Obvious|It's pitch dark/
+        GOTO UniversalMatch
 
     FATIGUE:
         ECHO ***********************************************
         ECHO *** Pausing 10 seconds for fatigue to recover
         ECHO ***********************************************
         pause 10
-        GOTO FATIGUE.%TravelOrShop
+        GOTO FATIGUE.%TravelOrShop%
     FATIGUE.TRAVEL:
         GOTO BACKTRACK
     FATIGUE.SHOP:
-        GOTO %MRS
+        GOTO %MRS%
 
     GUARDSTOP:
         put guard stop
@@ -1479,72 +1450,66 @@ ECHO
     BACKTRACK:
         counter subtract 1
         pause 1
-        GOTO %citycode.%c
+        GOTO %citycode%.%c%
 
     RETREAT.TRAVEL:
-        matchre RETREAT.TRAVEL /...wait|You retreat back to pole|type ahead|Roundtime/i
+        matchre RETREAT.TRAVEL /\.\.\.wait|You retreat back to pole|type ahead|Roundtime/i
         match BACKTRACK You retreat from combat
-        match %citycode.%c already as far away
-        gosub UniversalMatch
+        match %citycode%.%c% already as far away
         put retreat
-        matchwait
+        GOTO UniversalMatch
 
     RETREAT.SHOP:
-        matchre RETREAT.SHOP /...wait|You retreat back to pole|type ahead|Roundtime/i
+        matchre RETREAT.SHOP /\.\.\.wait|You retreat back to pole|type ahead|Roundtime/i
         matchre RUNTONEXT /You retreat from combat|already as far away/
-        gosub UniversalMatch
         put retreat
-        matchwait
+        GOTO UniversalMatch
 
     RUNTONEXT:
         put out
         match RUNTONEXT ...wait
         matchre RETREAT.SHOP /pole weapon range|melee range/
         match LEAVE Obvious
-        match ALTLEAVE.%storecode You can't go there.
-        gosub UniversalMatch
-        matchwait
+        match ALTLEAVE.%storecode% You can't go there.
+        GOTO UniversalMatch
 
     HEALTHCHECK:
         match CLANCHOP hand which appears completely useless
-        match EMERGENCY.FLEE.%flee You glance
-        match EMERGENCY.FLEE.%flee still stunned
-        gosub UniversalMatch
+        match EMERGENCY.FLEE.%flee% You glance
+        match EMERGENCY.FLEE.%flee% still stunned
         put health
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     CLANCHOP:
-        var MRS moveon
-        var LorM moveon
-        var MoveOnReason HEALTH
-        var npcoption no
+        setVariable MRS moveon
+        setVariable LorM moveon
+        setVariable MoveOnReason HEALTH
+        setVariable npcoption no
         pause 10
         GOTO STAND
 
     STAND:
         match STAND roundtime
         match HEALTHCHECK You are still stunned
-        matchre STAND.%TravelOrShop /You stand|You are already standing/
-        gosub UniversalMatch
+        matchre STAND.%TravelOrShop% /You stand|You are already standing/
         put stand
-        matchwait
+        GOTO UniversalMatch
 
     STAND.TRAVEL:
-        var ResumeStore %storecode
+        setVariable ResumeStore %storecode%
         GOTO BACKTRACK
 
     STAND.SHOP:
-        var ResumeStore %storecode
-        GOTO %DropOrStow.ITEM
+        setVariable ResumeStore %storecode%
+        GOTO %DropOrStow%.ITEM
 
     SHORTSTAND:
         counter subtract 1
         match STAND roundtime
-        matchre %storecode.SHORT /You stand|You are already standing/
-        gosub UniversalMatch
+        matchre %storecode%.SHORT /You stand|You are already standing/
         put stand
-        matchwait
+        GOTO UniversalMatch
 
 # Every match in the script is routed through this variable which
 # contains the one and only matchwait. This allows us to add
@@ -1555,30 +1520,29 @@ ECHO
     UNIVERSALMATCH:
         match HEALTHCHECK You are still stunned
         match HEALTHCHECK do that while kneeling
-        matchre RETREAT.%TravelOrShop /pole weapon range|melee range|you are engaged/
+        matchre RETREAT.%TravelOrShop% /pole weapon range|melee range|you are engaged/
         match FATIGUE too tired to
-        matchre LEAVE.%MRS /You stop as you realize|is locked|You realize the shop is closed|You smash your nose/
-        matchre EMERGENCY.FLEE.%flee /You are a ghost/
+        matchre LEAVE.%MRS% /You stop as you realize|is locked|You realize the shop is closed|You smash your nose/
+        matchre EMERGENCY.FLEE.%flee% /You are a ghost/
         matchre JAILCHECK.ACTION /Maybe you should|You look around|Stop right there|do that while lying|You can't do that/
         matchre PREPLEA /You don't seem to be able to move/
         match PLEA PLEAD INNOCENT or PLEAD GUILTY
-        return
+        matchwait
 
     MOVEERROR:
         matchre JAILWAIT /jail|heavily barred door|Holding Cell|Guardhouse|Great Tower, Cell|Gallows Tree, Cell/i
         matchre HIDE /Thipbeet|Skrawt Stal|Shaefferty|Chabalu|Froissart|Marachek|vendor's cart with a vial/
         matchre HIDE /Feta|Yulugri Wala, Smok|Sklaar'ishht|Woodbyne|Enescu|Posimur|Bandicoot|Yithye|Kilam|Beeanna/
         match MOVEERROR2 Obvious
-        gosub UniversalMatch
         put look
-        matchwait
+        GOTO UniversalMatch
 
     MOVEERROR2:
         counter subtract 1
         ECHO
         ECHO *************************************************
-        ECHO *** You don’t seem to be where you are supposed to be. You were at
-        ECHO *** %citycode.%c, version %update. Please note this and submit
+        ECHO *** You donâ€™t seem to be where you are supposed to be. You were at
+        ECHO *** %citycode%.%c%, version %update%. Please note this and submit
         ECHO ***       a brief log of how you got here for debugging.
         ECHO *************************************************
         ECHO
@@ -1651,10 +1615,10 @@ ECHO
     3:
     2:
     1:
-        GOTO COUNTDOWN.%CountdownType.CONTINUE
+        GOTO COUNTDOWN.%CountdownType%.CONTINUE
 
     0:
-        GOTO COUNTDOWN.%CountdownType.DONE
+        GOTO COUNTDOWN.%CountdownType%.DONE
 
     -1:
     -2:
@@ -1668,17 +1632,16 @@ ECHO
     -10:
         match BINCOUNTFIX BinItemCount-
         match SELLCOUNTFIX SellItemCount-
-        gosub UniversalMatch
-        put echo SellItemCount%SellItemCount BinItemCount%BinItemCount
-        matchwait
+        put echo SellItemCount%SellItemCount% BinItemCount%BinItemCount%
+        GOTO UniversalMatch
 
     BINCOUNTFIX:
-        var BinItemCount 0
-        GOTO COUNTDOWN.%CountdownType.DONE
+        setVariable BinItemCount 0
+        GOTO COUNTDOWN.%CountdownType%.DONE
 
     SELLCOUNTFIX:
-        var SellItemCount 0
-        GOTO COUNTDOWN.%CountdownType.DONE
+        setVariable SellItemCount 0
+        GOTO COUNTDOWN.%CountdownType%.DONE
 
 ##################################################################
 #####                                                        #####
@@ -1701,42 +1664,42 @@ ECHO
 
     RESUME:
     LEAVE.RESUME:
-        counter set %Countdown
+        counter set %Countdown%
         counter subtract 1
-        var Countdown %c
-        GOTO %Countdown
+        setVariable Countdown %c%
+        GOTO %Countdown%
 
     COUNTDOWN.RESUME.CONTINUE:
         GOTO LEAVE
 
     COUNTDOWN.RESUME.DONE:
-        var MRS shopcheck
-        var LorM leave
-        var npcoption yes
-        GOTO %MRS
+        setVariable MRS shopcheck
+        setVariable LorM leave
+        setVariable npcoption yes
+        GOTO %MRS%
 
     MOVEON.STARTLOC:
-        var MoveOnReason LOC
+        setVariable MoveOnReason LOC
         ECHO *************************************************
-        ECHO *** Activated MOVEON.%storecode based on startlocation:
-        ECHO *** %startlocation
+        ECHO *** Activated MOVEON.%storecode% based on startlocation:
+        ECHO *** %startlocation%
         ECHO *************************************************
         GOTO MOVEON.SET
 
     MOVEON.EXP:
-        var MoveOnReason EXP
-        var npcoption no
+        setVariable MoveOnReason EXP
+        setVariable npcoption no
         ECHO *************************************************
-        ECHO *** Activated MOVEON.%storecode due to mind lock
+        ECHO *** Activated MOVEON.%storecode% due to mind lock
         ECHO *************************************************
         GOTO MOVEON.SET
 
     MOVEON.HEALTH:
-        var MoveOnReason HEALTH
-        var ResumeStore %storecode
-        var npcoption no
+        setVariable MoveOnReason HEALTH
+        setVariable ResumeStore %storecode%
+        setVariable npcoption no
         ECHO *************************************************
-        ECHO *** Activated MOVEON.%storecode based on health
+        ECHO *** Activated MOVEON.%storecode% based on health
         ECHO *************************************************
         GOTO MOVEON.SET
 
@@ -1749,8 +1712,8 @@ ECHO
 # specific spots where we want to branch out of the loop. 
 
     MOVEON.SET:
-        var MRS moveon
-        var LorM moveon
+        setVariable MRS moveon
+        setVariable LorM moveon
     MOVEON:
         GOTO LEAVE
 
@@ -1763,69 +1726,63 @@ ECHO
 
 
     PAWN:
-        var labelerr realerror
+        setVariable labelerr realerror
         GOTO PAWN.STOW
 
     PAWN.DROP:
         GOTO END
 
     PAWN.STOW:
-        var CountdownType pawn
-        var sellorbin sellget
+        setVariable CountdownType pawn
+        setVariable sellorbin sellget
         GOTO COUNTDOWN.PAWN.CONTINUE
 
     COUNTDOWN.PAWN.CONTINUE:
-        var sellitem %SellItem%SellItemCount
-        GOTO %sellorbin
+        setVariable sellitem %percentsign%SellItem%SellItemCount%
+        GOTO %sellorbin%
     COUNTDOWN.PAWN.DONE:
-        GOTO %citycode.PAWNFINISH.%class
+        GOTO %citycode%.PAWNFINISH.%class
 
     SELLGET:
         match SELLGET ...wait
         match SELLING You get
         matchre SELLGET2 /referring|Please rephrase/
-        gosub UniversalMatch
-        put get my %sellitem from my %container1
-        matchwait
+        put get my %sellitem% from my %container1%
+        GOTO UniversalMatch
 
     SELLGET2:
         match SELLGET2 ...wait
         match SELLING2 You get
-        matchre SELLCYCLE /referring|Please rephrase/\
-        gosub UniversalMatch
-        put get my %sellitem from my %container2
-        matchwait
+        matchre SELLCYCLE /referring|Please rephrase/
+        put get my %sellitem% from my %container2%
+        GOTO UniversalMatch
 
     SELLING:
         match SELLGET takes your
-        matchre TRASH.%class /worth|idiots|Waste all|no need|scowls and says/
+        matchre TRASH.%class% /worth|idiots|Waste all|no need|scowls and says/
         match SELLING ...wait
-        gosub UniversalMatch
-        put sell my %sellitem
-        matchwait
+        put sell my %sellitem%
+        GOTO UniversalMatch
 
     SELLING2:
         match SELLGET2 takes your
-        matchre TRASH.%class /worth|idiots|Waste all|no need|scowls and says/
+        matchre TRASH.%class% /worth|idiots|Waste all|no need|scowls and says/
         match SELLING2 ...wait
-        gosub UniversalMatch
-        put sell my %sellitem
-        matchwait
+        put sell my %sellitem%
+        GOTO UniversalMatch
 
     TRASH.NONTHIEF:
     TRASH.EMPATH:
         match TRASH.NONTHIEF.REPEAT1 bucket
         match NOBUCKET referring
-        gosub UniversalMatch
-        put put my %sellitem in bucket
-        matchwait
+        put put my %sellitem% in bucket
+        GOTO UniversalMatch
 
     TRASH.NONTHIEF2:
         match TRASH.NONTHIEF.REPEAT2 bucket
         match NOBUCKET referring
-        gosub UniversalMatch
-        put put my %sellitem in bucket
-        matchwait
+        put put my %sellitem% in bucket
+        GOTO UniversalMatch
 
     NOBUCKET:
         GOTO TRASH.THIEF
@@ -1834,51 +1791,46 @@ ECHO
         match TRASH.NONTHIEF You get
         match TRASH.NONTHIEF.REPEAT1 ...wait
         match TRASH.NONTHIEF.REPEAT2 referring
-        gosub UniversalMatch
-        put get my %sellitem from my %container1
-        matchwait
+        put get my %sellitem% from my %container1%
+        GOTO UniversalMatch
 
     TRASH.NONTHIEF.REPEAT2:
         match TRASH.NONTHIEF2 You get
         match TRASH.NONTHIEF.REPEAT2 ...wait
         match SELLCYCLE referring
-        gosub UniversalMatch
-        put get my %sellitem from my %container2
-        matchwait
+        put get my %sellitem% from my %container2%
+        GOTO UniversalMatch
 
     SELLCYCLE:
-        counter set %SellItemCount
-        unvar SellItem%c
+        counter set %SellItemCount%
+        deleteVariable SellItem%c%
         counter subtract 1
-        var SellItemCount %c
-        put echo sellcycle%c continue
+        setVariable SellItemCount %c%
+        put echo sellcycle%c% continue
         match SELLCOUNTFIX sellcycle-
-        match COUNTDOWN.%CountdownType.DONE sellcycle0
-        match COUNTDOWN.%CountdownType.CONTINUE continue
-        gosub UniversalMatch
-        matchwait
+        match COUNTDOWN.%CountdownType%.DONE sellcycle0
+        match COUNTDOWN.%CountdownType%.CONTINUE continue
+        GOTO UniversalMatch
 
     TRASH.THIEF:
         match TRASH.THIEF ...wait
         matchre TRASH.THIEF2 /any more room in|no matter how you|to fit in the/
         match ADDTOBINLIST You put
-        gosub UniversalMatch
-        put put my %sellitem in my %container1
-        matchwait
+        put put my %sellitem% in my %container1%
+        GOTO UniversalMatch
 
     TRASH.THIEF2:
         match TRASH.THIEF2 ...wait
         matchre TRASH.NONTHIEF2 /any more room in|no matter how you|to fit in the/
         match ADDTOBINLIST You put
-        gosub UniversalMatch
-        put put my %sellitem in my %container2
-        matchwait
+        put put my %sellitem% in my %container2%
+        GOTO UniversalMatch
 
     ADDTOBINLIST:
-        counter set %BinItemCount
+        counter set %BinItemCount%
         counter add 1
-        var BinItemCount %c
-        var BinItem%c %sellitem
+        setVariable BinItemCount %c%
+        setVariable BinItem%c% %sellitem%
         GOTO SELLCYCLE
 
 
@@ -1890,65 +1842,60 @@ ECHO
 
 
     BIN:
-        var CountdownType bin
-        var labelerr realerror
-        var sellorbin binget
-        var contact true
+        setVariable CountdownType bin
+        setVariable labelerr realerror
+        setVariable sellorbin binget
+        setVariable contact true
         matchre BINCOUNTSET /bin 0|BinItemCount/
         match COUNTDOWN.BIN.CONTINUE binready
-        gosub UniversalMatch
-        put echo bin %BinItemCount binready
-        matchwait
+        put echo bin %BinItemCount% binready
+        GOTO UniversalMatch
 
     BINCOUNTSET:
-        var BinItemCount %SellItemCount
+        setVariable BinItemCount %SellItemCount%
         GOTO COUNTDOWN.BIN.CONTINUE
 
     PAWN.BIN:
-        var CountdownType bin
-        var sellorbin binget
-        var contact true
+        setVariable CountdownType bin
+        setVariable sellorbin binget
+        setVariable contact true
         GOTO COUNTDOWN.BIN.CONTINUE
 
     COUNTDOWN.BIN.CONTINUE:
-        var sellitem %BinItem%BinItemCount
-        GOTO %sellorbin
+        setVariable sellitem %percentsign%BinItem%BinItemCount%
+        GOTO %sellorbin%
     COUNTDOWN.BIN.DONE:
-        GOTO %citycode.BINFINISH.%class
+        GOTO %citycode%.BINFINISH.%class%
 
     BINGET:
         match BINDROP You get
         match BINGET2 referring
         match BINGET ...wait
-        gosub UniversalMatch
-        put get my %sellitem from my %container1
-        matchwait
+        put get my %sellitem% from my %container1%
+        GOTO UniversalMatch
 
     BINGET2:
         match BINDROP2 You get
         match BINCYCLE referring
         match BINGET2 ...wait
-        gosub UniversalMatch
-        put get my %sellitem from my %container2
-        matchwait
+        put get my %sellitem% from my %container2%
+        GOTO UniversalMatch
 
     BINDROP:
         matchre BINGET /falls into the|You drop/
         match THIEFSTOW not fooling anyone
         match BINDROP ...wait
-        match BINTYPE.%BinOrBucket referring
-        gosub UniversalMatch
-        put put my %sellitem in %BinOrBucket
-        matchwait
+        match BINTYPE.%BinOrBucket% referring
+        put put my %sellitem% in %BinOrBucket%
+        GOTO UniversalMatch
 
     BINDROP2:
         matchre BINGET2 /falls into the|You drop/
         match THIEFSTOW not fooling anyone
         match BINDROP2 ...wait
-        match BINTYPE.%BinOrBucket referring
-        gosub UniversalMatch
-        put put my %sellitem in %BinOrBucket
-        matchwait
+        match BINTYPE.%BinOrBucket% referring
+        put put my %sellitem% in %BinOrBucket%
+        GOTO UniversalMatch
 
     THIEFSTOW:
         put empty right
@@ -1957,28 +1904,27 @@ ECHO
         GOTO BINCYCLE
 
     BINCYCLE:
-        counter set %BinItemCount
-        unvar BinItem%c
+        counter set %BinItemCount%
+        deleteVariable BinItem%c%
         counter subtract 1
-        var BinItemCount %c
+        setVariable BinItemCount %c%
+        put echo bincycle%c% continue
         match BINCOUNTFIX bincycle-
-        match COUNTDOWN.%CountdownType.DONE bincycle0
-        match COUNTDOWN.%CountdownType.CONTINUE continue
-        gosub UniversalMatch
-        put echo bincycle%c continue
-        matchwait
+        match COUNTDOWN.%CountdownType%.DONE bincycle0
+        match COUNTDOWN.%CountdownType%.CONTINUE continue
+        GOTO UniversalMatch
 
     BINTYPE.BUCKET:
-        var BinOrBucket bin
+        setVariable BinOrBucket bin
         GOTO BINDROP
     BINTYPE.BIN:
-        var BinOrBucket basket
+        setVariable BinOrBucket basket
         GOTO BINDROP
     BINTYPE.BASKET:
-        var BinOrBucket recept
+        setVariable BinOrBucket recept
         GOTO BINDROP
     BINTYPE.RECEPT:
-        var BinOrBucket hole
+        setVariable BinOrBucket hole
         GOTO BINDROP
     BINTYPE.HOLE:
         ECHO
@@ -1987,7 +1933,7 @@ ECHO
         ECHO ***********************************************
         ECHO
         pause 2
-        GOTO %citycode.BINFINISH.%class
+        GOTO %citycode%.BINFINISH.%class%
 
 
 ##################################################################
@@ -1998,109 +1944,96 @@ ECHO
 
 
     GETSACK:
+        put get %name% sack
         matchre SACKCHECK1 /referring|You reach|You realize/
-        gosub UniversalMatch
-				put get %name sack
-    		matchwait
-    		
+        GOTO UniversalMatch
+
     SACKCHECK1:
-        match %citycode.ITEMCHECK referring
+        match %citycode%.ITEMCHECK referring
         match SACKCHECK2 You open
-        gosub UniversalMatch
         put open my small sack
-        matchwait
+        GOTO UniversalMatch
 
     SACKCHECK2:
-        match %citycode.ITEMCHECK There is nothing in there.
-        match SACKJUNK1 %item
+        match %citycode%.ITEMCHECK There is nothing in there.
+        match SACKJUNK1 %item%
         match SACKCHECK3 you see
-        gosub UniversalMatch
         put look in my small sack
-        matchwait
+        GOTO UniversalMatch
 
     SACKCHECK3:
         match SACKWEAR1 You get
         match SACKCHECK4 referring
-        gosub UniversalMatch
-        put get my %largeitem1 from my small sack
-        matchwait
+        put get my %largeitem1% from my small sack
+        GOTO UniversalMatch
 
     SACKCHECK4:
         match SACKWEAR2 You get
         match SACKCHECK5 referring
-        gosub UniversalMatch
-        put get my %largeitem2 from my small sack
-        matchwait
+        put get my %largeitem2% from my small sack
+        GOTO UniversalMatch
 
     SACKCHECK5:
-        match %citycode.ITEMCHECK There is nothing in there.
-        match SACKJUNK1 %item
+        match %citycode%.ITEMCHECK There is nothing in there.
+        match SACKJUNK1 %item%
         match SACKSCREWED you see
-        gosub UniversalMatch
         put look in my small sack
-        matchwait
+        GOTO UniversalMatch
 
     SACKJUNK1:
         match SACKJUNK2 You get
         match SACKSCREWED referring
-        gosub UniversalMatch
-        put get my %item in my small sack
-        matchwait
+        put get my %item% in my small sack
+        GOTO UniversalMatch
 
     SACKJUNK2:
         match SACKCHECK2 You put
         match SACKCHECK2 referring
         matchre SACKDROP /any more room|no matter how you/
-        gosub UniversalMatch
-        put put my %item in my %container1
-        put put my %item in my %container2
-        matchwait
+        put put my %item% in my %container1%
+        put put my %item% in my %container2%
+        GOTO UniversalMatch
 
     SACKDROP:
         matchre SACKCHECK2 /You drop|referring/
-        gosub UniversalMatch
-        put drop my %item
-        matchwait
+        put drop my %item%
+        GOTO UniversalMatch
 
     SACKWEAR1:
-        put wear my %largeitem1
+        put wear my %largeitem1%
         wait
         match SACKCHECK4 nothing in your
         match SACKCHECK4 You glance down to see a small sack in your left hand.
         matchre SACKSTOW1 /hand and a|hand and some/
-        gosub UniversalMatch
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     SACKWEAR2:
-        put wear my %largeitem2
+        put wear my %largeitem2%
         wait
         match SACKCHECK5 nothing in your
         match SACKCHECK5 You glance down to see a small sack in your left hand.
         matchre SACKSTOW2 /hand and a|hand and some/
-        gosub UniversalMatch
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     SACKSTOW1:
-        put stow my %largeitem1
+        put stow my %largeitem1%
         wait
         match SACKCHECK4 nothing in your
         match SACKCHECK4 You glance down to see a small sack in your left hand.
         matchre SACKSCREWED /hand and a|hand and some/
-        gosub UniversalMatch
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     SACKSTOW2:
-        put stow my %largeitem2
+        put stow my %largeitem2%
         wait
         match SACKCHECK5 nothing in your
         match SACKCHECK5 You glance down to see a small sack in your left hand.
         matchre SACKSCREWED /hand and a|hand and some/
-        gosub UniversalMatch
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     SACKSCREWED:
         ECHO
@@ -2110,7 +2043,7 @@ ECHO
         ECHO ***********************************************
         ECHO
         waitfor good positive attitude
-        GOTO %citycode.ITEMCHECK
+        GOTO %citycode%.ITEMCHECK
 
 
 ##################################################################
@@ -2122,10 +2055,11 @@ ECHO
     EMPATH.HEALSELF:
 
     RH:
-        var TargetWound Right Hand
+        setVariable TargetWound Right Hand
         GOTO HEALWOUNDS
 
     WOUNDCHECK:
+        put health
         match H head
         match N neck
         match RA right arm
@@ -2140,96 +2074,90 @@ ECHO
         match RE right eye
         match LE left eye
         matchre S /skin|rash|twitching|numbness|paralysis|difficulty/
-        match %citycode.EMPATH.TO.RESUME.FROM.%SelfHealLoc% You have no significant injuries.
-        gosub UniversalMatch
-        put health
-        matchwait
+        match %citycode%.EMPATH.TO.RESUME.FROM.%SelfHealLoc% You have no significant injuries.
+        GOTO UniversalMatch
 
     H:
-        var TargetWound Head
+        setVariable TargetWound Head
         GOTO HEALWOUNDS
     N:
-        var TargetWound Neck
+        setVariable TargetWound Neck
         GOTO HEALWOUNDS
     RA:
-        var TargetWound Right Arm
+        setVariable TargetWound Right Arm
         GOTO HEALWOUNDS
     LA:
-        var TargetWound Left Arm
+        setVariable TargetWound Left Arm
         GOTO HEALWOUNDS
     RL:
-        var TargetWound Right Leg
+        setVariable TargetWound Right Leg
         GOTO HEALWOUNDS
     LL:
-        var TargetWound Left Leg
+        setVariable TargetWound Left Leg
         GOTO HEALWOUNDS
     LH:
-        var TargetWound Left Hand
+        setVariable TargetWound Left Hand
         GOTO HEALWOUNDS
     C:
-        var TargetWound Chest
+        setVariable TargetWound Chest
         GOTO HEALWOUNDS
     B:
-        var TargetWound Back
+        setVariable TargetWound Back
         GOTO HEALWOUNDS
     A:
-        var TargetWound Abdomen
+        setVariable TargetWound Abdomen
         GOTO HEALWOUNDS
     RE:
-        var TargetWound Right Eye
+        setVariable TargetWound Right Eye
         GOTO HEALWOUNDS
     LE:
-        var TargetWound Left Eye
+        setVariable TargetWound Left Eye
         GOTO HEALWOUNDS
     S:
-        var TargetWound Skin
+        setVariable TargetWound Skin
         GOTO HEALWOUNDS
 
     HEALWOUNDS:
-        var HealSpell hw
+        setVariable HealSpell hw
         GOTO PREPSPELL
 
     HEALSCARS:
-        var HealSpell hs
+        setVariable HealSpell hs
         GOTO PREPSPELL
 
     PREPSPELL:
+        put prep %HealSpell%
         match PREPSPELL ...wait
         match HARNESS1 attunement
         match NOMANA You have to strain
-        gosub UniversalMatch
-        put prep %HealSpell
-        matchwait
+        GOTO UniversalMatch
 
     HARNESSWAIT:
         pause 10
     HARNESS1:
+        put har 4
         match HARNESS1 wait
         match HARNESS2 Roundtime
         match NOMANA You strain
-        gosub UniversalMatch
-        put har 4
-        matchwait
+        GOTO UniversalMatch
 
     HARNESS2:
+        put har 4
         match HARNESS2 wait
         match CASTSPELL Roundtime
         match NOMANA You strain
-        gosub UniversalMatch
-        put har 4
-        matchwait
+        GOTO UniversalMatch
 
     CASTSPELL:
         pause 5
-                match CASTSPELL ...wait
+        put cast %TargetWound%
+        match CASTSPELL ...wait
         match HEALSCARS wounds, but it cannot
-        match HEALSCARS The internal wounds on your %TargetWound appears completely healed.
+        match HEALSCARS The internal wounds on your %TargetWound% appears completely healed.
         match WOUNDCHECK scars, but it cannot
-        match WOUNDCHECK The internal scars on your %TargetWound appears completely healed.
+        match WOUNDCHECK The internal scars on your %TargetWound% appears completely healed.
         matchre PREPSPELL /ineffective|almost|improved|better|You don't have/
-        gosub UniversalMatch
-        put cast %TargetWound
-        matchwait
+        GOTO UniversalMatch
 
     NOMANA:
         pause 60
@@ -2247,636 +2175,636 @@ ECHO
 
 
     ZOL.RANK.1:
-        var skillrange 20-39
-        var ADbard <nothing>
-        var ADbardQuant 1
-        var ADodd <nothing>
-        var ADoddQuant 1
-        var ADthread <nothing>
-        var ADthreadQuant 1
-        var ADfash <nothing>
-        var ADfashQuant 1
-        var ADweap <nothing>
-        var ADweapQuant 1
-        var ADtartE <nothing>
-        var ADtartEQuant 1
-        var ADtartC <nothing>
-        var ADtartCQuant 1
-        var ADtartM <nothing>
-        var ADtartMQuant 1
-        var ADtartL <nothing>
-        var ADtartLQuant 1
-        var ADtartF <nothing>
-        var ADtartFQuant 1
-        var ADmap <nothing>
-        var ADmapQuant 1
-        var ADsmok <nothing>
-        var ADsmokQuant 1
-        var ADfeta biscuit
-        var ADfetaQuant 1
-        var Ctann <nothing>
-        var CtannQuant 1
-        var Cstit <nothing>
-        var CstitQuant 1
-        var Cbath reed
-        var CbathItemLoc  
-        var CbathQuant 1
-        var Chab <nothing>
-        var ChabQuant 1
-        var Ccobb <nothing>
-        var CcobbQuant 1
-        var Calch water
-        var CalchQuant 2
-        var Cbota <nothing>
-        var CbotaQuant 1
-        var Cbloss rose
-        var CblossQuant 1
-        var Cgen bark
-        var CgenQuant 1
-        var Cgem hairpin
-        var CgemQuant 1
-        var Cweap sling
-        var CweapQuant 1
-        var Carm gloves
-        var CarmQuant 1
-        var Clock slim lockpick
-        var ClockQuant 1
-        var Carti <nothing>
-        var CartiQuant 1
-        var Cbard pick
-        var CbardQuant 1
-        var Ccleric chamomile
-        var CclericQuant 1
-        var Lmorik <nothing>
-        var LmorikQuant 1
-        var Lperf <nothing>
-        var LperfQuant 1
-        var Lgen <nothing>
-        var LgenQuant 1
-        var Lbow flights
-        var LbowQuant 1
-        var Lweap <nothing>
-        var LweapQuant 1
-        var Lwick <nothing>
-        var LwickQuant 1
-        var Lcloth <nothing>
-        var LclothQuant 1
-        var Lbard <nothing>
-        var LbardQuant 1
-        var Lwood <nothing>
-        var LwoodQuant 1
-        var Lgami <nothing>
-        var LgamiQuant 1
-        var TCweap <nothing>
-        var TCweapItemLoc in catalog
-        var TCweapQuant 1
-        var TCpedd <nothing>
-        var TCpeddQuant 1
-        var TCherb <nothing>
-        var TCherbQuant 1
+        setVariable skillrange 20-39
+        setVariable ADbard <nothing>
+        setVariable ADbardQuant 1
+        setVariable ADodd <nothing>
+        setVariable ADoddQuant 1
+        setVariable ADthread <nothing>
+        setVariable ADthreadQuant 1
+        setVariable ADfash <nothing>
+        setVariable ADfashQuant 1
+        setVariable ADweap <nothing>
+        setVariable ADweapQuant 1
+        setVariable ADtartE <nothing>
+        setVariable ADtartEQuant 1
+        setVariable ADtartC <nothing>
+        setVariable ADtartCQuant 1
+        setVariable ADtartM <nothing>
+        setVariable ADtartMQuant 1
+        setVariable ADtartL <nothing>
+        setVariable ADtartLQuant 1
+        setVariable ADtartF <nothing>
+        setVariable ADtartFQuant 1
+        setVariable ADmap <nothing>
+        setVariable ADmapQuant 1
+        setVariable ADsmok <nothing>
+        setVariable ADsmokQuant 1
+        setVariable ADfeta biscuit
+        setVariable ADfetaQuant 1
+        setVariable Ctann <nothing>
+        setVariable CtannQuant 1
+        setVariable Cstit <nothing>
+        setVariable CstitQuant 1
+        setVariable Cbath reed
+        setVariable CbathItemLoc  
+        setVariable CbathQuant 1
+        setVariable Chab <nothing>
+        setVariable ChabQuant 1
+        setVariable Ccobb <nothing>
+        setVariable CcobbQuant 1
+        setVariable Calch water
+        setVariable CalchQuant 2
+        setVariable Cbota <nothing>
+        setVariable CbotaQuant 1
+        setVariable Cbloss rose
+        setVariable CblossQuant 1
+        setVariable Cgen bark
+        setVariable CgenQuant 1
+        setVariable Cgem hairpin
+        setVariable CgemQuant 1
+        setVariable Cweap sling
+        setVariable CweapQuant 1
+        setVariable Carm gloves
+        setVariable CarmQuant 1
+        setVariable Clock slim lockpick
+        setVariable ClockQuant 1
+        setVariable Carti <nothing>
+        setVariable CartiQuant 1
+        setVariable Cbard pick
+        setVariable CbardQuant 1
+        setVariable Ccleric chamomile
+        setVariable CclericQuant 1
+        setVariable Lmorik <nothing>
+        setVariable LmorikQuant 1
+        setVariable Lperf <nothing>
+        setVariable LperfQuant 1
+        setVariable Lgen <nothing>
+        setVariable LgenQuant 1
+        setVariable Lbow flights
+        setVariable LbowQuant 1
+        setVariable Lweap <nothing>
+        setVariable LweapQuant 1
+        setVariable Lwick <nothing>
+        setVariable LwickQuant 1
+        setVariable Lcloth <nothing>
+        setVariable LclothQuant 1
+        setVariable Lbard <nothing>
+        setVariable LbardQuant 1
+        setVariable Lwood <nothing>
+        setVariable LwoodQuant 1
+        setVariable Lgami <nothing>
+        setVariable LgamiQuant 1
+        setVariable TCweap <nothing>
+        setVariable TCweapItemLoc in catalog
+        setVariable TCweapQuant 1
+        setVariable TCpedd <nothing>
+        setVariable TCpeddQuant 1
+        setVariable TCherb <nothing>
+        setVariable TCherbQuant 1
         GOTO RANKREPORT
 
     ZOL.RANK.2:
-        var skillrange 40-59
-        var ADbard <nothing>
-        var ADbardQuant 2
-        var ADodd <nothing>
-        var ADoddQuant 2
-        var ADthread pouch
-        var ADthreadQuant 2
-        var ADfash <nothing>
-        var ADfashQuant 2
-        var ADweap butcher's knife
-        var ADweapQuant 2
-        var ADtartE <nothing>
-        var ADtartEQuant 1
-        var ADtartC <nothing>
-        var ADtartCQuant 1
-        var ADtartM <nothing>
-        var ADtartMQuant 1
-        var ADtartL <nothing>
-        var ADtartLQuant 1
-        var ADtartF <nothing>
-        var ADtartFQuant 1
-        var ADmap <nothing>
-        var ADmapQuant 1
-        var ADsmok <nothing>
-        var ADsmokQuant 1
-        var ADfeta yogurt
-        var ADfetaQuant 2
-        var Ctann <nothing>
-        var CtannQuant 2
-        var Cstit beret
-        var CstitQuant 1
-        var Cbath soap
-        var CbathItemLoc in basin
-        var CbathQuant 1
-        var Chab hood
-        var ChabQuant 2
-        var Ccobb anklets
-        var CcobbQuant 1
-        var Calch alcohol
-        var CalchQuant 2
-        var Cbota <nothing>
-        var CbotaQuant 2
-        var Cbloss rose
-        var CblossQuant 2
-        var Cgen purse
-        var CgenQuant 2
-        var Cgem hairpin
-        var CgemQuant 2
-        var Cweap sling
-        var CweapQuant 2
-        var Carm leather gloves
-        var CarmQuant 2
-        var Clock slim lockpick
-        var ClockQuant 2
-        var Carti <nothing>
-        var CartiQuant 2
-        var Cbard pick
-        var CbardQuant 2
-        var Ccleric chalice
-        var CclericQuant 2
-        var Lmorik <nothing>
-        var LmorikQuant 2
-        var Lperf <nothing>
-        var LperfQuant 2
-        var Lgen <nothing>
-        var LgenQuant 2
-        var Lbow arrowhead
-        var LbowQuant 2
-        var Lweap <nothing>
-        var LweapQuant 2
-        var Lwick <nothing>
-        var LwickQuant 2
-        var Lcloth <nothing>
-        var LclothQuant 2
-        var Lbard <nothing>
-        var LbardQuant 2
-        var Lwood <nothing>
-        var LwoodQuant 2
-        var Lgami <nothing>
-        var LgamiQuant 2
-        var TCweap <nothing>
-        var TCweapItemLoc in catalog
-        var TCweapQuant 2
-        var TCpedd <nothing>
-        var TCpeddQuant 2
-        var TCherb <nothing>
-        var TCherbQuant 2
+        setVariable skillrange 40-59
+        setVariable ADbard <nothing>
+        setVariable ADbardQuant 2
+        setVariable ADodd <nothing>
+        setVariable ADoddQuant 2
+        setVariable ADthread pouch
+        setVariable ADthreadQuant 2
+        setVariable ADfash <nothing>
+        setVariable ADfashQuant 2
+        setVariable ADweap butcher's knife
+        setVariable ADweapQuant 2
+        setVariable ADtartE <nothing>
+        setVariable ADtartEQuant 1
+        setVariable ADtartC <nothing>
+        setVariable ADtartCQuant 1
+        setVariable ADtartM <nothing>
+        setVariable ADtartMQuant 1
+        setVariable ADtartL <nothing>
+        setVariable ADtartLQuant 1
+        setVariable ADtartF <nothing>
+        setVariable ADtartFQuant 1
+        setVariable ADmap <nothing>
+        setVariable ADmapQuant 1
+        setVariable ADsmok <nothing>
+        setVariable ADsmokQuant 1
+        setVariable ADfeta yogurt
+        setVariable ADfetaQuant 2
+        setVariable Ctann <nothing>
+        setVariable CtannQuant 2
+        setVariable Cstit beret
+        setVariable CstitQuant 1
+        setVariable Cbath soap
+        setVariable CbathItemLoc in basin
+        setVariable CbathQuant 1
+        setVariable Chab hood
+        setVariable ChabQuant 2
+        setVariable Ccobb anklets
+        setVariable CcobbQuant 1
+        setVariable Calch alcohol
+        setVariable CalchQuant 2
+        setVariable Cbota <nothing>
+        setVariable CbotaQuant 2
+        setVariable Cbloss rose
+        setVariable CblossQuant 2
+        setVariable Cgen purse
+        setVariable CgenQuant 2
+        setVariable Cgem hairpin
+        setVariable CgemQuant 2
+        setVariable Cweap sling
+        setVariable CweapQuant 2
+        setVariable Carm leather gloves
+        setVariable CarmQuant 2
+        setVariable Clock slim lockpick
+        setVariable ClockQuant 2
+        setVariable Carti <nothing>
+        setVariable CartiQuant 2
+        setVariable Cbard pick
+        setVariable CbardQuant 2
+        setVariable Ccleric chalice
+        setVariable CclericQuant 2
+        setVariable Lmorik <nothing>
+        setVariable LmorikQuant 2
+        setVariable Lperf <nothing>
+        setVariable LperfQuant 2
+        setVariable Lgen <nothing>
+        setVariable LgenQuant 2
+        setVariable Lbow arrowhead
+        setVariable LbowQuant 2
+        setVariable Lweap <nothing>
+        setVariable LweapQuant 2
+        setVariable Lwick <nothing>
+        setVariable LwickQuant 2
+        setVariable Lcloth <nothing>
+        setVariable LclothQuant 2
+        setVariable Lbard <nothing>
+        setVariable LbardQuant 2
+        setVariable Lwood <nothing>
+        setVariable LwoodQuant 2
+        setVariable Lgami <nothing>
+        setVariable LgamiQuant 2
+        setVariable TCweap <nothing>
+        setVariable TCweapItemLoc in catalog
+        setVariable TCweapQuant 2
+        setVariable TCpedd <nothing>
+        setVariable TCpeddQuant 2
+        setVariable TCherb <nothing>
+        setVariable TCherbQuant 2
         GOTO RANKREPORT
 
     ZOL.RANK.3:
-        var skillrange 60-99
-        var ADbard rag
-        var ADbardQuant 2
-        var ADodd <nothing>
-        var ADoddQuant 2
-        var ADthread needle
-        var ADthreadQuant 2
-        var ADfash snood
-        var ADfashQuant 2
-        var ADweap hood
-        var ADweapQuant 2
-        var ADtartE <nothing>
-        var ADtartEQuant 1
-        var ADtartC tart
-        var ADtartCQuant 1
-        var ADtartM tart
-        var ADtartMQuant 1
-        var ADtartL <nothing>
-        var ADtartLQuant 1
-        var ADtartF tart
-        var ADtartFQuant 1
-        var ADmap <nothing>
-        var ADmapQuant 1
-        var ADsmok sungrown cigar
-        var ADsmokQuant 2
-        var ADfeta herb cheese
-        var ADfetaQuant 1
-        var Ctann thread
-        var CtannQuant 2
-        var Cstit cloche
-        var CstitQuant 2
-        var Cbath soap
-        var CbathItemLoc in basin
-        var CbathQuant 2
-        var Chab skullcap
-        var ChabQuant 2
-        var Ccobb moccasins
-        var CcobbQuant 2
-        var Calch pestle
-        var CalchQuant 2
-        var Cbota <nothing>
-        var CbotaQuant 2
-        var Cbloss <nothing>
-        var CblossQuant 2
-        var Cgen flint
-        var CgenQuant 2
-        var Cgem anklet
-        var CgemQuant 2
-        var Cweap dagger
-        var CweapQuant 2
-        var Carm leather aventail
-        var CarmP leather gloves
-        var CarmQuant 2
-        var Clock stout lockpick
-        var ClockQuant 2
-        var Carti <nothing>
-        var CartiQuant 2
-        var Cbard rag
-        var CbardQuant 2
-        var Ccleric wine
-        var CclericP chalice
-        var CclericQuant 2
-        var Lmorik <nothing>
-        var LmorikQuant 2
-        var Lperf <nothing>
-        var LperfQuant 2
-        var Lgen <nothing>
-        var LgenQuant 2
-        var Lbow <nothing>
-        var LbowQuant 2
-        var Lweap <nothing>
-        var LweapQuant 2
-        var Lwick <nothing>
-        var LwickQuant 2
-        var Lcloth <nothing>
-        var LclothQuant 2
-        var Lbard <nothing>
-        var LbardQuant 2
-        var Lwood <nothing>
-        var LwoodQuant 2
-        var Lgami white paper
-        var LgamiQuant 2
-        var TCweap <nothing>
-        var TCweapItemLoc in catalog
-        var TCweapQuant 2
-        var TCpedd <nothing>
-        var TCpeddQuant 2
-        var TCherb <nothing>
-        var TCherbQuant 2
+        setVariable skillrange 60-99
+        setVariable ADbard rag
+        setVariable ADbardQuant 2
+        setVariable ADodd <nothing>
+        setVariable ADoddQuant 2
+        setVariable ADthread needle
+        setVariable ADthreadQuant 2
+        setVariable ADfash snood
+        setVariable ADfashQuant 2
+        setVariable ADweap hood
+        setVariable ADweapQuant 2
+        setVariable ADtartE <nothing>
+        setVariable ADtartEQuant 1
+        setVariable ADtartC tart
+        setVariable ADtartCQuant 1
+        setVariable ADtartM tart
+        setVariable ADtartMQuant 1
+        setVariable ADtartL <nothing>
+        setVariable ADtartLQuant 1
+        setVariable ADtartF tart
+        setVariable ADtartFQuant 1
+        setVariable ADmap <nothing>
+        setVariable ADmapQuant 1
+        setVariable ADsmok sungrown cigar
+        setVariable ADsmokQuant 2
+        setVariable ADfeta herb cheese
+        setVariable ADfetaQuant 1
+        setVariable Ctann thread
+        setVariable CtannQuant 2
+        setVariable Cstit cloche
+        setVariable CstitQuant 2
+        setVariable Cbath soap
+        setVariable CbathItemLoc in basin
+        setVariable CbathQuant 2
+        setVariable Chab skullcap
+        setVariable ChabQuant 2
+        setVariable Ccobb moccasins
+        setVariable CcobbQuant 2
+        setVariable Calch pestle
+        setVariable CalchQuant 2
+        setVariable Cbota <nothing>
+        setVariable CbotaQuant 2
+        setVariable Cbloss <nothing>
+        setVariable CblossQuant 2
+        setVariable Cgen flint
+        setVariable CgenQuant 2
+        setVariable Cgem anklet
+        setVariable CgemQuant 2
+        setVariable Cweap dagger
+        setVariable CweapQuant 2
+        setVariable Carm leather aventail
+        setVariable CarmP leather gloves
+        setVariable CarmQuant 2
+        setVariable Clock stout lockpick
+        setVariable ClockQuant 2
+        setVariable Carti <nothing>
+        setVariable CartiQuant 2
+        setVariable Cbard rag
+        setVariable CbardQuant 2
+        setVariable Ccleric wine
+        setVariable CclericP chalice
+        setVariable CclericQuant 2
+        setVariable Lmorik <nothing>
+        setVariable LmorikQuant 2
+        setVariable Lperf <nothing>
+        setVariable LperfQuant 2
+        setVariable Lgen <nothing>
+        setVariable LgenQuant 2
+        setVariable Lbow <nothing>
+        setVariable LbowQuant 2
+        setVariable Lweap <nothing>
+        setVariable LweapQuant 2
+        setVariable Lwick <nothing>
+        setVariable LwickQuant 2
+        setVariable Lcloth <nothing>
+        setVariable LclothQuant 2
+        setVariable Lbard <nothing>
+        setVariable LbardQuant 2
+        setVariable Lwood <nothing>
+        setVariable LwoodQuant 2
+        setVariable Lgami white paper
+        setVariable LgamiQuant 2
+        setVariable TCweap <nothing>
+        setVariable TCweapItemLoc in catalog
+        setVariable TCweapQuant 2
+        setVariable TCpedd <nothing>
+        setVariable TCpeddQuant 2
+        setVariable TCherb <nothing>
+        setVariable TCherbQuant 2
         GOTO RANKREPORT
 
     ZOL.RANK.4:
-        var skillrange 100-149
-        var ADbard tambourine skin
-        var ADbardQuant 2
-        var ADodd fan
-        var ADoddQuant 2
-        var ADthread bobbin
-        var ADthreadQuant 2
-        var ADfash vest
-        var ADfashQuant 2
-        var ADweap sling
-        var ADweapQuant 2
-        var ADtartE tart
-        var ADtartEQuant 1
-        var ADtartC tart
-        var ADtartCQuant 2
-        var ADtartM tart
-        var ADtartMQuant 2
-        var ADtartL tart
-        var ADtartLQuant 1
-        var ADtartF tart
-        var ADtartFQuant 2
-        var ADmap <nothing>
-        var ADmapQuant 1
-        var ADsmok telgi cigar
-        var ADsmokQuant 1
-        var ADfeta herb cheese
-        var ADfetaQuant 2
-        var Ctann bodkin
-        var CtannQuant 2
-        var Cstit muff
-        var CstitQuant 2
-        var Cbath towel
-        var CbathItemLoc on stand
-        var CbathQuant 2
-        var Chab vest
-        var ChabQuant 2
-        var Ccobb tights
-        var CcobbQuant 2
-        var Calch large jar
-        var CalchQuant 2
-        var Cbota jadice flower
-        var CbotaQuant 1
-        var Cbloss <nothing>
-        var CblossQuant 2
-        var Cgen scabbard
-        var CgenQuant 2
-        var Cgem clasp
-        var CgemQuant 2
-        var Cweap gauntlet
-        var CweapP dagger
-        var CweapQuant 2
-        var Carm reinforced greaves
-        var CarmQuant 2
-        var Clock stout lockpick
-        var ClockQuant 2
-        var Carti <nothing>
-        var CartiQuant 2
-        var Cbard ocarina
-        var CbardQuant 2
-        var Ccleric vial
-        var CclericQuant 2
-        var Lmorik buckskin pelt
-        var LmorikQuant 1
-        var Lperf <nothing>
-        var LperfQuant 0
-        var Lgen dice
-        var LgenQuant 1
-        var Lgami silver paper
-        var LgamiQuant 2
-        var Lcloth moufles
-        var LclothQuant 1
-        var Lwood <nothing>
-        var LwoodQuant 0
-        var Lbard ocarina
-        var LbardQuant 1
-        var Lwick wicker quiver
-        var LwickQuant 2
-        var Lweap <nothing>
-        var LweapQuant 2
-        var Lbow bolts
-        var LbowQuant 1
-        var TCweap <nothing>
-        var TCweapItemLoc in catalog
-        var TCweapQuant 1
-        var TCpedd knapsack
-        var TCpeddQuant 1
-        var TCherb cebi root
-        var TCherbQuant 1
+        setVariable skillrange 100-149
+        setVariable ADbard tambourine skin
+        setVariable ADbardQuant 2
+        setVariable ADodd fan
+        setVariable ADoddQuant 2
+        setVariable ADthread bobbin
+        setVariable ADthreadQuant 2
+        setVariable ADfash vest
+        setVariable ADfashQuant 2
+        setVariable ADweap sling
+        setVariable ADweapQuant 2
+        setVariable ADtartE tart
+        setVariable ADtartEQuant 1
+        setVariable ADtartC tart
+        setVariable ADtartCQuant 2
+        setVariable ADtartM tart
+        setVariable ADtartMQuant 2
+        setVariable ADtartL tart
+        setVariable ADtartLQuant 1
+        setVariable ADtartF tart
+        setVariable ADtartFQuant 2
+        setVariable ADmap <nothing>
+        setVariable ADmapQuant 1
+        setVariable ADsmok telgi cigar
+        setVariable ADsmokQuant 1
+        setVariable ADfeta herb cheese
+        setVariable ADfetaQuant 2
+        setVariable Ctann bodkin
+        setVariable CtannQuant 2
+        setVariable Cstit muff
+        setVariable CstitQuant 2
+        setVariable Cbath towel
+        setVariable CbathItemLoc on stand
+        setVariable CbathQuant 2
+        setVariable Chab vest
+        setVariable ChabQuant 2
+        setVariable Ccobb tights
+        setVariable CcobbQuant 2
+        setVariable Calch large jar
+        setVariable CalchQuant 2
+        setVariable Cbota jadice flower
+        setVariable CbotaQuant 1
+        setVariable Cbloss <nothing>
+        setVariable CblossQuant 2
+        setVariable Cgen scabbard
+        setVariable CgenQuant 2
+        setVariable Cgem clasp
+        setVariable CgemQuant 2
+        setVariable Cweap gauntlet
+        setVariable CweapP dagger
+        setVariable CweapQuant 2
+        setVariable Carm reinforced greaves
+        setVariable CarmQuant 2
+        setVariable Clock stout lockpick
+        setVariable ClockQuant 2
+        setVariable Carti <nothing>
+        setVariable CartiQuant 2
+        setVariable Cbard ocarina
+        setVariable CbardQuant 2
+        setVariable Ccleric vial
+        setVariable CclericQuant 2
+        setVariable Lmorik buckskin pelt
+        setVariable LmorikQuant 1
+        setVariable Lperf <nothing>
+        setVariable LperfQuant 0
+        setVariable Lgen dice
+        setVariable LgenQuant 1
+        setVariable Lgami silver paper
+        setVariable LgamiQuant 2
+        setVariable Lcloth moufles
+        setVariable LclothQuant 1
+        setVariable Lwood <nothing>
+        setVariable LwoodQuant 0
+        setVariable Lbard ocarina
+        setVariable LbardQuant 1
+        setVariable Lwick wicker quiver
+        setVariable LwickQuant 2
+        setVariable Lweap <nothing>
+        setVariable LweapQuant 2
+        setVariable Lbow bolts
+        setVariable LbowQuant 1
+        setVariable TCweap <nothing>
+        setVariable TCweapItemLoc in catalog
+        setVariable TCweapQuant 1
+        setVariable TCpedd knapsack
+        setVariable TCpeddQuant 1
+        setVariable TCherb cebi root
+        setVariable TCherbQuant 1
         GOTO RANKREPORT
 
     ZOL.RANK.5:
-        var skillrange 150-199
-        var ADbard bodhran skin
-        var ADbardQuant 2
-        var ADodd fan
-        var ADoddQuant 2
-        var ADthread bobbin
-        var ADthreadQuant 2
-        var ADfash cape
-        var ADfashQuant 2
-        var ADweap short sword
-        var ADweapQuant 2
-        var ADtartE tart
-        var ADtartEQuant 2
-        var ADtartC tart
-        var ADtartCQuant 3
-        var ADtartM tart
-        var ADtartMQuant 3
-        var ADtartL tart
-        var ADtartLQuant 2
-        var ADtartF tart
-        var ADtartFQuant 3
-        var ADmap <nothing>
-        var ADmapQuant 1
-        var ADsmok telgi cigar
-        var ADsmokQuant 2
-        var ADfeta wayfarer cheese
-        var ADfetaQuant 2
-        var Ctann scraper
-        var CtannQuant 2
-        var Cstit shawl
-        var CstitQuant 2
-        var Cbath towel
-        var CbathItemLoc on stand
-        var CbathQuant 2
-        var Chab kilt
-        var ChabQuant 2
-        var Ccobb jack boots
-        var CcobbQuant 2
-        var Calch large bowl
-        var CalchQuant 2
-        var Cbota georin salve
-        var CbotaQuant 2
-        var Cbloss wreath
-        var CblossQuant 1
-        var Cgen quiver
-        var CgenQuant 2
-        var Cgem engagement ring
-        var CgemQuant 2
-        var Cweap cutlass
-        var CweapQuant 2
-        var Carm mail gloves
-        var CarmQuant 2
-        var Clock <nothing>
-        var ClockQuant 2
-        var Carti talisman
-        var CartiQuant 1
-        var Cbard lyre
-        var CbardQuant 2
-        var Ccleric basin
-        var CclericQuant 2
-        var Lmorik deer skin
-        var LmorikQuant 2
-        var Lperf <nothing>
-        var LperfQuant 0
-        var Lgen dice
-        var LgenQuant 1
-        var Lgami leather case
-        var LgamiQuant 1
-        var Lcloth tunic
-        var LclothQuant 2
-        var Lwood <nothing>
-        var LwoodQuant 0
-        var Lbard ocarina
-        var LbardQuant 1
-        var Lwick wicker quiver
-        var LwickQuant 2
-        var Lweap <nothing>
-        var LweapQuant 2
-        var Lbow long arrows
-        var LbowQuant 1
-        var TCweap short sword
-        var TCweapItemLoc in catalog
-        var TCweapQuant 1
-        var TCpedd knapsack
-        var TCpeddQuant 2
-        var TCherb cebi root
-        var TCherbQuant 2
+        setVariable skillrange 150-199
+        setVariable ADbard bodhran skin
+        setVariable ADbardQuant 2
+        setVariable ADodd fan
+        setVariable ADoddQuant 2
+        setVariable ADthread bobbin
+        setVariable ADthreadQuant 2
+        setVariable ADfash cape
+        setVariable ADfashQuant 2
+        setVariable ADweap short sword
+        setVariable ADweapQuant 2
+        setVariable ADtartE tart
+        setVariable ADtartEQuant 2
+        setVariable ADtartC tart
+        setVariable ADtartCQuant 3
+        setVariable ADtartM tart
+        setVariable ADtartMQuant 3
+        setVariable ADtartL tart
+        setVariable ADtartLQuant 2
+        setVariable ADtartF tart
+        setVariable ADtartFQuant 3
+        setVariable ADmap <nothing>
+        setVariable ADmapQuant 1
+        setVariable ADsmok telgi cigar
+        setVariable ADsmokQuant 2
+        setVariable ADfeta wayfarer cheese
+        setVariable ADfetaQuant 2
+        setVariable Ctann scraper
+        setVariable CtannQuant 2
+        setVariable Cstit shawl
+        setVariable CstitQuant 2
+        setVariable Cbath towel
+        setVariable CbathItemLoc on stand
+        setVariable CbathQuant 2
+        setVariable Chab kilt
+        setVariable ChabQuant 2
+        setVariable Ccobb jack boots
+        setVariable CcobbQuant 2
+        setVariable Calch large bowl
+        setVariable CalchQuant 2
+        setVariable Cbota georin salve
+        setVariable CbotaQuant 2
+        setVariable Cbloss wreath
+        setVariable CblossQuant 1
+        setVariable Cgen quiver
+        setVariable CgenQuant 2
+        setVariable Cgem engagement ring
+        setVariable CgemQuant 2
+        setVariable Cweap cutlass
+        setVariable CweapQuant 2
+        setVariable Carm mail gloves
+        setVariable CarmQuant 2
+        setVariable Clock <nothing>
+        setVariable ClockQuant 2
+        setVariable Carti talisman
+        setVariable CartiQuant 1
+        setVariable Cbard lyre
+        setVariable CbardQuant 2
+        setVariable Ccleric basin
+        setVariable CclericQuant 2
+        setVariable Lmorik deer skin
+        setVariable LmorikQuant 2
+        setVariable Lperf <nothing>
+        setVariable LperfQuant 0
+        setVariable Lgen dice
+        setVariable LgenQuant 1
+        setVariable Lgami leather case
+        setVariable LgamiQuant 1
+        setVariable Lcloth tunic
+        setVariable LclothQuant 2
+        setVariable Lwood <nothing>
+        setVariable LwoodQuant 0
+        setVariable Lbard ocarina
+        setVariable LbardQuant 1
+        setVariable Lwick wicker quiver
+        setVariable LwickQuant 2
+        setVariable Lweap <nothing>
+        setVariable LweapQuant 2
+        setVariable Lbow long arrows
+        setVariable LbowQuant 1
+        setVariable TCweap short sword
+        setVariable TCweapItemLoc in catalog
+        setVariable TCweapQuant 1
+        setVariable TCpedd knapsack
+        setVariable TCpeddQuant 2
+        setVariable TCherb cebi root
+        setVariable TCherbQuant 2
         GOTO RANKREPORT
 
     ZOL.RANK.6:
-        var skillrange 200-249
-        var ADbard itharr's
-        var ADbardQuant 2
-        var ADodd earring
-        var ADoddQuant 2
-        var ADthread pattern
-        var ADthreadQuant 2
-        var ADfash trousers
-        var ADfashQuant 2
-        var ADweap wooden shield
-        var ADweapQuant 2
-        var ADtartE tart
-        var ADtartEQuant 3
-        var ADtartC <nothing>
-        var ADtartCQuant 3
-        var ADtartM <nothing>
-        var ADtartMQuant 3
-        var ADtartL tart
-        var ADtartLQuant 3
-        var ADtartF <nothing>
-        var ADtartFQuant 3
-        var ADmap <nothing>
-        var ADmapQuant 1
-        var ADsmok cigarillo
-        var ADsmokQuant 2
-        var ADfeta butter cheese
-        var ADfetaQuant 2
-        var Ctann shears
-        var CtannQuant 2
-        var Cstit blouse
-        var CstitQuant 2
-        var Cbath bathrobe
-        var CbathItemLoc on counter
-        var CbathQuant 1
-        var Chab trousers
-        var ChabQuant 2
-        var Ccobb thigh boots
-        var CcobbQuant 2
-        var Calch large bowl
-        var CalchQuant 2
-        var Cbota riolur leaf
-        var CbotaQuant 2
-        var Cbloss corsage
-        var CblossQuant 2
-        var Cgen backpack
-        var CgenQuant 2
-        var Cgem coral hairpin
-        var CgemQuant 2
-        var Cweap rapier
-        var CweapQuant 2
-        var Carm chain aventail
-        var CarmQuant 2
-        var Clock <nothing>
-        var ClockQuant 2
-        var Carti talisman
-        var CartiQuant 2
-        var Cbard bodhran skin
-        var CbardQuant 2
-        var Ccleric coffer
-        var CclericQuant 2
-        var Lmorik sluagh hide
-        var LmorikQuant 2
-        var Lperf panther perfume
-        var LperfQuant 1
-        var Lgen dice
-        var LgenQuant 2
-        var Lbow leather quiver
-        var LbowQuant 2
-        var Lweap <nothing>
-        var LweapQuant 2
-        var Lwick mesh sack
-        var LwickQuant 2
-        var Lcloth doublet
-        var LclothQuant 2
-        var Lbard case
-        var LbardQuant 2
-        var Lwood applewood log
-        var LwoodQuant 1
-        var Lgami oak case
-        var LgamiQuant 2
-        var TCweap short sword
-        var TCweapItemLoc in catalog
-        var TCweapQuant 2
-        var TCpedd hood
-        var TCpeddQuant 2
-        var TCherb hulij elixir
-        var TCherbQuant 2
+        setVariable skillrange 200-249
+        setVariable ADbard itharr's
+        setVariable ADbardQuant 2
+        setVariable ADodd earring
+        setVariable ADoddQuant 2
+        setVariable ADthread pattern
+        setVariable ADthreadQuant 2
+        setVariable ADfash trousers
+        setVariable ADfashQuant 2
+        setVariable ADweap wooden shield
+        setVariable ADweapQuant 2
+        setVariable ADtartE tart
+        setVariable ADtartEQuant 3
+        setVariable ADtartC <nothing>
+        setVariable ADtartCQuant 3
+        setVariable ADtartM <nothing>
+        setVariable ADtartMQuant 3
+        setVariable ADtartL tart
+        setVariable ADtartLQuant 3
+        setVariable ADtartF <nothing>
+        setVariable ADtartFQuant 3
+        setVariable ADmap <nothing>
+        setVariable ADmapQuant 1
+        setVariable ADsmok cigarillo
+        setVariable ADsmokQuant 2
+        setVariable ADfeta butter cheese
+        setVariable ADfetaQuant 2
+        setVariable Ctann shears
+        setVariable CtannQuant 2
+        setVariable Cstit blouse
+        setVariable CstitQuant 2
+        setVariable Cbath bathrobe
+        setVariable CbathItemLoc on counter
+        setVariable CbathQuant 1
+        setVariable Chab trousers
+        setVariable ChabQuant 2
+        setVariable Ccobb thigh boots
+        setVariable CcobbQuant 2
+        setVariable Calch large bowl
+        setVariable CalchQuant 2
+        setVariable Cbota riolur leaf
+        setVariable CbotaQuant 2
+        setVariable Cbloss corsage
+        setVariable CblossQuant 2
+        setVariable Cgen backpack
+        setVariable CgenQuant 2
+        setVariable Cgem coral hairpin
+        setVariable CgemQuant 2
+        setVariable Cweap rapier
+        setVariable CweapQuant 2
+        setVariable Carm chain aventail
+        setVariable CarmQuant 2
+        setVariable Clock <nothing>
+        setVariable ClockQuant 2
+        setVariable Carti talisman
+        setVariable CartiQuant 2
+        setVariable Cbard bodhran skin
+        setVariable CbardQuant 2
+        setVariable Ccleric coffer
+        setVariable CclericQuant 2
+        setVariable Lmorik sluagh hide
+        setVariable LmorikQuant 2
+        setVariable Lperf panther perfume
+        setVariable LperfQuant 1
+        setVariable Lgen dice
+        setVariable LgenQuant 2
+        setVariable Lbow leather quiver
+        setVariable LbowQuant 2
+        setVariable Lweap <nothing>
+        setVariable LweapQuant 2
+        setVariable Lwick mesh sack
+        setVariable LwickQuant 2
+        setVariable Lcloth doublet
+        setVariable LclothQuant 2
+        setVariable Lbard case
+        setVariable LbardQuant 2
+        setVariable Lwood applewood log
+        setVariable LwoodQuant 1
+        setVariable Lgami oak case
+        setVariable LgamiQuant 2
+        setVariable TCweap short sword
+        setVariable TCweapItemLoc in catalog
+        setVariable TCweapQuant 2
+        setVariable TCpedd hood
+        setVariable TCpeddQuant 2
+        setVariable TCherb hulij elixir
+        setVariable TCherbQuant 2
         GOTO RANKREPORT
 
     ZOL.RANK.7:
-        var skillrange 250-299
-        var ADbard silverlock
-        var ADbardQuant 2
-        var ADodd earring
-        var ADoddQuant 2
-        var ADthread pattern
-        var ADthreadQuant 2
-        var ADfash trousers
-        var ADfashQuant 2
-        var ADweap vest
-        var ADweapQuant 2
-        var ADtartE <nothing>
-        var ADtartEQuant 1
-        var ADtartC <nothing>
-        var ADtartCQuant 1
-        var ADtartM <nothing>
-        var ADtartMQuant 1
-        var ADtartL <nothing>
-        var ADtartLQuant 1
-        var ADtartF <nothing>
-        var ADtartFQuant 1
-        var ADmap <nothing>
-        var ADmapQuant 1
-        var ADsmok silver cigar
-        var ADsmokQuant 2
-        var ADfeta kirm cheese
-        var ADfetaQuant 2
-        var Ctann pattern
-        var CtannQuant 2
-        var Cstit leggings
-        var CstitQuant 2
-        var Cbath bathrobe
-        var CbathItemLoc on counter
-        var CbathQuant 2
-        var Chab doublet
-        var ChabQuant 2
-        var Ccobb hip boots
-        var CcobbQuant 2
-        var Calch tincture jar
-        var CalchQuant 1
-        var Cbota ithor potion
-        var CbotaQuant 2
-        var Cbloss corsage
-        var CblossQuant 2
-        var Cgen backpack
-        var CgenQuant 2
-        var Cgem bloodstone hairpin
-        var CgemQuant 2
-        var Cweap war club
-        var CweapQuant 2
-        var Carm scale aventail
-        var CarmQuant 2
-        var Clock <nothing>
-        var ClockQuant 2
-        var Carti talisman
-        var CartiQuant 2
-        var Cbard refill
-        var CbardQuant 2
-        var Ccleric chasuble
-        var CclericQuant 2
-        var Lmorik cougar pelt
-        var LmorikQuant 2
-        var Lperf panther perfume
-        var LperfQuant 2
-        var Lgen dice
-        var LgenQuant 2
-        var Lbow leather quiver
-        var LbowQuant 2
-        var Lweap <nothing>
-        var LweapQuant 2
-        var Lwick mesh sack
-        var LwickQuant 2
-        var Lcloth jerkin
-        var LclothQuant 2
-        var Lbard mirliton
-        var LbardQuant 2
-        var Lwood hazelwood log
-        var LwoodQuant 2
-        var Lgami elm case
-        var LgamiQuant 2
-        var TCweap mace
-        var TCweapItemLoc in catalog
-        var TCweapQuant 2
-        var TCpedd hood
-        var TCpeddQuant 2
-        var TCherb hulij elixir
-        var TCherbQuant 2
+        setVariable skillrange 250-299
+        setVariable ADbard silverlock
+        setVariable ADbardQuant 2
+        setVariable ADodd earring
+        setVariable ADoddQuant 2
+        setVariable ADthread pattern
+        setVariable ADthreadQuant 2
+        setVariable ADfash trousers
+        setVariable ADfashQuant 2
+        setVariable ADweap vest
+        setVariable ADweapQuant 2
+        setVariable ADtartE <nothing>
+        setVariable ADtartEQuant 1
+        setVariable ADtartC <nothing>
+        setVariable ADtartCQuant 1
+        setVariable ADtartM <nothing>
+        setVariable ADtartMQuant 1
+        setVariable ADtartL <nothing>
+        setVariable ADtartLQuant 1
+        setVariable ADtartF <nothing>
+        setVariable ADtartFQuant 1
+        setVariable ADmap <nothing>
+        setVariable ADmapQuant 1
+        setVariable ADsmok silver cigar
+        setVariable ADsmokQuant 2
+        setVariable ADfeta kirm cheese
+        setVariable ADfetaQuant 2
+        setVariable Ctann pattern
+        setVariable CtannQuant 2
+        setVariable Cstit leggings
+        setVariable CstitQuant 2
+        setVariable Cbath bathrobe
+        setVariable CbathItemLoc on counter
+        setVariable CbathQuant 2
+        setVariable Chab doublet
+        setVariable ChabQuant 2
+        setVariable Ccobb hip boots
+        setVariable CcobbQuant 2
+        setVariable Calch tincture jar
+        setVariable CalchQuant 1
+        setVariable Cbota ithor potion
+        setVariable CbotaQuant 2
+        setVariable Cbloss corsage
+        setVariable CblossQuant 2
+        setVariable Cgen backpack
+        setVariable CgenQuant 2
+        setVariable Cgem bloodstone hairpin
+        setVariable CgemQuant 2
+        setVariable Cweap war club
+        setVariable CweapQuant 2
+        setVariable Carm scale aventail
+        setVariable CarmQuant 2
+        setVariable Clock <nothing>
+        setVariable ClockQuant 2
+        setVariable Carti talisman
+        setVariable CartiQuant 2
+        setVariable Cbard refill
+        setVariable CbardQuant 2
+        setVariable Ccleric chasuble
+        setVariable CclericQuant 2
+        setVariable Lmorik cougar pelt
+        setVariable LmorikQuant 2
+        setVariable Lperf panther perfume
+        setVariable LperfQuant 2
+        setVariable Lgen dice
+        setVariable LgenQuant 2
+        setVariable Lbow leather quiver
+        setVariable LbowQuant 2
+        setVariable Lweap <nothing>
+        setVariable LweapQuant 2
+        setVariable Lwick mesh sack
+        setVariable LwickQuant 2
+        setVariable Lcloth jerkin
+        setVariable LclothQuant 2
+        setVariable Lbard mirliton
+        setVariable LbardQuant 2
+        setVariable Lwood hazelwood log
+        setVariable LwoodQuant 2
+        setVariable Lgami elm case
+        setVariable LgamiQuant 2
+        setVariable TCweap mace
+        setVariable TCweapItemLoc in catalog
+        setVariable TCweapQuant 2
+        setVariable TCpedd hood
+        setVariable TCpeddQuant 2
+        setVariable TCherb hulij elixir
+        setVariable TCherbQuant 2
         GOTO RANKREPORT
 
     ZOL.RANK.11:
@@ -2890,93 +2818,93 @@ ECHO
     ZOL.RANK.10:
     ZOL.RANK.9:
     ZOL.RANK.8:
-        var skillrange 300+
-        var ADbard peri'el's
-        var ADbardQuant 2
-        var ADodd purse
-        var ADoddQuant 2
-        var ADthread pattern
-        var ADthreadQuant 2
-        var ADfash frock
-        var ADfashQuant 2
-        var ADweap cuirass
-        var ADweapQuant 2
-        var ADtartE <nothing>
-        var ADtartEQuant 1
-        var ADtartC <nothing>
-        var ADtartCQuant 1
-        var ADtartM <nothing>
-        var ADtartMQuant 1
-        var ADtartL <nothing>
-        var ADtartLQuant 1
-        var ADtartF anlibues cheese
-        var ADtartFQuant 2
-        var ADmap map
-        var ADmapQuant 1
-        var ADsmok whiskey cigar
-        var ADsmokQuant 2
-        var ADfeta <nothing>
-        var ADfetaQuant 1
-        var Ctann potion
-        var CtannQuant 1
-        var Cstit shirt
-        var CstitQuant 2
-        var Cbath bath towel
-        var CbathItemLoc on rack
-        var CbathQuant 2
-        var Chab tabard
-        var ChabQuant 2
-        var Ccobb <nothing>
-        var CcobbQuant 2
-        var Calch tincture jar
-        var CalchQuant 2
-        var Cbota ithor potion
-        var CbotaQuant 2
-        var Cbloss bouquet
-        var CblossQuant 2
-        var Cgen stove
-        var CgenQuant 2
-        var Cgem bloodstone hairpin
-        var CgemQuant 2
-        var Cweap longsword
-        var CweapQuant 2
-        var Carm chain helm
-        var CarmQuant 2
-        var Clock <nothing>
-        var ClockQuant 2
-        var Carti talisman
-        var CartiQuant 2
-        var Cbard mandolin
-        var CbardQuant 2
-        var Ccleric habit
-        var CclericQuant 2
-        var Lmorik reaver pelt
-        var LmorikQuant 2
-        var Lperf woodsmoke cologne
-        var LperfQuant 2
-        var Lgen quiver
-        var LgenQuant 2
-        var Lbow short bow
-        var LbowQuant 2
-        var Lweap wolf-tail shield
-        var LweapQuant 1
-        var Lwick mesh sack
-        var LwickQuant 2
-        var Lcloth mantle
-        var LclothQuant 2
-        var Lbard keyed flute
-        var LbardQuant 2
-        var Lwood ironwood log
-        var LwoodQuant 2
-        var Lgami enameled case
-        var LgamiQuant 2
-        var TCweap hammer
-        var TCweapItemLoc in catalog
-        var TCweapQuant 1
-        var TCpedd scabbard
-        var TCpeddQuant 1
-        var TCherb hulij elixir
-        var TCherbQuant 3
+        setVariable skillrange 300+
+        setVariable ADbard peri'el's
+        setVariable ADbardQuant 2
+        setVariable ADodd purse
+        setVariable ADoddQuant 2
+        setVariable ADthread pattern
+        setVariable ADthreadQuant 2
+        setVariable ADfash frock
+        setVariable ADfashQuant 2
+        setVariable ADweap cuirass
+        setVariable ADweapQuant 2
+        setVariable ADtartE <nothing>
+        setVariable ADtartEQuant 1
+        setVariable ADtartC <nothing>
+        setVariable ADtartCQuant 1
+        setVariable ADtartM <nothing>
+        setVariable ADtartMQuant 1
+        setVariable ADtartL <nothing>
+        setVariable ADtartLQuant 1
+        setVariable ADtartF anlibues cheese
+        setVariable ADtartFQuant 2
+        setVariable ADmap map
+        setVariable ADmapQuant 1
+        setVariable ADsmok whiskey cigar
+        setVariable ADsmokQuant 2
+        setVariable ADfeta <nothing>
+        setVariable ADfetaQuant 1
+        setVariable Ctann potion
+        setVariable CtannQuant 1
+        setVariable Cstit shirt
+        setVariable CstitQuant 2
+        setVariable Cbath bath towel
+        setVariable CbathItemLoc on rack
+        setVariable CbathQuant 2
+        setVariable Chab tabard
+        setVariable ChabQuant 2
+        setVariable Ccobb <nothing>
+        setVariable CcobbQuant 2
+        setVariable Calch tincture jar
+        setVariable CalchQuant 2
+        setVariable Cbota ithor potion
+        setVariable CbotaQuant 2
+        setVariable Cbloss bouquet
+        setVariable CblossQuant 2
+        setVariable Cgen stove
+        setVariable CgenQuant 2
+        setVariable Cgem bloodstone hairpin
+        setVariable CgemQuant 2
+        setVariable Cweap longsword
+        setVariable CweapQuant 2
+        setVariable Carm chain helm
+        setVariable CarmQuant 2
+        setVariable Clock <nothing>
+        setVariable ClockQuant 2
+        setVariable Carti talisman
+        setVariable CartiQuant 2
+        setVariable Cbard mandolin
+        setVariable CbardQuant 2
+        setVariable Ccleric habit
+        setVariable CclericQuant 2
+        setVariable Lmorik reaver pelt
+        setVariable LmorikQuant 2
+        setVariable Lperf woodsmoke cologne
+        setVariable LperfQuant 2
+        setVariable Lgen quiver
+        setVariable LgenQuant 2
+        setVariable Lbow short bow
+        setVariable LbowQuant 2
+        setVariable Lweap wolf-tail shield
+        setVariable LweapQuant 1
+        setVariable Lwick mesh sack
+        setVariable LwickQuant 2
+        setVariable Lcloth mantle
+        setVariable LclothQuant 2
+        setVariable Lbard keyed flute
+        setVariable LbardQuant 2
+        setVariable Lwood ironwood log
+        setVariable LwoodQuant 2
+        setVariable Lgami enameled case
+        setVariable LgamiQuant 2
+        setVariable TCweap hammer
+        setVariable TCweapItemLoc in catalog
+        setVariable TCweapQuant 1
+        setVariable TCpedd scabbard
+        setVariable TCpeddQuant 1
+        setVariable TCherb hulij elixir
+        setVariable TCherbQuant 3
         GOTO RANKREPORT
 
     ZOL.RANK.-5:
@@ -2988,16 +2916,15 @@ ECHO
         GOTO BEGGAR.MOD
 
     ZOL.BAGCHECK:
-        matchre BAGWARN /%Ctann|%Cstit|%Chab|%Cbath|%Ccobb|%Calch|%Cbota|%Cbloss%/
-        matchre BAGWARN /%Cgen|%Cgem|%Cweap|%Carm|%Cbard|%Clock|%Ccleric|%Carti%/
-        matchre BAGWARN /%ADodd|%ADbard|%ADthread|%ADfash|%ADweap|%TCweap|%TCpedd|%TCherb%/
-        matchre BAGWARN /%ADtartE|%ADtartC|%ADtartM|%ADtartL|%ADtartF|%ADmap|%ADsmok|%ADfeta%/
-        matchre BAGWARN /%Lmorik|%Lperf|%Lgen|%Lbow|%Lweap|%Lwick|%Lcloth|%Lbard|%Lwood|%Lgami%/
-        match BAGS.STOW.%c You glance
-        gosub UniversalMatch
-        put look in my %container
+        matchre BAGWARN /%Ctann%|%Cstit%|%Chab%|%Cbath%|%Ccobb%|%Calch%|%Cbota%|%Cbloss%/
+        matchre BAGWARN /%Cgen%|%Cgem%|%Cweap%|%Carm%|%Cbard%|%Clock%|%Ccleric%|%Carti%/
+        matchre BAGWARN /%ADodd%|%ADbard%|%ADthread%|%ADfash%|%ADweap%|%TCweap%|%TCpedd%|%TCherb%/
+        matchre BAGWARN /%ADtartE%|%ADtartC%|%ADtartM%|%ADtartL%|%ADtartF%|%ADmap%|%ADsmok%|%ADfeta%/
+        matchre BAGWARN /%Lmorik%|%Lperf%|%Lgen%|%Lbow%|%Lweap%|%Lwick%|%Lcloth%|%Lbard%|%Lwood%|%Lgami%/
+        match BAGS.STOW.%c% You glance
+        put look in my %container%
         put glance
-        matchwait
+        GOTO UniversalMatch
 
 
 ##################################################################
@@ -3032,9 +2959,8 @@ ECHO
         match JAILWAIT [Guard House, Jail Cell]
         match PLEA [Guard House, Chamber of Justice]
         match ZOL.BADLOCATION Obvious
-        gosub UniversalMatch
         put look
-        matchwait
+        GOTO UniversalMatch
 
     ARTHE:
         match ARTHE.START.GATE [Arthe Dale, Village Gate]
@@ -3067,9 +2993,8 @@ ECHO
         match LETH.START.BOWYER [Huyelm's Trueflight Bow and Arrow Shop, Salesroom]
         match LETH.START.ORIGAMI [Origami Boutique]
         match ZOL.BADLOCATION Obvious
-        gosub UniversalMatch
         put look
-        matchwait
+        GOTO UniversalMatch
 
     ZOL.BADLOCATION:
         put echocolumn /on
@@ -3111,114 +3036,114 @@ ECHO
 
     CROSS.START.TANN:
         counter set 291
-        var storecode Ctann
+        setVariable storecode Ctann
         GOTO START
 
     CROSS.START.ALCH:
         counter set 41
-        var storecode Calch
+        setVariable storecode Calch
         put out
         GOTO START
 
     CROSS.START.BOTA:
         counter set 44
-        var storecode Cbota
+        setVariable storecode Cbota
         put out
         GOTO START
 
     CROSS.START.COBB:
         counter set 279
-        var storecode Ccobb
+        setVariable storecode Ccobb
         put out
         GOTO START
 
     CROSS.START.BLOSS:
         counter set 59
-        var storecode Cbloss
+        setVariable storecode Cbloss
         put out
         GOTO START
 
     CROSS.START.WEAP:
         counter set 64
-        var storecode Cweap
+        setVariable storecode Cweap
         put out
         GOTO START
 
     CROSS.START.ARM:
         counter set 66
-        var storecode Carm
+        setVariable storecode Carm
         put out
         GOTO START
 
     CROSS.START.GEN:
         counter set 69
-        var storecode Cgen
+        setVariable storecode Cgen
         put out
         GOTO START
 
     CROSS.START.GEM:
         counter set 72
-        var storecode Cgem
+        setVariable storecode Cgem
         put out
         GOTO START
 
     CROSS.START.STIT:
         counter set 75
-        var storecode Cstit
+        setVariable storecode Cstit
         put out
         GOTO START
 
     CROSS.START.CLERIC:
         counter set 85
-        var storecode Ccleric
+        setVariable storecode Ccleric
         put out
         GOTO START
 
     CROSS.START.BARD:
         counter set 89
-        var storecode Cbard
+        setVariable storecode Cbard
         put out
         GOTO START
 
     CROSS.START.BATH:
         counter set 93
-        var storecode Cbath
+        setVariable storecode Cbath
         put out
         GOTO START
 
     CROSS.START.LOCK:
         counter set 98
-        var storecode Clock
+        setVariable storecode Clock
         put out
         GOTO START
 
     CROSS.START.ARTI:
         counter set 112
-        var storecode Carti
+        setVariable storecode Carti
         put out
         GOTO START
 
     CROSS.START.HAB:
         counter set 115
-        var storecode Chab
+        setVariable storecode Chab
         put out
         GOTO START
 
     TIGER.START.WEAP:
         counter set 18
-        var storecode TCweap
+        setVariable storecode TCweap
         put out
         GOTO START
 
     TIGER.START.PEDD:
         counter set 22
-        var storecode TCpedd
+        setVariable storecode TCpedd
         put out
         GOTO START
 
     TIGER.START.HERB:
         counter set 26
-        var storecode TCherb
+        setVariable storecode TCherb
         put out
         GOTO START
 
@@ -3378,8 +3303,8 @@ ECHO
         put n
         GOTO TRAVEL
       CROSS.41:
-        var storecode Calch
-        var entrance shop
+        setVariable storecode Calch
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.CALCH:
@@ -3391,12 +3316,12 @@ ECHO
         put s
         GOTO TRAVEL
       CROSS.44:
-        var storecode Cbota
-        var entrance shop
+        setVariable storecode Cbota
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.CBOTA:
-        GOTO %LorM.CBOTA.1
+        GOTO %LorM%.CBOTA.1
     LEAVE.CBOTA.1:
         counter set 45
       CROSS.45:
@@ -3427,7 +3352,7 @@ ECHO
         GOTO TRAVEL
 
     MOVEON.CBOTA.1:
-        GOTO MOVEON.CBOTA.%MoveOnReason
+        GOTO MOVEON.CBOTA.%MoveOnReason%
 
     MOVEON.CBOTA.EXP:
     MOVEON.CBOTA.LOC:
@@ -3448,7 +3373,7 @@ ECHO
         GOTO LEAVE.CBLOSS
 
     MOVEON.CBOTA.HEALTH:
-        GOTO MOVEON.CBOTA.HEALTH.%class
+        GOTO MOVEON.CBOTA.HEALTH.%class%
 
     MOVEON.CBOTA.HEALTH.THIEF:
     MOVEON.CBOTA.HEALTH.NONTHIEF:
@@ -3460,7 +3385,7 @@ ECHO
         put go arch
         GOTO TRAVEL
       CROSS.141:
-        GOTO CROSS.HOSPITAL.%class
+        GOTO CROSS.HOSPITAL.%class%
 
     MOVEON.CBOTA.HEALTH.EMPATH:
         counter set 328
@@ -3468,7 +3393,7 @@ ECHO
         put n
         GOTO TRAVEL
       CROSS.329:
-        var SelfHealLoc Cbota
+        setVariable SelfHealLoc Cbota
         GOTO EMPATH.HEALSELF
 
     CROSS.EMPATH.TO.RESUME.FROM.CBOTA:
@@ -3480,7 +3405,7 @@ ECHO
         GOTO MOVEON.CBOTA.HEALTH.NONTHIEF
 
     LEAVE.CCOBB:
-        GOTO %LorM.CCOBB.1
+        GOTO %LorM%.CCOBB.1
     MOVEON.CCOBB.EXP:
     MOVEON.CCOBB.LOC:
     LEAVE.CCOBB.1:
@@ -3507,12 +3432,12 @@ ECHO
         put s
         GOTO TRAVEL
       CROSS.59:
-        var storecode Cbloss
-        var entrance shop
+        setVariable storecode Cbloss
+        setVariable entrance shop
         GOTO SETSTORE
 
     MOVEON.CCOBB.1:
-        GOTO MOVEON.CCOBB.%MoveOnReason
+        GOTO MOVEON.CCOBB.%MoveOnReason%
 
     MOVEON.CCOBB.HEALTH:
         counter set 142
@@ -3535,7 +3460,7 @@ ECHO
         put w
         GOTO TRAVEL
       CROSS.148:
-        GOTO MOVEON.CBOTA.HEALTH.%class
+        GOTO MOVEON.CBOTA.HEALTH.%class%
 
     LEAVE.CBLOSS:
         counter set 60
@@ -3552,8 +3477,8 @@ ECHO
         put w
         GOTO TRAVEL
       CROSS.64:
-        var storecode Cweap
-        var entrance shop
+        setVariable storecode Cweap
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.CWEAP:
@@ -3562,8 +3487,8 @@ ECHO
         put w
         GOTO TRAVEL
       CROSS.66:
-        var storecode Carm
-        var entrance shop
+        setVariable storecode Carm
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.CARM:
@@ -3575,8 +3500,8 @@ ECHO
         put s
         GOTO TRAVEL
       CROSS.69:
-        var storecode Cgen
-        var entrance store
+        setVariable storecode Cgen
+        setVariable entrance store
         GOTO SETSTORE
 
     LEAVE.CGEN:
@@ -3588,8 +3513,8 @@ ECHO
         put e
         GOTO TRAVEL
       CROSS.72:
-        var storecode Cgem
-        var entrance shop
+        setVariable storecode Cgem
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.CGEM:
@@ -3601,8 +3526,8 @@ ECHO
         put e
         GOTO TRAVEL
       CROSS.75:
-        var storecode Cstit
-        var entrance stit
+        setVariable storecode Cstit
+        setVariable entrance stit
         GOTO SETSTORE
 
     LEAVE.CSTIT:
@@ -3635,8 +3560,8 @@ ECHO
         put w
         GOTO TRAVEL
       CROSS.85:
-        var storecode Ccleric
-        var entrance shop
+        setVariable storecode Ccleric
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.CCLERIC:
@@ -3651,8 +3576,8 @@ ECHO
         put n
         GOTO TRAVEL
       CROSS.89:
-        var storecode Cbard
-        var entrance shop
+        setVariable storecode Cbard
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.CBARD:
@@ -3667,9 +3592,9 @@ ECHO
         put w
         GOTO TRAVEL
       CROSS.93:
-        var storecode Cbath
-        var entrance bath
-        var itemlocation %CbathItemLoc
+        setVariable storecode Cbath
+        setVariable entrance bath
+        setVariable itemlocation %CbathItemLoc%
         GOTO SETSTORE
 
     LEAVE.CBATH:
@@ -3687,8 +3612,8 @@ ECHO
         put n
         GOTO TRAVEL
       CROSS.98:
-        var storecode Clock
-        var entrance door
+        setVariable storecode Clock
+        setVariable entrance door
         GOTO SETSTORE
 
     LEAVE.CLOCK:
@@ -3733,8 +3658,8 @@ ECHO
         put s
         GOTO TRAVEL
       CROSS.112:
-        var storecode Carti
-        var entrance shop
+        setVariable storecode Carti
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.CARTI:
@@ -3746,12 +3671,12 @@ ECHO
         put e
         GOTO TRAVEL
       CROSS.115:
-        var storecode Chab
-        var entrance haber
+        setVariable storecode Chab
+        setVariable entrance haber
         GOTO SETSTORE
 
     LEAVE.CHAB:
-        GOTO %LorM.CHAB.1
+        GOTO %LorM%.CHAB.1
     LEAVE.CHAB.1:
         counter set 116
       CROSS.116:
@@ -3773,18 +3698,17 @@ ECHO
         put n
         GOTO TRAVEL
       CROSS.122:
-        GOTO LEAVE.CHAB.CLAN.%clanoption
+        GOTO LEAVE.CHAB.CLAN.%clanoption%
 
     LEAVE.CHAB.CLAN.YES:
+        put echo %TCherb% %TCpedd% %TCweap%
+        put glance
         match LEAVE.CHAB.CLAN.NO nothing nothing nothing
         match LEAVE.CHAB.CLAN.YES.2 You glance
-        gosub UniversalMatch
-        echo %TCherb %TCpedd %TCweap
-        put glance
-				matchwait
+        GOTO UniversalMatch
 
     LEAVE.CHAB.CLAN.NO:
-        var clanoption NO
+        setVariable clanoption NO
         GOTO LEAVE.CHAB.CLAN.NO.1
         
     LEAVE.CHAB.CLAN.YES.2:
@@ -3809,7 +3733,7 @@ ECHO
 
       CROSS.293:
         counter set 1
-        var citycode TIGER
+        setVariable citycode TIGER
       TIGER.1:
         put go path
         GOTO TRAVEL
@@ -3862,9 +3786,9 @@ ECHO
         put s
         GOTO TRAVEL
       TIGER.18:
-        var storecode TCweap
-        var entrance building
-        var itemlocation %TCweapItemLoc
+        setVariable storecode TCweap
+        setVariable entrance building
+        setVariable itemlocation %TCweapItemLoc%
         GOTO SETSTORE
 
     LEAVE.TCWEAP:
@@ -3882,10 +3806,10 @@ ECHO
         counter set 57
       TIGER.57:
         put go wagon
-        var storecode TCpedd
+        setVariable storecode TCpedd
         GOTO TRAVEL
       TIGER.58:
-        var entrance wagon
+        setVariable entrance wagon
         GOTO SETSTORE
 
     ALTLEAVE.TCPEDD:
@@ -3907,8 +3831,8 @@ ECHO
         put go toft
         GOTO TRAVEL
       TIGER.26:
-        var storecode TCherb
-        var entrance cottage
+        setVariable storecode TCherb
+        setVariable entrance cottage
         GOTO SETSTORE
 
     LEAVE.TCHERB:
@@ -3986,7 +3910,7 @@ ECHO
         put go gate
         GOTO TRAVEL
       TIGER.51:
-        var citycode CROSS
+        setVariable citycode CROSS
       CROSS.128:
         counter set 129
       CROSS.129:
@@ -4033,8 +3957,8 @@ ECHO
         put w
         GOTO TRAVEL
       CROSS.291:
-        var storecode Ctann
-        var entrance shed
+        setVariable storecode Ctann
+        setVariable entrance shed
         GOTO SETSTORE
 
     MOVEON.CHAB.1:
@@ -4052,7 +3976,7 @@ ECHO
         put ne
         GOTO TRAVEL
       CROSS.136:
-        var storecode Cpawn
+        setVariable storecode Cpawn
         put nw
         GOTO TRAVEL
       CROSS.137:
@@ -4060,26 +3984,25 @@ ECHO
         GOTO TRAVEL
       CROSS.138:
         match CROSS.PAWN.TO.HOSPITAL hand which appears completely useless
-        matchre PAWN.%DropOrStow /mind lock|nearly locked/
-        match LEAVE.CPAWN.%class Time Development
-        gosub UniversalMatch
+        matchre PAWN.%DropOrStow% /mind lock|nearly locked/
+        match LEAVE.CPAWN.%class% Time development
         put health
         put skill thievery
-        matchwait
+        GOTO UniversalMatch
 
     LEAVE.CPAWN.THIEF:
-        GOTO CROSSLETH.%lethcross
+        GOTO CROSSLETH.%lethcross%
 
     CROSSLETH.LETH:
     LEAVE.CPAWN.EMPATH:
     LEAVE.CPAWN.NONTHIEF:
-        GOTO PAWN.%DropOrStow
+        GOTO PAWN.%DropOrStow%
 
     CROSSLETH.CROSS:
-        var citycode LETH
-        var LorM leave
-        var MRS shopcheck1
-        var npcoption yes
+        setVariable citycode LETH
+        setVariable LorM leave
+        setVariable MRS shopcheck1
+        setVariable npcoption yes
         counter set 380
       LETH.380:
         put o
@@ -4304,7 +4227,7 @@ ECHO
         GOTO LETH.START.NW
 
     CROSS.PAWN.TO.HOSPITAL:
-        GOTO CROSS.PAWN.TO.HOSPITAL.%class
+        GOTO CROSS.PAWN.TO.HOSPITAL.%class%
     CROSS.PAWN.TO.HOSPITAL.THIEF:
     CROSS.PAWN.TO.HOSPITAL.NONTHIEF:
         counter set 294
@@ -4401,14 +4324,13 @@ ECHO
         put s
         GOTO TRAVEL
       CROSS.323:
-        GOTO CROSS.HOSPITAL.%class
+        GOTO CROSS.HOSPITAL.%class%
 
     CROSS.HOSPITAL.THIEF:
     CROSS.HOSPITAL.NONTHIEF:
-        match CROSS.HOSPITAL.TO.RESUME crosses your name off the waiting list.
-        gosub UniversalMatch
         put join list
-        matchwait
+        match CROSS.HOSPITAL.TO.RESUME crosses your name off the waiting list.
+        GOTO UniversalMatch
 
     CROSS.PAWN.TO.HOSPITAL.EMPATH:
         counter set 324
@@ -4416,7 +4338,7 @@ ECHO
         put out
         GOTO TRAVEL
       CROSS.325:
-        var SelfHealLoc Cpawn
+        setVariable SelfHealLoc Cpawn
         GOTO EMPATH.HEALSELF
 
     CROSS.EMPATH.TO.RESUME.FROM.CPAWN:
@@ -4435,52 +4357,52 @@ ECHO
 
     ARTHE.START.WEAP:
         counter set 66
-        var storecode ADweap
+        setVariable storecode ADweap
         GOTO START
 
     ARTHE.START.BARD:
         counter set 16
-        var storecode ADbard
+        setVariable storecode ADbard
         put out
         GOTO START
 
     ARTHE.START.ODD:
         counter set 18
-        var storecode ADodd
+        setVariable storecode ADodd
         put out
         GOTO START
 
     ARTHE.START.FASH:
         counter set 20
-        var storecode ADfash
+        setVariable storecode ADfash
         put out
         GOTO START
 
     ARTHE.START.THREAD:
         counter set 21
-        var storecode ADthread
+        setVariable storecode ADthread
         put out
         GOTO START
 
     ARTHE.START.TART:
         counter set 41
-        var storecode ADtartE
+        setVariable storecode ADtartE
         GOTO START
 
     ARTHE.START.MAP:
         counter set 56
-        var storecode ADmap
+        setVariable storecode ADmap
         put out
         GOTO START
 
     ARTHE.START.SMOK:
         counter set 60
-        var storecode ADsmok
+        setVariable storecode ADsmok
         GOTO START
 
     ARTHE.START.FETA:
         counter set 67
-        var storecode ADfeta
+        setVariable storecode ADfeta
         GOTO START
 
       CROSS.156:
@@ -4528,7 +4450,7 @@ ECHO
         GOTO TRAVEL
       CROSS.170:
         counter set 1
-        var citycode ARTHE
+        setVariable citycode ARTHE
       ARTHE.1:
         put e
         GOTO TRAVEL
@@ -4577,8 +4499,8 @@ ECHO
         put e
         GOTO TRAVEL
       ARTHE.101:
-        var storecode ADmap
-        var entrance door
+        setVariable storecode ADmap
+        setVariable entrance door
         GOTO SETSTORE
 
       ARTHE.35:
@@ -4600,8 +4522,8 @@ ECHO
         put go knoll
         GOTO TRAVEL
       ARTHE.41:
-        var storecode ADtartE
-        var entrance w
+        setVariable storecode ADtartE
+        setVariable entrance w
         GOTO SETSTORE
 
 
@@ -4622,8 +4544,8 @@ ECHO
         GOTO TRAVEL
       ARTHE.75:
     ALTLEAVE.ADTARTE:
-        var storecode ADtartC
-        var entrance n
+        setVariable storecode ADtartC
+        setVariable entrance n
         GOTO SETSTORE
 
     LEAVE.ADTARTC:
@@ -4633,8 +4555,8 @@ ECHO
         GOTO TRAVEL
       ARTHE.45:
     ALTLEAVE.ADTARTC:
-        var storecode ADtartM
-        var entrance e
+        setVariable storecode ADtartM
+        setVariable entrance e
         GOTO SETSTORE
 
     LEAVE.ADTARTM:
@@ -4644,8 +4566,8 @@ ECHO
         GOTO TRAVEL
       ARTHE.47:
     ALTLEAVE.ADTARTM:
-        var storecode ADtartL
-        var entrance n
+        setVariable storecode ADtartL
+        setVariable entrance n
         GOTO SETSTORE
 
     LEAVE.ADTARTL:
@@ -4655,8 +4577,8 @@ ECHO
         GOTO TRAVEL
       ARTHE.49:
     ALTLEAVE.ADTARTL:
-        var storecode ADtartF
-        var entrance se
+        setVariable storecode ADtartF
+        setVariable entrance se
         GOTO SETSTORE
 
     ALTLEAVE.ADTARTF:
@@ -4681,8 +4603,8 @@ ECHO
         put s
         GOTO TRAVEL
       ARTHE.56:
-        var storecode ADmap
-        var entrance door
+        setVariable storecode ADmap
+        setVariable entrance door
         GOTO SETSTORE
 
     LEAVE.ADMAP:
@@ -4697,8 +4619,8 @@ ECHO
         put climb stair
         GOTO TRAVEL
       ARTHE.60:
-        var storecode ADsmok
-        var entrance climb stair
+        setVariable storecode ADsmok
+        setVariable entrance climb stair
         GOTO SETSTORE
 
     ALTLEAVE.ADSMOK:
@@ -4720,8 +4642,8 @@ ECHO
         put go shack
         GOTO TRAVEL
       ARTHE.67:
-        var storecode ADfeta
-        var entrance shack
+        setVariable storecode ADfeta
+        setVariable entrance shack
         GOTO SETSTORE
 
     ALTLEAVE.ADFETA:
@@ -4737,11 +4659,11 @@ ECHO
         match ALTLEAVE.ADFETA You can't go
         GOTO TRAVEL
       ARTHE.71:
-        var storecode ADweap
+        setVariable storecode ADweap
         put go entry
         GOTO TRAVEL
       ARTHE.72:
-        var entrance entry
+        setVariable entrance entry
         GOTO SETSTORE
 
     ALTLEAVE.ADWEAP:
@@ -4757,8 +4679,8 @@ ECHO
         match ALTLEAVE.ADWEAP You can't go
         GOTO TRAVEL
       ARTHE.16:
-        var storecode ADbard
-        var entrance building
+        setVariable storecode ADbard
+        setVariable entrance building
         GOTO SETSTORE
 
     LEAVE.ADBARD:
@@ -4767,8 +4689,8 @@ ECHO
         put w
         GOTO TRAVEL
       ARTHE.18:
-        var storecode ADodd
-        var entrance door
+        setVariable storecode ADodd
+        setVariable entrance door
         GOTO SETSTORE
 
     LEAVE.ADODD:
@@ -4777,14 +4699,14 @@ ECHO
         put w
         GOTO TRAVEL
       ARTHE.20:
-        var storecode ADthread
-        var entrance door
+        setVariable storecode ADthread
+        setVariable entrance door
         GOTO SETSTORE
 
     LEAVE.ADTHREAD:
       ARTHE.21:
-        var storecode ADfash
-        var entrance cottage
+        setVariable storecode ADfash
+        setVariable entrance cottage
         GOTO SETSTORE
 
     LEAVE.ADFASH:
@@ -4818,7 +4740,7 @@ ECHO
         GOTO TRAVEL
       ARTHE.31:
         counter set 171
-        var citycode CROSS
+        setVariable citycode CROSS
       CROSS.171:
         put s
         GOTO TRAVEL
@@ -4876,8 +4798,8 @@ ECHO
         put s
         GOTO TRAVEL
       CROSS.279:
-        var storecode Ccobb
-        var entrance shop
+        setVariable storecode Ccobb
+        setVariable entrance shop
         GOTO SETSTORE
 
 
@@ -4890,60 +4812,60 @@ ECHO
 
     LETH.START.MORIKAI:
         counter set 95
-        var storecode Lmorik
+        setVariable storecode Lmorik
         put out
         GOTO START
 
     LETH.START.PERFUME:
         counter set 26
-        var storecode Lperf
+        setVariable storecode Lperf
         put out
         GOTO START
 
     LETH.START.GENERAL:
         counter set 33
-        var storecode Lgen
+        setVariable storecode Lgen
         put out
         GOTO START
 
     LETH.START.BOWYER:
         counter set 89
-        var storecode Lbow
+        setVariable storecode Lbow
         put out
         GOTO START
 
     LETH.START.WEAPON:
         counter set 80
-        var storecode Lweap
+        setVariable storecode Lweap
         GOTO START
 
     LETH.START.WICKER:
         counter set 103
-        var storecode Lwick
+        setVariable storecode Lwick
         put out
         GOTO START
 
     LETH.START.CLOTH:
         counter set 47
-        var storecode Lcloth
+        setVariable storecode Lcloth
         put out
         GOTO START
 
     LETH.START.BARD:
         counter set 71
-        var storecode Lbard
+        setVariable storecode Lbard
         put out
         GOTO START
 
     LETH.START.WOOD:
         counter set 67
-        var storecode Lwood
+        setVariable storecode Lwood
         put go door
         GOTO START
 
     LETH.START.ORIGAMI:
         counter set 42
-        var storecode Lgami
+        setVariable storecode Lgami
         put out
         GOTO START
 
@@ -5001,7 +4923,7 @@ ECHO
 
 
     LEAVE.LMORIK:
-        GOTO %LorM.LMORIK.1
+        GOTO %LorM%.LMORIK.1
     LEAVE.LMORIK.1:
         counter set 18
       LETH.18:
@@ -5029,8 +4951,8 @@ ECHO
         put go path
         GOTO TRAVEL
       LETH.26:
-        var storecode Lperf
-        var entrance shack
+        setVariable storecode Lperf
+        setVariable entrance shack
         GOTO SETSTORE
 
     LEAVE.LPERF:
@@ -5054,8 +4976,8 @@ ECHO
         put e
         GOTO TRAVEL
       LETH.33:
-        var storecode Lgen
-        var entrance stump
+        setVariable storecode Lgen
+        setVariable entrance stump
         GOTO SETSTORE
 
     LEAVE.LGEN:
@@ -5085,8 +5007,8 @@ ECHO
         put se
         GOTO TRAVEL
       LETH.42:
-        var storecode Lgami
-        var entrance tent
+        setVariable storecode Lgami
+        setVariable entrance tent
         GOTO SETSTORE
 
     LEAVE.LGAMI:
@@ -5104,8 +5026,8 @@ ECHO
         put n
         GOTO TRAVEL
       LETH.47:
-        var storecode Lcloth
-        var entrance hole
+        setVariable storecode Lcloth
+        setVariable entrance hole
         GOTO SETSTORE
 
     LEAVE.LCLOTH:
@@ -5117,8 +5039,8 @@ ECHO
         put ne
         GOTO TRAVEL
       LETH.67:
-        var storecode Lwood
-        var entrance door
+        setVariable storecode Lwood
+        setVariable entrance door
         GOTO SETSTORE
 
     ALTLEAVE.LWOOD:
@@ -5139,8 +5061,8 @@ ECHO
         put s
         GOTO TRAVEL
       LETH.71:
-        var storecode Lbard
-        var entrance knot
+        setVariable storecode Lbard
+        setVariable entrance knot
         GOTO SETSTORE
 
     LEAVE.LBARD:
@@ -5155,8 +5077,8 @@ ECHO
         put nw
         GOTO TRAVEL
       LETH.103:
-        var storecode Lwick
-        var entrance hut
+        setVariable storecode Lwick
+        setVariable entrance hut
         GOTO SETSTORE
 
     LEAVE.LWICK:
@@ -5177,8 +5099,8 @@ ECHO
         put go shack
         GOTO TRAVEL
       LETH.80:
-        var storecode Lweap
-        var entrance shack
+        setVariable storecode Lweap
+        setVariable entrance shack
         GOTO SETSTORE
 
     ALTLEAVE.LWEAP:
@@ -5215,8 +5137,8 @@ ECHO
         put go path
         GOTO TRAVEL
       LETH.89:
-        var storecode Lbow
-        var entrance door
+        setVariable storecode Lbow
+        setVariable entrance door
         GOTO SETSTORE
 
     LEAVE.LBOW:
@@ -5237,8 +5159,8 @@ ECHO
         put ne
         GOTO TRAVEL
       LETH.95:
-        var storecode Lmorik
-        var entrance hut
+        setVariable storecode Lmorik
+        setVariable entrance hut
         GOTO SETSTORE
 
 ##################################################################
@@ -5282,7 +5204,7 @@ ECHO
         put go door
         GOTO TRAVEL
       LETH.464:
-        GOTO PAWN.%DropOrStow
+        GOTO PAWN.%DropOrStow%
 
     LETH.MOVEON.THIEF:
         counter set 298
@@ -5504,10 +5426,10 @@ ECHO
         put go house
         GOTO TRAVEL
       LETH.379:
-        var MRS shopcheck1
-        var LorM leave
-        var npcoption yes
-        var citycode CROSS
+        setVariable MRS shopcheck1
+        setVariable LorM leave
+        setVariable npcoption yes
+        setVariable citycode CROSS
         GOTO CROSS.START.GUARD
 
     LETHCROSS.CROSS:
@@ -5537,8 +5459,8 @@ ECHO
         put go shop
         GOTO TRAVEL
       LETH.377:
-        var citycode CROSS
-        GOTO PAWN.%DropOrStow
+        setVariable citycode CROSS
+        GOTO PAWN.%DropOrStow%
 
 
 ##################################################################
@@ -5711,12 +5633,11 @@ ECHO
         wait
         match CROSS.DEBT2 You have nothing
         match CROSS.FREE2 INVENTORY HELP
-        gosub UniversalMatch
         put inv
-        matchwait
+        GOTO UniversalMatch
 
     ARTHE.DEBT:
-        var citycode CROSS
+        setVariable citycode CROSS
     CROSS.DEBT:
         counter set 223
       CROSS.223:
@@ -5863,7 +5784,7 @@ ECHO
         GOTO GETSACK
 
     ARTHE.FREE:
-        var citycode CROSS
+        setVariable citycode CROSS
     CROSS.FREE:
         counter set 269
       CROSS.269:
@@ -5879,14 +5800,13 @@ ECHO
         pause 1
         match CROSS.MISSINGSTART waitandsee
         match CROSS.FREE3 okstart
-        gosub UniversalMatch
         put echo %startlocation
         put echo okstart
-        matchwait
+        GOTO UniversalMatch
 
     CROSS.MISSINGSTART:
-        var startlocation Chab
-        var ResumeStore Chab
+        setVariable startlocation Chab
+        setVariable ResumeStore Chab
         GOTO CROSS.FREE3
 
     CROSS.FREE3:
@@ -5902,8 +5822,8 @@ ECHO
         GOTO TRAVEL
       CROSS.275:
         counter set 1
-        var storecode Chab
-        GOTO RESUME.%ResumeStore
+        setVariable storecode Chab
+        GOTO RESUME.%ResumeStore%
 
     RESUME.CARTI:
         counter add 1
@@ -5961,7 +5881,7 @@ ECHO
         counter add 1
     RESUME.CTANN:
         counter add 1
-        GOTO RESUME.ZOL.CLAN.%clanoption
+        GOTO RESUME.ZOL.CLAN.%clanoption%
 
     RESUME.ZOL.CLAN.YES:
     RESUME.TCHERB:
@@ -5973,7 +5893,7 @@ ECHO
     RESUME.ZOL.CLAN.NO:
     RESUME.CHAB:
         counter add 1
-        var Countdown %c
+        setVariable Countdown %c%
         GOTO RESUME
 
 
@@ -5989,9 +5909,8 @@ ECHO
         wait
         match LETH.DEBT2 You have nothing
         match LETH.FREE2 INVENTORY HELP
-        gosub UniversalMatch
         put inv
-        matchwait
+        GOTO UniversalMatch
 
     LETH.DEBT:
         counter set 198
@@ -6132,14 +6051,13 @@ ECHO
         pause 1
         match LETH.MISSINGSTART waitandsee
         match LETH.FREE3 okstart
-        gosub UniversalMatch
-        put echo %startlocation
+        put echo %startlocation%
         put echo okstart
-        matchwait
+        GOTO UniversalMatch
 
     LETH.MISSINGSTART:
-        var startlocation Lmorik
-        var ResumeStore Lmorik
+        setVariable startlocation Lmorik
+        setVariable ResumeStore Lmorik
         GOTO LETH.FREE3
 
     LETH.FREE3:
@@ -6155,8 +6073,8 @@ ECHO
         GOTO TRAVEL
       LETH.244:
         counter set 1
-        var storecode Lmorik
-        GOTO RESUME.%ResumeStore
+        setVariable storecode Lmorik
+        GOTO RESUME.%ResumeStore%
 
     RESUME.LBOW:
         counter add 1
@@ -6178,7 +6096,7 @@ ECHO
         counter add 1
     RESUME.LMORIK:
         counter add 1
-        var Countdown %c
+        setVariable Countdown %c%
         GOTO RESUME
 
 
@@ -6194,534 +6112,534 @@ ECHO
 
 
     ILI.RANK.1:
-        var skillrange 20-39
-        var Sgene charcoal
-        var SgeneQuant 1
-        var Sweap <nothing>
-        var SweapQuant 1
-        var Sstit gloves
-        var SstitQuant 1
-        var Scleric chamomile
-        var SclericQuant 1
-        var Salch water
-        var SalchQuant 2
-        var Sherb <nothing>
-        var SherbQuant 1
-        var Sreag <nothing>
-        var SreagQuant 1
-        var Sbard pick
-        var SbardQuant 2
-        var Slock <nothing>
-        var SlockQuant 1
-        var Sarmo leather gloves
-        var SarmoQuant 1
-        var Scoin <nothing>
-        var ScoinQuant 1
-        var Stoke <nothing>
-        var StokeQuant 1
-        var Sfril <nothing>
-        var SfrilQuant 1
-        var Shera <nothing>
-        var SheraQuant 1
-        var Stour <nothing>
-        var StourItemLoc  
-        var StourQuant 1
-        var Stoyb <nothing>
-        var StoybQuant 1
-        var Sbarb alcohol
-        var SbarbQuant 1
-        var Smuse <nothing>
-        var SmuseQuant 1
-        var Sbake swirl
-        var SbakeQuant 1
-        var Sbows flights
-        var SbowsQuant 1
-        var Stann <nothing>
-        var StannQuant 1
-        var Ssupb chicken flights
-        var SsupbQuant 1
-        var Ssupf <nothing>
-        var SsupfQuant 1
-        var Smarw <nothing>
-        var SmarwQuant 1
-        var Smarg charcoal
-        var SmargQuant 1
-        var Senes <nothing>
-        var SenesQuant 1
-        var SCCleat <nothing>
-        var SCCleatQuant 1
-        var SCCweap <nothing>
-        var SCCweapQuant 1
-        var HCfelt <nothing>
-        var HCfeltQuant 1
-        var HCequi <nothing>
-        var HCequiQuant 1
-        var HCfalc <nothing>
-        var HCfalcQuant 1
-        var HCjaht <nothing>
-        var HCjahtQuant 1
-        var HCcash <nothing>
-        var HCcashQuant 1
-        var HCbow1 <nothing>
-        var HCbow1Quant 1
-        var HCbow2 <nothing>
-        var HCbow2Quant 1
+        setVariable skillrange 20-39
+        setVariable Sgene charcoal
+        setVariable SgeneQuant 1
+        setVariable Sweap <nothing>
+        setVariable SweapQuant 1
+        setVariable Sstit gloves
+        setVariable SstitQuant 1
+        setVariable Scleric chamomile
+        setVariable SclericQuant 1
+        setVariable Salch water
+        setVariable SalchQuant 2
+        setVariable Sherb <nothing>
+        setVariable SherbQuant 1
+        setVariable Sreag <nothing>
+        setVariable SreagQuant 1
+        setVariable Sbard pick
+        setVariable SbardQuant 2
+        setVariable Slock <nothing>
+        setVariable SlockQuant 1
+        setVariable Sarmo leather gloves
+        setVariable SarmoQuant 1
+        setVariable Scoin <nothing>
+        setVariable ScoinQuant 1
+        setVariable Stoke <nothing>
+        setVariable StokeQuant 1
+        setVariable Sfril <nothing>
+        setVariable SfrilQuant 1
+        setVariable Shera <nothing>
+        setVariable SheraQuant 1
+        setVariable Stour <nothing>
+        setVariable StourItemLoc  
+        setVariable StourQuant 1
+        setVariable Stoyb <nothing>
+        setVariable StoybQuant 1
+        setVariable Sbarb alcohol
+        setVariable SbarbQuant 1
+        setVariable Smuse <nothing>
+        setVariable SmuseQuant 1
+        setVariable Sbake swirl
+        setVariable SbakeQuant 1
+        setVariable Sbows flights
+        setVariable SbowsQuant 1
+        setVariable Stann <nothing>
+        setVariable StannQuant 1
+        setVariable Ssupb chicken flights
+        setVariable SsupbQuant 1
+        setVariable Ssupf <nothing>
+        setVariable SsupfQuant 1
+        setVariable Smarw <nothing>
+        setVariable SmarwQuant 1
+        setVariable Smarg charcoal
+        setVariable SmargQuant 1
+        setVariable Senes <nothing>
+        setVariable SenesQuant 1
+        setVariable SCCleat <nothing>
+        setVariable SCCleatQuant 1
+        setVariable SCCweap <nothing>
+        setVariable SCCweapQuant 1
+        setVariable HCfelt <nothing>
+        setVariable HCfeltQuant 1
+        setVariable HCequi <nothing>
+        setVariable HCequiQuant 1
+        setVariable HCfalc <nothing>
+        setVariable HCfalcQuant 1
+        setVariable HCjaht <nothing>
+        setVariable HCjahtQuant 1
+        setVariable HCcash <nothing>
+        setVariable HCcashQuant 1
+        setVariable HCbow1 <nothing>
+        setVariable HCbow1Quant 1
+        setVariable HCbow2 <nothing>
+        setVariable HCbow2Quant 1
         GOTO RANKREPORT
 
     ILI.RANK.2:
-        var skillrange 40-59
-        var Sgene hairbrush
-        var SgeneQuant 2
-        var Sweap <nothing>
-        var SweapQuant 2
-        var Sstit gloves
-        var SstitQuant 2
-        var Scleric sirese flower
-        var SclericQuant 2
-        var Salch mixing stick
-        var SalchQuant 2
-        var Sherb <nothing>
-        var SherbQuant 2
-        var Sreag <nothing>
-        var SreagQuant 2
-        var Sbard rag
-        var SbardP pick
-        var SbardQuant 2
-        var Slock iron keyblank
-        var SlockQuant 1
-        var Sarmo leather gloves
-        var SarmoQuant 2
-        var Scoin <nothing>
-        var ScoinQuant 2
-        var Stoke <nothing>
-        var StokeQuant 2
-        var Sfril gloves
-        var SfrilQuant 2
-        var Shera <nothing>
-        var SheraQuant 2
-        var Stour <nothing>
-        var StourItemLoc  
-        var StourQuant 2
-        var Stoyb whistle
-        var StoybQuant 1
-        var Sbarb oil
-        var SbarbQuant 2
-        var Smuse <nothing>
-        var SmuseQuant 2
-        var Sbake cupcake
-        var SbakeQuant 2
-        var Sbows glue
-        var SbowsQuant 2
-        var Stann <nothing>
-        var StannQuant 2
-        var Ssupb glue
-        var SsupbP chicken flights
-        var SsupbQuant 2
-        var Ssupf oil
-        var SsupfQuant 2
-        var Smarw bolts
-        var SmarwQuant 1
-        var Smarg hairbrush
-        var SmargQuant 2
-        var Senes <nothing>
-        var SenesQuant 2
-        var SCCleat <nothing>
-        var SCCleatQuant 2
-        var SCCweap <nothing>
-        var SCCweapQuant 2
-        var HCfelt <nothing>
-        var HCfeltQuant 2
-        var HCequi <nothing>
-        var HCequiQuant 2
-        var HCfalc <nothing>
-        var HCfalcQuant 2
-        var HCjaht <nothing>
-        var HCjahtQuant 2
-        var HCcash <nothing>
-        var HCcashQuant 2
-        var HCbow1 <nothing>
-        var HCbow1Quant 2
-        var HCbow2 <nothing>
-        var HCbow2Quant 1
+        setVariable skillrange 40-59
+        setVariable Sgene hairbrush
+        setVariable SgeneQuant 2
+        setVariable Sweap <nothing>
+        setVariable SweapQuant 2
+        setVariable Sstit gloves
+        setVariable SstitQuant 2
+        setVariable Scleric sirese flower
+        setVariable SclericQuant 2
+        setVariable Salch mixing stick
+        setVariable SalchQuant 2
+        setVariable Sherb <nothing>
+        setVariable SherbQuant 2
+        setVariable Sreag <nothing>
+        setVariable SreagQuant 2
+        setVariable Sbard rag
+        setVariable SbardP pick
+        setVariable SbardQuant 2
+        setVariable Slock iron keyblank
+        setVariable SlockQuant 1
+        setVariable Sarmo leather gloves
+        setVariable SarmoQuant 2
+        setVariable Scoin <nothing>
+        setVariable ScoinQuant 2
+        setVariable Stoke <nothing>
+        setVariable StokeQuant 2
+        setVariable Sfril gloves
+        setVariable SfrilQuant 2
+        setVariable Shera <nothing>
+        setVariable SheraQuant 2
+        setVariable Stour <nothing>
+        setVariable StourItemLoc  
+        setVariable StourQuant 2
+        setVariable Stoyb whistle
+        setVariable StoybQuant 1
+        setVariable Sbarb oil
+        setVariable SbarbQuant 2
+        setVariable Smuse <nothing>
+        setVariable SmuseQuant 2
+        setVariable Sbake cupcake
+        setVariable SbakeQuant 2
+        setVariable Sbows glue
+        setVariable SbowsQuant 2
+        setVariable Stann <nothing>
+        setVariable StannQuant 2
+        setVariable Ssupb glue
+        setVariable SsupbP chicken flights
+        setVariable SsupbQuant 2
+        setVariable Ssupf oil
+        setVariable SsupfQuant 2
+        setVariable Smarw bolts
+        setVariable SmarwQuant 1
+        setVariable Smarg hairbrush
+        setVariable SmargQuant 2
+        setVariable Senes <nothing>
+        setVariable SenesQuant 2
+        setVariable SCCleat <nothing>
+        setVariable SCCleatQuant 2
+        setVariable SCCweap <nothing>
+        setVariable SCCweapQuant 2
+        setVariable HCfelt <nothing>
+        setVariable HCfeltQuant 2
+        setVariable HCequi <nothing>
+        setVariable HCequiQuant 2
+        setVariable HCfalc <nothing>
+        setVariable HCfalcQuant 2
+        setVariable HCjaht <nothing>
+        setVariable HCjahtQuant 2
+        setVariable HCcash <nothing>
+        setVariable HCcashQuant 2
+        setVariable HCbow1 <nothing>
+        setVariable HCbow1Quant 2
+        setVariable HCbow2 <nothing>
+        setVariable HCbow2Quant 1
         GOTO RANKREPORT
 
     ILI.RANK.3:
-        var skillrange 60-99
-        var Sgene unguent
-        var SgeneQuant 2
-        var Sweap <nothing>
-        var SweapQuant 2
-        var Sstit hood
-        var SstitQuant 2
-        var Scleric incense
-        var SclericQuant 2
-        var Salch pestle
-        var SalchQuant 1
-        var Sherb <nothing>
-        var SherbQuant 2
-        var Sreag <nothing>
-        var SreagQuant 2
-        var Sbard cloth
-        var SbardQuant 2
-        var Slock iron keyblank
-        var SlockQuant 2
-        var Sarmo collar
-        var SarmoP leather gloves
-        var SarmoQuant 2
-        var Scoin <nothing>
-        var ScoinQuant 2
-        var Stoke <nothing>
-        var StokeQuant 2
-        var Sfril straw hat
-        var SfrilQuant 2
-        var Shera <nothing>
-        var SheraQuant 2
-        var Stour <nothing>
-        var StourItemLoc in black basket
-        var StourQuant 1
-        var Stoyb whistle
-        var StoybQuant 2
-        var Sbarb candle mold
-        var SbarbQuant 3
-        var Smuse <nothing>
-        var SmuseQuant 2
-        var Sbake box
-        var SbakeQuant 2
-        var Sbows arrowhead
-        var SbowsQuant 2
-        var Stann thread
-        var StannQuant 2
-        var Ssupb falcon flights
-        var SsupbQuant 2
-        var Ssupf wood pestle
-        var SsupfQuant 1
-        var Smarw bolts
-        var SmarwQuant 2
-        var Smarg bowl
-        var SmargQuant 2
-        var Senes <nothing>
-        var SenesQuant 2
-        var SCCleat <nothing>
-        var SCCleatQuant 2
-        var SCCweap <nothing>
-        var SCCweapQuant 2
-        var HCfelt <nothing>
-        var HCfeltQuant 2
-        var HCequi <nothing>
-        var HCequiQuant 2
-        var HCfalc <nothing>
-        var HCfalcQuant 2
-        var HCjaht <nothing>
-        var HCjahtQuant 2
-        var HCcash <nothing>
-        var HCcashQuant 2
-        var HCbow1 <nothing>
-        var HCbow1Quant 2
-        var HCbow2 <nothing>
-        var HCbow2Quant 1
+        setVariable skillrange 60-99
+        setVariable Sgene unguent
+        setVariable SgeneQuant 2
+        setVariable Sweap <nothing>
+        setVariable SweapQuant 2
+        setVariable Sstit hood
+        setVariable SstitQuant 2
+        setVariable Scleric incense
+        setVariable SclericQuant 2
+        setVariable Salch pestle
+        setVariable SalchQuant 1
+        setVariable Sherb <nothing>
+        setVariable SherbQuant 2
+        setVariable Sreag <nothing>
+        setVariable SreagQuant 2
+        setVariable Sbard cloth
+        setVariable SbardQuant 2
+        setVariable Slock iron keyblank
+        setVariable SlockQuant 2
+        setVariable Sarmo collar
+        setVariable SarmoP leather gloves
+        setVariable SarmoQuant 2
+        setVariable Scoin <nothing>
+        setVariable ScoinQuant 2
+        setVariable Stoke <nothing>
+        setVariable StokeQuant 2
+        setVariable Sfril straw hat
+        setVariable SfrilQuant 2
+        setVariable Shera <nothing>
+        setVariable SheraQuant 2
+        setVariable Stour <nothing>
+        setVariable StourItemLoc in black basket
+        setVariable StourQuant 1
+        setVariable Stoyb whistle
+        setVariable StoybQuant 2
+        setVariable Sbarb candle mold
+        setVariable SbarbQuant 3
+        setVariable Smuse <nothing>
+        setVariable SmuseQuant 2
+        setVariable Sbake box
+        setVariable SbakeQuant 2
+        setVariable Sbows arrowhead
+        setVariable SbowsQuant 2
+        setVariable Stann thread
+        setVariable StannQuant 2
+        setVariable Ssupb falcon flights
+        setVariable SsupbQuant 2
+        setVariable Ssupf wood pestle
+        setVariable SsupfQuant 1
+        setVariable Smarw bolts
+        setVariable SmarwQuant 2
+        setVariable Smarg bowl
+        setVariable SmargQuant 2
+        setVariable Senes <nothing>
+        setVariable SenesQuant 2
+        setVariable SCCleat <nothing>
+        setVariable SCCleatQuant 2
+        setVariable SCCweap <nothing>
+        setVariable SCCweapQuant 2
+        setVariable HCfelt <nothing>
+        setVariable HCfeltQuant 2
+        setVariable HCequi <nothing>
+        setVariable HCequiQuant 2
+        setVariable HCfalc <nothing>
+        setVariable HCfalcQuant 2
+        setVariable HCjaht <nothing>
+        setVariable HCjahtQuant 2
+        setVariable HCcash <nothing>
+        setVariable HCcashQuant 2
+        setVariable HCbow1 <nothing>
+        setVariable HCbow1Quant 2
+        setVariable HCbow2 <nothing>
+        setVariable HCbow2Quant 1
         GOTO RANKREPORT
 
     ILI.RANK.4:
-        var skillrange 100-149
-        var Sgene razor
-        var SgeneQuant 2
-        var Sweap <nothing>
-        var SweapQuant 1
-        var Sstit shawl
-        var SstitQuant 2
-        var Scleric vial
-        var SclericQuant 2
-        var Salch oil
-        var SalchP pestle
-        var SalchQuant 2
-        var Sherb <nothing>
-        var SherbQuant 1
-        var Sreag <nothing>
-        var SreagQuant 2
-        var Sbard fife
-        var SbardQuant 2
-        var Slock bronze keyblank
-        var SlockQuant 2
-        var Sarmo legguards
-        var SarmoQuant 2
-        var Scoin <nothing>
-        var ScoinQuant 2
-        var Stoke <nothing>
-        var StokeQuant 2
-        var Sfril lace fan
-        var SfrilQuant 2
-        var Shera <nothing>
-        var SheraQuant 2
-        var Stour <nothing>
-        var StourItemLoc in black basket
-        var StourQuant 1
-        var Stoyb whistle
-        var StoybQuant 3
-        var Sbarb blued-steel clippers
-        var SbarbQuant 1
-        var Smuse <nothing>
-        var SmuseQuant 1
-        var Sbake <nothing>
-        var SbakeQuant 2
-        var Sbows bolts
-        var SbowsP arrowhead
-        var SbowsQuant 1
-        var Stann bodkin
-        var StannQuant 2
-        var Ssupb steel shaper
-        var SsupbQuant 2
-        var Ssupf stone pestle
-        var SsupfQuant 1
-        var Smarw misericorde
-        var SmarwQuant 1
-        var Smarg cloth sheath
-        var SmargP bowl
-        var SmargQuant 2
-        var Senes jadice flower
-        var SenesQuant 1
-        var SCCleat <nothing>
-        var SCCleatQuant 2
-        var SCCweap <nothing>
-        var SCCweapQuant 2
-        var HCfelt <nothing>
-        var HCfeltQuant 2
-        var HCequi <nothing>
-        var HCequiQuant 2
-        var HCfalc <nothing>
-        var HCfalcQuant 2
-        var HCjaht <nothing>
-        var HCjahtQuant 2
-        var HCcash <nothing>
-        var HCcashQuant 2
-        var HCbow1 <nothing>
-        var HCbow1Quant 2
-        var HCbow2 <nothing>
-        var HCbow2Quant 1
+        setVariable skillrange 100-149
+        setVariable Sgene razor
+        setVariable SgeneQuant 2
+        setVariable Sweap <nothing>
+        setVariable SweapQuant 1
+        setVariable Sstit shawl
+        setVariable SstitQuant 2
+        setVariable Scleric vial
+        setVariable SclericQuant 2
+        setVariable Salch oil
+        setVariable SalchP pestle
+        setVariable SalchQuant 2
+        setVariable Sherb <nothing>
+        setVariable SherbQuant 1
+        setVariable Sreag <nothing>
+        setVariable SreagQuant 2
+        setVariable Sbard fife
+        setVariable SbardQuant 2
+        setVariable Slock bronze keyblank
+        setVariable SlockQuant 2
+        setVariable Sarmo legguards
+        setVariable SarmoQuant 2
+        setVariable Scoin <nothing>
+        setVariable ScoinQuant 2
+        setVariable Stoke <nothing>
+        setVariable StokeQuant 2
+        setVariable Sfril lace fan
+        setVariable SfrilQuant 2
+        setVariable Shera <nothing>
+        setVariable SheraQuant 2
+        setVariable Stour <nothing>
+        setVariable StourItemLoc in black basket
+        setVariable StourQuant 1
+        setVariable Stoyb whistle
+        setVariable StoybQuant 3
+        setVariable Sbarb blued-steel clippers
+        setVariable SbarbQuant 1
+        setVariable Smuse <nothing>
+        setVariable SmuseQuant 1
+        setVariable Sbake <nothing>
+        setVariable SbakeQuant 2
+        setVariable Sbows bolts
+        setVariable SbowsP arrowhead
+        setVariable SbowsQuant 1
+        setVariable Stann bodkin
+        setVariable StannQuant 2
+        setVariable Ssupb steel shaper
+        setVariable SsupbQuant 2
+        setVariable Ssupf stone pestle
+        setVariable SsupfQuant 1
+        setVariable Smarw misericorde
+        setVariable SmarwQuant 1
+        setVariable Smarg cloth sheath
+        setVariable SmargP bowl
+        setVariable SmargQuant 2
+        setVariable Senes jadice flower
+        setVariable SenesQuant 1
+        setVariable SCCleat <nothing>
+        setVariable SCCleatQuant 2
+        setVariable SCCweap <nothing>
+        setVariable SCCweapQuant 2
+        setVariable HCfelt <nothing>
+        setVariable HCfeltQuant 2
+        setVariable HCequi <nothing>
+        setVariable HCequiQuant 2
+        setVariable HCfalc <nothing>
+        setVariable HCfalcQuant 2
+        setVariable HCjaht <nothing>
+        setVariable HCjahtQuant 2
+        setVariable HCcash <nothing>
+        setVariable HCcashQuant 2
+        setVariable HCbow1 <nothing>
+        setVariable HCbow1Quant 2
+        setVariable HCbow2 <nothing>
+        setVariable HCbow2Quant 1
         GOTO RANKREPORT
 
     ILI.RANK.5:
-        var skillrange 150-199
-        var Sgene clippers
-        var SgeneQuant 2
-        var Sweap targe
-        var SweapQuant 1
-        var Sstit blouse
-        var SstitQuant 2
-        var Scleric armband
-        var SclericQuant 1
-        var Salch tukai stones
-        var SalchQuant 2
-        var Sherb riolur leaf
-        var SherbQuant 2
-        var Sreag simple talisman
-        var SreagQuant 1
-        var Sbard bow
-        var SbardQuant 2
-        var Slock bronze lockpick
-        var SlockQuant 2
-        var Sarmo mail gauntlets
-        var SarmoQuant 2
-        var Scoin <nothing>
-        var ScoinQuant 2
-        var Stoke <nothing>
-        var StokeQuant 2
-        var Sfril pants
-        var SfrilQuant 2
-        var Shera target shield
-        var SheraQuant 2
-        var Stour boggle doll
-        var StourItemLoc in black basket
-        var StourQuant 1
-        var Stoyb beard
-        var StoybQuant 2
-        var Sbarb black clippers
-        var SbarbQuant 2
-        var Smuse <nothing>
-        var SmuseQuant 1
-        var Sbake <nothing>
-        var SbakeQuant 2
-        var Sbows shears
-        var SbowsQuant 2
-        var Stann scraper
-        var StannQuant 2
-        var Ssupb blued shaper
-        var SsupbQuant 2
-        var Ssupf stone pestle
-        var SsupfQuant 2
-        var Smarw misericorde
-        var SmarwQuant 2
-        var Smarg cloth scabbard
-        var SmargQuant 2
-        var Senes sufil sap
-        var SenesQuant 2
-        var SCCleat <nothing>
-        var SCCleatQuant 2
-        var SCCweap <nothing>
-        var SCCweapQuant 2
-        var HCfelt <nothing>
-        var HCfeltQuant 2
-        var HCequi <nothing>
-        var HCequiQuant 2
-        var HCfalc <nothing>
-        var HCfalcQuant 2
-        var HCjaht <nothing>
-        var HCjahtQuant 2
-        var HCcash <nothing>
-        var HCcashQuant 2
-        var HCbow1 <nothing>
-        var HCbow1Quant 2
-        var HCbow2 <nothing>
-        var HCbow2Quant 1
+        setVariable skillrange 150-199
+        setVariable Sgene clippers
+        setVariable SgeneQuant 2
+        setVariable Sweap targe
+        setVariable SweapQuant 1
+        setVariable Sstit blouse
+        setVariable SstitQuant 2
+        setVariable Scleric armband
+        setVariable SclericQuant 1
+        setVariable Salch tukai stones
+        setVariable SalchQuant 2
+        setVariable Sherb riolur leaf
+        setVariable SherbQuant 2
+        setVariable Sreag simple talisman
+        setVariable SreagQuant 1
+        setVariable Sbard bow
+        setVariable SbardQuant 2
+        setVariable Slock bronze lockpick
+        setVariable SlockQuant 2
+        setVariable Sarmo mail gauntlets
+        setVariable SarmoQuant 2
+        setVariable Scoin <nothing>
+        setVariable ScoinQuant 2
+        setVariable Stoke <nothing>
+        setVariable StokeQuant 2
+        setVariable Sfril pants
+        setVariable SfrilQuant 2
+        setVariable Shera target shield
+        setVariable SheraQuant 2
+        setVariable Stour boggle doll
+        setVariable StourItemLoc in black basket
+        setVariable StourQuant 1
+        setVariable Stoyb beard
+        setVariable StoybQuant 2
+        setVariable Sbarb black clippers
+        setVariable SbarbQuant 2
+        setVariable Smuse <nothing>
+        setVariable SmuseQuant 1
+        setVariable Sbake <nothing>
+        setVariable SbakeQuant 2
+        setVariable Sbows shears
+        setVariable SbowsQuant 2
+        setVariable Stann scraper
+        setVariable StannQuant 2
+        setVariable Ssupb blued shaper
+        setVariable SsupbQuant 2
+        setVariable Ssupf stone pestle
+        setVariable SsupfQuant 2
+        setVariable Smarw misericorde
+        setVariable SmarwQuant 2
+        setVariable Smarg cloth scabbard
+        setVariable SmargQuant 2
+        setVariable Senes sufil sap
+        setVariable SenesQuant 2
+        setVariable SCCleat <nothing>
+        setVariable SCCleatQuant 2
+        setVariable SCCweap <nothing>
+        setVariable SCCweapQuant 2
+        setVariable HCfelt <nothing>
+        setVariable HCfeltQuant 2
+        setVariable HCequi <nothing>
+        setVariable HCequiQuant 2
+        setVariable HCfalc <nothing>
+        setVariable HCfalcQuant 2
+        setVariable HCjaht <nothing>
+        setVariable HCjahtQuant 2
+        setVariable HCcash <nothing>
+        setVariable HCcashQuant 2
+        setVariable HCbow1 <nothing>
+        setVariable HCbow1Quant 2
+        setVariable HCbow2 <nothing>
+        setVariable HCbow2Quant 1
         GOTO RANKREPORT
 
     ILI.RANK.6:
-        var skillrange 200-249
-        var Sgene short sword
-        var SgeneQuant 2
-        var Sweap targe
-        var SweapQuant 2
-        var Sstit cloak
-        var SstitQuant 2
-        var Scleric armband
-        var SclericQuant 2
-        var Salch seolard weed
-        var SalchQuant 1
-        var Sherb genich stem
-        var SherbQuant 2
-        var Sreag simple talisman
-        var SreagQuant 2
-        var Sbard four strings
-        var SbardQuant 2
-        var Slock wrist sheath
-        var SlockQuant 1
-        var Sarmo choker
-        var SarmoQuant 2
-        var Scoin coin case
-        var ScoinQuant 1
-        var Stoke <nothing>
-        var StokeQuant 2
-        var Sfril sandals
-        var SfrilQuant 2
-        var Shera ordinary shield
-        var SheraQuant 2
-        var Stour boggle doll
-        var StourItemLoc in black basket
-        var StourQuant 2
-        var Stoyb wig
-        var StoybQuant 2
-        var Sbarb silver-trimmed clippers
-        var SbarbQuant 2
-        var Smuse black slippers
-        var SmuseQuant 1
-        var Sbake <nothing>
-        var SbakeQuant 2
-        var Sbows long arrows
-        var SbowsQuant 2
-        var Stann shears
-        var StannQuant 2
-        var Ssupb stone-tipped arrow
-        var SsupbQuant 2
-        var Ssupf stone pestle
-        var SsupfQuant 2
-        var Smarw visored helm
-        var SmarwQuant 2
-        var Smarg cloth backtube
-        var SmargQuant 2
-        var Senes blocil potion
-        var SenesQuant 2
-        var SCCleat <nothing>
-        var SCCleatQuant 2
-        var SCCweap thigh sheath
-        var SCCweapQuant 1
-        var HCfelt <nothing>
-        var HCfeltQuant 2
-        var HCequi <nothing>
-        var HCequiQuant 2
-        var HCfalc <nothing>
-        var HCfalcQuant 2
-        var HCjaht <nothing>
-        var HCjahtQuant 2
-        var HCcash <nothing>
-        var HCcashQuant 2
-        var HCbow1 <nothing>
-        var HCbow1Quant 2
-        var HCbow2 <nothing>
-        var HCbow2Quant 1
+        setVariable skillrange 200-249
+        setVariable Sgene short sword
+        setVariable SgeneQuant 2
+        setVariable Sweap targe
+        setVariable SweapQuant 2
+        setVariable Sstit cloak
+        setVariable SstitQuant 2
+        setVariable Scleric armband
+        setVariable SclericQuant 2
+        setVariable Salch seolard weed
+        setVariable SalchQuant 1
+        setVariable Sherb genich stem
+        setVariable SherbQuant 2
+        setVariable Sreag simple talisman
+        setVariable SreagQuant 2
+        setVariable Sbard four strings
+        setVariable SbardQuant 2
+        setVariable Slock wrist sheath
+        setVariable SlockQuant 1
+        setVariable Sarmo choker
+        setVariable SarmoQuant 2
+        setVariable Scoin coin case
+        setVariable ScoinQuant 1
+        setVariable Stoke <nothing>
+        setVariable StokeQuant 2
+        setVariable Sfril sandals
+        setVariable SfrilQuant 2
+        setVariable Shera ordinary shield
+        setVariable SheraQuant 2
+        setVariable Stour boggle doll
+        setVariable StourItemLoc in black basket
+        setVariable StourQuant 2
+        setVariable Stoyb wig
+        setVariable StoybQuant 2
+        setVariable Sbarb silver-trimmed clippers
+        setVariable SbarbQuant 2
+        setVariable Smuse black slippers
+        setVariable SmuseQuant 1
+        setVariable Sbake <nothing>
+        setVariable SbakeQuant 2
+        setVariable Sbows long arrows
+        setVariable SbowsQuant 2
+        setVariable Stann shears
+        setVariable StannQuant 2
+        setVariable Ssupb stone-tipped arrow
+        setVariable SsupbQuant 2
+        setVariable Ssupf stone pestle
+        setVariable SsupfQuant 2
+        setVariable Smarw visored helm
+        setVariable SmarwQuant 2
+        setVariable Smarg cloth backtube
+        setVariable SmargQuant 2
+        setVariable Senes blocil potion
+        setVariable SenesQuant 2
+        setVariable SCCleat <nothing>
+        setVariable SCCleatQuant 2
+        setVariable SCCweap thigh sheath
+        setVariable SCCweapQuant 1
+        setVariable HCfelt <nothing>
+        setVariable HCfeltQuant 2
+        setVariable HCequi <nothing>
+        setVariable HCequiQuant 2
+        setVariable HCfalc <nothing>
+        setVariable HCfalcQuant 2
+        setVariable HCjaht <nothing>
+        setVariable HCjahtQuant 2
+        setVariable HCcash <nothing>
+        setVariable HCcashQuant 2
+        setVariable HCbow1 <nothing>
+        setVariable HCbow1Quant 2
+        setVariable HCbow2 <nothing>
+        setVariable HCbow2Quant 1
         GOTO RANKREPORT
 
     ILI.RANK.7:
-        var skillrange 250-299
-        var Sgene chain helm
-        var SgeneQuant 2
-        var Sweap stiletto
-        var SweapQuant 1
-        var Sstit tunic
-        var SstitQuant 2
-        var Scleric oil
-        var SclericQuant 1
-        var Salch seolarn weed
-        var SalchQuant 2
-        var Sherb hisan salve
-        var SherbQuant 2
-        var Sreag elbaite runestone
-        var SreagQuant 1
-        var Sbard refill
-        var SbardQuant 2
-        var Slock wrist sheath
-        var SlockQuant 2
-        var Sarmo mesh handguards
-        var SarmoQuant 2
-        var Scoin coin case
-        var ScoinQuant 2
-        var Stoke <nothing>
-        var StokeQuant 2
-        var Sfril doll
-        var SfrilQuant 1
-        var Shera medium buckler
-        var SheraQuant 2
-        var Stour badge
-        var StourItemLoc on stand
-        var StourQuant 2
-        var Stoyb book
-        var StoybQuant 2
-        var Sbarb brass razor
-        var SbarbQuant 2
-        var Smuse black slippers
-        var SmuseQuant 2
-        var Sbake <nothing>
-        var SbakeQuant 2
-        var Sbows barbed arrows
-        var SbowsQuant 2
-        var Stann pattern
-        var StannQuant 2
-        var Ssupb stone-tipped arrow
-        var SsupbQuant 2
-        var Ssupf marble pestle
-        var SsupfQuant 2
-        var Smarw jerkin
-        var SmarwQuant 2
-        var Smarg cloth backtube
-        var SmargQuant 2
-        var Senes ithor potion
-        var SenesQuant 2
-        var SCCleat crinnet
-        var SCCleatQuant 1
-        var SCCweap dirk
-        var SCCweapQuant 1
-        var HCfelt <nothing>
-        var HCfeltQuant 2
-        var HCequi <nothing>
-        var HCequiQuant 2
-        var HCfalc <nothing>
-        var HCfalcQuant 2
-        var HCjaht <nothing>
-        var HCjahtQuant 2
-        var HCcash ring
-        var HCcashQuant 1
-        var HCbow1 <nothing>
-        var HCbow1Quant 2
-        var HCbow2 <nothing>
-        var HCbow2Quant 1
+        setVariable skillrange 250-299
+        setVariable Sgene chain helm
+        setVariable SgeneQuant 2
+        setVariable Sweap stiletto
+        setVariable SweapQuant 1
+        setVariable Sstit tunic
+        setVariable SstitQuant 2
+        setVariable Scleric oil
+        setVariable SclericQuant 1
+        setVariable Salch seolarn weed
+        setVariable SalchQuant 2
+        setVariable Sherb hisan salve
+        setVariable SherbQuant 2
+        setVariable Sreag elbaite runestone
+        setVariable SreagQuant 1
+        setVariable Sbard refill
+        setVariable SbardQuant 2
+        setVariable Slock wrist sheath
+        setVariable SlockQuant 2
+        setVariable Sarmo mesh handguards
+        setVariable SarmoQuant 2
+        setVariable Scoin coin case
+        setVariable ScoinQuant 2
+        setVariable Stoke <nothing>
+        setVariable StokeQuant 2
+        setVariable Sfril doll
+        setVariable SfrilQuant 1
+        setVariable Shera medium buckler
+        setVariable SheraQuant 2
+        setVariable Stour badge
+        setVariable StourItemLoc on stand
+        setVariable StourQuant 2
+        setVariable Stoyb book
+        setVariable StoybQuant 2
+        setVariable Sbarb brass razor
+        setVariable SbarbQuant 2
+        setVariable Smuse black slippers
+        setVariable SmuseQuant 2
+        setVariable Sbake <nothing>
+        setVariable SbakeQuant 2
+        setVariable Sbows barbed arrows
+        setVariable SbowsQuant 2
+        setVariable Stann pattern
+        setVariable StannQuant 2
+        setVariable Ssupb stone-tipped arrow
+        setVariable SsupbQuant 2
+        setVariable Ssupf marble pestle
+        setVariable SsupfQuant 2
+        setVariable Smarw jerkin
+        setVariable SmarwQuant 2
+        setVariable Smarg cloth backtube
+        setVariable SmargQuant 2
+        setVariable Senes ithor potion
+        setVariable SenesQuant 2
+        setVariable SCCleat crinnet
+        setVariable SCCleatQuant 1
+        setVariable SCCweap dirk
+        setVariable SCCweapQuant 1
+        setVariable HCfelt <nothing>
+        setVariable HCfeltQuant 2
+        setVariable HCequi <nothing>
+        setVariable HCequiQuant 2
+        setVariable HCfalc <nothing>
+        setVariable HCfalcQuant 2
+        setVariable HCjaht <nothing>
+        setVariable HCjahtQuant 2
+        setVariable HCcash ring
+        setVariable HCcashQuant 1
+        setVariable HCbow1 <nothing>
+        setVariable HCbow1Quant 2
+        setVariable HCbow2 <nothing>
+        setVariable HCbow2Quant 1
         GOTO RANKREPORT
 
     ILI.RANK.11:
@@ -6735,78 +6653,78 @@ ECHO
     ILI.RANK.10:
     ILI.RANK.9:
     ILI.RANK.8:
-        var skillrange 300+
-        var Sgene great helm
-        var SgeneQuant 1
-        var Sweap stiletto
-        var SweapQuant 2
-        var Sstit coat
-        var SstitQuant 2
-        var Scleric bell
-        var SclericQuant 2
-        var Salch cauldron
-        var SalchQuant 2
-        var Sherb ithor potion
-        var SherbQuant 2
-        var Sreag elbaite runestone
-        var SreagQuant 2
-        var Sbard gilded mandolin
-        var SbardQuant 1
-        var Slock ivory lockpick
-        var SlockQuant 2
-        var Sarmo helmet
-        var SarmoQuant 1
-        var Scoin coin case
-        var ScoinQuant 2  
-        var Stoke <nothing>
-        var StokeQuant 1 
-        var Sfril doll
-        var SfrilQuant 1
-        var Shera ordinary shield
-        var SheraQuant 2
-        var Stour dagger
-        var StourItemLoc on table
-        var StourQuant 1
-        var Stoyb black book
-        var StoybQuant 1
-        var Sbarb horn-handled razor
-        var SbarbQuant 1
-        var Smuse slippers
-        var SmuseQuant 1
-        var Sbake <nothing>
-        var SbakeQuant 2
-        var Sbows barbed arrows
-        var SbowsQuant 2
-        var Stann potion
-        var StannQuant 2
-        var Ssupb razor arrowhead
-        var SsupbQuant 2
-        var Ssupf stone mortar
-        var SsupfQuant 2
-        var Smarw rapier
-        var SmarwQuant 2
-        var Smarg cloth backtube
-        var SmargQuant 3
-        var Senes ithor potion
-        var SenesQuant 3
-        var SCCleat chanfron
-        var SCCleatQuant 1
-        var SCCweap spear
-        var SCCweapQuant 1
-        var HCfelt amulet
-        var HCfeltQuant 1
-        var HCequi white blanket
-        var HCequiQuant 1
-        var HCfalc <nothing>
-        var HCfalcQuant 2
-        var HCjaht <nothing>
-        var HCjahtQuant 2
-        var HCcash ring
-        var HCcashQuant 2
-        var HCbow1 <nothing>
-        var HCbow1Quant 2
-        var HCbow2 <nothing>
-        var HCbow2Quant 1
+        setVariable skillrange 300+
+        setVariable Sgene great helm
+        setVariable SgeneQuant 1
+        setVariable Sweap stiletto
+        setVariable SweapQuant 2
+        setVariable Sstit coat
+        setVariable SstitQuant 2
+        setVariable Scleric bell
+        setVariable SclericQuant 2
+        setVariable Salch cauldron
+        setVariable SalchQuant 2
+        setVariable Sherb ithor potion
+        setVariable SherbQuant 2
+        setVariable Sreag elbaite runestone
+        setVariable SreagQuant 2
+        setVariable Sbard gilded mandolin
+        setVariable SbardQuant 1
+        setVariable Slock ivory lockpick
+        setVariable SlockQuant 2
+        setVariable Sarmo helmet
+        setVariable SarmoQuant 1
+        setVariable Scoin coin case
+        setVariable ScoinQuant 2  
+        setVariable Stoke <nothing>
+        setVariable StokeQuant 1 
+        setVariable Sfril doll
+        setVariable SfrilQuant 1
+        setVariable Shera ordinary shield
+        setVariable SheraQuant 2
+        setVariable Stour dagger
+        setVariable StourItemLoc on table
+        setVariable StourQuant 1
+        setVariable Stoyb black book
+        setVariable StoybQuant 1
+        setVariable Sbarb horn-handled razor
+        setVariable SbarbQuant 1
+        setVariable Smuse slippers
+        setVariable SmuseQuant 1
+        setVariable Sbake <nothing>
+        setVariable SbakeQuant 2
+        setVariable Sbows barbed arrows
+        setVariable SbowsQuant 2
+        setVariable Stann potion
+        setVariable StannQuant 2
+        setVariable Ssupb razor arrowhead
+        setVariable SsupbQuant 2
+        setVariable Ssupf stone mortar
+        setVariable SsupfQuant 2
+        setVariable Smarw rapier
+        setVariable SmarwQuant 2
+        setVariable Smarg cloth backtube
+        setVariable SmargQuant 3
+        setVariable Senes ithor potion
+        setVariable SenesQuant 3
+        setVariable SCCleat chanfron
+        setVariable SCCleatQuant 1
+        setVariable SCCweap spear
+        setVariable SCCweapQuant 1
+        setVariable HCfelt amulet
+        setVariable HCfeltQuant 1
+        setVariable HCequi white blanket
+        setVariable HCequiQuant 1
+        setVariable HCfalc <nothing>
+        setVariable HCfalcQuant 2
+        setVariable HCjaht <nothing>
+        setVariable HCjahtQuant 2
+        setVariable HCcash ring
+        setVariable HCcashQuant 2
+        setVariable HCbow1 <nothing>
+        setVariable HCbow1Quant 2
+        setVariable HCbow2 <nothing>
+        setVariable HCbow2Quant 1
         GOTO RANKREPORT
 
     ILI.RANK.-5:
@@ -6818,15 +6736,14 @@ ECHO
         GOTO BEGGAR.MOD
 
     ILI.BAGCHECK:
-        matchre BAGWARN /%Sgene|%Sweap|%Sstit|%Salch|%Sherb|%Sreag|%Sbard|%Slock%/
-        matchre BAGWARN /%Sarmo|%Scoin|%Stoke|%Sfril|%Shera|%Stour|%Stoyb|%Sbarb|%Scleric%/
-        matchre BAGWARN /%Smuse|%Sbake|%Sbows|%Stann|%Ssupb|%Ssupf|%Smarw|%Smarg|%Senes%/
-        matchre BAGWARN /%SCCleat|%SCCweap|%HCfelt|%HCequi|%HCfalc|%HCjaht|%HCcash|%HCbow1|%HCbow2%/
-        match BAGS.STOW.%c You glance
-        gosub UniversalMatch
-        put look in my %container
+        matchre BAGWARN /%Sgene%|%Sweap%|%Sstit%|%Salch%|%Sherb%|%Sreag%|%Sbard%|%Slock%/
+        matchre BAGWARN /%Sarmo%|%Scoin%|%Stoke%|%Sfril%|%Shera%|%Stour%|%Stoyb%|%Sbarb%|%Scleric%/
+        matchre BAGWARN /%Smuse%|%Sbake%|%Sbows%|%Stann%|%Ssupb%|%Ssupf%|%Smarw%|%Smarg%|%Senes%/
+        matchre BAGWARN /%SCCleat%|%SCCweap%|%HCfelt%|%HCequi%|%HCfalc%|%HCjaht%|%HCcash%|%HCbow1%|%HCbow2%/
+        match BAGS.STOW.%c% You glance
+        put look in my %container%
         put glance
-        matchwait
+        GOTO UniversalMatch
 
 
 ##################################################################
@@ -6870,9 +6787,8 @@ ECHO
         match SHARD.START.MARG Windawn
         match SHARD.START.ENES Enescu
         match ILI.BADLOCATION Obvious
-        gosub UniversalMatch
         put look
-        matchwait
+        GOTO UniversalMatch
 
     STEEL:
         match STEEL.START.LEAT Quintan
@@ -6890,10 +6806,9 @@ ECHO
         match HORSE.START.BOW1 Fresh air wafts down from the opening at the apex
         match HORSE.START.BOW2 Fabric dyed the color of the winter sky covers
         match ILI.BADLOCATION Obvious
-        gosub UniversalMatch
-        var citycode SHARD
+        setvariable citycode SHARD
         put look
-        matchwait
+        GOTO UniversalMatch
 
     ILI.BADLOCATION:
         put echocolumn /on
@@ -6931,217 +6846,203 @@ ECHO
 
     SHARD.START.GENE:
         counter set 254
-        var storecode Sgene
+        setVariable storecode Sgene
         put out
         GOTO START
 
     SHARD.START.WEAP:
         counter set 37
-        var storecode Sweap
+        setVariable storecode Sweap
         put out
         GOTO START
 
     SHARD.START.STIT:
         counter set 42
-        var storecode Sstit
+        setVariable storecode Sstit
         put out
         GOTO START
 
     SHARD.START.CLER:
         counter set 49
-        var storecode Scleric
+        setVariable storecode Scleric
         put out
         GOTO START
 
     SHARD.START.HERB:
         match SHARD.START.ALCH Obvious
-        gosub UniversalMatch
         put out
-        matchwait
-        
+        GOTO UniversalMatch
     SHARD.START.ALCH:
         counter set 345
-        var storecode Salch
+        setVariable storecode Salch
         put out
         GOTO START
 
     SHARD.START.REAG:
         counter set 61
-        var storecode Sreag
+        setVariable storecode Sreag
         put out
         GOTO START
 
     SHARD.START.LOCK:
         match SHARD.START.BARD Obvious
-        gosub UniversalMatch
         put go trapdoor
-        matchwait
-        
+        GOTO UniversalMatch
     SHARD.START.BARD:
         counter set 64
-        var storecode Sbard
+        setVariable storecode Sbard
         put out
         GOTO START
 
     SHARD.START.ARMO:
         counter set 72
-        var storecode Sarmo
+        setVariable storecode Sarmo
         put out
         GOTO START
 
     SHARD.START.COIN:
         counter set 79
-        var storecode Scoin
+        setVariable storecode Scoin
         put go door
         GOTO START
 
     SHARD.START.TOKE:
         counter set 81
-        var storecode Stoke
+        setVariable storecode Stoke
         put go door
         GOTO START
 
     SHARD.START.FRIL:
         counter set 83
-        var storecode Sfril
+        setVariable storecode Sfril
         put go door
         GOTO START
 
     SHARD.START.HERA:
         counter set 86
-        var storecode Shera
+        setVariable storecode Shera
         put go door
         GOTO START
 
     SHARD.START.TOUR:
         counter set 89
-        var storecode Stour
+        setVariable storecode Stour
         put go door
         GOTO START
 
     SHARD.START.TOYB:
         counter set 92
-        var storecode Stoyb
+        setVariable storecode Stoyb
         put go door
         GOTO START
 
     SHARD.START.BARB:
         counter set 94
-        var storecode Sbarb
+        setVariable storecode Sbarb
         put go door
         GOTO START
 
     SHARD.START.MUSE:
         counter set 107
-        var storecode Smuse
+        setVariable storecode Smuse
         put out
         GOTO START
 
     SHARD.START.BAKE:
         counter set 112
-        var storecode Sbake
+        setVariable storecode Sbake
         put out
         GOTO START
 
     SHARD.START.BOWS:
         counter set 120
-        var storecode Sbows
+        setVariable storecode Sbows
         put out
         GOTO START
 
     SHARD.START.SUPF:
         match SHARD.START.SUPB Obvious
-        gosub UniversalMatch
         put go curtain
-        matchwait
-        
+        GOTO UniversalMatch
     SHARD.START.SUPB:
     SHARD.START.TANN:
         counter set 139
-        var storecode Stann
+        setVariable storecode Stann
         put out
         GOTO START
 
     SHARD.START.MARW:
     SHARD.START.MARG:
         match SHARD.START.MARA Obvious
-        gosub UniversalMatch
         put go door
-        matchwait
-        
+        GOTO UniversalMatch
     SHARD.START.MARA:
         counter set 205
-        var storecode Smarw
+        setVariable storecode Smarw
         GOTO START
 
     SHARD.START.ENES:
         counter set 214
-        var storecode Senes
+        setVariable storecode Senes
         GOTO START
 
     STEEL.START.LEAT:
         counter set 462
-        var storecode SCCleat
+        setVariable storecode SCCleat
         put n
         GOTO START
 
     STEEL.START.WEAP:
         counter set 470
-        var storecode SCCweap
+        setVariable storecode SCCweap
         put out
         GOTO START
 
     HORSE.START.FELT:
         counter set 580
-        var storecode HCfelt
+        setVariable storecode HCfelt
         put go flap
         GOTO START
 
     HORSE.START.EQUI.W:
         match HORSE.START.EQUI.E Obvious
-        gosub UniversalMatch
         put e
-        matchwait
-        
+        GOTO UniversalMatch
     HORSE.START.EQUI.E:
         counter set 589
-        var storecode HCequi
+        setVariable storecode HCequi
         put w
         GOTO START
 
     HORSE.START.FALC:
         counter set 595
-        var storecode HCfalc
+        setVariable storecode HCfalc
         put go flap
         GOTO START
 
     HORSE.START.JAHT.1:
         match HORSE.START.JAHT.2 Obvious
-        gosub UniversalMatch
         put go corner
-        matchwait
-        
+        GOTO UniversalMatch
     HORSE.START.JAHT.2:
         counter set 598
-        var storecode HCjaht
+        setVariable storecode HCjaht
         put go tent
         GOTO START
 
     HORSE.START.CASH:
         counter set 605
-        var storecode HCcash
+        setVariable storecode HCcash
         put go flap
         GOTO START
 
     HORSE.START.BOW2:
         match HORSE.START.BOW1 Obvious
-        gosub UniversalMatch
         put go curtain
-        matchwait
-        
+        GOTO UniversalMatch
     HORSE.START.BOW1:
         counter set 608
-        var storecode HCbow1
+        setVariable storecode HCbow1
         put go flap
         GOTO START
 
@@ -7171,7 +7072,7 @@ ECHO
         put se
         GOTO TRAVEL
       SHARD.8:
-        var storecode Sarmo
+        setVariable storecode Sarmo
         put go building
         GOTO TRAVEL
       SHARD.9:
@@ -7186,7 +7087,7 @@ ECHO
         put sw
         GOTO TRAVEL
       SHARD.12:
-        var storecode Sbows
+        setVariable storecode Sbows
         put go shop
         GOTO TRAVEL
       SHARD.13:
@@ -7317,7 +7218,7 @@ ECHO
 
 
     LEAVE.SGENE:
-        GOTO %LorM.SGENE.1
+        GOTO %LorM%.SGENE.1
     LEAVE.SGENE.1:
         counter set 27
       SHARD.27:
@@ -7348,11 +7249,11 @@ ECHO
         put ne
         GOTO TRAVEL
       SHARD.36:
-        var storecode Sweap
+        setVariable storecode Sweap
         put ne
         GOTO TRAVEL
       SHARD.37:
-        var entrance shop
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.SWEAP:
@@ -7367,11 +7268,11 @@ ECHO
         put se
         GOTO TRAVEL
       SHARD.41:
-        var storecode Sstit
+        setVariable storecode Sstit
         put e
         GOTO TRAVEL
       SHARD.42:
-        var entrance home
+        setVariable entrance home
         GOTO SETSTORE
 
     LEAVE.SSTIT:
@@ -7395,8 +7296,8 @@ ECHO
         put go div arch
         GOTO TRAVEL
       SHARD.49:
-        var storecode Scleric
-        var entrance door
+        setVariable storecode Scleric
+        setVariable entrance door
         GOTO SETSTORE
 
     LEAVE.SCLERIC:
@@ -7426,8 +7327,8 @@ ECHO
         put w
         GOTO TRAVEL
       SHARD.345:
-        var storecode Salch
-        var entrance door
+        setVariable storecode Salch
+        setVariable entrance door
         GOTO SETSTORE
 
     LEAVE.SALCH:
@@ -7436,8 +7337,8 @@ ECHO
         put go door
         GOTO TRAVEL
       SHARD.53:
-        var storecode Sherb
-        var entrance iron door
+        setVariable storecode Sherb
+        setVariable entrance iron door
         GOTO SETSTORE
 
     LEAVE.SHERB:
@@ -7464,8 +7365,8 @@ ECHO
         put se
         GOTO TRAVEL
       SHARD.61:
-        var storecode Sreag
-        var entrance building
+        setVariable storecode Sreag
+        setVariable entrance building
         GOTO SETSTORE
 
     LEAVE.SREAG:
@@ -7474,49 +7375,41 @@ ECHO
         put sw
         GOTO TRAVEL
       SHARD.63:
-        var storecode Sbard
+        setVariable storecode Sbard
         put sw
         GOTO TRAVEL
       SHARD.64:
-        var entrance shop
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.SBARD:
         counter set 65
       SHARD.65:
-        var storecode Slock
+        setVariable storecode Slock
         put go shop
         GOTO TRAVEL
       SHARD.66:
-        matchre KILAM1 /order something and offer|looks at you curiously/
-        gosub UniversalMatch
         put ask malik about kilam
-        matchwait
-        
+        matchre KILAM1 /order something and offer|looks at you curiously/
+        GOTO UniversalMatch
     KILAM1:
-        match KILAM2 That would suit you
-        gosub UniversalMatch
         put order pick
-        matchwait
+        match KILAM2 That would suit you
+        GOTO UniversalMatch
     KILAM2:
-        
+        put offer 10000000
         match KILAM3 OFFER it again within the next
-        gosub UniversalMatch
-        put offer 10000000
-        matchwait
+        GOTO UniversalMatch
     KILAM3:
-        
-        match KILAM4 They drag you out
-        gosub UniversalMatch
         put offer 10000000
-        matchwait
+        match KILAM4 They drag you out
+        GOTO UniversalMatch
     KILAM4:
-        matchre KILAM4 /...wait|type ahead|Roundtime/i
+        matchre KILAM4 /\.\.\.wait|type ahead|Roundtime/i
         match SETSTORE You stand back up.
-        gosub UniversalMatch
         put kneel
         put stand
-        matchwait
+        GOTO UniversalMatch
 
     LEAVE.SLOCK:
         counter set 68
@@ -7531,11 +7424,11 @@ ECHO
         put go bridge
         GOTO TRAVEL
       SHARD.71:
-        var storecode Sarmo
+        setVariable storecode Sarmo
         put nw
         GOTO TRAVEL
       SHARD.72:
-        var entrance building
+        setVariable entrance building
         GOTO SETSTORE
 
     LEAVE.SARMO:
@@ -7559,8 +7452,8 @@ ECHO
         put w
         GOTO TRAVEL
       SHARD.79:
-        var storecode Scoin
-        var entrance building
+        setVariable storecode Scoin
+        setVariable entrance building
         GOTO SETSTORE
 
     LEAVE.SCOIN:
@@ -7569,8 +7462,8 @@ ECHO
         put s
         GOTO TRAVEL
       SHARD.81:
-        var storecode Stoke
-        var entrance shop
+        setVariable storecode Stoke
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.STOKE:
@@ -7579,8 +7472,8 @@ ECHO
         put s
         GOTO TRAVEL
       SHARD.83:
-        var storecode Sfril
-        var entrance shop
+        setVariable storecode Sfril
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.SFRIL:
@@ -7592,8 +7485,8 @@ ECHO
         put s
         GOTO TRAVEL
       SHARD.86:
-        var storecode Shera
-        var entrance building
+        setVariable storecode Shera
+        setVariable entrance building
         GOTO SETSTORE
 
     LEAVE.SHERA:
@@ -7605,9 +7498,9 @@ ECHO
         put e
         GOTO TRAVEL
       SHARD.89:
-        var storecode Stour
-        var entrance shop
-        var itemlocation %StourItemLoc
+        setVariable storecode Stour
+        setVariable entrance shop
+        setVariable itemlocation %StourItemLoc%
         GOTO SETSTORE
 
     LEAVE.STOUR:
@@ -7619,8 +7512,8 @@ ECHO
         put n
         GOTO TRAVEL
       SHARD.92:
-        var storecode Stoyb
-        var entrance shop
+        setVariable storecode Stoyb
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.STOYB:
@@ -7629,8 +7522,8 @@ ECHO
         put n
         GOTO TRAVEL
       SHARD.94:
-        var storecode Sbarb
-        var entrance shop
+        setVariable storecode Sbarb
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.SBARB:
@@ -7669,11 +7562,11 @@ ECHO
         put n
         GOTO TRAVEL
       SHARD.106:
-        var storecode Smuse
+        setVariable storecode Smuse
         put go building
         GOTO TRAVEL
       SHARD.107:
-        var entrance arch
+        setVariable entrance arch
         GOTO SETSTORE
 
     LEAVE.SMUSE:
@@ -7688,11 +7581,11 @@ ECHO
         put n
         GOTO TRAVEL
       SHARD.111:
-        var storecode Sbake
+        setVariable storecode Sbake
         put se
         GOTO TRAVEL
       SHARD.112:
-        var entrance bakery
+        setVariable entrance bakery
         GOTO SETSTORE
 
     LEAVE.SBAKE:
@@ -7716,15 +7609,15 @@ ECHO
         put go bridge
         GOTO TRAVEL
       SHARD.119:
-        var storecode Sbows
+        setVariable storecode Sbows
         put ne
         GOTO TRAVEL
       SHARD.120:
-        var entrance shop
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.SBOWS:
-        GOTO %LorM.SBOWS.1
+        GOTO %LorM%.SBOWS.1
     LEAVE.SBOWS.1:
         counter set 121
       SHARD.121:
@@ -7782,16 +7675,16 @@ ECHO
         put go building
         GOTO TRAVEL
       SHARD.139:
-        var storecode Stann
-        var entrance building
+        setVariable storecode Stann
+        setVariable entrance building
         GOTO SETSTORE
 
     ALTLEAVE.STANN:
     LEAVE.STANN:
         put out
         wait
-        var storecode Ssupb
-        var entrance tree
+        setVariable storecode Ssupb
+        setVariable entrance tree
         GOTO SETSTORE
 
     LEAVE.SSUPB:
@@ -7800,8 +7693,8 @@ ECHO
         put go tree
         GOTO TRAVEL
       SHARD.141:
-        var storecode Ssupf
-        var entrance curtain
+        setVariable storecode Ssupf
+        setVariable entrance curtain
         GOTO SETSTORE
 
     ALTLEAVE.SSUPF:
@@ -7904,7 +7797,7 @@ ECHO
         put w
         GOTO TRAVEL
       SHARD.171:
-        GOTO %LorM.SSUPF.1
+        GOTO %LorM%.SSUPF.1
 
     LEAVE.SSUPF.1:
         counter set 743
@@ -8013,8 +7906,8 @@ ECHO
         put go blue door
         GOTO TRAVEL
       SHARD.205:
-        var storecode Smarw
-        var entrance blue door
+        setVariable storecode Smarw
+        setVariable entrance blue door
         GOTO SETSTORE
 
     LEAVE.SMARW:
@@ -8024,8 +7917,8 @@ ECHO
         put go green door
         GOTO TRAVEL
       SHARD.207:
-        var storecode Smarg
-        var entrance green door
+        setVariable storecode Smarg
+        setVariable entrance green door
         GOTO SETSTORE
 
     LEAVE.SMARG:
@@ -8050,8 +7943,8 @@ ECHO
         put go tree
         GOTO TRAVEL
       SHARD.214:
-        var storecode Senes
-        var entrance tree
+        setVariable storecode Senes
+        setVariable entrance tree
         GOTO SETSTORE
 
     ALTLEAVE.SENES:
@@ -8118,9 +8011,9 @@ ECHO
         put sw
         GOTO TRAVEL
       SHARD.233:
-        GOTO %LorM.SENES.1
+        GOTO %LorM%.SENES.1
     LEAVE.SENES.1:
-        GOTO SHARD.CLAN.%clanoption
+        GOTO SHARD.CLAN.%clanoption%
 
     MOVEON.SENES.1:
     SHARD.CLAN.NO.1:
@@ -8165,16 +8058,14 @@ ECHO
         GOTO TRAVEL
 
     SHARD.CLAN.YES:
-        
+        put echo %HCfelt% %HCequi% %HCfalc% %HCjaht% %HCcash% %HCbow1% %HCbow2% %SCCleat% %SCCweap%
+        put glance
         match SHARD.CLAN.NO nothing nothing nothing nothing nothing nothing nothing nothing nothing
         match SHARD.CLAN.YES.2 You glance
-        gosub UniversalMatch
-        put echo %HCfelt %HCequi %HCfalc %HCjaht %HCcash %HCbow1 %HCbow2 %SCCleat %SCCweap
-        put glance
-        matchwait
+        GOTO UniversalMatch
 
     SHARD.CLAN.NO:
-        var clanoption NO
+        setVariable clanoption NO
         GOTO SHARD.CLAN.NO.1
         
     SHARD.CLAN.YES.2:
@@ -8210,8 +8101,8 @@ ECHO
         put e
         GOTO TRAVEL
       SHARD.462:
-        var storecode SCCleat
-        var entrance south
+        setVariable storecode SCCleat
+        setVariable entrance south
         GOTO SETSTORE
 
     LEAVE.SCCLEAT:
@@ -8238,8 +8129,8 @@ ECHO
         put ne
         GOTO TRAVEL
       SHARD.470:
-        var storecode SCCweap
-        var entrance building
+        setVariable storecode SCCweap
+        setVariable entrance building
         GOTO SETSTORE
 
     LEAVE.SCCWEAP:
@@ -8572,8 +8463,8 @@ ECHO
         put s
         GOTO TRAVEL
       SHARD.580:
-        var storecode HCfelt
-        var entrance tent
+        setVariable storecode HCfelt
+        setVariable entrance tent
         GOTO SETSTORE
 
     LEAVE.HCFELT:
@@ -8603,8 +8494,8 @@ ECHO
         put go tent
         GOTO TRAVEL
       SHARD.589:
-        var storecode HCequi
-        var entrance east
+        setVariable storecode HCequi
+        setVariable entrance east
         GOTO SETSTORE
 
     LEAVE.HCEQUI:
@@ -8625,8 +8516,8 @@ ECHO
         put nw
         GOTO TRAVEL
       SHARD.595:
-        var storecode HCfalc
-        var entrance tent
+        setVariable storecode HCfalc
+        setVariable entrance tent
         GOTO SETSTORE
 
     LEAVE.HCFALC:
@@ -8638,8 +8529,8 @@ ECHO
         put go tent
         GOTO TRAVEL
       SHARD.598:
-        var storecode HCjaht
-        var entrance corner
+        setVariable storecode HCjaht
+        setVariable entrance corner
         GOTO SETSTORE
 
     LEAVE.HCJAHT:
@@ -8663,8 +8554,8 @@ ECHO
         put se
         GOTO TRAVEL
       SHARD.605:
-        var storecode HCcash
-        var entrance tent
+        setVariable storecode HCcash
+        setVariable entrance tent
         GOTO SETSTORE
 
     LEAVE.HCCASH:
@@ -8676,12 +8567,12 @@ ECHO
         put nw
         GOTO TRAVEL
       SHARD.608:
-        var storecode HCbow1
-        var entrance tent
+        setVariable storecode HCbow1
+        setVariable entrance tent
         GOTO SETSTORE
 
     LEAVE.HCBOW1:
-        var storecode HCbow2
+        setVariable storecode HCbow2
         GOTO SETSTORE
 
     LEAVE.HCBOW2:
@@ -8716,19 +8607,18 @@ ECHO
       SHARD.616:
         match HORSE.HEALTH.%class hand which appears completely useless
         match LEAVE.HCBOW2.2 You glance
-        gosub UniversalMatch
         put health
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     HORSE.HEALTH.EMPATH:
-        var SelfHealLoc HorseClan
+        setVariable SelfHealLoc HorseClan
         GOTO EMPATH.HEALSELF
 
     SHARD.EMPATH.TO.RESUME.FROM.HORSECLAN:
-        var MRS shopcheck
-        var LorM leave
-        var npcoption yes
+        setVariable MRS shopcheck
+        setVariable LorM leave
+        setVariable npcoption yes
         GOTO LEAVE.HCBOW2.2
 
     HORSE.HEALTH.THIEF:
@@ -9061,8 +8951,8 @@ ECHO
         put s
         GOTO TRAVEL
       SHARD.254:
-        var storecode Sgene
-        var entrance shop
+        setVariable storecode Sgene
+        setVariable entrance shop
         GOTO SETSTORE
 
     MOVEON.SBOWS.1:
@@ -9093,11 +8983,10 @@ ECHO
         GOTO TRAVEL
       SHARD.268:
         match SHARD.PAWN.TO.QUENTIN hand which appears completely useless
-        match PAWN.%DropOrStow You glance
-        gosub UniversalMatch
+        match PAWN.%DropOrStow% You glance
         put health
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     MOVEON.SGENE.1:
         counter set 760
@@ -9125,10 +9014,9 @@ ECHO
       SHARD.767:
         match SHARD.QUENTIN.%class hand which appears completely useless
         match MOVEON.SGENE.2 You glance
-        gosub UniversalMatch
         put health
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     SHARD.QUENTIN.THIEF:
     SHARD.QUENTIN.NONTHIEF:
@@ -9137,17 +9025,15 @@ ECHO
         put go building
         GOTO TRAVEL
       SHARD.769:
-        matchre SHARD.QUENTIN.LEAVE /birthday party|just my friend|You sit up/
-        gosub UniversalMatch
         put lie
-        matchwait
+        matchre SHARD.QUENTIN.LEAVE /birthday party|just my friend|You sit up/
+        GOTO UniversalMatch
     SHARD.QUENTIN.LEAVE:
         match SHARD.770 You stand
-        matchre SHARD.QUENTIN.LEAVE /...wait|type ahead|Roundtime/i
-        gosub UniversalMatch
+        matchre SHARD.QUENTIN.LEAVE /\.\.\.wait|type ahead|Roundtime/i
         put kneel
         put stand
-        matchwait
+        GOTO UniversalMatch
       SHARD.770:
         put out
         GOTO TRAVEL
@@ -9172,7 +9058,7 @@ ECHO
         put sw
         GOTO TRAVEL
       SHARD.798:
-        var SelfHealLoc ShardTowerSE
+        setVariable SelfHealLoc ShardTowerSE
         GOTO EMPATH.HEALSELF
     SHARD.EMPATH.TO.RESUME.FROM.SHARDTOWERSE:
         counter set 799
@@ -9275,25 +9161,22 @@ ECHO
         put go door
         GOTO TRAVEL
       SHARD.256:
-        GOTO LEAVE.%storecode
+        GOTO LEAVE.%storecode%
 
     ALTLEAVE.SLOCK:
         match ALTLEAVE.SLOCK1 Kilam
         match ALTLEAVE.SLOCK2 Malik
         match LEAVE.SLOCK brown-trimmed blue shop
-        gosub UniversalMatch
         put look
-        matchwait
+        GOTO UniversalMatch
     ALTLEAVE.SLOCK1:
-        match ALTLEAVE.SLOCK2 Malik
-        gosub UniversalMatch
         put go trapdoor
-        matchwait
+        match ALTLEAVE.SLOCK2 Malik
+        GOTO UniversalMatch
     ALTLEAVE.SLOCK2:
-        match LEAVE.SLOCK brown-trimmed blue shop
-        gosub UniversalMatch
         put out
-        matchwait
+        match LEAVE.SLOCK brown-trimmed blue shop
+        GOTO UniversalMatch
 
     ALTLEAVE.HCFELT:
     ALTLEAVE.HPOTT:
@@ -9304,7 +9187,7 @@ ECHO
         put go flap
         GOTO TRAVEL
       SHARD.725:
-        GOTO LEAVE.%storecode
+        GOTO LEAVE.%storecode%
 
     ALTLEAVE.HCBOW1:
     ALTLEAVE.HCBOW2:
@@ -9313,7 +9196,7 @@ ECHO
         put go curtain
         GOTO TRAVEL
       SHARD.748:
-        GOTO LEAVE.%storecode
+        GOTO LEAVE.%storecode%
 
     ALTLEAVE.SCCLEAT:
         counter set 726
@@ -9321,7 +9204,7 @@ ECHO
         put n
         GOTO TRAVEL
       SHARD.727:
-        GOTO LEAVE.%storecode
+        GOTO LEAVE.%storecode%
 
     ALTLEAVE.HCEQUI:
         counter set 728
@@ -9329,7 +9212,7 @@ ECHO
         put w
         GOTO TRAVEL
       SHARD.729:
-        GOTO LEAVE.%storecode
+        GOTO LEAVE.%storecode%
 
     ALTLEAVE.HCJAHT:
         counter set 730
@@ -9337,7 +9220,7 @@ ECHO
         put go tent
         GOTO TRAVEL
       SHARD.731:
-        GOTO LEAVE.%storecode
+        GOTO LEAVE.%storecode%
 
 
 ##################################################################
@@ -9433,14 +9316,12 @@ ECHO
         GOTO TRAVEL
       SHARD.298:
         match SHARD.299 What is the password?
-        gosub UniversalMatch
         put knock door
-        matchwait
+        GOTO UniversalMatch
       SHARD.299:
         match SHARD.300 I thought I recognized you.
-        gosub UniversalMatch
         put say %shardpass
-        matchwait
+        GOTO UniversalMatch
       SHARD.300:
         counter set 300
         put go door
@@ -9559,9 +9440,8 @@ ECHO
         wait
         match SHARD.DEBT2 You have nothing
         match SHARD.FREE2 INVENTORY HELP
-        gosub UniversalMatch
         put inv
-        matchwait
+        GOTO UniversalMatch
 
     SHARD.DEBT:
         counter set 389
@@ -9745,14 +9625,13 @@ ECHO
         pause 1
         match SHARD.MISSINGSTART waitandsee
         match SHARD.FREE3 okstart
-        gosub UniversalMatch
-        put echo %startlocation
+        put echo %startlocation%
         put echo okstart
-        matchwait
+        GOTO UniversalMatch
 
     SHARD.MISSINGSTART:
-        var startlocation Sgene
-        var ResumeStore Sgene
+        setVariable startlocation Sgene
+        setVariable ResumeStore Sgene
         GOTO SHARD.FREE3
 
     SHARD.FREE3:
@@ -9788,8 +9667,8 @@ ECHO
         GOTO TRAVEL
       SHARD.451:
         counter set 1
-        var storecode Sgene
-        GOTO RESUME.%ResumeStore
+        setVariable storecode Sgene
+        GOTO RESUME.%ResumeStore%
 
     RESUME.HCBOW2:
         counter add 1
@@ -9863,7 +9742,7 @@ ECHO
         counter add 1
     RESUME.SGENE:
         counter add 1
-        var Countdown %c
+        setVariable Countdown %c%
         GOTO RESUME
 
 
@@ -9878,315 +9757,315 @@ ECHO
 
 
      THG.RANK.1:
-        var skillrange 20-39
-        var RHcloth <nothing>
-        var RHclothQuant 1
-        var RHgen purse
-        var RHgenQuant 1
-        var RHarms <nothing>
-        var RHarmsQuant 1
-        var RHflow black orchid
-        var RHflowQuant 1
-        var RHart <nothing>
-        var RHartQuant 1
-        var RHlock ordinary lockpick
-        var RHlockQuant 1
-        var RHjoy chocolate
-        var RHjoyQuant 1
-        var RHtobac <nothing>
-        var RHtobacQuant 1
-        var RHmirg <nothing>
-        var RHmirgQuant 1
-        var RHweap <nothing>
-        var RHweapQuant 1
-        var RHcler1 grey-brown feather
-        var RHcler1Quant 1
-        var RHcler2 <nothing>
-        var RHcler2Quant 1
-        var RHbard1 pick
-        var RHbard1Quant 1
-        var RHbard2 <nothing>
-        var RHbard2Quant 2
-        var RHnap <nothing>
-        var RHnapQuant 1
-        var RHherb water
-        var RHherbQuant 2
-        var RHtog1 <nothing>
-        var RHtog1Quant 1
-        var RHtog2 <nothing>
-        var RHtog2Quant 1
-        var RHseli <nothing>
-        var RHseliQuant 1
-        var RHiron <nothing>
-        var RHironQuant 1
+        setVariable skillrange 20-39
+        setVariable RHcloth <nothing>
+        setVariable RHclothQuant 1
+        setVariable RHgen purse
+        setVariable RHgenQuant 1
+        setVariable RHarms <nothing>
+        setVariable RHarmsQuant 1
+        setVariable RHflow black orchid
+        setVariable RHflowQuant 1
+        setVariable RHart <nothing>
+        setVariable RHartQuant 1
+        setVariable RHlock ordinary lockpick
+        setVariable RHlockQuant 1
+        setVariable RHjoy chocolate
+        setVariable RHjoyQuant 1
+        setVariable RHtobac <nothing>
+        setVariable RHtobacQuant 1
+        setVariable RHmirg <nothing>
+        setVariable RHmirgQuant 1
+        setVariable RHweap <nothing>
+        setVariable RHweapQuant 1
+        setVariable RHcler1 grey-brown feather
+        setVariable RHcler1Quant 1
+        setVariable RHcler2 <nothing>
+        setVariable RHcler2Quant 1
+        setVariable RHbard1 pick
+        setVariable RHbard1Quant 1
+        setVariable RHbard2 <nothing>
+        setVariable RHbard2Quant 2
+        setVariable RHnap <nothing>
+        setVariable RHnapQuant 1
+        setVariable RHherb water
+        setVariable RHherbQuant 2
+        setVariable RHtog1 <nothing>
+        setVariable RHtog1Quant 1
+        setVariable RHtog2 <nothing>
+        setVariable RHtog2Quant 1
+        setVariable RHseli <nothing>
+        setVariable RHseliQuant 1
+        setVariable RHiron <nothing>
+        setVariable RHironQuant 1
         GOTO RANKREPORT
 
     THG.RANK.2:
-        var skillrange 40-59
-        var RHcloth <nothing>
-        var RHclothQuant 2
-        var RHgen flint
-        var RHgenQuant 2
-        var RHarms dart
-        var RHarmsQuant 1
-        var RHflow black orchid
-        var RHflowQuant 2
-        var RHart <nothing>
-        var RHartQuant 2
-        var RHlock ordinary lockpick
-        var RHlockQuant 2
-        var RHjoy <nothing>
-        var RHjoyQuant 2
-        var RHtobac pouch
-        var RHtobacQuant 2
-        var RHmirg <nothing>
-        var RHmirgQuant 2
-        var RHweap <nothing>
-        var RHweapQuant 2
-        var RHcler1 incense
-        var RHcler1Quant 2
-        var RHcler2 <nothing>
-        var RHcler2Quant 2
-        var RHbard1 pick
-        var RHbard1Quant 2
-        var RHbard2 <nothing>
-        var RHbard2Quant 2
-        var RHnap <nothing>
-        var RHnapQuant 2
-        var RHherb mixing stick
-        var RHherbQuant 2
-        var RHtog1 <nothing>
-        var RHtog1Quant 2
-        var RHtog2 <nothing>
-        var RHtog2Quant 2
-        var RHseli <nothing>
-        var RHseliQuant 2
-        var RHiron <nothing>
-        var RHironQuant 2
+        setVariable skillrange 40-59
+        setVariable RHcloth <nothing>
+        setVariable RHclothQuant 2
+        setVariable RHgen flint
+        setVariable RHgenQuant 2
+        setVariable RHarms dart
+        setVariable RHarmsQuant 1
+        setVariable RHflow black orchid
+        setVariable RHflowQuant 2
+        setVariable RHart <nothing>
+        setVariable RHartQuant 2
+        setVariable RHlock ordinary lockpick
+        setVariable RHlockQuant 2
+        setVariable RHjoy <nothing>
+        setVariable RHjoyQuant 2
+        setVariable RHtobac pouch
+        setVariable RHtobacQuant 2
+        setVariable RHmirg <nothing>
+        setVariable RHmirgQuant 2
+        setVariable RHweap <nothing>
+        setVariable RHweapQuant 2
+        setVariable RHcler1 incense
+        setVariable RHcler1Quant 2
+        setVariable RHcler2 <nothing>
+        setVariable RHcler2Quant 2
+        setVariable RHbard1 pick
+        setVariable RHbard1Quant 2
+        setVariable RHbard2 <nothing>
+        setVariable RHbard2Quant 2
+        setVariable RHnap <nothing>
+        setVariable RHnapQuant 2
+        setVariable RHherb mixing stick
+        setVariable RHherbQuant 2
+        setVariable RHtog1 <nothing>
+        setVariable RHtog1Quant 2
+        setVariable RHtog2 <nothing>
+        setVariable RHtog2Quant 2
+        setVariable RHseli <nothing>
+        setVariable RHseliQuant 2
+        setVariable RHiron <nothing>
+        setVariable RHironQuant 2
         GOTO RANKREPORT
 
     THG.RANK.3:
-        var skillrange 60-99
-        var RHcloth sash
-        var RHclothQuant 2
-        var RHgen bark
-        var RHgenQuant 2
-        var RHarms bolts
-        var RHarmsP dart
-        var RHarmsQuant 2
-        var RHflow black orchid
-        var RHflowQuant 2
-        var RHart <nothing>
-        var RHartQuant 2
-        var RHlock stout lockpick
-        var RHlockQuant 2
-        var RHjoy <nothing>
-        var RHjoyQuant 2
-        var RHtobac sungrown cigar
-        var RHtobacP pouch
-        var RHtobacQuant 2
-        var RHmirg <nothing>
-        var RHmirgQuant 2
-        var RHweap <nothing>
-        var RHweapQuant 2
-        var RHcler1 candle
-        var RHcler1Quant 2
-        var RHcler2 <nothing>
-        var RHcler2Quant 2
-        var RHbard1 drum stick
-        var RHbard1Quant 2
-        var RHbard2 <nothing>
-        var RHbard2Quant 2
-        var RHnap <nothing>
-        var RHnapQuant 1
-        var RHherb oil
-        var RHherbQuant 2
-        var RHtog1 <nothing>
-        var RHtog1Quant 2
-        var RHtog2 <nothing>
-        var RHtog2Quant 2
-        var RHseli claw gloves
-        var RHseliQuant 1
-        var RHiron <nothing>
-        var RHironQuant 2
+        setVariable skillrange 60-99
+        setVariable RHcloth sash
+        setVariable RHclothQuant 2
+        setVariable RHgen bark
+        setVariable RHgenQuant 2
+        setVariable RHarms bolts
+        setVariable RHarmsP dart
+        setVariable RHarmsQuant 2
+        setVariable RHflow black orchid
+        setVariable RHflowQuant 2
+        setVariable RHart <nothing>
+        setVariable RHartQuant 2
+        setVariable RHlock stout lockpick
+        setVariable RHlockQuant 2
+        setVariable RHjoy <nothing>
+        setVariable RHjoyQuant 2
+        setVariable RHtobac sungrown cigar
+        setVariable RHtobacP pouch
+        setVariable RHtobacQuant 2
+        setVariable RHmirg <nothing>
+        setVariable RHmirgQuant 2
+        setVariable RHweap <nothing>
+        setVariable RHweapQuant 2
+        setVariable RHcler1 candle
+        setVariable RHcler1Quant 2
+        setVariable RHcler2 <nothing>
+        setVariable RHcler2Quant 2
+        setVariable RHbard1 drum stick
+        setVariable RHbard1Quant 2
+        setVariable RHbard2 <nothing>
+        setVariable RHbard2Quant 2
+        setVariable RHnap <nothing>
+        setVariable RHnapQuant 1
+        setVariable RHherb oil
+        setVariable RHherbQuant 2
+        setVariable RHtog1 <nothing>
+        setVariable RHtog1Quant 2
+        setVariable RHtog2 <nothing>
+        setVariable RHtog2Quant 2
+        setVariable RHseli claw gloves
+        setVariable RHseliQuant 1
+        setVariable RHiron <nothing>
+        setVariable RHironQuant 2
         GOTO RANKREPORT
 
     THG.RANK.4:
-        var skillrange 100-149
-        var RHcloth gloves
-        var RHclothQuant 2
-        var RHgen spade
-        var RHgenQuant 2
-        var RHarms stiletto
-        var RHarmsQuant 2
-        var RHflow <nothing>
-        var RHflowQuant 2
-        var RHart <nothing>
-        var RHartQuant 2
-        var RHlock stout lockpick
-        var RHlockQuant 2
-        var RHjoy <nothing>
-        var RHjoyQuant 1
-        var RHtobac apple pipe
-        var RHtobacQuant 2
-        var RHmirg <nothing>
-        var RHmirgQuant 2
-        var RHweap <nothing>
-        var RHweapQuant 2
-        var RHcler1 violets
-        var RHcler1P chalice
-        var RHcler1Quant 2
-        var RHcler2 <nothing>
-        var RHcler2Quant 2
-        var RHbard1 linen cloth
-        var RHbard1P drum stick
-        var RHbard1Quant 2
-        var RHbard2 <nothing>
-        var RHbard2Quant 2
-        var RHnap <nothing>
-        var RHnapQuant 1
-        var RHherb pestle
-        var RHherbQuant 2
-        var RHtog1 <nothing>
-        var RHtog1Quant 2
-        var RHtog2 <nothing>
-        var RHtog2Quant 2
-        var RHseli claw gloves
-        var RHseliQuant 2
-        var RHiron <nothing>
-        var RHironQuant 2
+        setVariable skillrange 100-149
+        setVariable RHcloth gloves
+        setVariable RHclothQuant 2
+        setVariable RHgen spade
+        setVariable RHgenQuant 2
+        setVariable RHarms stiletto
+        setVariable RHarmsQuant 2
+        setVariable RHflow <nothing>
+        setVariable RHflowQuant 2
+        setVariable RHart <nothing>
+        setVariable RHartQuant 2
+        setVariable RHlock stout lockpick
+        setVariable RHlockQuant 2
+        setVariable RHjoy <nothing>
+        setVariable RHjoyQuant 1
+        setVariable RHtobac apple pipe
+        setVariable RHtobacQuant 2
+        setVariable RHmirg <nothing>
+        setVariable RHmirgQuant 2
+        setVariable RHweap <nothing>
+        setVariable RHweapQuant 2
+        setVariable RHcler1 violets
+        setvariable RHcler1P chalice
+        setVariable RHcler1Quant 2
+        setVariable RHcler2 <nothing>
+        setVariable RHcler2Quant 2
+        setVariable RHbard1 linen cloth
+        setvariable RHbard1P drum stick
+        setVariable RHbard1Quant 2
+        setVariable RHbard2 <nothing>
+        setVariable RHbard2Quant 2
+        setVariable RHnap <nothing>
+        setVariable RHnapQuant 1
+        setVariable RHherb pestle
+        setVariable RHherbQuant 2
+        setVariable RHtog1 <nothing>
+        setVariable RHtog1Quant 2
+        setVariable RHtog2 <nothing>
+        setVariable RHtog2Quant 2
+        setVariable RHseli claw gloves
+        setVariable RHseliQuant 2
+        setVariable RHiron <nothing>
+        setVariable RHironQuant 2
         GOTO RANKREPORT
 
     THG.RANK.5:
-        var skillrange 150-199
-        var RHcloth blouse
-        var RHclothQuant 2
-        var RHgen dagger sheath
-        var RHgenQuant 2
-        var RHarms kris
-        var RHarmsQuant 2
-        var RHflow silk orchid
-        var RHflowQuant 1
-        var RHart simple talisman
-        var RHartQuant 2
-        var RHlock slim lockpick
-        var RHlockQuant 2
-        var RHjoy kitten
-        var RHjoyQuant 1
-        var RHtobac lanival pipe
-        var RHtobacQuant 2
-        var RHmirg <nothing>
-        var RHmirgQuant 2
-        var RHweap club
-        var RHweapQuant 1
-        var RHcler1 herbs
-        var RHcler1Quant 2
-        var RHcler2 <nothing>
-        var RHcler2Quant 2
-        var RHbard1 blouse
-        var RHbard1Quant 2
-        var RHbard2 <nothing>
-        var RHbard2Quant 2
-        var RHnap naphtha
-        var RHnapQuant 1
-        var RHherb jar
-        var RHherbQuant 2
-        var RHtog1 beaded slippers
-        var RHtog1Quant 2
-        var RHtog2 <nothing>
-        var RHtog2Quant 2
-        var RHseli legwraps
-        var RHseliQuant 2
-        var RHiron <nothing>
-        var RHironQuant 2
+        setVariable skillrange 150-199
+        setVariable RHcloth blouse
+        setVariable RHclothQuant 2
+        setVariable RHgen dagger sheath
+        setVariable RHgenQuant 2
+        setVariable RHarms kris
+        setVariable RHarmsQuant 2
+        setVariable RHflow silk orchid
+        setVariable RHflowQuant 1
+        setVariable RHart simple talisman
+        setVariable RHartQuant 2
+        setVariable RHlock slim lockpick
+        setVariable RHlockQuant 2
+        setVariable RHjoy kitten
+        setVariable RHjoyQuant 1
+        setVariable RHtobac lanival pipe
+        setVariable RHtobacQuant 2
+        setVariable RHmirg <nothing>
+        setVariable RHmirgQuant 2
+        setVariable RHweap club
+        setVariable RHweapQuant 1
+        setVariable RHcler1 herbs
+        setVariable RHcler1Quant 2
+        setVariable RHcler2 <nothing>
+        setVariable RHcler2Quant 2
+        setVariable RHbard1 blouse
+        setVariable RHbard1Quant 2
+        setVariable RHbard2 <nothing>
+        setVariable RHbard2Quant 2
+        setVariable RHnap naphtha
+        setVariable RHnapQuant 1
+        setVariable RHherb jar
+        setVariable RHherbQuant 2
+        setVariable RHtog1 beaded slippers
+        setVariable RHtog1Quant 2
+        setVariable RHtog2 <nothing>
+        setVariable RHtog2Quant 2
+        setVariable RHseli legwraps
+        setVariable RHseliQuant 2
+        setVariable RHiron <nothing>
+        setVariable RHironQuant 2
         GOTO RANKREPORT
 
     THG.RANK.6:
-        var skillrange 200-249
-        var RHcloth skirt
-        var RHclothQuant 2
-        var RHgen scabbard
-        var RHgenQuant 2
-        var RHarms rapier
-        var RHarmsQuant 2
-        var RHflow silk orchid
-        var RHflowQuant 2
-        var RHart simple talisman
-        var RHartQuant 2
-        var RHlock slim lockpick
-        var RHlockQuant 2
-        var RHjoy bunny
-        var RHjoyQuant 2
-        var RHtobac olvio pipe
-        var RHtobacQuant 2
-        var RHmirg <nothing>
-        var RHmirgQuant 2
-        var RHweap club
-        var RHweapQuant 2
-        var RHcler1 bottle
-        var RHcler1Quant 2
-        var RHcler2 <nothing>
-        var RHcler2Quant 2
-        var RHbard1 alpargatas
-        var RHbard1Quant 2
-        var RHbard2 <nothing>
-        var RHbard2Quant 2
-        var RHnap naphtha
-        var RHnapQuant 2
-        var RHherb jadice flower
-        var RHherbQuant 2
-        var RHtog1 ivory shirt
-        var RHtog1Quant 2
-        var RHtog2 <nothing>
-        var RHtog2Quant 2
-        var RHseli hood
-        var RHseliQuant 2
-        var RHiron <nothing>
-        var RHironQuant 2
+        setVariable skillrange 200-249
+        setVariable RHcloth skirt
+        setVariable RHclothQuant 2
+        setVariable RHgen scabbard
+        setVariable RHgenQuant 2
+        setVariable RHarms rapier
+        setVariable RHarmsQuant 2
+        setVariable RHflow silk orchid
+        setVariable RHflowQuant 2
+        setVariable RHart simple talisman
+        setVariable RHartQuant 2
+        setVariable RHlock slim lockpick
+        setVariable RHlockQuant 2
+        setVariable RHjoy bunny
+        setVariable RHjoyQuant 2
+        setVariable RHtobac olvio pipe
+        setVariable RHtobacQuant 2
+        setVariable RHmirg <nothing>
+        setVariable RHmirgQuant 2
+        setVariable RHweap club
+        setVariable RHweapQuant 2
+        setVariable RHcler1 bottle
+        setVariable RHcler1Quant 2
+        setVariable RHcler2 <nothing>
+        setVariable RHcler2Quant 2
+        setVariable RHbard1 alpargatas
+        setVariable RHbard1Quant 2
+        setVariable RHbard2 <nothing>
+        setVariable RHbard2Quant 2
+        setVariable RHnap naphtha
+        setVariable RHnapQuant 2
+        setVariable RHherb jadice flower
+        setVariable RHherbQuant 2
+        setVariable RHtog1 ivory shirt
+        setVariable RHtog1Quant 2
+        setVariable RHtog2 <nothing>
+        setVariable RHtog2Quant 2
+        setVariable RHseli hood
+        setVariable RHseliQuant 2
+        setVariable RHiron <nothing>
+        setVariable RHironQuant 2
         GOTO RANKREPORT
 
     THG.RANK.7:
-        var skillrange 250-299
-        var RHcloth houpelande
-        var RHclothQuant 2
-        var RHgen shears
-        var RHgenQuant 2
-        var RHarms composite bow
-        var RHarmsQuant 1
-        var RHflow wreath
-        var RHflowQuant 2
-        var RHart cambrinth ring
-        var RHartQuant 1
-        var RHlock <nothing>
-        var RHlockQuant 2
-        var RHjoy bunny
-        var RHjoyQuant 3
-        var RHtobac riverhaven tobacco
-        var RHtobacQuant 2
-        var RHmirg anklet
-        var RHmirgQuant 2
-        var RHweap thorny mace
-        var RHweapQuant 2
-        var RHcler1 chalice
-        var RHcler1Quant 2
-        var RHcler2 <nothing>
-        var RHcler2Quant 2
-        var RHbard1 refill
-        var RHbard1Quant 2
-        var RHbard2 <nothing>
-        var RHbard2Quant 2
-        var RHnap naphtha
-        var RHnapQuant 2
-        var RHherb riolur leaf
-        var RHherbQuant 2
-        var RHtog1 linen shirt
-        var RHtog1Quant 2
-        var RHtog2 <nothing>
-        var RHtog2Quant 2
-        var RHseli bronze gauntlets
-        var RHseliQuant 2
-        var RHiron bronze gauntlets
-        var RHironQuant 2
+        setVariable skillrange 250-299
+        setVariable RHcloth houpelande
+        setVariable RHclothQuant 2
+        setVariable RHgen shears
+        setVariable RHgenQuant 2
+        setVariable RHarms composite bow
+        setVariable RHarmsQuant 1
+        setVariable RHflow wreath
+        setVariable RHflowQuant 2
+        setVariable RHart cambrinth ring
+        setVariable RHartQuant 1
+        setVariable RHlock <nothing>
+        setVariable RHlockQuant 2
+        setVariable RHjoy bunny
+        setVariable RHjoyQuant 3
+        setVariable RHtobac riverhaven tobacco
+        setVariable RHtobacQuant 2
+        setVariable RHmirg anklet
+        setVariable RHmirgQuant 2
+        setVariable RHweap thorny mace
+        setVariable RHweapQuant 2
+        setVariable RHcler1 chalice
+        setVariable RHcler1Quant 2
+        setVariable RHcler2 <nothing>
+        setVariable RHcler2Quant 2
+        setVariable RHbard1 refill
+        setVariable RHbard1Quant 2
+        setVariable RHbard2 <nothing>
+        setVariable RHbard2Quant 2
+        setVariable RHnap naphtha
+        setVariable RHnapQuant 2
+        setVariable RHherb riolur leaf
+        setVariable RHherbQuant 2
+        setVariable RHtog1 linen shirt
+        setVariable RHtog1Quant 2
+        setVariable RHtog2 <nothing>
+        setVariable RHtog2Quant 2
+        setVariable RHseli bronze gauntlets
+        setVariable RHseliQuant 2
+        setVariable RHiron bronze gauntlets
+        setVariable RHironQuant 2
         GOTO RANKREPORT
 
     THG.RANK.11:
@@ -10200,47 +10079,47 @@ ECHO
     THG.RANK.10:
     THG.RANK.9:
     THG.RANK.8:
-        var skillrange 300+
-        var RHcloth dress
-        var RHclothQuant 2
-        var RHgen stove
-        var RHgenQuant 2
-        var RHarms sword
-        var RHarmsQuant 2
-        var RHflow silk orchid
-        var RHflowQuant 2
-        var RHart cambrinth ring
-        var RHartQuant 2
-        var RHlock <nothing>
-        var RHlockQuant 2
-        var RHjoy bunny
-        var RHjoyQuant 3
-        var RHtobac baron tobacco
-        var RHtobacQuant 2
-        var RHmirg toe-bells
-        var RHmirgQuant 2
-        var RHweap goat-head mace
-        var RHweapQuant 2
-        var RHcler1 pomander
-        var RHcler1Quant 2
-        var RHcler2 <nothing>
-        var RHcler2Quant 2
-        var RHbard1 mandolin
-        var RHbard1Quant 2
-        var RHbard2 <nothing>
-        var RHbard2Quant 2
-        var RHnap naphtha
-        var RHnapQuant 2
-        var RHherb ithor potion
-        var RHherbQuant 2
-        var RHtog1 linen shirt
-        var RHtog1Quant 2
-        var RHtog2 <nothing>
-        var RHtog2Quant 2
-        var RHseli aventail
-        var RHseliQuant 2
-        var RHiron chain greaves
-        var RHironQuant 2
+        setVariable skillrange 300+
+        setVariable RHcloth dress
+        setVariable RHclothQuant 2
+        setVariable RHgen stove
+        setVariable RHgenQuant 2
+        setVariable RHarms sword
+        setVariable RHarmsQuant 2
+        setVariable RHflow silk orchid
+        setVariable RHflowQuant 2
+        setVariable RHart cambrinth ring
+        setVariable RHartQuant 2
+        setVariable RHlock <nothing>
+        setVariable RHlockQuant 2
+        setVariable RHjoy bunny
+        setVariable RHjoyQuant 3
+        setVariable RHtobac baron tobacco
+        setVariable RHtobacQuant 2
+        setVariable RHmirg toe-bells
+        setVariable RHmirgQuant 2
+        setVariable RHweap goat-head mace
+        setVariable RHweapQuant 2
+        setVariable RHcler1 pomander
+        setVariable RHcler1Quant 2
+        setVariable RHcler2 <nothing>
+        setVariable RHcler2Quant 2
+        setVariable RHbard1 mandolin
+        setVariable RHbard1Quant 2
+        setVariable RHbard2 <nothing>
+        setVariable RHbard2Quant 2
+        setVariable RHnap naphtha
+        setVariable RHnapQuant 2
+        setVariable RHherb ithor potion
+        setVariable RHherbQuant 2
+        setVariable RHtog1 linen shirt
+        setVariable RHtog1Quant 2
+        setVariable RHtog2 <nothing>
+        setVariable RHtog2Quant 2
+        setVariable RHseli aventail
+        setVariable RHseliQuant 2
+        setVariable RHiron chain greaves
+        setVariable RHironQuant 2
         GOTO RANKREPORT
 
     THG.RANK.-5:
@@ -10252,14 +10131,13 @@ ECHO
         GOTO BEGGAR.MOD
 
     THG.BAGCHECK:
-        matchre BAGWARN /%RHcloth|%RHgen|%RHarms|%RHflow|%RHart|%RHlock|%RHjoy|%RHiron%/
-        matchre BAGWARN /%RHtobac|%RHmirg|%RHweap|%RHseli|%RHnap|%RHherb%/
-        matchre BAGWARN /%RHtog1|%RHtog2|%RHbard1|%RHbard2|%RHcler1|%RHcler2%/
-        match BAGS.STOW.%c You glance
-        gosub UniversalMatch
-        put look in my %container
+        matchre BAGWARN /%RHcloth%|%RHgen%|%RHarms%|%RHflow%|%RHart%|%RHlock%|%RHjoy%|%RHiron%/
+        matchre BAGWARN /%RHtobac%|%RHmirg%|%RHweap%|%RHseli%|%RHnap%|%RHherb%/
+        matchre BAGWARN /%RHtog1%|%RHtog2%|%RHbard1%|%RHbard2%|%RHcler1%|%RHcler2%/
+        match BAGS.STOW.%c% You glance
+        put look in my %container%
         put glance
-        matchwait
+        GOTO UniversalMatch
 
 
 ##################################################################
@@ -10297,9 +10175,8 @@ ECHO
         match HAVEN.START.IRON [Bantheld's Ironworks, Salesroom]
         match HAVEN.START.PAWN Ioun's Pawn
         match THG.BADLOCATION Obvious
-        gosub UniversalMatch
         put look
-        matchwait
+        GOTO UniversalMatch
 
     THG.BADLOCATION:
         ECHO ***********************************************
@@ -10333,120 +10210,120 @@ ECHO
 
     HAVEN.START.CLOTH:
         counter set 437
-        var storecode RHcloth
+        setVariable storecode RHcloth
         put out
         GOTO START
 
     HAVEN.START.GEN:
         counter set 27
-        var storecode RHgen
+        setVariable storecode RHgen
         put out
         GOTO START
 
     HAVEN.START.ARMS:
         counter set 34
-        var storecode RHarms
+        setVariable storecode RHarms
         put out
         GOTO START
 
     HAVEN.START.FLOW:
         counter set 39
-        var storecode RHflow
+        setVariable storecode RHflow
         put out
         GOTO START
 
     HAVEN.START.ART:
         counter set 46
-        var storecode RHart
+        setVariable storecode RHart
         put out
         GOTO START
 
     HAVEN.START.LOCK:
         counter set 47
-        var storecode RHlock
+        setVariable storecode RHlock
         put out
         GOTO START
 
     HAVEN.START.SELI:
         counter set 53
-        var storecode RHseli
+        setVariable storecode RHseli
         put out
         GOTO START
 
     HAVEN.START.JOY:
         counter set 426
-        var storecode RHjoy
+        setVariable storecode RHjoy
         put out
         GOTO START
 
     HAVEN.START.TOBAC:
         counter set 61
-        var storecode RHtobac
+        setVariable storecode RHtobac
         put out
         GOTO START
 
     HAVEN.START.MIRG:
         counter set 65
-        var storecode RHmirg
+        setVariable storecode RHmirg
         put out
         GOTO START
 
     HAVEN.START.WEAP:
         counter set 69
-        var storecode RHweap
+        setVariable storecode RHweap
         put out
         GOTO START
 
     HAVEN.START.BARD1:
         counter set 78
-        var storecode RHbard1
+        setVariable storecode RHbard1
         put out
         GOTO START
 
     HAVEN.START.BARD2:
         counter set 428
-        var storecode RHbard2
+        setVariable storecode RHbard2
         put go curtain
         GOTO START
 
     HAVEN.START.CLER1:
         counter set 435
-        var storecode RHcler1
+        setVariable storecode RHcler1
         put out
         GOTO START
 
     HAVEN.START.CLER2:
         counter set 81
-        var storecode RHcler2
+        setVariable storecode RHcler2
         put go opening
         GOTO START
 
     HAVEN.START.NAP:
         counter set 87
-        var storecode RHnap
+        setVariable storecode RHnap
         GOTO START
 
     HAVEN.START.HERB:
         counter set 94
-        var storecode RHherb
+        setVariable storecode RHherb
         put out
         GOTO START
 
     HAVEN.START.TOG1:
         counter set 98
-        var storecode RHtog1
+        setVariable storecode RHtog1
         put go door
         GOTO START
 
     HAVEN.START.TOG2:
         counter set 413
-        var storecode RHtog2
+        setVariable storecode RHtog2
         put go curtain
         GOTO START
 
     HAVEN.START.IRON:
         counter set 108
-        var storecode RHiron
+        setVariable storecode RHiron
         put o
         GOTO START
 
@@ -10556,8 +10433,8 @@ ECHO
         put w
         GOTO TRAVEL
       HAVEN.27:
-        var storecode RHgen
-        var entrance store
+        setVariable storecode RHgen
+        setVariable entrance store
         GOTO SETSTORE
 
     LEAVE.RHGEN:
@@ -10575,12 +10452,12 @@ ECHO
         put n
         GOTO TRAVEL
       HAVEN.34:
-        var storecode RHarms
-        var entrance arms
+        setVariable storecode RHarms
+        setVariable entrance arms
         GOTO SETSTORE
 
     LEAVE.RHARMS:
-        GOTO %LorM.RHARMS.1
+        GOTO %LorM%.RHARMS.1
     LEAVE.RHARMS.1:
         counter set 37
       HAVEN.37:
@@ -10590,8 +10467,8 @@ ECHO
         put n
         GOTO TRAVEL
       HAVEN.39:
-        var storecode RHflow
-        var entrance shop
+        setVariable storecode RHflow
+        setVariable entrance shop
         GOTO SETSTORE
 
     MOVEON.RHARMS.1:
@@ -10600,7 +10477,7 @@ ECHO
         put go pawn
         GOTO TRAVEL
       HAVEN.121:
-        GOTO PAWN.%DropOrStow
+        GOTO PAWN.%DropOrStow%
 
     LEAVE.RHFLOW:
         counter set 42
@@ -10617,14 +10494,14 @@ ECHO
         put se
         GOTO TRAVEL
       HAVEN.46:
-        var storecode RHart
-        var entrance art shop
+        setVariable storecode RHart
+        setVariable entrance art shop
         GOTO SETSTORE
 
     LEAVE.RHART:
       HAVEN.47:
-        var storecode RHlock
-        var entrance ord shop
+        setVariable storecode RHlock
+        setVariable entrance ord shop
         GOTO SETSTORE
 
     LEAVE.RHLOCK:
@@ -10639,8 +10516,8 @@ ECHO
         put s
         GOTO TRAVEL
       HAVEN.53:
-        var storecode RHseli
-        var entrance shop
+        setVariable storecode RHseli
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHSELI:
@@ -10658,8 +10535,8 @@ ECHO
         put e
         GOTO TRAVEL
       HAVEN.426:
-        var storecode RHjoy
-        var entrance door
+        setVariable storecode RHjoy
+        setVariable entrance door
         GOTO SETSTORE
 
     LEAVE.RHJOY:
@@ -10671,7 +10548,7 @@ ECHO
         put s
         GOTO TRAVEL
       HAVEN.60:
-        var storecode RHtobac
+        setVariable storecode RHtobac
         put kneel
         wait
     RHTOBAC.SHORT:
@@ -10679,7 +10556,7 @@ ECHO
         match SHORTSTAND You must be standing
         GOTO TRAVEL
       HAVEN.61:
-        var entrance shop
+        setVariable entrance shop
         GOTO SETSTORE
 
     ALTLEAVE.RHTOBAC:
@@ -10689,12 +10566,11 @@ ECHO
         GOTO TRAVEL
       HAVEN.418:
     LEAVE.RHTOBAC:
-        matchre LEAVE.RHTOBAC /...wait|type ahead|Roundtime/i
+        matchre LEAVE.RHTOBAC /\.\.\.wait|type ahead|Roundtime/i
         matchre LEAVE.RHTOBAC.2 /You stand|already standing/
         match ALTLEAVE.RHTOBAC You can't stand
-        gosub UniversalMatch
         put stand
-        matchwait
+        GOTO UniversalMatch
     LEAVE.RHTOBAC.2:
         counter set 63
       HAVEN.63:
@@ -10704,8 +10580,8 @@ ECHO
         put w
         GOTO TRAVEL
       HAVEN.65:
-        var storecode RHmirg
-        var entrance shop
+        setVariable storecode RHmirg
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHMIRG:
@@ -10714,8 +10590,8 @@ ECHO
         put se
         GOTO TRAVEL
       HAVEN.69:
-        var storecode RHweap
-        var entrance shop
+        setVariable storecode RHweap
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHWEAP:
@@ -10739,8 +10615,8 @@ ECHO
         put n
         GOTO TRAVEL
       HAVEN.78:
-        var storecode RHbard1
-        var entrance shop
+        setVariable storecode RHbard1
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHBARD1:
@@ -10749,8 +10625,8 @@ ECHO
         put go shop
         GOTO TRAVEL
       HAVEN.428:
-        var storecode RHbard2
-        var entrance curtain
+        setVariable storecode RHbard2
+        setVariable entrance curtain
         GOTO SETSTORE
 
     ALTLEAVE.RHBARD2:
@@ -10774,8 +10650,8 @@ ECHO
         put n
         GOTO TRAVEL
       HAVEN.435:
-        var storecode RHcler1
-        var entrance shop
+        setVariable storecode RHcler1
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHCLER1:
@@ -10784,8 +10660,8 @@ ECHO
         put go shop
         GOTO TRAVEL
       HAVEN.81:
-        var storecode RHcler2
-        var entrance curtain
+        setVariable storecode RHcler2
+        setVariable entrance curtain
         GOTO SETSTORE
 
     ALTLEAVE.RHCLER2:
@@ -10807,9 +10683,9 @@ ECHO
         put se
         GOTO TRAVEL
       HAVEN.87:
-        var storecode RHnap
-        var itemlocation on cart
-        var entrance shop
+        setVariable storecode RHnap
+        setVariable itemlocation on cart
+        setVariable entrance shop
         GOTO SETSTORE
 
     ALTLEAVE.RHNAP:
@@ -10828,8 +10704,8 @@ ECHO
         put se
         GOTO TRAVEL
       HAVEN.94:
-        var storecode RHherb
-        var entrance shop
+        setVariable storecode RHherb
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHHERB:
@@ -10838,8 +10714,8 @@ ECHO
         put se
         GOTO TRAVEL
       HAVEN.98:
-        var storecode RHtog1
-        var entrance shop
+        setVariable storecode RHtog1
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHTOG1.1:
@@ -10856,8 +10732,8 @@ ECHO
         GOTO TRAVEL
       HAVEN.413:
     ALTLEAVE.RHTOG1:
-        var storecode RHtog2
-        var entrance hall
+        setVariable storecode RHtog2
+        setVariable entrance hall
         GOTO SETSTORE
 
     ALTLEAVE.RHTOG2:
@@ -10897,8 +10773,8 @@ ECHO
         put nw
         GOTO TRAVEL
       HAVEN.108:
-        var storecode RHiron
-        var entrance shop
+        setVariable storecode RHiron
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHIRON:
@@ -10927,8 +10803,8 @@ ECHO
         put w
         GOTO TRAVEL
       HAVEN.438:
-        var storecode RHcloth
-        var entrance shop
+        setVariable storecode RHcloth
+        setVariable entrance shop
         GOTO SETSTORE
 
 
@@ -10944,9 +10820,8 @@ ECHO
         wait
         match HAVEN.DEBT2 You have nothing
         match HAVEN.FREE2 INVENTORY HELP
-        gosub UniversalMatch
         put inv
-        matchwait
+        GOTO UniversalMatch
 
     HAVEN.DEBT:
         counter set 225
@@ -11126,14 +11001,13 @@ ECHO
         pause 1
         match HAVEN.MISSINGSTART waitandsee
         match HAVEN.FREE3 okstart
-        gosub UniversalMatch
         put echo %startlocation
         put echo okstart
-        matchwait
+        GOTO UniversalMatch
 
     HAVEN.MISSINGSTART:
-        var startlocation RHtog1
-        var ResumeStore RHtog1
+        setVariable startlocation RHtog1
+        setVariable ResumeStore RHtog1
         GOTO HAVEN.FREE3
 
     HAVEN.FREE3:
@@ -11146,8 +11020,8 @@ ECHO
         GOTO TRAVEL
       HAVEN.287:
         counter set 1
-        var storecode RHtog1
-        GOTO RESUME.%ResumeStore
+        setVariable storecode RHtog1
+        GOTO RESUME.%ResumeStore%
 
     RESUME.RHHERB:
         counter add 1
@@ -11189,7 +11063,7 @@ ECHO
         counter add 1
     RESUME.RHTOG1:
         counter add 1
-        var Countdown %c
+        setVariable Countdown %c%
         GOTO RESUME
 
 
@@ -11222,7 +11096,7 @@ ECHO
         put go store
         GOTO TRAVEL
       HAVEN.445:
-        var BinOrBucket basket
+        setVariable BinOrBucket basket
         GOTO PAWN.BIN
 
     HAVEN.BINFINISH.NONTHIEF:
@@ -11250,22 +11124,21 @@ ECHO
         GOTO END
 
     HAVEN.PAWNFINISH.THIEF:
-        var havenguild rook
+        setVariable havenguild rook
     HAVEN.CONTACT.FALSE:
       HAVEN.GUILDFIND1:
-        var knockdoor door
-        var contact false
+        setVariable knockdoor door
+        setVariable contact false
         match HAVEN.GUILDPAWN convenient spot
         match HAVEN.ARTIFICER Silvermoon Road
         match HAVEN.HALFLING with his own kind
         match HAVEN.COOP cooped up somewhere
         match HAVEN.CRESCENT Crescent Way
         match HAVEN.ROOK checking around the rookery
-        match HAVEN.TEST.%havenguild You glance
-        gosub UniversalMatch
+        match HAVEN.TEST.%havenguild% You glance
         put contact guild
         put glance
-        matchwait
+        GOTO UniversalMatch
 
     HAVEN.TEST.GUILDPAWN:
         GOTO HAVEN.ARTIFICER
@@ -11284,39 +11157,38 @@ ECHO
         GOTO END
 
     HAVEN.SEARCH:
+        put search
         match HAVEN.KNOCK Success!
         match HAVEN.SEARCH Roundtime
-        gosub UniversalMatch
-        put search
-        matchwait
+        GOTO UniversalMatch
 
     HAVEN.KNOCK:
         pause 1
-        put knock %knockdoor
+        put knock %knockdoor%
         waitfor You knock
         put whisper %riverpass
         wait
-        GOTO HAVEN.%havenguild.ENTER
+        GOTO HAVEN.%havenguild%.ENTER
 
     HAVEN.ARTIFICER:
-        var havenguild artificer
+        setVariable havenguild artificer
         GOTO HAVEN.GUILDFIND2
     HAVEN.HALFLING:
-        var havenguild halfling
-        var knockdoor grat
+        setVariable havenguild halfling
+        setVariable knockdoor grat
         GOTO HAVEN.GUILDFIND2
     HAVEN.COOP:
-        var havenguild coop
+        setVariable havenguild coop
         GOTO HAVEN.GUILDFIND2
     HAVEN.CRESCENT:
-        var havenguild crescent
+        setVariable havenguild crescent
         GOTO HAVEN.GUILDFIND2
     HAVEN.ROOK:
-        var havenguild rook
+        setVariable havenguild rook
         GOTO HAVEN.GUILDFIND2
 
     HAVEN.GUILDPAWN:
-        var havenguild guildpawn
+        setVariable havenguild guildpawn
         counter set 300
       HAVEN.300:
         put out
@@ -11336,7 +11208,7 @@ ECHO
         match PAWN.BIN thief Crow
         GOTO TRAVEL
       HAVEN.305:
-        GOTO %havenguild.RHLEAVE
+        GOTO %havenguild%.RHLEAVE
 
     HAVEN.GUILDFIND2:
         counter set 306
@@ -11362,7 +11234,7 @@ ECHO
         put se
         GOTO TRAVEL
       HAVEN.313:
-        GOTO HAVEN.%havenguild.2
+        GOTO HAVEN.%havenguild%.2
 
     HAVEN.ARTIFICER.2:
         GOTO HAVEN.SEARCH
@@ -11378,7 +11250,7 @@ ECHO
         match PAWN.BIN thief Crow
         GOTO TRAVEL
       HAVEN.316:
-        GOTO %havenguild.RHLEAVE
+        GOTO %havenguild%.RHLEAVE
 
     HAVEN.HALFLING.2:
     HAVEN.COOP.2:
@@ -11392,7 +11264,7 @@ ECHO
         put se
         GOTO TRAVEL
       HAVEN.319:
-        GOTO HAVEN.%havenguild.3
+        GOTO HAVEN.%havenguild%.3
 
     HAVEN.HALFLING.3:
         counter set 320
@@ -11422,7 +11294,7 @@ ECHO
         match PAWN.BIN thief Crow
         GOTO TRAVEL
       HAVEN.327:
-        GOTO %havenguild.RHLEAVE
+        GOTO %havenguild%.RHLEAVE
 
     HAVEN.COOP.3:
         counter set 328
@@ -11444,7 +11316,7 @@ ECHO
         match PAWN.BIN thief Crow
         GOTO TRAVEL
       HAVEN.333:
-        GOTO %havenguild.RHLEAVE
+        GOTO %havenguild%.RHLEAVE
 
     HAVEN.CRESCENT.3:
         counter set 334
@@ -11465,7 +11337,7 @@ ECHO
         match PAWN.BIN thief Crow
         GOTO TRAVEL
       HAVEN.338:
-        GOTO %havenguild.RHLEAVE
+        GOTO %havenguild%.RHLEAVE
 
     HAVEN.ROOK.3:
         counter set 339
@@ -11520,7 +11392,7 @@ ECHO
         match PAWN.BIN thief Crow
         GOTO TRAVEL
       HAVEN.355:
-        GOTO %havenguild.RHLEAVE
+        GOTO %havenguild%.RHLEAVE
 
 
 ##################################################################
@@ -11531,7 +11403,7 @@ ECHO
 
 
     HAVEN.BINFINISH.THIEF:
-       GOTO %havenguild.RHLEAVE
+       GOTO %havenguild%.RHLEAVE
 
     GUILDPAWN.RHLEAVE:
         counter set 356
@@ -11551,7 +11423,7 @@ ECHO
         put go pawn
         GOTO TRAVEL
       HAVEN.361:
-        GOTO HAVEN.CONTACT.%contactguild
+        GOTO HAVEN.CONTACT.%contactguild%
 
     HALFING.RHLEAVE:
         counter set 362
@@ -11706,7 +11578,7 @@ ECHO
         put go pawn
         GOTO TRAVEL
       HAVEN.408:
-        GOTO HAVEN.CONTACT.%contactguild
+        GOTO HAVEN.CONTACT.%contactguild%
 
 
 ##################################################################################
@@ -11720,471 +11592,471 @@ ECHO
 
 
      QIR.RANK.1:
-        var skillrange 20-39
-        var Rbait worms
-        var RbaitQuant 2
-        var Rchan rope
-        var RchanQuant 1
-        var Rherb water
-        var RherbQuant 2
-        var Rforge <nothing>
-        var RforgeQuant 1
-        var Rbard pick
-        var RbardQuant 1
-        var Rhair unguent
-        var RhairQuant 1
-        var Rleather <nothing>
-        var RleatherQuant 1
-        var Rtailor stockings
-        var RtailorQuant 1
-        var Rgami <nothing>
-        var RgamiQuant 1
-        var Rmagik <nothing>
-        var RmagikQuant 1
-        var Rjewel <nothing>
-        var RjewelQuant 1
-        var Rthea <nothing>
-        var RtheaQuant 1
-        var Rcleric lavender
-        var RclericQuant 1
-        var Rexot <nothing>
-        var RexotQuant 1
-        var Atann <nothing>
-        var AtannQuant 1
-        var Aalch water
-        var AalchQuant 2
-        var Acloth <nothing>
-        var AclothQuant 1
-        var Ascript <nothing>
-        var AscriptQuant 1
-        var Acleric lanahh pao
-        var AclericQuant 1
-        var Agami <nothing>
-        var AgamiQuant 1
-        var Agem <nothing>
-        var AgemQuant 1
-        var Amagic <nothing>
-        var AmagicQuant 1
-        var Asling flights
-        var AslingQuant 1
-        var Apuzz <nothing>
-        var ApuzzQuant 1
-        var Afoot <nothing>
-        var AfootQuant 1
-        var Ashield <nothing>
-        var AshieldQuant 1
-        var Aweap <nothing>
-        var AweapQuant 1
-        var Aforge <nothing>
-        var AforgeQuant 1
-        var Agen charcoal
-        var AgenQuant 1
-        var Aflow <nothing>
-        var AflowQuant 1
-        var Abard pick
-        var AbardQuant 1
+        setVariable skillrange 20-39
+        setVariable Rbait worms
+        setVariable RbaitQuant 2
+        setVariable Rchan rope
+        setVariable RchanQuant 1
+        setVariable Rherb water
+        setVariable RherbQuant 2
+        setVariable Rforge <nothing>
+        setVariable RforgeQuant 1
+        setVariable Rbard pick
+        setVariable RbardQuant 1
+        setVariable Rhair unguent
+        setVariable RhairQuant 1
+        setVariable Rleather <nothing>
+        setVariable RleatherQuant 1
+        setVariable Rtailor stockings
+        setVariable RtailorQuant 1
+        setVariable Rgami <nothing>
+        setVariable RgamiQuant 1
+        setVariable Rmagik <nothing>
+        setVariable RmagikQuant 1
+        setVariable Rjewel <nothing>
+        setVariable RjewelQuant 1
+        setVariable Rthea <nothing>
+        setVariable RtheaQuant 1
+        setVariable Rcleric lavender
+        setVariable RclericQuant 1
+        setVariable Rexot <nothing>
+        setVariable RexotQuant 1
+        setvariable Atann <nothing>
+        setvariable AtannQuant 1
+        setvariable Aalch water
+        setvariable AalchQuant 2
+        setvariable Acloth <nothing>
+        setvariable AclothQuant 1
+        setvariable Ascript <nothing>
+        setvariable AscriptQuant 1
+        setvariable Acleric lanahh pao
+        setvariable AclericQuant 1
+        setvariable Agami <nothing>
+        setvariable AgamiQuant 1
+        setvariable Agem <nothing>
+        setvariable AgemQuant 1
+        setvariable Amagic <nothing>
+        setvariable AmagicQuant 1
+        setvariable Asling flights
+        setvariable AslingQuant 1
+        setvariable Apuzz <nothing>
+        setvariable ApuzzQuant 1
+        setvariable Afoot <nothing>
+        setvariable AfootQuant 1
+        setvariable Ashield <nothing>
+        setvariable AshieldQuant 1
+        setvariable Aweap <nothing>
+        setvariable AweapQuant 1
+        setvariable Aforge <nothing>
+        setvariable AforgeQuant 1
+        setvariable Agen charcoal
+        setvariable AgenQuant 1
+        setvariable Aflow <nothing>
+        setvariable AflowQuant 1
+        setvariable Abard pick
+        setvariable AbardQuant 1
         GOTO RANKREPORT
 
     QIR.RANK.2:
-        var skillrange 40-59
-        var Rbait cheese
-        var RbaitQuant 2
-        var Rchan biscuit
-        var RchanQuant 2
-        var Rherb alcohol
-        var RherbQuant 2
-        var Rforge <nothing>
-        var RforgeQuant 2
-        var Rbard rag
-        var RbardQuant 2
-        var Rhair unguent
-        var RhairQuant 2
-        var Rleather <nothing>
-        var RleatherQuant 2
-        var Rtailor stockings
-        var RtailorQuant 2
-        var Rgami <nothing>
-        var RgamiQuant 2
-        var Rmagik <nothing>
-        var RmagikQuant 2
-        var Rjewel <nothing>
-        var RjewelQuant 2
-        var Rthea <nothing>
-        var RtheaQuant 2
-        var Rcleric plume feather
-        var RclericQuant 2
-        var Rexot <nothing>
-        var RexotQuant 2
-        var Atann <nothing>
-        var AtannQuant 2
-        var Aalch stick
-        var AalchQuant 2
-        var Acloth <nothing>
-        var AclothQuant 2
-        var Ascript <nothing>
-        var AscriptQuant 2
-        var Acleric sage
-        var AclericQuant 2
-        var Agami <nothing>
-        var AgamiQuant 2
-        var Agem <nothing>
-        var AgemQuant 2
-        var Amagic <nothing>
-        var AmagicQuant 2
-        var Asling fishtail arrowhead
-        var AslingQuant 2
-        var Apuzz beanbags
-        var ApuzzQuant 1
-        var Afoot socks
-        var AfootQuant 1
-        var Ashield <nothing>
-        var AshieldQuant 2
-        var Aweap <nothing>
-        var AweapQuant 2
-        var Aforge <nothing>
-        var AforgeQuant 2
-        var Agen flint
-        var AgenQuant 2
-        var Aflow <nothing>
-        var AflowQuant 2
-        var Abard pick
-        var AbardQuant 2
+        setVariable skillrange 40-59
+        setVariable Rbait cheese
+        setVariable RbaitQuant 2
+        setVariable Rchan biscuit
+        setVariable RchanQuant 2
+        setVariable Rherb alcohol
+        setVariable RherbQuant 2
+        setVariable Rforge <nothing>
+        setVariable RforgeQuant 2
+        setVariable Rbard rag
+        setVariable RbardQuant 2
+        setVariable Rhair unguent
+        setVariable RhairQuant 2
+        setVariable Rleather <nothing>
+        setVariable RleatherQuant 2
+        setVariable Rtailor stockings
+        setVariable RtailorQuant 2
+        setVariable Rgami <nothing>
+        setVariable RgamiQuant 2
+        setVariable Rmagik <nothing>
+        setVariable RmagikQuant 2
+        setVariable Rjewel <nothing>
+        setVariable RjewelQuant 2
+        setVariable Rthea <nothing>
+        setVariable RtheaQuant 2
+        setVariable Rcleric plume feather
+        setVariable RclericQuant 2
+        setVariable Rexot <nothing>
+        setVariable RexotQuant 2
+        setvariable Atann <nothing>
+        setvariable AtannQuant 2
+        setvariable Aalch stick
+        setvariable AalchQuant 2
+        setvariable Acloth <nothing>
+        setvariable AclothQuant 2
+        setvariable Ascript <nothing>
+        setvariable AscriptQuant 2
+        setvariable Acleric sage
+        setvariable AclericQuant 2
+        setvariable Agami <nothing>
+        setvariable AgamiQuant 2
+        setvariable Agem <nothing>
+        setvariable AgemQuant 2
+        setvariable Amagic <nothing>
+        setvariable AmagicQuant 2
+        setvariable Asling fishtail arrowhead
+        setvariable AslingQuant 2
+        setvariable Apuzz beanbags
+        setvariable ApuzzQuant 1
+        setvariable Afoot socks
+        setvariable AfootQuant 1
+        setvariable Ashield <nothing>
+        setvariable AshieldQuant 2
+        setvariable Aweap <nothing>
+        setvariable AweapQuant 2
+        setvariable Aforge <nothing>
+        setvariable AforgeQuant 2
+        setvariable Agen flint
+        setvariable AgenQuant 2
+        setvariable Aflow <nothing>
+        setvariable AflowQuant 2
+        setvariable Abard pick
+        setvariable AbardQuant 2
         GOTO RANKREPORT
 
     QIR.RANK.3:
-        var skillrange 60-99
-        var Rbait pole
-        var RbaitQuant 1
-        var Rchan lobscouse stew
-        var RchanQuant 2
-        var Rherb pestle
-        var RherbQuant 2
-        var Rforge <nothing>
-        var RforgeQuant 2
-        var Rbard cloth
-        var RbardQuant 2
-        var Rhair hairbrush
-        var RhairQuant 2
-        var Rleather <nothing>
-        var RleatherQuant 2
-        var Rtailor shirt
-        var RtailorQuant 2
-        var Rgami <nothing>
-        var RgamiQuant 2
-        var Rmagik <nothing>
-        var RmagikQuant 2
-        var Rjewel ear-frill
-        var Rjewel chain
-        var RjewelQuant 2
-        var Rthea <nothing>
-        var RtheaQuant 2
-        var Rcleric wine
-        var RclericP plume feather
-        var RclericQuant 2
-        var Rexot <nothing>
-        var RexotQuant 2
-        var Atann thread
-        var AtannQuant 1
-        var Aalch pestle
-        var AalchQuant 1
-        var Acloth britches
-        var AclothQuant 1
-        var Ascript <nothing>
-        var AscriptQuant 2
-        var Acleric incense
-        var AclericQuant 2
-        var Agami <nothing>
-        var AgamiQuant 2
-        var Agem <nothing>
-        var AgemQuant 2
-        var Amagic <nothing>
-        var AmagicQuant 2
-        var Asling shaper
-        var AslingQuant 1
-        var Apuzz beanbags
-        var ApuzzQuant 2
-        var Afoot socks
-        var AfootQuant 2
-        var Ashield <nothing>
-        var AshieldQuant 2
-        var Aweap <nothing>
-        var AweapQuant 2
-        var Aforge <nothing>
-        var AforgeQuant 2
-        var Agen trowel
-        var AgenQuant 2
-        var Aflow <nothing>
-        var AflowQuant 1
-        var Abard rag
-        var AbardQuant 2
+        setVariable skillrange 60-99
+        setVariable Rbait pole
+        setVariable RbaitQuant 1
+        setVariable Rchan lobscouse stew
+        setVariable RchanQuant 2
+        setVariable Rherb pestle
+        setVariable RherbQuant 2
+        setVariable Rforge <nothing>
+        setVariable RforgeQuant 2
+        setVariable Rbard cloth
+        setVariable RbardQuant 2
+        setVariable Rhair hairbrush
+        setVariable RhairQuant 2
+        setVariable Rleather <nothing>
+        setVariable RleatherQuant 2
+        setVariable Rtailor shirt
+        setVariable RtailorQuant 2
+        setVariable Rgami <nothing>
+        setVariable RgamiQuant 2
+        setVariable Rmagik <nothing>
+        setVariable RmagikQuant 2
+        setVariable Rjewel ear-frill
+        setVariable Rjewel chain
+        setVariable RjewelQuant 2
+        setVariable Rthea <nothing>
+        setVariable RtheaQuant 2
+        setVariable Rcleric wine
+        setVariable RclericP plume feather
+        setVariable RclericQuant 2
+        setVariable Rexot <nothing>
+        setVariable RexotQuant 2
+        setvariable Atann thread
+        setvariable AtannQuant 1
+        setvariable Aalch pestle
+        setvariable AalchQuant 1
+        setvariable Acloth britches
+        setvariable AclothQuant 1
+        setvariable Ascript <nothing>
+        setvariable AscriptQuant 2
+        setvariable Acleric incense
+        setvariable AclericQuant 2
+        setvariable Agami <nothing>
+        setvariable AgamiQuant 2
+        setvariable Agem <nothing>
+        setvariable AgemQuant 2
+        setvariable Amagic <nothing>
+        setvariable AmagicQuant 2
+        setvariable Asling shaper
+        setvariable AslingQuant 1
+        setvariable Apuzz beanbags
+        setvariable ApuzzQuant 2
+        setvariable Afoot socks
+        setvariable AfootQuant 2
+        setvariable Ashield <nothing>
+        setvariable AshieldQuant 2
+        setvariable Aweap <nothing>
+        setvariable AweapQuant 2
+        setvariable Aforge <nothing>
+        setvariable AforgeQuant 2
+        setvariable Agen trowel
+        setvariable AgenQuant 2
+        setvariable Aflow <nothing>
+        setvariable AflowQuant 1
+        setvariable Abard rag
+        setvariable AbardQuant 2
         GOTO RANKREPORT
 
     QIR.RANK.4:
-        var skillrange 100-149
-        var Rbait pole
-        var RbaitQuant 1
-        var Rchan polish
-        var RchanQuant 2
-        var Rherb large jar
-        var RherbQuant 2
-        var Rforge dagger
-        var RforgeQuant 2
-        var Rbard tambourine
-        var RbardQuant 2
-        var Rhair clippers
-        var RhairP razor
-        var RhairQuant 2
-        var Rleather <nothing>
-        var RleatherQuant 2
-        var Rtailor sash
-        var RtailorQuant 2
-        var Rgami plain paper
-        var RgamiQuant 1
-        var Rmagik <nothing>
-        var RmagikQuant 2
-        var Rjewel bangle
-        var RjewelQuant 2
-        var Rthea <nothing>
-        var RtheaQuant 2
-        var Rcleric candle
-        var RclericP vial
-        var RclericQuant 2
-        var Rexot <nothing>
-        var RexotQuant 2
-        var Atann thread
-        var AtannQuant 2
-        var Aalch pestle
-        var AalchQuant 2
-        var Acloth britches
-        var AclothQuant 2
-        var Ascript trimmed scroll
-        var AscriptQuant 1
-        var Acleric candle
-        var AclericQuant 2
-        var Agami <nothing>
-        var AgamiQuant 2
-        var Agem <nothing>
-        var AgemQuant 2
-        var Amagic <nothing>
-        var AmagicQuant 2
-        var Asling shaper
-        var AslingP canvas sling
-        var AslingQuant 2
-        var Apuzz basic puzzle
-        var ApuzzQuant 2
-        var Afoot pouch
-        var AfootQuant 2
-        var Ashield <nothing>
-        var AshieldQuant 2
-        var Aweap <nothing>
-        var AweapQuant 2
-        var Aforge <nothing>
-        var AforgeQuant 2
-        var Agen tinderbox
-        var AgenQuant 2
-        var Aflow wristlet
-        var AflowQuant 2
-        var Abard cloth
-        var AbardQuant 2
+        setVariable skillrange 100-149
+        setVariable Rbait pole
+        setVariable RbaitQuant 1
+        setVariable Rchan polish
+        setVariable RchanQuant 2
+        setVariable Rherb large jar
+        setVariable RherbQuant 2
+        setVariable Rforge dagger
+        setVariable RforgeQuant 2
+        setVariable Rbard tambourine
+        setVariable RbardQuant 2
+        setVariable Rhair clippers
+        setVariable RhairP razor
+        setVariable RhairQuant 2
+        setVariable Rleather <nothing>
+        setVariable RleatherQuant 2
+        setVariable Rtailor sash
+        setVariable RtailorQuant 2
+        setVariable Rgami plain paper
+        setVariable RgamiQuant 1
+        setVariable Rmagik <nothing>
+        setVariable RmagikQuant 2
+        setVariable Rjewel bangle
+        setVariable RjewelQuant 2
+        setVariable Rthea <nothing>
+        setVariable RtheaQuant 2
+        setVariable Rcleric candle
+        setVariable RclericP vial
+        setVariable RclericQuant 2
+        setVariable Rexot <nothing>
+        setVariable RexotQuant 2
+        setvariable Atann thread
+        setvariable AtannQuant 2
+        setvariable Aalch pestle
+        setvariable AalchQuant 2
+        setvariable Acloth britches
+        setvariable AclothQuant 2
+        setvariable Ascript trimmed scroll
+        setvariable AscriptQuant 1
+        setvariable Acleric candle
+        setvariable AclericQuant 2
+        setvariable Agami <nothing>
+        setvariable AgamiQuant 2
+        setvariable Agem <nothing>
+        setvariable AgemQuant 2
+        setvariable Amagic <nothing>
+        setvariable AmagicQuant 2
+        setvariable Asling shaper
+        setvariable AslingP canvas sling
+        setvariable AslingQuant 2
+        setvariable Apuzz basic puzzle
+        setvariable ApuzzQuant 2
+        setvariable Afoot pouch
+        setvariable AfootQuant 2
+        setvariable Ashield <nothing>
+        setvariable AshieldQuant 2
+        setvariable Aweap <nothing>
+        setvariable AweapQuant 2
+        setvariable Aforge <nothing>
+        setvariable AforgeQuant 2
+        setvariable Agen tinderbox
+        setvariable AgenQuant 2
+        setvariable Aflow wristlet
+        setvariable AflowQuant 2
+        setvariable Abard cloth
+        setvariable AbardQuant 2
         GOTO RANKREPORT
 
     QIR.RANK.5:
-        var skillrange 150-199
-        var Rbait pole
-        var RbaitQuant 2
-        var Rchan breaker
-        var RchanQuant 2
-        var Rherb cebi root
-        var RherbQuant 2
-        var Rforge dagger
-        var RforgeQuant 2
-        var Rbard flute
-        var RbardQuant 2
-        var Rhair clippers
-        var RhairQuant 2
-        var Rleather <nothing>
-        var RleatherQuant 2
-        var Rtailor tunic
-        var RtailorQuant 2
-        var Rgami plain paper
-        var RgamiQuant 2
-        var Rmagik <nothing>
-        var RmagikQuant 2
-        var Rjewel clasp
-        var RjewelQuant 2
-        var Rthea <nothing>
-        var RtheaQuant 2
-        var Rcleric vial
-        var RclericQuant 2
-        var Rexot <nothing>
-        var RexotQuant 2
-        var Atann bodkin
-        var AtannQuant 2
-        var Aalch cebi root
-        var AalchQuant 2
-        var Acloth tunic
-        var AclothQuant 2
-        var Ascript trimmed scroll
-        var AscriptQuant 2
-        var Acleric wine
-        var AclericQuant 2
-        var Agami plain paper
-        var AgamiQuant 1
-        var Agem <nothing>
-        var AgemQuant 2
-        var Amagic <nothing>
-        var AmagicQuant 2
-        var Asling small rocks
-        var AslingP leather sling
-        var AslingQuant 1
-        var Apuzz intermediate puzzle
-        var ApuzzQuant 2
-        var Afoot woolen tights
-        var AfootQuant 2
-        var Ashield <nothing>
-        var AshieldQuant 2
-        var Aweap <nothing>
-        var AweapQuant 2
-        var Aforge <nothing>
-        var AforgeQuant 2
-        var Agen razor
-        var AgenQuant 2
-        var Aflow necklace
-        var AflowQuant 2
-        var Abard bow
-        var AbardQuant 2
+        setVariable skillrange 150-199
+        setVariable Rbait pole
+        setVariable RbaitQuant 2
+        setVariable Rchan breaker
+        setVariable RchanQuant 2
+        setVariable Rherb cebi root
+        setVariable RherbQuant 2
+        setVariable Rforge dagger
+        setVariable RforgeQuant 2
+        setVariable Rbard flute
+        setVariable RbardQuant 2
+        setVariable Rhair clippers
+        setVariable RhairQuant 2
+        setVariable Rleather <nothing>
+        setVariable RleatherQuant 2
+        setVariable Rtailor tunic
+        setVariable RtailorQuant 2
+        setVariable Rgami plain paper
+        setVariable RgamiQuant 2
+        setVariable Rmagik <nothing>
+        setVariable RmagikQuant 2
+        setVariable Rjewel clasp
+        setVariable RjewelQuant 2
+        setVariable Rthea <nothing>
+        setVariable RtheaQuant 2
+        setVariable Rcleric vial
+        setVariable RclericQuant 2
+        setVariable Rexot <nothing>
+        setVariable RexotQuant 2
+        setvariable Atann bodkin
+        setvariable AtannQuant 2
+        setvariable Aalch cebi root
+        setvariable AalchQuant 2
+        setvariable Acloth tunic
+        setvariable AclothQuant 2
+        setvariable Ascript trimmed scroll
+        setvariable AscriptQuant 2
+        setvariable Acleric wine
+        setvariable AclericQuant 2
+        setvariable Agami plain paper
+        setvariable AgamiQuant 1
+        setvariable Agem <nothing>
+        setvariable AgemQuant 2
+        setvariable Amagic <nothing>
+        setvariable AmagicQuant 2
+        setvariable Asling small rocks
+        setvariable AslingP leather sling
+        setvariable AslingQuant 1
+        setvariable Apuzz intermediate puzzle
+        setvariable ApuzzQuant 2
+        setvariable Afoot woolen tights
+        setvariable AfootQuant 2
+        setvariable Ashield <nothing>
+        setvariable AshieldQuant 2
+        setvariable Aweap <nothing>
+        setvariable AweapQuant 2
+        setvariable Aforge <nothing>
+        setvariable AforgeQuant 2
+        setvariable Agen razor
+        setvariable AgenQuant 2
+        setvariable Aflow necklace
+        setvariable AflowQuant 2
+        setvariable Abard bow
+        setvariable AbardQuant 2
         GOTO RANKREPORT
 
     QIR.RANK.6:
-        var skillrange 200-249
-        var Rbait pole
-        var RbaitQuant 2
-        var Rchan strap
-        var RchanQuant 2
-        var Rherb riolur leaf
-        var RherbQuant 2
-        var Rforge sap
-        var RforgeQuant 2
-        var Rbard six strings
-        var RbardQuant 2
-        var Rhair <nothing>
-        var RhairQuant 2
-        var Rleather gauntlets
-        var RleatherQuant 1
-        var Rtailor trousers
-        var RtailorQuant 2
-        var Rgami white paper
-        var RgamiQuant 2
-        var Rmagik simple talisman
-        var RmagikQuant 1
-        var Rjewel silver chain
-        var RjewelQuant 2
-        var Rthea <nothing>
-        var RtheaQuant 2
-        var Rcleric censer
-        var RclericQuant 2
-        var Rexot <nothing>
-        var RexotQuant 2
-        var Atann scraper
-        var AtannQuant 2
-        var Aalch nemoih root
-        var AalchQuant 2
-        var Acloth shirt
-        var AclothQuant 2
-        var Ascript painted scroll
-        var AscriptQuant 2
-        var Acleric sandals
-        var AclericQuant 2
-        var Agami plain paper
-        var AgamiQuant 2
-        var Agem bracelet
-        var AgemQuant 2
-        var Amagic <nothing>
-        var AmagicQuant 2
-        var Asling small rocks
-        var AslingQuant 2
-        var Apuzz bunny
-        var ApuzzQuant 2
-        var Afoot lace stockings
-        var AfootQuant 2
-        var Ashield <nothing>
-        var AshieldQuant 2
-        var Aweap <nothing>
-        var AweapQuant 2
-        var Aforge <nothing>
-        var AforgeQuant 2
-        var Agen pruning knife
-        var AgenQuant 2
-        var Aflow circlet
-        var AflowQuant 2
-        var Abard four strings
-        var AbardQuant 2
+        setVariable skillrange 200-249
+        setVariable Rbait pole
+        setVariable RbaitQuant 2
+        setVariable Rchan strap
+        setVariable RchanQuant 2
+        setVariable Rherb riolur leaf
+        setVariable RherbQuant 2
+        setVariable Rforge sap
+        setVariable RforgeQuant 2
+        setVariable Rbard six strings
+        setVariable RbardQuant 2
+        setVariable Rhair <nothing>
+        setVariable RhairQuant 2
+        setVariable Rleather gauntlets
+        setVariable RleatherQuant 1
+        setVariable Rtailor trousers
+        setVariable RtailorQuant 2
+        setVariable Rgami white paper
+        setVariable RgamiQuant 2
+        setVariable Rmagik simple talisman
+        setVariable RmagikQuant 1
+        setVariable Rjewel silver chain
+        setVariable RjewelQuant 2
+        setVariable Rthea <nothing>
+        setVariable RtheaQuant 2
+        setVariable Rcleric censer
+        setVariable RclericQuant 2
+        setVariable Rexot <nothing>
+        setVariable RexotQuant 2
+        setvariable Atann scraper
+        setvariable AtannQuant 2
+        setvariable Aalch nemoih root
+        setvariable AalchQuant 2
+        setvariable Acloth shirt
+        setvariable AclothQuant 2
+        setvariable Ascript painted scroll
+        setvariable AscriptQuant 2
+        setvariable Acleric sandals
+        setvariable AclericQuant 2
+        setvariable Agami plain paper
+        setvariable AgamiQuant 2
+        setvariable Agem bracelet
+        setvariable AgemQuant 2
+        setvariable Amagic <nothing>
+        setvariable AmagicQuant 2
+        setvariable Asling small rocks
+        setvariable AslingQuant 2
+        setvariable Apuzz bunny
+        setvariable ApuzzQuant 2
+        setvariable Afoot lace stockings
+        setvariable AfootQuant 2
+        setvariable Ashield <nothing>
+        setvariable AshieldQuant 2
+        setvariable Aweap <nothing>
+        setvariable AweapQuant 2
+        setvariable Aforge <nothing>
+        setvariable AforgeQuant 2
+        setvariable Agen pruning knife
+        setvariable AgenQuant 2
+        setvariable Aflow circlet
+        setvariable AflowQuant 2
+        setvariable Abard four strings
+        setvariable AbardQuant 2
         GOTO RANKREPORT
 
     QIR.RANK.7:
-        var skillrange 250-299
-        var Rbait pole
-        var RbaitQuant 3
-        var Rchan ditty bag
-        var RchanQuant 2
-        var Rherb ithor potion
-        var RherbQuant 2
-        var Rforge sap
-        var RforgeQuant 2
-        var Rbard refill
-        var RbardQuant 2
-        var Rhair <nothing>
-        var RhairQuant 2
-        var Rleather gauntlets
-        var RleatherQuant 2
-        var Rtailor vest
-        var RtailorQuant 2
-        var Rgami blue paper
-        var RgamiQuant 2
-        var Rmagik simple talisman
-        var RmagikQuant 2
-        var Rjewel collar
-        var RjewelQuant 1
-        var Rthea <nothing>
-        var RtheaQuant 2
-        var Rcleric censer
-        var RclericQuant 2
-        var Rexot <nothing>
-        var RexotQuant 2
-        var Atann shears
-        var AtannQuant 2
-        var Aalch ithor potion
-        var AalchQuant 2
-        var Acloth trousers
-        var AclothQuant 2
-        var Ascript canvas scroll
-        var AscriptQuant 1
-        var Acleric armband
-        var AclericQuant 1
-        var Agami white paper
-        var AgamiQuant 2
-        var Agem earcuff
-        var AgemQuant 2
-        var Amagic marble
-        var AmagicQuant 2
-        var Asling canvas sling
-        var AslingQuant 2
-        var Apuzz wand
-        var ApuzzQuant 2
-        var Afoot lace stockings
-        var AfootQuant 2
-        var Ashield <nothing>
-        var AshieldQuant 2
-        var Aweap telek
-        var AweapQuant 2
-        var Aforge <nothing>
-        var AforgeQuant 2
-        var Agen mirror
-        var AgenQuant 2
-        var Aflow wreath
-        var AflowQuant 2
-        var Abard seven strings
-        var AbardQuant 2
+        setVariable skillrange 250-299
+        setVariable Rbait pole
+        setVariable RbaitQuant 3
+        setVariable Rchan ditty bag
+        setVariable RchanQuant 2
+        setVariable Rherb ithor potion
+        setVariable RherbQuant 2
+        setVariable Rforge sap
+        setVariable RforgeQuant 2
+        setVariable Rbard refill
+        setVariable RbardQuant 2
+        setVariable Rhair <nothing>
+        setVariable RhairQuant 2
+        setVariable Rleather gauntlets
+        setVariable RleatherQuant 2
+        setVariable Rtailor vest
+        setVariable RtailorQuant 2
+        setVariable Rgami blue paper
+        setVariable RgamiQuant 2
+        setVariable Rmagik simple talisman
+        setVariable RmagikQuant 2
+        setVariable Rjewel collar
+        setVariable RjewelQuant 1
+        setVariable Rthea <nothing>
+        setVariable RtheaQuant 2
+        setVariable Rcleric censer
+        setVariable RclericQuant 2
+        setVariable Rexot <nothing>
+        setVariable RexotQuant 2
+        setvariable Atann shears
+        setvariable AtannQuant 2
+        setvariable Aalch ithor potion
+        setvariable AalchQuant 2
+        setvariable Acloth trousers
+        setvariable AclothQuant 2
+        setvariable Ascript canvas scroll
+        setvariable AscriptQuant 1
+        setvariable Acleric armband
+        setvariable AclericQuant 1
+        setvariable Agami white paper
+        setvariable AgamiQuant 2
+        setvariable Agem earcuff
+        setvariable AgemQuant 2
+        setvariable Amagic marble
+        setvariable AmagicQuant 2
+        setvariable Asling canvas sling
+        setvariable AslingQuant 2
+        setvariable Apuzz wand
+        setvariable ApuzzQuant 2
+        setvariable Afoot lace stockings
+        setvariable AfootQuant 2
+        setvariable Ashield <nothing>
+        setvariable AshieldQuant 2
+        setvariable Aweap telek
+        setvariable AweapQuant 2
+        setvariable Aforge <nothing>
+        setvariable AforgeQuant 2
+        setvariable Agen mirror
+        setvariable AgenQuant 2
+        setvariable Aflow wreath
+        setvariable AflowQuant 2
+        setvariable Abard seven strings
+        setvariable AbardQuant 2
         GOTO RANKREPORT
 
     QIR.RANK.11:
@@ -12198,69 +12070,69 @@ ECHO
     QIR.RANK.10:
     QIR.RANK.9:
     QIR.RANK.8:
-        var skillrange 300+
-        var Rbait pole
-        var RbaitQuant 3
-        var Rchan sailcloth quiver
-        var RchanQuant 2
-        var Rherb tincture jar
-        var RherbQuant 2
-        var Rforge sap
-        var RforgeQuant 2
-        var Rbard lyre
-        var RbardQuant 2
-        var Rhair <nothing>
-        var RhairQuant 2
-        var Rleather gauntlets
-        var RleatherQuant 2
-        var Rtailor kilt
-        var RtailorQuant 2
-        var Rgami bird instructions
-        var RgamiQuant 2
-        var Rmagik cambrinth ring
-        var RmagikQuant 1
-        var Rjewel collar
-        var RjewelQuant 2
-        var Rthea <nothing>
-        var RtheaQuant 2
-        var Rcleric oil
-        var RclericQuant 2
-        var Rexot <nothing>
-        var RexotQuant 2
-        var Atann potion
-        var AtannQuant 2
-        var Aalch seolarn weed
-        var AalchQuant 2
-        var Acloth doublet
-        var AclothQuant 2
-        var Ascript canvas scroll
-        var AscriptQuant 2
-        var Acleric armband
-        var AclericQuant 2
-        var Agami blue paper
-        var AgamiQuant 2
-        var Agem haedor
-        var AgemQuant 2
-        var Amagic cube
-        var AmagicQuant 2
-        var Asling needle arrows
-        var AslingQuant 2
-        var Apuzz rings
-        var ApuzzQuant 2
-        var Afoot spidersilk stockings
-        var AfootQuant 2
-        var Ashield <nothing>
-        var AshieldQuant 2
-        var Aweap garz
-        var AweapQuant 2
-        var Aforge chausses
-        var AforgeQuant 2
-        var Agen lantern
-        var AgenQuant 2
-        var Aflow pillow
-        var AflowQuant 2
-        var Abard drum pouch
-        var AbardQuant 2
+        setVariable skillrange 300+
+        setVariable Rbait pole
+        setVariable RbaitQuant 3
+        setVariable Rchan sailcloth quiver
+        setVariable RchanQuant 2
+        setVariable Rherb tincture jar
+        setVariable RherbQuant 2
+        setVariable Rforge sap
+        setVariable RforgeQuant 2
+        setVariable Rbard lyre
+        setVariable RbardQuant 2
+        setVariable Rhair <nothing>
+        setVariable RhairQuant 2
+        setVariable Rleather gauntlets
+        setVariable RleatherQuant 2
+        setVariable Rtailor kilt
+        setVariable RtailorQuant 2
+        setVariable Rgami bird instructions
+        setVariable RgamiQuant 2
+        setVariable Rmagik cambrinth ring
+        setVariable RmagikQuant 1
+        setVariable Rjewel collar
+        setVariable RjewelQuant 2
+        setVariable Rthea <nothing>
+        setVariable RtheaQuant 2
+        setVariable Rcleric oil
+        setVariable RclericQuant 2
+        setVariable Rexot <nothing>
+        setVariable RexotQuant 2
+        setvariable Atann potion
+        setvariable AtannQuant 2
+        setvariable Aalch seolarn weed
+        setvariable AalchQuant 2
+        setvariable Acloth doublet
+        setvariable AclothQuant 2
+        setvariable Ascript canvas scroll
+        setvariable AscriptQuant 2
+        setvariable Acleric armband
+        setvariable AclericQuant 2
+        setvariable Agami blue paper
+        setvariable AgamiQuant 2
+        setvariable Agem haedor
+        setvariable AgemQuant 2
+        setvariable Amagic cube
+        setvariable AmagicQuant 2
+        setvariable Asling needle arrows
+        setvariable AslingQuant 2
+        setvariable Apuzz rings
+        setvariable ApuzzQuant 2
+        setvariable Afoot spidersilk stockings
+        setvariable AfootQuant 2
+        setvariable Ashield <nothing>
+        setvariable AshieldQuant 2
+        setvariable Aweap garz
+        setvariable AweapQuant 2
+        setvariable Aforge chausses
+        setvariable AforgeQuant 2
+        setvariable Agen lantern
+        setvariable AgenQuant 2
+        setvariable Aflow pillow
+        setvariable AflowQuant 2
+        setvariable Abard drum pouch
+        setvariable AbardQuant 2
         GOTO RANKREPORT
 
     QIR.RANK.-5:
@@ -12272,15 +12144,14 @@ ECHO
         GOTO BEGGAR.MOD
 
     QIR.BAGCHECK:
-        matchre BAGWARN /%Rbait|%Rchan|%Rherb|%Rforge|%Rbard|%Rhair|%Rthea%/
-        matchre BAGWARN /%Rleather|%Rtailor|%Rgami|%Rmagik|%Rjewel|%Rcleric|%Rexot%/
-        matchre BAGWARN /%Atann|%Aalch|%Acloth|%Ascript|%Acleric|%Agami|%Agem|%Agen|%Aflow%/
-        matchre BAGWARN /%Amagic|%Asling|%Apuzz|%Afoot|%Ashield|%Aweap|%Aforge|%Abard%/
-        match BAGS.STOW.%c You glance
-        gosub UniversalMatch
-        put look in my %container
+        matchre BAGWARN /%Rbait%|%Rchan%|%Rherb%|%Rforge%|%Rbard%|%Rhair%|%Rthea%/
+        matchre BAGWARN /%Rleather%|%Rtailor%|%Rgami%|%Rmagik%|%Rjewel%|%Rcleric%|%Rexot%/
+        matchre BAGWARN /%Atann%|%Aalch%|%Acloth%|%Ascript%|%Acleric%|%Agami%|%Agem%|%Agen%|%Aflow%/
+        matchre BAGWARN /%Amagic%|%Asling%|%Apuzz%|%Afoot%|%Ashield%|%Aweap%|%Aforge%|%Abard%/
+        match BAGS.STOW.%c% You glance
+        put look in my %container%
         put glance
-        matchwait
+        GOTO UniversalMatch
 
 
 ##################################################################
@@ -12312,10 +12183,9 @@ ECHO
         match RATHA.START.EXOT Chabalu
         match RATHA.START.CLERIC This quaint shop run by the Oracle Veraclese
         match QIR.BADLOCATION Obvious
-        gosub UniversalMatch
-        var citycode ratha
+        setVariable citycode ratha
         put look
-        matchwait
+        GOTO UniversalMatch
 
     QIR.BADLOCATION:
         put echocolumn /on
@@ -12351,7 +12221,7 @@ ECHO
         GOTO END
 
     RATHA.START.GREEN:
-        var upperlower upper
+        setVariable upperlower upper
         counter set 540
       RATHA.540:
         put s
@@ -12370,13 +12240,13 @@ ECHO
         GOTO TRAVEL
 
     RATHA.START.3SEWER:
-        var upperlower upper
+        setVariable upperlower upper
         counter set 545
       RATHA.545:
         put go grat
         GOTO TRAVEL
       RATHA.546:
-        var upperlower lower
+        setVariable upperlower lower
         put go crev
         GOTO TRAVEL
       RATHA.547:
@@ -12413,7 +12283,7 @@ ECHO
         GOTO TRAVEL
 
     RATHA.START.1SEWER:
-        var upperlower lower
+        setVariable upperlower lower
         counter set 557
       RATHA.557:
         put e
@@ -12435,7 +12305,7 @@ ECHO
         GOTO TRAVEL
 
     RATHA.START.2SEWER:
-        var upperlower lower
+        setVariable upperlower lower
         counter set 564
       RATHA.564:
         put go drain
@@ -12445,7 +12315,7 @@ ECHO
         GOTO TRAVEL
 
     RATHA.START.BANK:
-        var upperlower lower
+        setVariable upperlower lower
         counter set 567
       RATHA.567:
         put go door
@@ -12474,18 +12344,18 @@ ECHO
         put nw
         GOTO TRAVEL
       RATHA.575:
-        var storecode Rbait
+        setVariable storecode Rbait
         put w
         GOTO TRAVEL
       RATHA.576:
       RATHA.594:
-        var startlocation %storecode
+        setVariable startlocation %storecode%
       RATHA.538:
-        var entrance shop
+        setVariable entrance shop
         GOTO SETSTORE
 
     RATHA.START.PAWN:
-        var upperlower lower
+        setVariable upperlower lower
       RATHA.577:
         counter set 577
         put out
@@ -12536,105 +12406,105 @@ ECHO
         put e
         GOTO TRAVEL
       RATHA.593:
-        var storecode Rbait
+        setVariable storecode Rbait
         put ne
         GOTO TRAVEL
 
     RATHA.START.BAIT:
         counter set 576
-        var upperlower lower
-        var storecode Rbait
+        setVariable upperlower lower
+        setVariable storecode Rbait
         put out
         GOTO START
 
     RATHA.START.CHAN:
         counter set 10
-        var upperlower lower
-        var storecode Rchan
+        setVariable upperlower lower
+        setVariable storecode Rchan
         put out
         GOTO START
 
     RATHA.START.HERB:
         counter set 26
-        var upperlower lower
-        var storecode Rherb
+        setVariable upperlower lower
+        setVariable storecode Rherb
         put out
         GOTO START
 
     RATHA.START.FORGE:
         counter set 46
-        var upperlower lower
-        var storecode Rforge
+        setVariable upperlower lower
+        setVariable storecode Rforge
         put out
         GOTO START
 
     RATHA.START.BARD:
         counter set 70
-        var upperlower lower
-        var storecode Rbard
+        setVariable upperlower lower
+        setVariable storecode Rbard
         put out
         GOTO START
 
     RATHA.START.HAIR:
         counter set 77
-        var upperlower lower
-        var storecode Rhair
+        setVariable upperlower lower
+        setVariable storecode Rhair
         put out
         GOTO START
 
     RATHA.START.LEATHER:
         counter set 82
-        var upperlower lower
-        var storecode Rleather
+        setVariable upperlower lower
+        setVariable storecode Rleather
         put out
         GOTO START
 
     RATHA.START.TAILOR:
         counter set 91
-        var upperlower lower
-        var storecode Rtailor
+        setVariable upperlower lower
+        setVariable storecode Rtailor
         put out
         GOTO START
 
     RATHA.START.GAMI:
         counter set 104
-        var upperlower upper
-        var storecode Rgami
+        setVariable upperlower upper
+        setVariable storecode Rgami
         put out
         GOTO START
 
     RATHA.START.MAGIK:
         counter set 111
-        var upperlower upper
-        var storecode Rmagik
+        setVariable upperlower upper
+        setVariable storecode Rmagik
         put out
         GOTO START
 
     RATHA.START.JEWEL:
         counter set 119
-        var upperlower upper
-        var storecode Rjewel
+        setVariable upperlower upper
+        setVariable storecode Rjewel
         put out
         GOTO START
 
     RATHA.START.THEA:
         counter set 123
-        var upperlower upper
-        var storecode Rthea
+        setVariable upperlower upper
+        setVariable storecode Rthea
         put go arch
         GOTO START
 
     RATHA.START.EXOT:
         counter set 336
-        var upperlower upper
-        var storecode Rexot
+        setVariable upperlower upper
+        setVariable storecode Rexot
         put out
         GOTO START
 
     RATHA.START.CLERIC:
         counter set 340
-        var upperlower upper
-        var storecode Rcleric
+        setVariable upperlower upper
+        setVariable storecode Rcleric
         put out
         GOTO START
 
@@ -12646,7 +12516,7 @@ ECHO
 
 
     LEAVE.RBAIT:
-        GOTO %LorM.RBAIT.1
+        GOTO %LorM%.RBAIT.1
     LEAVE.RBAIT.1:
         counter set 1
       RATHA.1:
@@ -12677,8 +12547,8 @@ ECHO
         put n
         GOTO TRAVEL
       RATHA.10:
-        var storecode Rchan
-        var entrance shop
+        setVariable storecode Rchan
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RCHAN:
@@ -12726,8 +12596,8 @@ ECHO
         put sw
         GOTO TRAVEL
       RATHA.26:
-        var storecode Rherb
-        var entrance shop
+        setVariable storecode Rherb
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHERB:
@@ -12790,8 +12660,8 @@ ECHO
         put se
         GOTO TRAVEL
       RATHA.46:
-        var storecode Rforge
-        var entrance forge
+        setVariable storecode Rforge
+        setVariable entrance forge
         GOTO SETSTORE
 
     LEAVE.RFORGE:
@@ -12866,8 +12736,8 @@ ECHO
         put s
         GOTO TRAVEL
       RATHA.70:
-        var storecode Rbard
-        var entrance shop
+        setVariable storecode Rbard
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RBARD:
@@ -12891,8 +12761,8 @@ ECHO
         put e
         GOTO TRAVEL
       RATHA.77:
-        var storecode Rhair
-        var entrance shop
+        setVariable storecode Rhair
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RHAIR:
@@ -12910,8 +12780,8 @@ ECHO
         put e
         GOTO TRAVEL
       RATHA.82:
-        var storecode Rleather
-        var entrance shop
+        setVariable storecode Rleather
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RLEATHER:
@@ -12941,8 +12811,8 @@ ECHO
         put e
         GOTO TRAVEL
       RATHA.91:
-        var storecode Rtailor
-        var entrance shop
+        setVariable storecode Rtailor
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RTAILOR:
@@ -12979,14 +12849,14 @@ ECHO
         GOTO TRAVEL
       RATHA.102:
         put go grat
-        var upperlower upper
+        setVariable upperlower upper
         GOTO TRAVEL
       RATHA.103:
         put sw
         GOTO TRAVEL
       RATHA.104:
-        var storecode Rgami
-        var entrance struct
+        setVariable storecode Rgami
+        setVariable entrance struct
         GOTO SETSTORE
 
     LEAVE.RGAMI:
@@ -13010,8 +12880,8 @@ ECHO
         put n
         GOTO TRAVEL
       RATHA.111:
-        var storecode Rmagik
-        var entrance shop
+        setVariable storecode Rmagik
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RMAGIK:
@@ -13038,8 +12908,8 @@ ECHO
         put ne
         GOTO TRAVEL
       RATHA.119:
-        var storecode Rjewel
-        var entrance shop
+        setVariable storecode Rjewel
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RJEWEL:
@@ -13054,8 +12924,8 @@ ECHO
         put w
         GOTO TRAVEL
       RATHA.123:
-        var storecode Rthea
-        var entrance arch
+        setVariable storecode Rthea
+        setVariable entrance arch
         GOTO SETSTORE
 
     LEAVE.RTHEA:
@@ -13082,11 +12952,11 @@ ECHO
         put e
         GOTO TRAVEL
       RATHA.335:
-        var storecode Rexot
+        setVariable storecode Rexot
         put e
         GOTO TRAVEL
       RATHA.336:
-        var entrance shop
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.REXOT:
@@ -13101,8 +12971,8 @@ ECHO
         put s
         GOTO TRAVEL
       RATHA.340:
-        var storecode Rcleric
-        var entrance shop
+        setVariable storecode Rcleric
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.RCLERIC:
@@ -13148,7 +13018,7 @@ ECHO
         GOTO TRAVEL
       RATHA.138:
         put go grat
-        var upperlower lower
+        setVariable upperlower lower
         GOTO TRAVEL
       RATHA.139:
         put e
@@ -13192,7 +13062,7 @@ ECHO
         put nw
         GOTO TRAVEL
       RATHA.537:
-        var storecode Rbait
+        setVariable storecode Rbait
         put w
         GOTO TRAVEL
 
@@ -13287,7 +13157,7 @@ ECHO
         put go building
         GOTO TRAVEL
       RATHA.169:
-        GOTO PAWN.%DropOrStow
+        GOTO PAWN.%DropOrStow%
 
 ##################################################################
 #####                                                        #####
@@ -13420,17 +13290,15 @@ ECHO
 ##################################################################
 
     RATHA.FREE:
-        
-        matchre SACKCHECK1 /referring|You reach|You realize/
-        gosub UniversalMatch
         put get %name sack
-        matchwait
+        matchre SACKCHECK1 /referring|You reach|You realize/
+        GOTO UniversalMatch
 
     RATHA.DEBT:
-        GOTO RATHA.%upperlower.DEBT
+        GOTO RATHA.%upperlower%.DEBT
 
     RATHA.ITEMCHECK:
-        GOTO RATHA.%upperlower.ITEMCHECK
+        GOTO RATHA.%upperlower%.ITEMCHECK
 
     RATHA.LOWER.ITEMCHECK:
         put drop my small sack
@@ -13441,7 +13309,7 @@ ECHO
         matchwait
 
     RATHA.LOWER.DEBT:
-        var upperlower lower
+        setVariable upperlower lower
         counter set 603
       RATHA.603:
         put out
@@ -13708,25 +13576,22 @@ ECHO
         put go guard
         GOTO TRAVEL
       RATHA.689:
-        
-        matchre SACKCHECK1 /referring|You reach|You realize/
-        gosub UniversalMatch
         put get %name sack
-        matchwait
+        matchre SACKCHECK1 /referring|You reach|You realize/
+        GOTO UniversalMatch
 
     RATHA.LOWER.FREE:
-        var upperlower lower
+        setVariable upperlower lower
         pause 1
         match RATHA.LOWER.MISSINGSTART waitandsee
         match RATHA.LOWER.FREE2 okstart
-        gosub UniversalMatch
         put echo %startlocation
         put echo okstart
-        matchwait
+        GOTO UniversalMatch
 
     RATHA.LOWER.MISSINGSTART:
-        var startlocation Rbait
-        var ResumeStore Rbait
+        setVariable startlocation Rbait
+        setVariable ResumeStore Rbait
         GOTO RATHA.LOWER.FREE2
 
     RATHA.LOWER.FREE2:
@@ -13748,8 +13613,8 @@ ECHO
         GOTO TRAVEL
       RATHA.259:
         counter set 1
-        var storecode Rbait
-        GOTO RESUME.%ResumeStore
+        setVariable storecode Rbait
+        GOTO RESUME.%ResumeStore%
 
     RESUME.RTAILOR:
         counter add 1
@@ -13767,7 +13632,7 @@ ECHO
         counter add 1
     RESUME.RBAIT:
         counter add 1
-        var Countdown %c
+        setVariable Countdown %c%
         GOTO RESUME
 
 
@@ -13787,7 +13652,7 @@ ECHO
         matchwait
 
     RATHA.UPPER.DEBT:
-        var upperlower upper
+        setVariable upperlower upper
         counter set 717
       RATHA.717:
         put out
@@ -13916,25 +13781,22 @@ ECHO
         put go office
         GOTO TRAVEL
       RATHA.757:
-        
-        matchre SACKCHECK1 /referring|You reach|You realize/
-        gosub UniversalMatch
         put get %name sack
-        matchwait
+        matchre SACKCHECK1 /referring|You reach|You realize/
+        GOTO UniversalMatch
 
     RATHA.UPPER.FREE:
-        var upperlower upper
+        setVariable upperlower upper
         pause 1
         match RATHA.UPPER.MISSINGSTART waitandsee
         match RATHA.UPPER.FREE2 okstart
-        gosub UniversalMatch
         put echo %startlocation
         put echo okstart
-        matchwait
+        GOTO UniversalMatch
 
     RATHA.UPPER.MISSINGSTART:
-        var startlocation Rgami
-        var ResumeStore Rgami
+        setVariable startlocation Rgami
+        setVariable ResumeStore Rgami
         GOTO RATHA.UPPER.FREE2
 
     RATHA.UPPER.FREE2:
@@ -13959,8 +13821,8 @@ ECHO
         GOTO TRAVEL
       RATHA.252:
         counter set 1
-        var storecode Rgami
-        GOTO RESUME.%ResumeStore
+        setVariable storecode Rgami
+        GOTO RESUME.%ResumeStore%
 
     RESUME.RCLERIC:
         counter add 1
@@ -13974,7 +13836,7 @@ ECHO
         counter add 1
     RESUME.RGAMI:
         counter add 1
-        var Countdown %c
+        setVariable Countdown %c%
         GOTO RESUME
 
 
@@ -14007,108 +13869,107 @@ ECHO
         match AESRY.START.FLOW Erianthe
         match AESRY.START.BARD Teshi
         match QIR.BADLOCATION Obvious
-        var citycode AESRY
-        gosub UniversalMatch
+        setVariable citycode AESRY
         put look
-        matchwait
+        GOTO UniversalMatch
 
     AESRY.START.TANN:
         counter set 133
-        var storecode Atann
+        setVariable storecode Atann
         GOTO START
 
     AESRY.START.ALCH:
         counter set 20
-        var storecode Aalch
+        setVariable storecode Aalch
         put out
         GOTO START
 
     AESRY.START.CLOTH:
         counter set 33
-        var storecode Acloth
+        setVariable storecode Acloth
         put out
         GOTO START
 
     AESRY.START.SCRIPT:
         counter set 36
-        var storecode Ascript
+        setVariable storecode Ascript
         put out
         GOTO START
 
     AESRY.START.CLERIC:
         counter set 40
-        var storecode Acleric
+        setVariable storecode Acleric
         put out
         GOTO START
 
     AESRY.START.GAMI:
         counter set 43
-        var storecode Agami
+        setVariable storecode Agami
         put out
         GOTO START
 
     AESRY.START.GEM:
         counter set 46
-        var storecode Agem
+        setVariable storecode Agem
         put out
         GOTO START
 
     AESRY.START.MAGIC:
         counter set 50
-        var storecode Amagic
+        setVariable storecode Amagic
         put go door
         GOTO START
 
     AESRY.START.SLING:
         counter set 66
-        var storecode Asling
+        setVariable storecode Asling
         GOTO START
 
     AESRY.START.PUZZ:
         counter set 84
-        var storecode Apuzz
+        setVariable storecode Apuzz
         put out
         GOTO START
 
     AESRY.START.FOOT:
         counter set 88
-        var storecode Afoot
+        setVariable storecode Afoot
         put out
         GOTO START
 
     AESRY.START.SHIELD:
         counter set 90
-        var storecode Ashield
+        setVariable storecode Ashield
         put out
         GOTO START
 
     AESRY.START.WEAP:
         counter set 94
-        var storecode Aweap
+        setVariable storecode Aweap
         put out
         GOTO START
 
     AESRY.START.FORGE:
         counter set 97
-        var storecode Aforge
+        setVariable storecode Aforge
         put out
         GOTO START
 
     AESRY.START.GEN:
         counter set 100
-        var storecode Agen
+        setVariable storecode Agen
         put out
         GOTO START
 
     AESRY.START.FLOW:
         counter set 103
-        var storecode Aflow
+        setVariable storecode Aflow
         put out
         GOTO START
 
     AESRY.START.BARD:
         counter set 109
-        var storecode Abard
+        setVariable storecode Abard
         put out
         GOTO START
 
@@ -14192,8 +14053,8 @@ ECHO
         put ne
         GOTO TRAVEL
       AESRY.20:
-        var storecode Aalch
-        var entrance shop
+        setvariable storecode Aalch
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.AALCH:
@@ -14237,8 +14098,8 @@ ECHO
         put ne
         GOTO TRAVEL
       AESRY.33:
-        var storecode Acloth
-        var entrance shop
+        setvariable storecode Acloth
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.ACLOTH:
@@ -14250,8 +14111,8 @@ ECHO
         put e
         GOTO TRAVEL
       AESRY.36:
-        var storecode Ascript
-        var entrance shop
+        setvariable storecode Ascript
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.ASCRIPT:
@@ -14266,8 +14127,8 @@ ECHO
         put se
         GOTO TRAVEL
       AESRY.40:
-        var storecode Acleric
-        var entrance shop
+        setvariable storecode Acleric
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.ACLERIC:
@@ -14279,8 +14140,8 @@ ECHO
         put se
         GOTO TRAVEL
       AESRY.43:
-        var storecode Agami
-        var entrance building
+        setvariable storecode Agami
+        setVariable entrance building
         GOTO SETSTORE
 
     LEAVE.AGAMI:
@@ -14292,8 +14153,8 @@ ECHO
         put s
         GOTO TRAVEL
       AESRY.46:
-        var storecode Agem
-        var entrance shop
+        setvariable storecode Agem
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.AGEM:
@@ -14308,8 +14169,8 @@ ECHO
         put n
         GOTO TRAVEL
       AESRY.50:
-        var storecode Amagic
-        var entrance shop
+        setvariable storecode Amagic
+        setVariable entrance shop
         GOTO SETSTORE
 
     ALTLEAVE.AMAGIC:
@@ -14339,7 +14200,7 @@ ECHO
         put s
         GOTO TRAVEL
       AESRY.59:
-        GOTO %LorM.AMAGIC.1
+        GOTO %LorM%.AMAGIC.1
 
     LEAVE.AMAGIC.1:
         counter set 136
@@ -14364,7 +14225,7 @@ ECHO
         put ne
         GOTO TRAVEL
       AESRY.65:
-        var storecode Asling
+        setVariable storecode Asling
         put kneel
         wait
     ASLING.SHORT:
@@ -14372,7 +14233,7 @@ ECHO
         match SHORTSTAND You must be standing
         GOTO TRAVEL
       AESRY.66:
-        var entrance shop
+        setVariable entrance shop
         GOTO SETSTORE
 
     ALTLEAVE.ASLING:
@@ -14383,11 +14244,10 @@ ECHO
         match AESRY.68 referring
         GOTO TRAVEL
       AESRY.68:
-        matchre AESRY.68 /...wait|type ahead|Roundtime/i
+        matchre AESRY.68 /\.\.\.wait|type ahead|Roundtime/i
         matchre LEAVE.ASLING.2 /You stand|already standing/
-        gosub UniversalMatch
         put stand
-        matchwait
+        GOTO UniversalMatch
     LEAVE.ASLING.2:
         counter set 69
       AESRY.69:
@@ -14426,7 +14286,7 @@ ECHO
         put w
         GOTO TRAVEL
       AESRY.80:
-        GOTO %LorM.ASLING.1
+        GOTO %LorM%.ASLING.1
     LEAVE.ASLING.1:
         counter set 81
       AESRY.81:
@@ -14439,12 +14299,12 @@ ECHO
         put sw
         GOTO TRAVEL
       AESRY.84:
-        var storecode Apuzz
-        var entrance shop
+        setvariable storecode Apuzz
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.APUZZ:
-        GOTO %LorM.APUZZ.1
+        GOTO %LorM%.APUZZ.1
     LEAVE.APUZZ.1:
         counter set 85
       AESRY.85:
@@ -14457,8 +14317,8 @@ ECHO
         put sw
         GOTO TRAVEL
       AESRY.88:
-        var storecode Afoot
-        var entrance shop
+        setvariable storecode Afoot
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.AFOOT:
@@ -14467,8 +14327,8 @@ ECHO
         put w
         GOTO TRAVEL
       AESRY.90:
-        var storecode Ashield
-        var entrance shop
+        setvariable storecode Ashield
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.ASHIELD:
@@ -14483,8 +14343,8 @@ ECHO
         put nw
         GOTO TRAVEL
       AESRY.94:
-        var storecode Aweap
-        var entrance shop
+        setvariable storecode Aweap
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.AWEAP:
@@ -14496,8 +14356,8 @@ ECHO
         put n
         GOTO TRAVEL
       AESRY.97:
-        var storecode Aforge
-        var entrance forge
+        setvariable storecode Aforge
+        setVariable entrance forge
         GOTO SETSTORE
 
     LEAVE.AFORGE:
@@ -14509,12 +14369,12 @@ ECHO
         put w
         GOTO TRAVEL
       AESRY.100:
-        var storecode Agen
-        var entrance store
+        setvariable storecode Agen
+        setVariable entrance store
         GOTO SETSTORE
 
     LEAVE.AGEN:
-        GOTO %LorM.AGEN.1
+        GOTO %LorM%.AGEN.1
     LEAVE.AGEN.1:
         counter set 101
       AESRY.101:
@@ -14524,8 +14384,8 @@ ECHO
         put s
         GOTO TRAVEL
       AESRY.103:
-        var storecode Aflow
-        var entrance shop
+        setvariable storecode Aflow
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.AFLOW:
@@ -14543,8 +14403,8 @@ ECHO
         put se
         GOTO TRAVEL
       AESRY.109:
-        var storecode Abard
-        var entrance shop
+        setvariable storecode Abard
+        setVariable entrance shop
         GOTO SETSTORE
 
     LEAVE.ABARD:
@@ -14595,7 +14455,7 @@ ECHO
         put n
         GOTO TRAVEL
       AESRY.125:
-        GOTO %LorM.ABARD.1
+        GOTO %LorM%.ABARD.1
 
     LEAVE.ABARD.1:
         counter set 126
@@ -14621,8 +14481,8 @@ ECHO
         put w
         GOTO TRAVEL
       AESRY.133:
-        var storecode Atann
-        var entrance w
+        setvariable storecode Atann
+        setvariable entrance w
         GOTO SETSTORE
 
     MOVEON.AGEN.1:
@@ -14683,7 +14543,7 @@ ECHO
         put go shop
         GOTO TRAVEL
       AESRY.135:
-        GOTO PAWN.%DropOrStow
+        GOTO PAWN.%DropOrStow%
 
 
 ##################################################################
@@ -14770,7 +14630,7 @@ ECHO
         put w
         GOTO TRAVEL
       AESRY.248:
-        var BinOrBucket basket
+        setVariable BinOrBucket basket
         GOTO PAWN.BIN
 
     AESRY.BINFINISH.NONTHIEF:
@@ -14791,9 +14651,8 @@ ECHO
         wait
         match AESRY.DEBT2 You have nothing
         match AESRY.FREE2 INVENTORY HELP
-        gosub UniversalMatch
         put inv
-        matchwait
+        GOTO UniversalMatch
 
     AESRY.DEBT:
         counter set 150
@@ -14943,14 +14802,13 @@ ECHO
         pause 1
         match AESRY.MISSINGSTART waitandsee
         match AESRY.FREE3 okstart
-        gosub UniversalMatch
-        put echo %startlocation
+        put echo %startlocation%
         put echo okstart
-        matchwait
+        GOTO UniversalMatch
 
     AESRY.MISSINGSTART:
-        var startlocation Agen
-        var ResumeStore Agen
+        setVariable startlocation Agen
+        setVariable ResumeStore Agen
         GOTO AESRY.FREE3
 
     AESRY.FREE3:
@@ -14987,8 +14845,8 @@ ECHO
         GOTO TRAVEL
       AESRY.204:
         counter set 1
-        var storecode Agen
-        GOTO RESUME.%ResumeStore
+        setVariable storecode Agen
+        GOTO RESUME.%ResumeStore%
 
     RESUME.AFORGE:
         counter add 1
@@ -15024,7 +14882,7 @@ ECHO
         counter add 1
     RESUME.AGEN:
         counter add 1
-        var Countdown %c
+        setVariable Countdown %c%
         GOTO RESUME
 
 
@@ -15036,7 +14894,7 @@ ECHO
 
 
     LabelError:
-        GOTO %labelerr
+        GOTO %labelerr%
     HELP:
         SHIFT
         ECHO ***********************************************
@@ -15181,7 +15039,7 @@ ECHO
         ECHO
         ECHO *** Type "Next" to continue.
         waitfor next
-        #var stealinghelp notfirstrun
+        setVariable stealinghelp notfirstrun
         GOTO notfirstrun
 
     REALERROR:
@@ -15191,7 +15049,7 @@ ECHO
         ECHO ***********************************************
         ECHO ***   Unfortunately there has been an unrecoverable label error. Please
         ECHO ***    submit a bug report including a brief log of the circumstances
-        ECHO ***       that produced this error. Version %update, %citycode.%c.
+        ECHO ***       that produced this error. Version %update%, %citycode%.%c%.
         ECHO ***********************************************
         GOTO END
 
@@ -15206,7 +15064,7 @@ ECHO
         ECHO
         ECHO
         ECHO
-        GOTO ARREST.%arrest
+        GOTO ARREST.%arrest%
 
     ARREST.TRUE:
         ECHO ***********************************************
@@ -15224,8 +15082,7 @@ ECHO
         wait
     END.NONTHIEF:
     END.EMPATH:
-    		gosub armor_Check1
-    	  put hide
+        put hide
         exit
 
     LASTNUMBER:
@@ -15238,31 +15095,7 @@ ECHO
         ECHO RATHA.858 (358-534 empty)
         ECHO SHARD.806 (346-379 empty)
         exit
-        
-		armor_Check1:
-				matchre wear_Armor %armor.types
-				match armor_Check2 Encumbrance
-				put look in my %armor.stow;enc
-				matchwait
-			
-		armor_Check2:
-				matchre wear_Armor %armor.types
-				match RETURN Encumbrance
-				put look in my %armor.stow;enc
-				matchwait
-		
-		wear_Armor:
-				var armor $1
-				get_It:
-					var LAST get_It
-					matchre wear_It You work|You remove|You pull|You take|You get|But that is
-					put get my %armor
-					matchwait
-				wear_It:
-					var LAST wear_It
-					matchre armor_Check1 You slip|You put|You work|You hang|You pull|You slide|You attach|You sling|You strap
-					put wear my %armor
-					matchwait
-		
-		RETURN:
-			return
+
+*Fixed bug that caused max number of items stolen per shop to be 2
+*Fixed bug for some locations in which PP and Perc Health don't work
+*Changed sneaking default to NO
