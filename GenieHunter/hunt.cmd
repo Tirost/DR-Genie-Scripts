@@ -272,7 +272,7 @@ var skinnablemonsters6 \brat\b|retan dolomar|rock troll|scaly seordmaor|serpent|
 var skinnablemonsters7 sleek hele'la|sluagh|snowbeast|\bsow\b|spider|spirit dancer|steed|storm bull|trollkin|\bunyn\b|viper|vulture|vykathi harvester
 var skinnablemonsters8 vykathi soldier|warcat|\bwasp\b|\bwolf\b|\bworm\b|zephyr husk
 
-var skinnableundead1 enraged tusky|fell hog|ghoul|ghoul crow|gremlin|grendel|lach|mastiff|mey|misshapen germish'din
+var skinnableundead1 enraged tusky|fell hog|ghoul|ghoul crow|gremlin|grendel|lach|mastiff|mey|misshapen germish'din|ice adder|ice-covered adder skeleton
 var skinnableundead2 mutant togball|reaver|shadow hound|squirrel|zombie kobold headhunter|zombie kobold savage|skeletal kobold headhunter|skeletal kobold savage
 
 var construct ashu hhinvi|boggle|bone amalgam|clay archer|clay mage|clay soldier|clockwork assistant|clockwork monstrosity|gam chaga|glass construct|granite gargoyle|lachmate|lava drake|marble gargoyle|origami \S+|quartz gargoyle|(alabaster|andesite|breccia|dolomite|marble|obsidian|quartzite|rock) guardian|rough-hewn doll|sandstone golem|Endrus serpent
