@@ -1157,6 +1157,7 @@ ARRANGE:
 	}
 	if tolower(%1) = all then
 		{
+		if "$guild" = "Ranger" then goto ARRANGE_ALL
 		match ARRANGE_ALL Leather Tanning Expertise
 		match ARRANGE_ALL Basic Bone Collecting
 		put craft tailor
