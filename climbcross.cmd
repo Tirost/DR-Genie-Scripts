@@ -8,9 +8,9 @@ action goto WTF.WAIT when All this climbing back and forth is getting a bit tire
 
 CRO.CLIMB:
      counter set 0
-     if $Athletics.LearningRate >= 29 then goto QUIT
+     if ($Athletics.LearningRate >= 29) then goto QUIT
 CLIMB.EXP:
-	if $Athletics.LearningRate > 27 then goto QUIT
+	if ($Athletics.LearningRate > 27) then goto QUIT
      
 CLIMB:
 startclimb:
@@ -30,7 +30,8 @@ CLIMB-001:
 SAVE FAIL-001
 	if ($stamina < 70) then gosub FATIGUE_WAIT
 	pause 0.3
-	put climb break
+	if ($Athletics.Ranks >= 120) then put climb break
+     if ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE break
 	pause 0.3
      pause 0.5
      pause 0.5
@@ -52,7 +53,8 @@ CLIMB-002:
 SAVE FAIL-002
 	if ($stamina < 70) then gosub FATIGUE_WAIT
 	pause 0.5
-	put climb embrasure
+	if ($Athletics.Ranks >= 120) then put climb embrasure
+     if ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE embrasure
 	pause 0.3
      pause 0.5
      pause 0.5
@@ -72,7 +74,8 @@ CLIMB-01:
 	if ($stamina < 60) then gosub FATIGUE_WAIT
 	SAVE FAIL-01
 	pause 0.5
-	put climb wall
+	if ($Athletics.Ranks >= 120) then put climb wall
+     if ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE wall
 	pause 0.3
      pause 0.5
      pause 0.5
@@ -93,7 +96,8 @@ CLIMB-02:
 	if ($stamina < 60) then gosub FATIGUE_WAIT
 	SAVE FAIL-02
 	pause 0.5
-	put climb wall
+	if ($Athletics.Ranks >= 120) then put climb wall
+     if ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE wall
 	pause 0.3
      pause 0.5
      pause 0.5
@@ -169,6 +173,7 @@ PASS-05:
 	gosub AUTOMOVE 396
 
 FAIL-05:
+     if "$zoneid" = "8" then gosub AUTOMOVE crossing
 	gosub AUTOMOVE 396
 	goto CLIMB-06
 
@@ -197,8 +202,11 @@ CLIMB-07:
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-07
 	pause 0.5
-	send app emb quick
-	pause 2
+	if ($Athletics.Ranks <= 400) then 
+          {
+               send app emb quick
+               pause 2
+          }
      pause
 	send climb embrasure
 	pause 0.3
@@ -404,7 +412,13 @@ FATIGUE_WAIT:
      if ($stamina >= 95) then return
      pause 5
      goto FATIGUE_WAIT
-	
+
+CLIMB_PRACTICE:
+     var object $0
+     matchre RETURN ^The climb is too difficult|^This climb is too difficult|^You finish practicing your climbing
+     put climb practice %object
+     matchwait 100
+     return
 #======================
  
 stand:
