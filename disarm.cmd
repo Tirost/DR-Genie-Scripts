@@ -1,6 +1,6 @@
 #debuglevel 5
 ################################################################################################################################
-# Smart Disarm Script v7.5 - For Dragonrealms - by Shroom
+# Smart Disarm Script v7.6 - For Dragonrealms - by Shroom
 # Specialized for thieves, works for anyone
 # - Analyzes the appraisal difficulty of the trap compared to what type of trap it is
 # - Dynamically changes mode of disarm (Blind, Quick, Normal, Careful) according to how difficult trap is
@@ -10,6 +10,7 @@
 # - Tracks total number of boxes picked per session and total boxes picked over ALL TIME running the script
 ################################################################################################################################
 # CHANGELOG 
+# - Added support for the New Ankle-Cuff lockpick case, and checking for Golden Keys as well when checking what type of lockpick ring/case
 # - Added matches for EVERY box type when already disarmed, for the Pet Boxes mode to make 100% sure a box is disarmed before picking it
 # - Added TieContainer / TieContainer.Items - For toolstraps/toolbelts etc that you always want to tie a particular item to 
 # - Robustified the box matching to avoid false positives on anything that is NOT a monster box 
@@ -23,7 +24,7 @@
 # Example - .disarm Bob - will wait for boxes from Bob, disarm and pick them and give them back to Bob. (THIS IGNORES IF YOU ARE MIND LOCKED)
 # - ADDED Much better multi character support - Now can easily set different variables for different characters. 
 # - Added new variable <autoheal> - Set to YES by default. Set to NO if you want to skip visiting the auto-empath if you get hurt (WILL ABORT SCRIPT IF YOU ARE HURT)  
-# LAST UPDATE - 10/4/19
+# LAST UPDATE - 1/22/20
 ################################################################################################################################
 #####################
 ## USER VARIABLES 
