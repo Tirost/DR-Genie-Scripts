@@ -1,10 +1,29 @@
 # Climb Crossing Walls
 # Based from original SF Script created by the player of Kraelyst
 # Modified and made to work with Genie3 by Pelic and Shroom
-# Note - Known bug, sometimes stalls out between 100-180 ranks on the E gate wall. Outside of those ranks it never seems to happen. 
+#
+# UPDATED - 5/8/2020
+#
 #debuglevel 5
 
+## Set weapons you want to wield for more difficult climbing (High Athletics Ranks) 
+var weapon1 sabre
+var weapon2 nightstick
+
 action goto WTF.WAIT when All this climbing back and forth is getting a bit tiresome
+
+echo ========================
+echo ** CROSSING CLIMBING SCRIPT STARTED!
+echo *** ATHLETICS RANKS: $Athletics.Ranks
+echo ========================
+pause 0.2
+if ($Athletics.Ranks > 500) then send get %weapon1
+pause 0.3
+pause 0.1
+if ($Athletics.Ranks > 550) then send get %weapon2
+pause 0.5
+pause 0.2
+pause 0.1
 
 CRO.CLIMB:
      counter set 0
@@ -14,7 +33,13 @@ CLIMB.EXP:
      
 CLIMB:
 startclimb:
-     if ("$roomid" != "42") then gosub automove 42
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     if ("$zoneid" = "7") then gosub AUTOMOVE crossing
+     if ("$zoneid" = "6") then gosub AUTOMOVE crossing
+     if ("$zoneid" = "4") then gosub AUTOMOVE crossing
+     if ("$zoneid" = "2a") then gosub AUTOMOVE crossing
+     if ("$zoneid" = "2") then gosub AUTOMOVE crossing
+     # if ("$roomid" != "42") then gosub automove 42
      pause 0.3
      counter add 1
      echo
@@ -25,109 +50,134 @@ startclimb:
      wait
 CLIMBGO:
 	gosub AUTOMOVE 387
-
+     if ($roomid != 387) then gosub AUTOMOVE 387
 CLIMB-001:
 SAVE FAIL-001
 	if ($stamina < 70) then gosub FATIGUE_WAIT
 	pause 0.3
-	if ($Athletics.Ranks >= 120) then put climb break
-     if ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE break
-	pause 0.3
+     if ($Athletics.Ranks > 60) && ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE break
+	pause
+     put climb break
      pause 0.5
      pause 0.5
-	if "$zoneid" = "1" then goto FAIL-001
-	if "$zoneid" = "8" then goto PASS-001
-	
-PASS-001:
      pause 0.3
-	gosub AUTOMOVE Crossing
-	gosub AUTOMOVE 387
+	if ("$zoneid" = "1") then goto FAIL-001
+	if ("$zoneid" = "8") then goto PASS-001
+PASS-001:
+     pause 0.1
+     if ("$zoneid" = "8") then gosub AUTOMOVE NTR
+     pause 0.2
+     if ("$zoneid" = "7") then gosub AUTOMOVE cross
+     pause 0.3
+     if ($roomid != 387) then gosub AUTOMOVE 387
      goto CLIMB-002
 
 FAIL-001:
-     pause 0.5
      pause 0.1
      goto CLIMB-002
 
 CLIMB-002:
 SAVE FAIL-002
+     if ("$zoneid" = "8") then gosub AUTOMOVE NTR
+     if ("$zoneid" = "7") then gosub AUTOMOVE cross
+     pause 0.3
+     if ($roomid != 387) then gosub AUTOMOVE 387
 	if ($stamina < 70) then gosub FATIGUE_WAIT
 	pause 0.5
-	if ($Athletics.Ranks >= 120) then put climb embrasure
-     if ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE embrasure
-	pause 0.3
+     if ($Athletics.Ranks > 60) && ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE embrasure
+	put climb embrasure
+	pause
      pause 0.5
-     pause 0.5
-	if "$zoneid" = "1" then goto FAIL-002
-	if "$zoneid" = "7" then goto PASS-002
-	
+     pause 0.3
+	if ("$zoneid" = "1") then goto FAIL-002
+	if ("$zoneid" = "7") then goto PASS-002
 FAIL-002:
 	pause 0.1
-	gosub AUTOMOVE NTR
-
+     if ("$zoneid" = "1") then
+          {
+               gosub AUTOMOVE 145
+               pause 0.2
+               gosub AUTOMOVE NTR
+               pause 0.2
+          }
 PASS-002:
 	gosub move go footpath
 	goto CLIMB-01
 
 CLIMB-01:
+     if ("$zoneid" = "1") then gosub AUTOMOVE NTR
+     if ("$zoneid" = "7") then gosub AUTOMOVE 348
+     pause 0.3
+     if ($roomid != 52) then gosub AUTOMOVE 52
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 60) then gosub FATIGUE_WAIT
 	SAVE FAIL-01
 	pause 0.5
-	if ($Athletics.Ranks >= 120) then put climb wall
-     if ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE wall
-	pause 0.3
+     if ($Athletics.Ranks > 60) && ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE wall
+	put climb wall
+     pause 
      pause 0.5
-     pause 0.5
-	if "$zoneid" = "8" then goto FAIL-01
-	if "$zoneid" = "1" then goto PASS-01
+     pause 0.3
+	if ("$zoneid" = "8") then goto FAIL-01
+	if ("$zoneid" = "1") then goto PASS-01
 	
 PASS-01:
-	gosub AUTOMOVE NTR
+	if ("$zoneid" = "1") then gosub AUTOMOVE NTR
 	gosub move go footpath
 	goto FAIL-01
 
 FAIL-01:
+     if ("$zoneid" = "1") then gosub AUTOMOVE NTR
+     if ("$zoneid" = "7") then gosub AUTOMOVE 348
 	gosub AUTOMOVE 45
+     if ($roomid != 45) then gosub AUTOMOVE 45
 	goto CLIMB-02
 
 CLIMB-02:
+     if ("$zoneid" = "7") then gosub AUTOMOVE 348
+     if ("$zoneid" = "1") then gosub AUTOMOVE 170
+     pause 0.3
+     if ($roomid != 45) then gosub AUTOMOVE 45
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 60) then gosub FATIGUE_WAIT
 	SAVE FAIL-02
 	pause 0.5
-	if ($Athletics.Ranks >= 120) then put climb wall
-     if ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE wall
-	pause 0.3
+     if ($Athletics.Ranks > 60) && ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE wall
+	put climb wall
+	pause
      pause 0.5
-     pause 0.5
-	if "$zoneid" = "8" then goto FAIL-02
-	if "$zoneid" = "1" then goto PASS-02
+     pause 0.3
+	if ("$zoneid" = "8") then goto FAIL-02
+	if ("$zoneid" = "1") then goto PASS-02
 	
 PASS-02:
-	gosub AUTOMOVE e gate
+	if ("$zoneid" = "1") then gosub AUTOMOVE 170
 	gosub AUTOMOVE 44
 	goto CLIMB-03
 
 FAIL-02:
 	gosub AUTOMOVE 44
+     if ($roomid != 44) then gosub AUTOMOVE 44
 	goto CLIMB-03
 
 CLIMB-03:
+     if ("$zoneid" = "1") then gosub AUTOMOVE 170
+     if ($roomid != 44) then gosub AUTOMOVE 44
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 60) then gosub FATIGUE_WAIT
 	SAVE FAIL-03
 	pause 0.5
+	if ($Athletics.Ranks > 60) && ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE wall
 	put climb wall
-	pause 0.3
      pause 0.5
      pause 0.5
-	if "$zoneid" = "8" then goto FAIL-03
-	if "$zoneid" = "1" then goto PASS-03
+     pause 0.5
+	if ("$zoneid" = "8") then goto FAIL-03
+	if ("$zoneid" = "1") then goto PASS-03
 	
 PASS-03:
 	gosub stand
-	gosub AUTOMOVE e gate
+	if ("$zoneid" = "1") then gosub AUTOMOVE 170
 	gosub AUTOMOVE 2
 	goto CLIMB-04
 
@@ -136,61 +186,67 @@ FAIL-03:
 	goto CLIMB-04
 
 CLIMB-04:
+     if ("$zoneid" = "1") then gosub AUTOMOVE 170
+     if ($roomid != 2) then gosub AUTOMOVE 2
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 60) then gosub FATIGUE_WAIT
 	SAVE FAIL-04
 	pause 0.5
 	put climb wall
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "8" then goto FAIL-04
-	if "$zoneid" = "1" then goto PASS-04
+	if ("$zoneid" = "8") then goto FAIL-04
+	if ("$zoneid" = "1") then goto PASS-04
 
 FAIL-04:
 	if ($stamina < 60) then gosub FATIGUE_WAIT
 	SAVE FAIL-04
-	gosub AUTOMOVE crossing
+	if ("$zoneid" = "8") then gosub AUTOMOVE crossing
    	gosub AUTOMOVE 395
 
 PASS-04:
 	goto CLIMB-05
 
 CLIMB-05:
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     if ($roomid != 395) then gosub AUTOMOVE 395
 	if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-05
 	pause 0.5
 	put climb embrasure
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "1" then goto FAIL-05
-	if "$zoneid" = "8" then goto PASS-05
+	if ("$zoneid" = "1") then goto FAIL-05
+	if ("$zoneid" = "8") then goto PASS-05
 
 PASS-05:
-	gosub AUTOMOVE crossing
+	if ("$zoneid" = "8") then gosub AUTOMOVE crossing
 	gosub AUTOMOVE 396
 
 FAIL-05:
-     if "$zoneid" = "8" then gosub AUTOMOVE crossing
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
 	gosub AUTOMOVE 396
 	goto CLIMB-06
 
 CLIMB-06:
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     if ($roomid != 396) then gosub AUTOMOVE 396
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-06
 	pause 0.5
 	put climb break
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "1" then goto FAIL-06
-	if "$zoneid" = "8" then goto PASS-06
+	if ("$zoneid" = "1") then goto FAIL-06
+	if ("$zoneid" = "8") then goto PASS-06
 
 PASS-06:
-	gosub AUTOMOVE crossing
+	if ("$zoneid" = "8") then gosub AUTOMOVE crossing
 	gosub AUTOMOVE 396
 	goto CLIMB-07
 
@@ -198,6 +254,8 @@ FAIL-06:
 	goto CLIMB-07
 
 CLIMB-07:
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     if ($roomid != 396) then gosub AUTOMOVE 396
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-07
@@ -209,78 +267,83 @@ CLIMB-07:
           }
      pause
 	send climb embrasure
-	pause 0.3
+	wait
+     pause
      pause 0.5
-     pause 0.5
-	if "$zoneid" = "1" then goto FAIL-07
-	if "$zoneid" = "8" then goto PASS-07
+	if ("$zoneid" = "1") then goto FAIL-07
+	if ("$zoneid" = "8") then goto PASS-07
 
 PASS-07:
-	gosub AUTOMOVE crossing
+	if ("$zoneid" = "8") then gosub AUTOMOVE crossing
 	goto TRAVEL-08
 
 FAIL-07:
-	goto TRAVEL-08
-
 TRAVEL-08:
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
 	gosub AUTOMOVE 399
 
 CLIMB-08:
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     if ($roomid != 399) then gosub AUTOMOVE 399
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-08
 	pause 0.5
 	put climb embrasure
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "1" then goto FAIL-08
-	if "$zoneid" = "4" then goto PASS-08
+	if ("$zoneid" = "1") then goto FAIL-08
+	if ("$zoneid" = "4") then goto PASS-08
 
 PASS-08:
 	goto CLIMB-09
 
 FAIL-08:
 	gosub AUTOMOVE 121
-	gosub AUTOMOVE W gate
+	gosub AUTOMOVE 172
 	gosub AUTOMOVE 2
 	goto CLIMB-09
 
 CLIMB-09:
+     if ("$zoneid" = "1") then gosub AUTOMOVE 172
+     if ($roomid != 2) then gosub AUTOMOVE 2
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-09
 	pause 0.5
 	put climb wall
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "4" then goto FAIL-09
-	if "$zoneid" = "1" then goto PASS-09
+	if ("$zoneid" = "4") then goto FAIL-09
+	if ("$zoneid" = "1") then goto PASS-09
 
 PASS-09:
 	gosub AUTOMOVE 398
 	goto CLIMB-10
 
 FAIL-09:
-	gosub AUTOMOVE crossing
+	if ("$zoneid" = "4") then gosub AUTOMOVE crossing
 	gosub AUTOMOVE 398
 	goto CLIMB-10
 
 CLIMB-10:
+     if ("$zoneid" = "4") then gosub AUTOMOVE cross
+     if ($roomid != 398) then gosub AUTOMOVE 398
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-10
 	pause 0.5
 	put climb embrasure
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "1" then goto FAIL-10
-	if "$zoneid" = "4" then goto PASS-10
+	if ("$zoneid" = "1") then goto FAIL-10
+	if ("$zoneid" = "4") then goto PASS-10
 
 PASS-10:
-	gosub AUTOMOVE crossing
+	if ("$zoneid" = "4") then gosub AUTOMOVE crossing
 	gosub AUTOMOVE 400
 
 FAIL-10:
@@ -288,19 +351,21 @@ FAIL-10:
 	goto CLIMB-11
 
 CLIMB-11:
+     if ("$zoneid" = "4") then gosub AUTOMOVE cross
+     if ($roomid != 400) then gosub AUTOMOVE 400
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-11
 	pause 0.5
 	put climb break
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "1" then goto FAIL-11
-	if "$zoneid" = "4" then goto PASS-11
+	if ("$zoneid" = "1") then goto FAIL-11
+	if ("$zoneid" = "4") then goto PASS-11
 
 PASS-11:
-	gosub AUTOMOVE Crossing
+	if ("$zoneid" = "4") then gosub AUTOMOVE Crossing
 	gosub AUTOMOVE 400
 	goto CLIMB-12
 
@@ -309,41 +374,45 @@ FAIL-11:
 	goto CLIMB-12
 
 CLIMB-12:
+     if ("$zoneid" = "4") then gosub AUTOMOVE cross
+     if ($roomid != 400) then gosub AUTOMOVE 400
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-12
 	pause 0.5
 	put climb embrasure
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "1" then goto FAIL-12
-	if "$zoneid" = "4" then goto PASS-12
+	if ("$zoneid" = "1") then goto FAIL-12
+	if ("$zoneid" = "4") then goto PASS-12
 
 PASS-12:
 	goto CLIMB-13
 
 FAIL-12:
 	gosub AUTOMOVE 121
-	gosub AUTOMOVE w gate
+	gosub AUTOMOVE 172
 	gosub AUTOMOVE 221
 	goto CLIMB-13
 
 CLIMB-13:
+     if ("$zoneid" = "1") then gosub AUTOMOVE 172
+     if ($roomid != 221) then gosub AUTOMOVE 221
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-13
 	pause 0.5
 	put climb wall
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "4" then goto FAIL-13
-	if "$zoneid" = "1" then goto PASS-13
+	if ("$zoneid" = "4") then goto FAIL-13
+	if ("$zoneid" = "1") then goto PASS-13
 
 PASS-13:
 	gosub AUTOMOVE 121
-	gosub AUTOMOVE w gate
+	gosub AUTOMOVE 172
 	gosub AUTOMOVE 220
 	goto CLIMB-14
 
@@ -352,20 +421,22 @@ FAIL-13:
 	goto CLIMB-14
 
 CLIMB-14:
+     if ("$zoneid" = "1") then gosub AUTOMOVE 172
+     if ($roomid != 220) then gosub AUTOMOVE 220
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-14
 	pause 0.5
 	send climb wall
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "4" then goto FAIL-14
-	if "$zoneid" = "1" then goto PASS-14
+	if ("$zoneid" = "4") then goto FAIL-14
+	if ("$zoneid" = "1") then goto PASS-14
 
 PASS-14:
 	gosub AUTOMOVE 121
-	gosub AUTOMOVE w gate
+	gosub AUTOMOVE 172
 	goto CLIMB-15
 
 FAIL-14:
@@ -373,27 +444,31 @@ FAIL-14:
 	goto CLIMB-15
 
 CLIMB-15:
+     if ("$zoneid" = "1") then gosub AUTOMOVE 172
+     if ($roomid != 1) then gosub AUTOMOVE 1
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
 	SAVE FAIL-15
 	pause 0.5
 	put climb wall
-	pause 0.3
+	wait
      pause 0.5
      pause 0.5
-	if "$zoneid" = "4" then goto FAIL-15
-	if "$zoneid" = "1" then goto PASS-15
+	if ("$zoneid" = "4") then goto FAIL-15
+	if ("$zoneid" = "1") then goto PASS-15
 
 PASS-15:
+     if ("$zoneid" = "4") then gosub AUTOMOVE cross
 	gosub AUTOMOVE 42
 	goto TRAVEL-15
 
 FAIL-15:
-	gosub AUTOMOVE crossing
+     if ("$zoneid" = "4") then gosub AUTOMOVE cross
 	goto TRAVEL-15
 
 TRAVEL-15:
      pause 0.5
+     if ("$zoneid" = "4") then gosub AUTOMOVE crossing
      gosub AUTOMOVE 42
      goto CLIMB.EXP
 
@@ -417,7 +492,9 @@ CLIMB_PRACTICE:
      var object $0
      matchre RETURN ^The climb is too difficult|^This climb is too difficult|^You finish practicing your climbing
      put climb practice %object
-     matchwait 100
+     matchwait 120
+     put stop climb
+     pause 0.4
      return
 #======================
  
@@ -452,6 +529,12 @@ QUIT:
 	put #parse CLIMBING DONE
 	put #parse CLIMBING LOCKED
 	pause 0.5
+     if matchre("$righthand $lefthand", "%weapon1") then put stow %weapon1
+     pause 0.5
+     pause 0.4
+     if matchre("$righthand $lefthand", "%weapon2") then put stow %weapon2
+     pause 0.5
+     pause 0.5
 	put glance
      exit
 
