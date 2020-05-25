@@ -2,7 +2,7 @@
 # Based from original SF Script created by the player of Kraelyst
 # Modified and made to work with Genie3 by Pelic and Shroom
 #
-# UPDATED - 5/8/2020
+# UPDATED - 5/25/2020
 #
 #debuglevel 5
 
@@ -41,6 +41,7 @@ startclimb:
      if ("$zoneid" = "2") then gosub AUTOMOVE crossing
      # if ("$roomid" != "42") then gosub automove 42
      pause 0.3
+     if ("$zoneid" != "1") then goto ERROR
      counter add 1
      echo
      echo *** STARTING CLIMBING SESSION %c ***
@@ -50,9 +51,10 @@ startclimb:
      wait
 CLIMBGO:
 	gosub AUTOMOVE 387
-     if ($roomid != 387) then gosub AUTOMOVE 387
 CLIMB-001:
 SAVE FAIL-001
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     if ($roomid != 387) then gosub AUTOMOVE 387
 	if ($stamina < 70) then gosub FATIGUE_WAIT
 	pause 0.3
      if ($Athletics.Ranks > 60) && ($Athletics.Ranks < 120) then gosub CLIMB_PRACTICE break
@@ -65,10 +67,14 @@ SAVE FAIL-001
 	if ("$zoneid" = "8") then goto PASS-001
 PASS-001:
      pause 0.1
+     pause 0.3
+     if ("$zoneid" = "8") then gosub AUTOMOVE NTR
      if ("$zoneid" = "8") then gosub AUTOMOVE NTR
      pause 0.2
      if ("$zoneid" = "7") then gosub AUTOMOVE cross
+     if ("$zoneid" = "7") then gosub AUTOMOVE cross
      pause 0.3
+     if ("$zoneid" != "1") then goto PASS-001
      if ($roomid != 387) then gosub AUTOMOVE 387
      goto CLIMB-002
 
@@ -224,15 +230,19 @@ CLIMB-05:
 
 PASS-05:
 	if ("$zoneid" = "8") then gosub AUTOMOVE crossing
-	gosub AUTOMOVE 396
+	pause 0.4
+     gosub AUTOMOVE 396
 
 FAIL-05:
      if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     pause 0.4
 	gosub AUTOMOVE 396
 	goto CLIMB-06
 
 CLIMB-06:
      if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     pause 0.4
      if ($roomid != 396) then gosub AUTOMOVE 396
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
@@ -247,6 +257,7 @@ CLIMB-06:
 
 PASS-06:
 	if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     pause 0.4
 	gosub AUTOMOVE 396
 	goto CLIMB-07
 
@@ -254,6 +265,8 @@ FAIL-06:
 	goto CLIMB-07
 
 CLIMB-07:
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     pause 0.4
      if ("$zoneid" = "8") then gosub AUTOMOVE crossing
      if ($roomid != 396) then gosub AUTOMOVE 396
      if $Athletics.LearningRate > 33 then goto endearly
@@ -284,6 +297,9 @@ TRAVEL-08:
 
 CLIMB-08:
      if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     pause 0.5
+     if ("$zoneid" = "8") then gosub AUTOMOVE crossing
+     pause 0.1
      if ($roomid != 399) then gosub AUTOMOVE 399
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 50) then gosub FATIGUE_WAIT
@@ -516,6 +532,11 @@ STOOD:
      pause 0.2
 	goto %s
 
+ERROR:
+     echo =============================
+     echo ** ERROR! NOT IN CROSSINGS
+     echo ** MUST START SCRIPT IN/NEAR CROSSINGS
+     echo =============================
 QUIT:
 	echo 
 	echo *** DONE! ***
@@ -558,7 +579,7 @@ moving:
      matchre retreat.from.melee.then.move ^You are engaged to .+ melee range\!|^You try to move, but you're engaged\.
      matchre retreat.from.pole.then.move ^You are engaged to .+ at pole weapon range\!|^While in combat\?  You'll have better luck if you first retreat\.
      matchre move.return ^Obvious
-     matchre move.error ^You can't go there\.|^You can't swim in that direction\.
+     matchre move.error ^You can't go there\.|^You can't swim in that direction\.|You can't do that\.|^What were you
      put %move.direction
      matchwait
 stand.then.move:
