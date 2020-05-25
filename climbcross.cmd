@@ -102,18 +102,23 @@ FAIL-002:
      if ("$zoneid" = "1") then
           {
                gosub AUTOMOVE 145
-               pause 0.2
                gosub AUTOMOVE NTR
-               pause 0.2
           }
 PASS-002:
 	gosub move go footpath
-	goto CLIMB-01
-
+     pause 0.1
 CLIMB-01:
-     if ("$zoneid" = "1") then gosub AUTOMOVE NTR
+     pause 0.2
+     put #mapper reset
+     pause 0.2
+     if ("$zoneid" = "1") then
+          {
+               gosub AUTOMOVE 145
+               gosub AUTOMOVE NTR
+          }
      if ("$zoneid" = "7") then gosub AUTOMOVE 348
      pause 0.3
+     if ("$zoneid" != "8") then goto CLIMB-01
      if ($roomid != 52) then gosub AUTOMOVE 52
      if $Athletics.LearningRate > 33 then goto endearly
 	if ($stamina < 60) then gosub FATIGUE_WAIT
@@ -128,18 +133,32 @@ CLIMB-01:
 	if ("$zoneid" = "1") then goto PASS-01
 	
 PASS-01:
-	if ("$zoneid" = "1") then gosub AUTOMOVE NTR
+     if ("$zoneid" = "1") then
+          {
+               gosub AUTOMOVE 145
+               gosub AUTOMOVE NTR
+          }
 	gosub move go footpath
+     pause 0.2
+     put #mapper reset
+     pause 0.1
 	goto FAIL-01
 
 FAIL-01:
-     if ("$zoneid" = "1") then gosub AUTOMOVE NTR
+     pause 0.001
+     if ("$zoneid" = "1") then
+          {
+               gosub AUTOMOVE 145
+               gosub AUTOMOVE NTR
+               pause 0.1
+          }
      if ("$zoneid" = "7") then gosub AUTOMOVE 348
 	gosub AUTOMOVE 45
      if ($roomid != 45) then gosub AUTOMOVE 45
 	goto CLIMB-02
 
 CLIMB-02:
+     pause 0.1
      if ("$zoneid" = "7") then gosub AUTOMOVE 348
      if ("$zoneid" = "1") then gosub AUTOMOVE 170
      pause 0.3
@@ -506,7 +525,7 @@ FATIGUE_WAIT:
 
 CLIMB_PRACTICE:
      var object $0
-     matchre RETURN ^The climb is too difficult|^This climb is too difficult|^You finish practicing your climbing
+     matchre RETURN ^The climb is too difficult|^This climb is too difficult|^You finish practicing|^You stop
      put climb practice %object
      matchwait 120
      put stop climb
@@ -600,6 +619,8 @@ move.error:
      put look
      return
 move.return:
+     pause 0.1
+     pause 0.1
      return
  
 AUTOMOVE:
@@ -643,6 +664,7 @@ AUTOMOVE_FAIL_BAIL:
      put #echo
      exit
 AUTOMOVE_RETURN:
+     pause 0.2
      pause 0.1
      return
 	
