@@ -1,6 +1,6 @@
 #debuglevel 5
 ################################################################################################################################
-# Smart Disarm Script v7.6 - For Dragonrealms - by Shroom
+# Smart Disarm Script v8.4 - For Dragonrealms - by Shroom
 # Specialized for thieves, works for anyone
 # - Analyzes the appraisal difficulty of the trap compared to what type of trap it is
 # - Dynamically changes mode of disarm (Blind, Quick, Normal, Careful) according to how difficult trap is
@@ -8,8 +8,17 @@
 # - Handles Blown Traps (determines what kind of trap it was, reacts/gets healed accordingly)
 # - Handles Lockpick Rings/Cases
 # - Tracks total number of boxes picked per session and total boxes picked over ALL TIME running the script
+
+## NOTICE!! YOU MUST SET YOUR CHARACTER SPECIFIC VARIABLES IN THE SECOND SCRIPT - disarm-vars.inc
+## IF YOU DO NOT SETUP THE VARIABLES IN disarm-vars.inc THEN THIS SCRIPT WILL NOT WORK
+
 ################################################################################################################################
 # CHANGELOG 
+# LAST UPDATE - 5/25/20
+# - Removed all instances of Pet Boxes and Pet Box support as no longer valid
+# - Added Support for "tool box" type lockpick rings 
+# - Added Support for Thieves Auto-Selling Trap Components - if keepcomponent is ON
+# - Broke out variables into a separate include - disarm-vars.inc
 # - Added support for the New Ankle-Cuff lockpick case, and checking for Golden Keys as well when checking what type of lockpick ring/case
 # - Added matches for EVERY box type when already disarmed, for the Pet Boxes mode to make 100% sure a box is disarmed before picking it
 # - Added TieContainer / TieContainer.Items - For toolstraps/toolbelts etc that you always want to tie a particular item to 
@@ -19,403 +28,15 @@
 # - Added variable for WORN gem pouches, so script will work with worn pouches instead of pulling them from a container
 # - Cleaned up/Optimized a ton of code - changed all script variable checks (toupper). Now variables don't have to be in all caps.
 # - Robustified the guild check section, armor check section. Now checks for hand armor as part of the armor check
-# - SPECIAL REQUEST - Added support to ONLY Disarm boxes, if you want to make some pet boxes
 # - SPECIAL REQUEST - PICK BOXES FOR OTHERS! Simply start the script by using the player's name as a variable
 # Example - .disarm Bob - will wait for boxes from Bob, disarm and pick them and give them back to Bob. (THIS IGNORES IF YOU ARE MIND LOCKED)
 # - ADDED Much better multi character support - Now can easily set different variables for different characters. 
 # - Added new variable <autoheal> - Set to YES by default. Set to NO if you want to skip visiting the auto-empath if you get hurt (WILL ABORT SCRIPT IF YOU ARE HURT)  
-# LAST UPDATE - 1/22/20
 ################################################################################################################################
-#####################
-## USER VARIABLES 
-#####################
-## YOU MUST SET YOUR CHARACTER'S NAME(S) BELOW
-## IF ONLY ONE CHARACTER THEN JUST SET CHARACTER1. SET REST TO NULL 
-var CHARACTER1 Shroom
-var CHARACTER2 Alucios
-var CHARACTER3 Valgrind
-var CHARACTER4 Hvinir
-var CHARACTER5 Raidboss
-## MAKE SURE TO UPDATE THE VARIABLES THAT ARE SPECIFIC TO EACH DIFFERENT CHARACTER # BELOW 
-if ("$charactername" = "%CHARACTER1") then
-## DONT CHANGE THIS ABOVE ^^^^^ 
-## CHANGE ALL THESE BELOW VVVV
-     {
-     ## SET YOUR BAGS WHERE BOXES CAN BE FOUND
-     ## AND/OR WHERE YOUR ARMOR/HAND ITEMS CAN BE STOWED
-     var container1 backpack
-     var container2 rucksack
-     var container3 shadow
-     var sheath baldric
-     ## TIE CONTAINER (If you use a toolstrap/toolbelt etc container to TIE weapons etc to) 
-     ## SET THE VERB OF THE TIE CONTAINER 
-     var TieContainer toolstrap
-     ### SET THE ITEMS YOU WANT TO ALWAYS TIE TO IT ( in an array - item1|item2|item3  )
-     var TieContainer.Items NULL 
-     ## Do you WEAR your GEM POUCH or do you keep them stowed away in your bags?
-     ## (YES or NO) - Yes if you wear one, NO if you do not wear a gem pouch
-     var gempouchWorn NO
-     ## DO YOUR GEM POUCHES HAVE SOME WEIRD SYNTAX? SET IT HERE. LEAVE AT GEM POUCH IF NORMAL
-     var gempouch black pouch
-     ## WHERE DO WE STORE YOUR COMPLETELY FULL, TIED UP GEM POUCHES? (CLOSABLE CONTAINER!)
-     var gempouch.container carryall
-     ## TIE YOUR GEM POUCHES? YES OR NO - YES WILL TIE UP ANY FULL POUCHES
-     var tie.pouch NO
-     # ANY HAND WORN ARMOR?
-     var knuckles hand claw
-     #### ARE YOU USING A LOCKPICK RING or LOCKPICK CASE? (YES OR NO) (Auto-Detects if case or ring)
-     var lockpick.ring YES
-     # WHERE DO YOU STORE EXTRA LOCKPICKS FOR RESTOCKING YOUR LOCKPICK RING/CASE? (IF ANY - Not necessary to set)
-     var pickstorage util belt
-     # MAGIC SKELETON KEY? (YES OR NO) - ONLY FOR USE WITH A MAGIC LOCKPICKING SKELETON KEY
-     var skeleton.key NO
-     #### DO YOU WANT TO PUT YOUR ARMOR BACK ON AT THE END? (IF IT TOOK ANY OFF FIRST?)
-     var wear.armor YES
-     #### DO YOU WANT TO USE THE AUTO-HEALER IF YOU GET HURT?? (YES OR NO) 
-     #### WARNING: SETTING TO NO WILL SKIP GETTING HEALED SO ITS UP TO YOU TO RECOVER!
-     var autoheal YES
-     # CONTINUE PICKING AFTER MIND LOCK? (YES OR NO) - NO WILL STOP PICKING ONCE MIND LOCKED
-     # SET TO YES IF YOU WANT TO CONTINUE PICKING UNTIL ALL THE BOXES ARE GONE AND IGNORE MINDSTATE
-     var keep.picking YES
-     # MOVE.ROOMS (YES OR NO) - SET TO YES IF YOU PICK BOXES IN A ROOM WITH OTHER PLAYERS
-     # THIS WILL MOVE ROOMS WHEN DISARMING AREA-WIDE TRAPS THAT CAN HURT/EFFECT OTHERS
-     var MOVE.ROOMS NO
-     # SET YOUR "STARTING" ROOM IN AUTOMAPPER (MAIN ROOM YOU WANT TO PICK BOXES IN OR RETURN TO)
-     # THESE VARIABLES DO NOT MATTER IF YOU HAVE MOVE.ROOMS SET TO NO
-     var STARTING.ROOM 45
-     # SET YOUR "SAFE" ROOM (FOR DISARMING AREA-WIDE TRAPS THAT CAN HURT OTHERS)
-     var SAFE.ROOM 45
-     ## Special Request - Pet box CREATOR
-     #DISARM ONLY?? (YES OR NO) (Skips lockpicking/looting COMPLETELY - this is ONLY for if you just want to MAKE some pet boxes)
-     var disarmOnly NO
-     ## Set the special bag to put only disarmed boxes in
-     var disarmBag white.back
-     ## PICK PET BOXES - (YES or NO) - If YES, Gets all Boxes from your "disarmBag" (var above this) 
-     ## WILL ONLY PICK BLIND AND THEN PUT AWAY WHEN LOCKED
-     ## NOT RESPONSIBLE FOR YOU NOT HAVING DISARMED BOXES AND BLOWING YOUR FACE OFF 
-     var PET.BOXES NO
-     ###################################
-     # THIEF ONLY VARIABLES
-     ###################################
-     # SET THE KHRI YOU WANT TO USE (IGNORE IF NON-THIEF)
-     var khri safe focus sight avoidance
-     # HARVEST TRAPS? (YES OR NO)
-     # Harvesting increases overall time of picking SIGNIFICANTLY but also increases EXP per box
-     var harvest NO
-     # DO YOU WANT TO KEEP ALL THE COMPONENTS YOU HARVEST? (YES OR NO)
-     # SCRIPT WILL ALWAYS KEEP CUBES IF SCRIPT FINDS THEM, WILL DROP ANYTHING ELSE IF NO
-     var keepcomponent YES
-     # NAME OF YOUR COMPONENT CONTAINER
-     var componentcontainer dark.pouch
-     #### BASE DIFFICULTY ADJUSTER. FOR INCREASING DIFFICULTY MANUALLY ( -5 to 5 ) DEFAULT IS 0
-     #### LOWER THIS NUMBER TO MAKE TRAPS TEACH BETTER/HIGHER RISK - (USE QUICK/BLIND MORE OFTEN)
-     #### RAISE THIS NUMBER TO MAKE TRAPS EASIER/LESS LIKELY TO EXPLODE - (USE CAREFUL MORE OFTEN)
-     var baseline_difficulty -1
-     goto INIT
-     }
-     
-if ("$charactername" = "%CHARACTER2") then
-     {
-     ## SET YOUR BAGS WHERE BOXES CAN BE FOUND
-     ## AND/OR WHERE YOUR ARMOR/HAND ITEMS CAN BE STOWED
-     var container1 backpack
-     var container2 haversack
-     var container3 duffel.bag
-     var sheath bag
-     ## TIE CONTAINER (If you use a toolstrap/toolbelt etc container to TIE weapons etc to) 
-     ## SET THE VERB OF THE TIE CONTAINER 
-     var TieContainer NULL
-     ### SET THE ITEMS YOU WANT TO ALWAYS TIE TO IT ( in an array - item1|item2|item3  )
-     var TieContainer.Items NULL 
-     ## Do you WEAR your GEM POUCH or do you keep them stowed away in your bags?
-     ## (YES or NO) - Yes if you wear one, NO if you do not wear a gem pouch
-     var gempouchWorn NO
-     ## DO YOUR GEM POUCHES HAVE SOME WEIRD SYNTAX? SET IT HERE. LEAVE AT GEM POUCH IF NORMAL
-     var gempouch black pouch
-     ## WHERE DO WE STORE YOUR COMPLETELY FULL, TIED UP GEM POUCHES? (CLOSABLE CONTAINER!)
-     var gempouch.container leather pouch
-     ## TIE YOUR GEM POUCHES? YES OR NO - YES WILL TIE UP ANY FULL POUCHES
-     var tie.pouch NO
-     # ANY HAND WORN ARMOR?
-     var knuckles knuckle
-     #### ARE YOU USING A LOCKPICK RING or LOCKPICK CASE? (YES OR NO) (Auto-Detects if case or ring)
-     var lockpick.ring YES
-     # WHERE DO YOU STORE EXTRA LOCKPICKS FOR RESTOCKING YOUR LOCKPICK RING/CASE? (IF ANY - Not necessary to set)
-     var pickstorage kit
-     # MAGIC SKELETON KEY? (YES OR NO) - ONLY FOR USE WITH A MAGIC LOCKPICKING SKELETON KEY
-     var skeleton.key NO
-     #### DO YOU WANT TO PUT YOUR ARMOR BACK ON AT THE END? (IF IT TOOK ANY OFF FIRST?)
-     var wear.armor YES
-     # CONTINUE PICKING AFTER MIND LOCK? (YES OR NO) - NO WILL STOP PICKING ONCE MIND LOCKED
-     # SET TO YES IF YOU WANT TO CONTINUE PICKING UNTIL ALL THE BOXES ARE GONE AND IGNORE MINDSTATE
-     var keep.picking YES
-     #### DO YOU WANT TO USE THE AUTO-HEALER IF YOU GET HURT?? (YES OR NO) 
-     #### WARNING: SETTING TO NO WILL SKIP GETTING HEALED SO ITS UP TO YOU TO RECOVER!
-     var autoheal YES
-     # MOVE.ROOMS (YES OR NO) - SET TO YES IF YOU PICK BOXES IN A ROOM WITH OTHER PLAYERS
-     # THIS WILL MOVE ROOMS WHEN DISARMING AREA-WIDE TRAPS THAT CAN HURT/EFFECT OTHERS
-     var MOVE.ROOMS NO
-     # SET YOUR "STARTING" ROOM IN AUTOMAPPER (MAIN ROOM YOU WANT TO PICK BOXES IN OR RETURN TO)
-     # THESE VARIABLES DO NOT MATTER IF YOU HAVE MOVE.ROOMS SET TO NO
-     var STARTING.ROOM 45
-     # SET YOUR "SAFE" ROOM (FOR DISARMING AREA-WIDE TRAPS THAT CAN HURT OTHERS)
-     var SAFE.ROOM 45
-     #Special Request - Pet box Creator
-     #DISARM ONLY?? (YES OR NO) (Skips lockpicking/looting COMPLETELY - this is ONLY for if you just want to make some pet boxes)
-     var disarmOnly NO
-     ## Set the special bag to put only disarmed boxes in
-     var disarmBag white back
-     ## PICK PET BOXES - (YES or NO) - If YES, Gets all Boxes from your "disarmBag" (var above this) 
-     ## WILL ONLY PICK BLIND AND THEN PUT AWAY WHEN LOCKED
-     ## NOT RESPONSIBLE FOR YOU NOT HAVING DISARMED BOXES AND BLOWING YOUR FACE OFF 
-     var PET.BOXES NO
-     ###################################
-     # THIEF ONLY VARIABLES
-     ###################################
-     # SET THE KHRI YOU WANT TO USE (IGNORE IF NON-THIEF)
-     var khri safe focus sight avoidance darken
-     # HARVEST TRAPS? (YES OR NO)
-     # Harvesting increases overall time of picking SIGNIFICANTLY but also increases EXP per box
-     var harvest NO
-     # DO YOU WANT TO KEEP ALL THE COMPONENTS YOU HARVEST? (YES OR NO)
-     # SCRIPT WILL ALWAYS KEEP CUBES IF SCRIPT FINDS THEM, WILL DROP ANYTHING ELSE IF NO
-     var keepcomponent YES
-     # NAME OF YOUR COMPONENT CONTAINER
-     var componentcontainer dark.pouch
-     #### BASE DIFFICULTY ADJUSTER. FOR INCREASING DIFFICULTY MANUALLY ( -5 to 5 ) DEFAULT IS 0
-     #### LOWER THIS NUMBER TO MAKE TRAPS TEACH BETTER/HIGHER RISK - (USE QUICK/BLIND MORE OFTEN)
-     #### RAISE THIS NUMBER TO MAKE TRAPS EASIER/LESS LIKELY TO EXPLODE - (USE CAREFUL MORE OFTEN)     
-     var baseline_difficulty -1
-     goto INIT
-     }
-     
-if ("$charactername" = "%CHARACTER3") then
-     {
-     ## SET YOUR BAGS WHERE BOXES CAN BE FOUND
-     ## AND/OR WHERE YOUR ARMOR/HAND ITEMS CAN BE STOWED
-     var container1 carryall
-     var container2 haversack
-     var container3 duffel.bag
-     var sheath bag
-     ## TIE CONTAINER (If you use a toolstrap/toolbelt etc container to TIE weapons etc to) 
-     ## SET THE VERB OF THE TIE CONTAINER 
-     var TieContainer NULL
-     ### SET THE ITEMS YOU WANT TO ALWAYS TIE TO IT ( in an array - item1|item2|item3  )
-     var TieContainer.Items NULL 
-     ## Do you WEAR your GEM POUCH or do you keep them stowed away in your bags?
-     ## (YES or NO) - Yes if you wear one, NO if you do not wear a gem pouch
-     var gempouchWorn NO
-     ## DO YOUR GEM POUCHES HAVE SOME WEIRD SYNTAX? SET IT HERE. LEAVE AT GEM POUCH IF NORMAL
-     var gempouch black pouch
-     ## WHERE DO WE STORE YOUR COMPLETELY FULL, TIED UP GEM POUCHES? (CLOSABLE CONTAINER!)
-     var gempouch.container green pouch
-     ## TIE YOUR GEM POUCHES? YES OR NO - YES WILL TIE UP ANY FULL POUCHES
-     var tie.pouch NO
-     # ANY HAND WORN ARMOR?
-     var knuckles knuckle
-     #### ARE YOU USING A LOCKPICK RING or LOCKPICK CASE? (YES OR NO) (Auto-Detects if case or ring)
-     var lockpick.ring YES
-     # WHERE DO YOU STORE EXTRA LOCKPICKS FOR RESTOCKING YOUR LOCKPICK RING/CASE? (IF ANY - Not necessary to set)
-     var pickstorage pouch
-     # MAGIC SKELETON KEY? (YES OR NO) - ONLY FOR USE WITH A MAGIC LOCKPICKING SKELETON KEY
-     var skeleton.key NO
-     #### DO YOU WANT TO PUT YOUR ARMOR BACK ON AT THE END? (IF IT TOOK ANY OFF FIRST?)
-     var wear.armor YES
-     #### DO YOU WANT TO USE THE AUTO-HEALER IF YOU GET HURT?? (YES OR NO) 
-     #### WARNING: SETTING TO NO WILL SKIP GETTING HEALED SO ITS UP TO YOU TO RECOVER!
-     var autoheal YES
-     # CONTINUE PICKING AFTER MIND LOCK? (YES OR NO) - NO WILL STOP PICKING ONCE MIND LOCKED
-     # SET TO YES IF YOU WANT TO CONTINUE PICKING UNTIL ALL THE BOXES ARE GONE AND IGNORE MINDSTATE
-     var keep.picking YES
-     # MOVE.ROOMS (YES OR NO) - SET TO YES IF YOU PICK BOXES IN A ROOM WITH OTHER PLAYERS
-     # THIS WILL MOVE ROOMS WHEN DISARMING AREA-WIDE TRAPS THAT CAN HURT/EFFECT OTHERS
-     var MOVE.ROOMS NO
-     # SET YOUR "STARTING" ROOM IN AUTOMAPPER (MAIN ROOM YOU WANT TO PICK BOXES IN OR RETURN TO)
-     # THESE VARIABLES DO NOT MATTER IF YOU HAVE MOVE.ROOMS SET TO NO
-     var STARTING.ROOM 45
-     # SET YOUR "SAFE" ROOM (FOR DISARMING AREA-WIDE TRAPS THAT CAN HURT OTHERS)
-     var SAFE.ROOM 45
-     #Special Request - Pet box Creator
-     #DISARM ONLY?? (YES OR NO) (Skips lockpicking/looting COMPLETELY - this is ONLY for if you just want to make some pet boxes)
-     var disarmOnly NO
-     ## Set the special bag to put only disarmed boxes in
-     var disarmBag white back
-     ## PICK PET BOXES - (YES or NO) - If YES, Gets all Boxes from your "disarmBag" (var above this) 
-     ## WILL ONLY PICK BLIND AND THEN PUT AWAY WHEN LOCKED
-     ## NOT RESPONSIBLE FOR YOU NOT HAVING DISARMED BOXES AND BLOWING YOUR FACE OFF 
-     var PET.BOXES NO
-     ###################################
-     # THIEF ONLY VARIABLES
-     ###################################
-     # SET THE KHRI YOU WANT TO USE (IGNORE IF NON-THIEF)
-     var khri safe focus sight avoidance darken
-     # HARVEST TRAPS? (YES OR NO)
-     # Harvesting increases overall time of picking SIGNIFICANTLY but also increases EXP per box
-     var harvest NO
-     # DO YOU WANT TO KEEP ALL THE COMPONENTS YOU HARVEST? (YES OR NO)
-     # SCRIPT WILL ALWAYS KEEP CUBES IF SCRIPT FINDS THEM, WILL DROP ANYTHING ELSE IF NO
-     var keepcomponent YES
-     # NAME OF YOUR COMPONENT CONTAINER
-     var componentcontainer dark.pouch
-     #### BASE DIFFICULTY ADJUSTER. FOR INCREASING DIFFICULTY MANUALLY ( -5 to 5 ) DEFAULT IS 0
-     #### LOWER THIS NUMBER TO MAKE TRAPS TEACH BETTER/HIGHER RISK - (USE QUICK/BLIND MORE OFTEN)
-     #### RAISE THIS NUMBER TO MAKE TRAPS EASIER/LESS LIKELY TO EXPLODE - (USE CAREFUL MORE OFTEN)     
-     var baseline_difficulty -1
-     goto INIT
-     }
-     
-if ("$charactername" = "%CHARACTER4") then
-     {
-     ## SET YOUR BAGS WHERE BOXES CAN BE FOUND
-     ## AND/OR WHERE YOUR ARMOR/HAND ITEMS CAN BE STOWED
-     var container1 carryall
-     var container2 duffel.bag
-     var container3 oil.bag
-     var sheath harness
-     ## TIE CONTAINER (If you use a toolstrap/toolbelt etc container to TIE weapons etc to) 
-     ## SET THE VERB OF THE TIE CONTAINER 
-     var TieContainer NULL
-     ### SET THE ITEMS YOU WANT TO ALWAYS TIE TO IT ( in an array - item1|item2|item3  )
-     var TieContainer.Items NULL 
-     ## Do you WEAR your GEM POUCH or do you keep them stowed away in your bags?
-     ## (YES or NO) - Yes if you wear one, NO if you do not wear a gem pouch
-     var gempouchWorn NO
-     ## DO YOUR GEM POUCHES HAVE SOME WEIRD SYNTAX? SET IT HERE. LEAVE AT GEM POUCH IF NORMAL
-     var gempouch black pouch
-     ## WHERE DO WE STORE YOUR COMPLETELY FULL, TIED UP GEM POUCHES? (CLOSABLE CONTAINER!)
-     var gempouch.container satin.pouch
-     ## TIE YOUR GEM POUCHES? YES OR NO - YES WILL TIE UP ANY FULL POUCHES
-     var tie.pouch NO
-     # ANY HAND WORN ARMOR?
-     var knuckles knuckle
-     #### ARE YOU USING A LOCKPICK RING or LOCKPICK CASE? (YES OR NO) (Auto-Detects if case or ring)
-     var lockpick.ring YES
-     # WHERE DO YOU STORE EXTRA LOCKPICKS FOR RESTOCKING YOUR LOCKPICK RING/CASE? (IF ANY - Not necessary to set)
-     var pickstorage bag
-     # MAGIC SKELETON KEY? (YES OR NO) - ONLY FOR USE WITH A MAGIC LOCKPICKING SKELETON KEY
-     var skeleton.key NO
-     #### DO YOU WANT TO PUT YOUR ARMOR BACK ON AT THE END? (IF IT TOOK ANY OFF FIRST?)
-     var wear.armor YES
-     #### DO YOU WANT TO USE THE AUTO-HEALER IF YOU GET HURT?? (YES OR NO) 
-     #### WARNING: SETTING TO NO WILL SKIP GETTING HEALED SO ITS UP TO YOU TO RECOVER!
-     var autoheal YES
-     # CONTINUE PICKING AFTER MIND LOCK? (YES OR NO) - NO WILL STOP PICKING ONCE MIND LOCKED
-     # SET TO YES IF YOU WANT TO CONTINUE PICKING UNTIL ALL THE BOXES ARE GONE AND IGNORE MINDSTATE
-     var keep.picking YES
-     # MOVE.ROOMS (YES OR NO) - SET TO YES IF YOU PICK BOXES IN A ROOM WITH OTHER PLAYERS
-     # THIS WILL MOVE ROOMS WHEN DISARMING AREA-WIDE TRAPS THAT CAN HURT/EFFECT OTHERS
-     var MOVE.ROOMS NO
-     # SET YOUR "STARTING" ROOM IN AUTOMAPPER (MAIN ROOM YOU WANT TO PICK BOXES IN OR RETURN TO)
-     # THESE VARIABLES DO NOT MATTER IF YOU HAVE MOVE.ROOMS SET TO NO
-     var STARTING.ROOM 45
-     # SET YOUR "SAFE" ROOM (FOR DISARMING AREA-WIDE TRAPS THAT CAN HURT OTHERS)
-     var SAFE.ROOM 45
-     #Special Request - Pet box Creator
-     #DISARM ONLY?? (YES OR NO) (Skips lockpicking/looting COMPLETELY - this is ONLY for if you just want to make some pet boxes)
-     var disarmOnly NO
-     ## Set the special bag to put only disarmed boxes in
-     var disarmBag white back
-     ## PICK PET BOXES - (YES or NO) - If YES, Gets all Boxes from your "disarmBag" (var above this) 
-     ## WILL ONLY PICK BLIND AND THEN PUT AWAY WHEN LOCKED
-     ## NOT RESPONSIBLE FOR YOU NOT HAVING DISARMED BOXES AND BLOWING YOUR FACE OFF 
-     var PET.BOXES NO
-     ###################################
-     # THIEF ONLY VARIABLES
-     ###################################
-     # SET THE KHRI YOU WANT TO USE (IGNORE IF NON-THIEF)
-     var khri safe focus sight avoidance darken
-     # HARVEST TRAPS? (YES OR NO)
-     # Harvesting increases overall time of picking SIGNIFICANTLY but also increases EXP per box
-     var harvest NO
-     # DO YOU WANT TO KEEP ALL THE COMPONENTS YOU HARVEST? (YES OR NO)
-     # SCRIPT WILL ALWAYS KEEP CUBES IF SCRIPT FINDS THEM, WILL DROP ANYTHING ELSE IF NO
-     var keepcomponent YES
-     # NAME OF YOUR COMPONENT CONTAINER
-     var componentcontainer dark.pouch
-     #### BASE DIFFICULTY ADJUSTER. FOR INCREASING DIFFICULTY MANUALLY ( -5 to 5 ) DEFAULT IS 0
-     #### LOWER THIS NUMBER TO MAKE TRAPS TEACH BETTER/HIGHER RISK - (USE QUICK/BLIND MORE OFTEN)
-     #### RAISE THIS NUMBER TO MAKE TRAPS EASIER/LESS LIKELY TO EXPLODE - (USE CAREFUL MORE OFTEN)     
-     var baseline_difficulty -1
-     goto INIT
-     }
-if ("$charactername" = "%CHARACTER5") then
-     {
-     ## SET YOUR BAGS WHERE BOXES CAN BE FOUND
-     ## AND/OR WHERE YOUR ARMOR/HAND ITEMS CAN BE STOWED
-     var container1 bag
-     var container2 lootsack
-     var container3 pannier
-     var sheath harness
-     ## TIE CONTAINER (If you use a toolstrap/toolbelt etc container to TIE weapons etc to) 
-     ## SET THE VERB OF THE TIE CONTAINER 
-     var TieContainer NULL
-     ### SET THE ITEMS YOU WANT TO ALWAYS TIE TO IT ( in an array - item1|item2|item3  )
-     var TieContainer.Items NULL 
-     ## Do you WEAR your GEM POUCH or do you keep them stowed away in your bags?
-     ## (YES or NO) - Yes if you wear one, NO if you do not wear a gem pouch
-     var gempouchWorn NO
-     ## DO YOUR GEM POUCHES HAVE SOME WEIRD SYNTAX? SET IT HERE. LEAVE AT GEM POUCH IF NORMAL
-     var gempouch black pouch
-     ## WHERE DO WE STORE YOUR COMPLETELY FULL, TIED UP GEM POUCHES? (CLOSABLE CONTAINER!)
-     var gempouch.container thigh.pouch
-     ## TIE YOUR GEM POUCHES? YES OR NO - YES WILL TIE UP ANY FULL POUCHES
-     var tie.pouch NO
-     # ANY HAND WORN ARMOR?
-     var knuckles knuckle
-     #### ARE YOU USING A LOCKPICK RING or LOCKPICK CASE? (YES OR NO) (Auto-Detects if case or ring)
-     var lockpick.ring YES
-     # WHERE DO YOU STORE EXTRA LOCKPICKS FOR RESTOCKING YOUR LOCKPICK RING/CASE? (IF ANY - Not necessary to set)
-     var pickstorage bag
-     # MAGIC SKELETON KEY? (YES OR NO) - ONLY FOR USE WITH A MAGIC LOCKPICKING SKELETON KEY
-     var skeleton.key NO
-     #### DO YOU WANT TO PUT YOUR ARMOR BACK ON AT THE END? (IF IT TOOK ANY OFF FIRST?)
-     var wear.armor YES
-     #### DO YOU WANT TO USE THE AUTO-HEALER IF YOU GET HURT?? (YES OR NO) 
-     #### WARNING: SETTING TO NO WILL SKIP GETTING HEALED SO ITS UP TO YOU TO RECOVER!
-     var autoheal YES
-     # CONTINUE PICKING AFTER MIND LOCK? (YES OR NO) - NO WILL STOP PICKING ONCE MIND LOCKED
-     # SET TO YES IF YOU WANT TO CONTINUE PICKING UNTIL ALL THE BOXES ARE GONE AND IGNORE MINDSTATE
-     var keep.picking YES
-     # MOVE.ROOMS (YES OR NO) - SET TO YES IF YOU PICK BOXES IN A ROOM WITH OTHER PLAYERS
-     # THIS WILL MOVE ROOMS WHEN DISARMING AREA-WIDE TRAPS THAT CAN HURT/EFFECT OTHERS
-     var MOVE.ROOMS NO
-     # SET YOUR "STARTING" ROOM IN AUTOMAPPER (MAIN ROOM YOU WANT TO PICK BOXES IN OR RETURN TO)
-     # THESE VARIABLES DO NOT MATTER IF YOU HAVE MOVE.ROOMS SET TO NO
-     var STARTING.ROOM 45
-     # SET YOUR "SAFE" ROOM (FOR DISARMING AREA-WIDE TRAPS THAT CAN HURT OTHERS)
-     var SAFE.ROOM 45
-     #Special Request - Pet box Creator
-     #DISARM ONLY?? (YES OR NO) (Skips lockpicking/looting COMPLETELY - this is ONLY for if you just want to make some pet boxes)
-     var disarmOnly NO
-     ## Set the special bag to put only disarmed boxes in
-     var disarmBag white back
-     ## PICK PET BOXES - (YES or NO) - If YES, Gets all Boxes from your "disarmBag" (var above this) 
-     ## WILL ONLY PICK BLIND AND THEN PUT AWAY WHEN LOCKED
-     ## NOT RESPONSIBLE FOR YOU NOT HAVING DISARMED BOXES AND BLOWING YOUR FACE OFF 
-     var PET.BOXES NO
-     ###################################
-     # THIEF ONLY VARIABLES
-     ###################################
-     # SET THE KHRI YOU WANT TO USE (IGNORE IF NON-THIEF)
-     var khri safe focus sight avoidance darken
-     # HARVEST TRAPS? (YES OR NO)
-     # Harvesting increases overall time of picking SIGNIFICANTLY but also increases EXP per box
-     var harvest NO
-     # DO YOU WANT TO KEEP ALL THE COMPONENTS YOU HARVEST? (YES OR NO)
-     # SCRIPT WILL ALWAYS KEEP CUBES IF SCRIPT FINDS THEM, WILL DROP ANYTHING ELSE IF NO
-     var keepcomponent YES
-     # NAME OF YOUR COMPONENT CONTAINER
-     var componentcontainer dark.pouch
-     #### BASE DIFFICULTY ADJUSTER. FOR INCREASING DIFFICULTY MANUALLY ( -5 to 5 ) DEFAULT IS 0
-     #### LOWER THIS NUMBER TO MAKE TRAPS TEACH BETTER/HIGHER RISK - (USE QUICK/BLIND MORE OFTEN)
-     #### RAISE THIS NUMBER TO MAKE TRAPS EASIER/LESS LIKELY TO EXPLODE - (USE CAREFUL MORE OFTEN)     
-     var baseline_difficulty -1
-     goto INIT
-     }
-     echo **** ERROR! YOU DID NOT SET YOUR VARIABLES PROPERLY!!
-     echo **** Edit the script and make sure to add your character's name to: var CHARACTER1
-     echo **** If you use the script with different characters you can set them under CHARACTER2, CHARACTER3, CHARACTER4
-     exit
+
+## NOTICE!! YOU MUST SET YOUR CHARACTER SPECIFIC VARIABLES IN THE SECOND SCRIPT - disarm-vars.inc
+## IF YOU DO NOT SETUP THE VARIABLES IN disarm-vars.inc THEN THIS SCRIPT WILL NOT WORK
+
 ##############################################################################
 ##############################################################################
 # END USER VARIABLES - DO NOT TOUCH ANYTHING BELOW
@@ -424,18 +45,20 @@ if ("$charactername" = "%CHARACTER5") then
 
 ### DEFAULT SCRIPT VARIABLES - DO NOT TOUCH
 INIT:
-     var box_types (brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden) (?:coffer|trunk|chest|strongbox|skippet|caddy|crate|casket|(?<!(?i)training )box)
-     var component_list sealed vial|tube|needle|seal|bladder|studs|blade|\brune\b|spring|hammer|disc|dart|reservoir|face|\bpin\b|striker|cube|sphere|leg|crystal|circle|clay
+     include disarm-vars.inc
+     var box_types (brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden) (coffer|trunk|chest|strongbox|skippet|caddy|crate|casket|(?<!(?i)training )box)
+     var component_list sealed vial|stoppered vial|capillary tube|short needle|broken needle|bronze seal|animal bladder|silver studs|sharp blade|curved blade|broken rune|coiled spring|metal spring|metal lever|tiny hammer|iron disc|bronze disc|glass reservoir|bronze face|steel pin|steel striker|chitinous leg|(?<!(?i)blue\-)black crystal|metal circle|brown clay|cracked black crystal|black cube|glass sphere
      var multi_trap ON
      var multi_lock ON
-     var thief_hide NO
+     var thief_hide OFF
+     var skeleton.key OFF
      var ARMOR_STOW OFF
      var trap_type NULL
      var BOXES 0
      var BOX 0
      var LOCAL 0
-     var GIVEBOX NO
-     var FIRSTIME YES
+     var GIVEBOX OFF
+     var FIRSTIME ON
      var FIREANT OFF
      var armor null
      var armor1 null
@@ -449,8 +72,11 @@ INIT:
      var armor9 null
      var armor10 null
      var total_armor 0
+     var yogi 0
      var dismantle
+     pause 0.2
      if matchre($Boxes, \D+) then put #var Boxes 0
+     gosub LOADVARS
 ##################################
 ## SCRIPT ACTIONS
 ##################################
@@ -486,9 +112,9 @@ INIT:
 #################################################################
 ## THESE DETERMINE THE BASE DIFFICULTY LEVEL OF A TRAP
 #################################################################
-     action var app_difficulty -8 when An aged grandmother could
-     action var app_difficulty -7 when is a laughable matter
-     action var app_difficulty -5 when is a trivially constructed
+     action var app_difficulty -9 when An aged grandmother could
+     action var app_difficulty -8 when is a laughable matter
+     action var app_difficulty -7 when is a trivially constructed
      action var app_difficulty -4 when will be a simple matter for you to
      action var app_difficulty -3 when should not take long with your skills
      action var app_difficulty 0 when is precisely at your skill level
@@ -501,8 +127,9 @@ INIT:
      action var app_difficulty 8 when You really don't have any chance
      action var app_difficulty 9 when Prayer would be a good start
      action var app_difficulty 11 when You could just jump off a cliff
-     action var app_difficulty 13 when same shot as a snowball
-     action var app_difficulty 15 when pitiful snowball encased in the Flames
+     action var app_difficulty 12 when You should just jump off a cliff
+     action var app_difficulty 15 when same shot as a snowball
+     action var app_difficulty 16 when pitiful snowball encased in the Flames
 ## MISC ACTIONS
      action instant goto DROPPED_BOX when ^Your .* falls to the ground\.
      #action put #queue clear; send $lastcommand when ^\.\.\.wait|^Sorry, you may only type
@@ -549,12 +176,12 @@ INIT:
      action goto HEAL_PAUSE when The ringing in your ears continues
      pause 0.2
      put exp survival 0
-     waitfor Overall state of mind
+     waitforre Overall state of mind|EXP
      pause 0.001
      if_1 then
      {
           var user %1
-          var GIVEBOX YES
+          var GIVEBOX ON
           send whisper %user Give me a second to prepare. When ready I'll whisper you and then hand me a new box.
      }
      GOTO TOP
@@ -600,17 +227,17 @@ trap_diff_compute:
 	pause 0.2
 	echo
      var total_difficulty 0
-	# echo **** Trap Type Difficulty.. %trap_difficulty
-	# echo **** Baseline addition.. %baseline_difficulty
-	# echo **** Appraised Difficulty.. %app_difficulty
+	echo **** Trap Type Difficulty.. %trap_difficulty
+	echo **** Baseline addition.. %baseline_difficulty
+	echo **** Appraised Difficulty.. %app_difficulty
 	echo
 	pause 0.1
-     math total_difficulty add %baseline_difficulty
-     math total_difficulty add %trap_difficulty
-     math total_difficulty add %app_difficulty
+     evalmath total_difficulty (%total_difficulty + %baseline_difficulty)
+     evalmath total_difficulty (%total_difficulty + %trap_difficulty)
+     evalmath total_difficulty (%total_difficulty + %app_difficulty)
      pause 0.1
      var mode normal
-     if %total_difficulty < -2 then var mode blind
+     if %total_difficulty < -2 then var mode quick
      if %total_difficulty = -2 then var mode quick
      if %total_difficulty = -1 then var mode quick
      if %total_difficulty = 0 then var mode quick
@@ -629,7 +256,7 @@ trap_diff_compute:
      if %total_difficulty = 13 then var mode careful
      if %total_difficulty = 14 then var mode careful
      if %total_difficulty = 15 then var mode careful
-     if %total_difficulty = 16 then var mode toss
+     if %total_difficulty = 16 then var mode careful
      if %total_difficulty = 17 then var mode toss
      if %total_difficulty = 18 then var mode toss
      if %total_difficulty = 19 then var mode toss
@@ -641,10 +268,10 @@ trap_diff_compute:
      return
 #################################################################################################################
 TOP:
-     echo **********************************
-     echo * Shroom's Smart Disarm Script 
-     echo * Discord: Shroom#0046
-     echo **********************************
+     echo ==================
+     echo ** Shroom's Smart Disarm Script 
+     echo ** Discord: Shroom#0046
+     echo ==================
      pause
 	if ($hidden = 1) then
           {
@@ -656,6 +283,12 @@ TOP:
      pause 0.0001
      gosub STOWING
      pause 0.1
+     put open my %container1
+     wait
+     put open my %container2
+     wait
+     put open my %container3
+     wait
      if ("$guild" = "Warrior") then put #var guild Warrior Mage
      if ("$guild" = "Moon") then put #var guild Moon Mage
      pause 0.2
@@ -670,7 +303,11 @@ TOP:
                pause 0.2
           }
      if ("$guild" = "Thief") then var dismantle thump
-     if ("$guild" = "Barbarian") then var dismantle bash
+     if ("$guild" = "Barbarian") then
+          {
+               var dismantle bash
+               gosub MEDITATE_CHECK
+          }
      if ("$guild" = "Bard") then var dismantle shriek
      if ("$guild" = "Cleric") then var dismantle pray
      if ("$guild" = "Warrior Mage") then var dismantle fire
@@ -688,18 +325,13 @@ TOP:
 
 initial_Check:
      pause 0.1
-     if (toupper("%PET.BOXES") != "YES") then
-          {
-               gosub init_BagCheck %container1
-               gosub init_BagCheck %container2
-               gosub init_BagCheck %container3
-          }
-     if (toupper("%PET.BOXES") = "YES") then gosub init_BagCheck %disarmBag
+     gosub init_BagCheck %container1
+     gosub init_BagCheck %container2
+     gosub init_BagCheck %container3
      if (%BOX = 0) then goto DONE
-     if (toupper("%PET.BOXES") = "YES") then goto lock.check
      goto armor_Check
 init_BagCheck:
-     var container $1
+     var container $0
      if (%BOX = 1) then goto armor_Check
           matchre init_BagCheck ^\.\.\.wait|^Sorry,
 		matchre boxes_Yes (brass|copper|deobar|driftwood|iron|ironwood|mahogany|oaken|pine|steel|wooden) (?:coffer|trunk|chest|strongbox|skippet|caddy|crate|casket|(?<!(?i)training )box)
@@ -724,7 +356,7 @@ armor_Check1:
      pause 0.1
      pause 0.1
           matchre armor_Check1 ^\.\.\.wait|^Sorry, you may only type
-          matchre remove_Armor helm|((?<=field|fluted|full|half|war|battle|lamellar|blue|blackened|jousting|silver|white|lunated|icesteel|goffered|fluted|polished) (\bplate\b)|steel plate(?! armor| gauntlets| gloves| greaves| helm| mask)|(?<=field|chain|leather|bone|quilted|reed|black|plate|combat|body|clay|lamellar|steel|mail|pale|polished|shadow|Suit of|suit|woven|yeehar-hide|kidskin|gladiatorial|battle|tomiek|glaes|pale|ceremonial|sinuous|trimmed|carapace|Zaulguum-skin) (\barmor\b)|armet(?! helm)|gauntlet|gloves|(?!pavise)shield|claw guards|odaj|mail gloves|platemail legs|parry stick|leggings|handwraps|\bhat\b|hand claws|armguard|jacket|torso|armwraps|footwraps|aegis|buckler|\bhood\b|\bcowl\b|\bheater(?! shield)|\bpavise(?! shield)|scutum|sipar|\btarge\b|aventail|backplate|balaclava|barbute|bascinet|breastplate|\bcap\b|longcoat|\bcoat\b|\bcowl|cuirass|fauld|greaves|hauberk|\bhood\b|jerkin|leathers|lorica|mantle|(?<!crimson leather )\bmask\b|morion|pants|handguards|bodysuit|robe|sallet|shirt|sleeves|ticivara|tabard|tasset|thorakes|\blid\b|vambraces|vest|collar|coif|mitt|\bsteel mail\b)
+          matchre remove_Armor \bhelm|((?<=field|fluted|full|half|war|battle|lamellar|blue|blackened|jousting|silver|white|lunated|sniper's|icesteel|goffered|fluted|polished) (\bplate\b)|steel plate(?! armor| gauntlets| gloves| greaves| helm| mask)|(?<=field|chain|leather|bone|quilted|reed|black|plate|combat|body|clay|lamellar|steel|mail|pale|polished|shadow|Suit of|suit|woven|yeehar-hide|kidskin|gladiatorial|sniper|sniper's|battle|tomiek|glaes|pale|ceremonial|sinuous|trimmed|carapace|Zaulguum-skin|coral|dark) (\barmor\b)|armet(?! helm)|gauntlet|gloves|(?!pavise)shield|claw guards|kimono|odaj|mail gloves|platemail legs|parry stick|leggings|handwraps|\bhat\b|hand claws|boots|armguard|jacket|goggle|armwraps|footwraps|aegis|torso|buckler|\bhood\b|\bcowl\b|\bheater(?! shield)|\bpavise(?! shield)|scutum|sipar|\btarge\b|aventail|backplate|balaclava|barbute|bascinet|breastplate|\bcap\b|longcoat|legwraps|\bcoat\b|\bcowl|cuirass|fauld|greaves|hauberk|\bhood\b|jerkin|leathers|lorica|mantle|(?<!crimson leather )\bmask\b|morion|pants|handguards|bodysuit|robe|sallet|shirt|sleeves|ticivara|tabard|tasset|thorakes|\blid\b|vambraces|vest|collar|coif|mitt|\bsteel mail\b)
           matchre armor_None You have nothing of that sort|You are wearing nothing of that sort|You aren't wearing anything
           put inv armor
 	matchwait 3
@@ -732,7 +364,7 @@ armor_Checking:
      pause 0.1
      pause 0.1
           matchre armor_Checking ^\.\.\.wait|^Sorry, you may only type
-          matchre remove_Armor helm|((?<=field|fluted|full|half|war|battle|lamellar|blue|blackened|jousting|silver|white|lunated|icesteel|goffered|fluted|polished) (\bplate\b)|steel plate(?! armor| gauntlets| gloves| greaves| helm| mask)|(?<=field|chain|leather|bone|quilted|reed|black|plate|combat|body|clay|lamellar|steel|mail|pale|polished|shadow|Suit of|suit|woven|yeehar-hide|kidskin|gladiatorial|battle|tomiek|glaes|pale|ceremonial|sinuous|trimmed|carapace|Zaulguum-skin) (\barmor\b)|armet(?! helm)|gauntlet|gloves|(?!pavise)shield|claw guards|odaj|mail gloves|platemail legs|parry stick|leggings|handwraps|\bhat\b|hand claws|armguard|jacket|torso|armwraps|footwraps|aegis|buckler|\bhood\b|\bcowl\b|\bheater(?! shield)|\bpavise(?! shield)|scutum|sipar|\btarge\b|aventail|backplate|balaclava|barbute|bascinet|breastplate|\bcap\b|longcoat|\bcoat\b|\bcowl|cuirass|fauld|greaves|hauberk|\bhood\b|jerkin|leathers|lorica|mantle|(?<!crimson leather )\bmask\b|morion|pants|handguards|bodysuit|robe|sallet|shirt|sleeves|ticivara|tabard|tasset|thorakes|\blid\b|vambraces|vest|collar|coif|mitt|\bsteel mail\b)
+          matchre remove_Armor \bhelm|((?<=field|fluted|full|half|war|battle|lamellar|blue|blackened|jousting|silver|white|lunated|sniper's|icesteel|goffered|fluted|polished) (\bplate\b)|steel plate(?! armor| gauntlets| gloves| greaves| helm| mask)|(?<=field|chain|leather|bone|quilted|reed|black|plate|combat|body|clay|lamellar|steel|mail|pale|polished|shadow|Suit of|suit|woven|yeehar-hide|kidskin|gladiatorial|sniper|sniper's|battle|tomiek|glaes|pale|ceremonial|sinuous|trimmed|carapace|Zaulguum-skin|coral|dark) (\barmor\b)|armet(?! helm)|gauntlet|gloves|(?!pavise)shield|claw guards|kimono|odaj|mail gloves|platemail legs|parry stick|leggings|handwraps|\bhat\b|hand claws|boots|armguard|jacket|goggle|armwraps|footwraps|aegis|torso|buckler|\bhood\b|\bcowl\b|\bheater(?! shield)|\bpavise(?! shield)|scutum|sipar|\btarge\b|aventail|backplate|balaclava|barbute|bascinet|breastplate|\bcap\b|longcoat|legwraps|\bcoat\b|\bcowl|cuirass|fauld|greaves|hauberk|\bhood\b|jerkin|leathers|lorica|mantle|(?<!crimson leather )\bmask\b|morion|pants|handguards|bodysuit|robe|sallet|shirt|sleeves|ticivara|tabard|tasset|thorakes|\blid\b|vambraces|vest|collar|coif|mitt|\bsteel mail\b)
           matchre Armor_Complete You have nothing of that sort|You are wearing nothing of that sort|You aren't wearing anything
           put inv armor
 	matchwait 4
@@ -745,10 +377,10 @@ remove_Armor:
      pause 0.1
           matchre remove_Armor ^\.\.\.wait|^Sorry, you may only type
           matchre stow_Armor You'?r?e? (?:hand|put|get|.* to|slip|quickly|switch|slide|desire|raise|sling|pull|drum|trace|wear|tap|recall|press|hang|gesture|push|move|whisper|lean|tilt|cannot|mind|drop|drape|loosen|work|lob|spread|not|fill|will|now|slowly|quickly|spin|filter|need|shouldn't|pour|blow|twist|struggle|place|knock|toss|set|add|search|circle|fake|weave|shove|try|must|wave|sit|fail|turn|already|can\'t|glance|bend|swing|chop|bash|dodge|feint|draw|parry|carefully|quietly|sense|begin|rub|sprinkle|stop|combine|take|decide|insert|lift|retreat|load|fumble|exhale|allow|have|are|wring|icesteel|scan|vigorously|adjust|bundle|ask|form|lose|remove|accept|pick|silently|realize|open|grab|fade|offer|aren't|kneel|don\'t|close|let|find|attempt|tie|roll|attach|feel|read|reach|gingerly|come|corruption|count) .*(?:\.|\!|\?)?
-          matchre stow_Armor ^Without any effort|the .* slide off|tug the .* free|Shaking your head
+          matchre stow_Armor ^Without any effort|the .* slide off|tug the .* free|Shaking your head|^Wiggling|^Wriggling
           matchre armor_Check ^You have nothing of that|^Remove what
           put remove %armor
-     matchwait
+     matchwait 5
 stow_Armor:
      pause 0.1
      pause 0.1
@@ -881,7 +513,16 @@ no_More_Stowing:
      pause 0.5
 	goto done
 lock.check:
-	if (toupper("%lockpick.ring") = "YES") then gosub lockpick_ring_check
+	if matchre("%lockpick.ring", "(?i)(YES|ON)") then gosub lockpick_ring_check
+     if ("$guild" = "Barbarian") then 
+          {
+               if (%yogi = 0) then send kneel
+               pause 0.3
+               send meditate focus
+               pause 2
+               pause
+               if (!$standing) then gosub stand
+          }
 	goto main
 
 ###########################################################
@@ -894,7 +535,7 @@ main:
      var trap_type NULL
      var disarmed 0
 	pause 0.1
-     if (toupper("%GIVEBOX") = "YES") then
+     if matchre("%GIVEBOX", "(?i)(YES|ON)") then
           {
                put whisper %user Ready for a box!
                put nod %user
@@ -903,27 +544,22 @@ main:
                send accept
                pause
           }
-	if ((toupper("%keep.picking") != "YES") && (toupper("%GIVEBOX") != "YES")) then
+	if (!matchre("%keep.picking", "(?i)(YES|ON)") && !matchre("%GIVEBOX", "(?i)(YES|ON)")) then
           {
-               if $Locksmithing.LearningRate > 33 then goto LOCKED_SKILLS
+               if ($Locksmithing.LearningRate > 33) then goto LOCKED_SKILLS
           }
      if (("$guild" = "Thief") && ($concentration > 50)) then
 		{
-            pause 0.1
-            if ($Augmentation.Ranks < 180) then send kneel
-			send khri %khri
-			pause 0.5
-               pause 0.1
-            if (!$standing) then gosub stand
+                 pause 0.1
+                 if ($Augmentation.Ranks < 180) then send kneel
+                 pause 0.3
+                 send khri %khri
+                 pause 0.5
+                 pause 0.1
+                 if (!$standing) then gosub stand
 		}
-     if ("$guild" = "Barbarian") then 
-          {
-               send meditate focus
-               pause 2
-          }
 	pause 0.2
-     if (toupper("%PET.BOXES") = "YES") then gosub petContainer_Check
-	if (toupper("%GIVEBOX") != "YES") && (toupper("%PET.BOXES") != "YES") then gosub container_Check
+	if (matchre("$lefthand", "Empty") && matchre("$righthand", "Empty")) then gosub container_Check
 	if ("$lefthand" = "Empty") then
 		{
 			send swap
@@ -942,8 +578,6 @@ disarm_sub:
      pause 0.1
 	if ("$guild" = "Thief") then gosub glance_box
      gosub disarm_ID
-     if (toupper("%PET.BOXES") = "YES") && (%disarmed = 0) then goto PETBOX_ERROR
-     if (toupper("%PET.BOXES") = "YES") then goto lock_sub
      if ("%trap_type" = "NULL") then goto lock_sub
      gosub trap_diff_compute
      echo *** Adjusted Trap Difficulty: %total_difficulty
@@ -952,31 +586,29 @@ disarm_sub:
 	gosub disarm
 	var disarm.count 0
 	var harvest.count 0
-	if (toupper("%harvest") = "YES") then gosub analyze
-	if (toupper("%multi_trap") = "ON") then goto disarm_sub
-	if (($roomid != %STARTING.ROOM) && ("%MOVE.ROOMS" = "YES")) then
+	if matchre("%harvest", "(?i)(YES|ON)") then gosub analyze
+	if matchre("%multi_trap", "(?i)(YES|ON)") then goto disarm_sub
+	if (($roomid != %STARTING.ROOM) && matchre("%MOVE.ROOMS", "(?i)(YES|ON)")) then
 		{
 			gosub automove %STARTING.ROOM
 			pause 0.1
 		}
-     if ((toupper("%disarmOnly") = "YES") && (toupper("%GIVEBOX") = "YES")) then goto GIVEBOX
-     if (toupper("%disarmOnly") = "YES") then goto stowDisarmed
-	if (toupper("%lockpick.ring") != "YES") then gosub get_Pick
+     if (matchre("%disarmOnly", "(?i)(YES|ON)") && matchre("%GIVEBOX", "(?i)(YES|ON)")) then goto GIVEBOX
+     if matchre("%disarmOnly", "(?i)(YES|ON)") then goto stowDisarmed
+	if !matchre("%lockpick.ring", "(?i)(YES|ON)") then gosub get_Pick
 lock_sub:
      # debug 0
 	pause 0.1
 	if ("$guild" = "Thief") then gosub glance_box
-	if (toupper("%PET.BOXES") != "YES") then gosub pick_ID
+	gosub pick_ID
 	# if ("%mode" = "toss") then goto toss_box
 	pause 0.1
-	if (toupper("%PET.BOXES") != "YES") then gosub pick
-     if (toupper("%PET.BOXES") = "YES") then gosub pick_Cont
+	gosub pick
      pause 0.1
-	if (toupper("%multi_lock") = "ON") then goto lock_sub
-	if (toupper("%lockpick.ring") != "YES") then gosub put_Away_Pick
-     if (toupper("%PET.BOXES") = "YES") then gosub exp_Check
+	if matchre("%multi_lock", "(?i)(YES|ON)") then goto lock_sub
+	if !matchre("%lockpick.ring", "(?i)(YES|ON)") then gosub put_Away_Pick
 GIVEBOX:
-     if (toupper("%GIVEBOX") = "YES") then
+     if matchre("%GIVEBOX", "(?i)(YES|ON)") then
           {
                if ("$righthand" = "Empty") then send swap
                pause 0.5
@@ -985,6 +617,7 @@ GIVEBOX:
                waitfor accepts
                goto Continued
           }
+     pause 0.1
 	gosub loot
 	gosub dismantle
 Continued:
@@ -1008,7 +641,7 @@ petContainer_Check:
      if matchre("$righthand $lefthand", "%box_types") then return
      goto LOCKED_SKILLS
 container_BagCheck:
-     var container $1
+     var container $0
      pause 0.001
      pause 0.1
      pause 0.01
@@ -1034,6 +667,7 @@ PETBOX_ERROR:
      
 get_For_Disarm:
 	var disarmit $0
+     var disarm.noun $2
 	get.Box:
 	pause 0.1
 	pause 0.1
@@ -1046,7 +680,6 @@ get_For_Disarm:
 		matchwait
 
 weapon:
-     if (toupper("%PET.BOXES") = "YES") then goto %SAVE
      var LAST WEAPON
      pause 0.2
      pause 0.1
@@ -1176,7 +809,7 @@ ID_FAIL:
 
 disarm:
 	var multi_trap OFF
-	if matchre("%trap_type", "(concussion|disease|reaper|shrapnel|gas|lightning)") && ($roomid != %SAFE.ROOM) && (toupper(%MOVE.ROOMS) = "YES") then gosub automove %SAFE.ROOM
+	if matchre("%trap_type", "(concussion|disease|reaper|shrapnel|gas|lightning)") && ($roomid != %SAFE.ROOM) && matchre("%MOVE.ROOMS", "(?i)(YES|ON)") then gosub automove %SAFE.ROOM
 disarmIt_Cont:
      var SAVE disarmIt_Cont
 	var LAST disarmIt_Cont
@@ -1211,7 +844,7 @@ disarm_Return:
      pause 0.1
      pause 0.1
      put disarm id
-     pause 0.5
+     wait
      pause 0.1
      return
 
@@ -1221,39 +854,40 @@ analyze:
      pause 0.001
      pause 0.1
 	pause 0.1
+analyze_1:
      pause 0.1
 	if (%harvest.count > 2) then goto RETURN
 	     matchre weapon knuckles|handwraps
-		matchre analyze ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
-		matchre analyze You are unable to
+		matchre analyze_1 ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
+		matchre analyze_1 You are unable to
 		matchre harvest You already have made an extensive study|You are certain the %disarmit is not trapped|Roundtime|You guess it is already disarmed|DISARM HELP for syntax help|You\'ve already analyzed this trap
 		matchre return fumbling fails to disarm|This is not likely to be a good thing
 		matchre disarm what could you possibly analyze
 	put disarm anal
-	matchwait
+	matchwait 7
 
 harvest:
 	var LAST harvest
 	math harvest.count add 1
      pause 0.1
-     pause 0.1
 	pause 0.1
-     pause 0.1
+harvest_1:
 	if (%harvest.count > 4) then goto RETURN
-		matchre harvest ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
+          matchre analyse ^You will need to analyze the %disarmit before you attempt to harvest it\.
+		matchre harvest_1 ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
 		matchre disarm_ID what could you possibly analyze
 		matchre return It appears that none of the trap components are accessible|been completely harvested|unsuitable for harvesting|You don't see any reason
 		matchre harvest Your laborious fumbling fails to harvest the trap component|You fumble
-		matchre stow_Component Roundtime
+		matchre stow_Component Roundtime|you extract a portion|With great care|You carefully
 	put disarm harvest
-	matchwait
+	matchwait 7
 
 stow_Component:
      pause 0.3
      pause 0.1
      pause 0.1
 	if ("$righthandnoun" = "cube") then send put cube in my %container1
-     if (toupper("%keepcomponent") = "YES") then
+     if matchre("%keepcomponent", "(?i)(YES|ON)") then
           {
                if matchre("$righthand", "(%component_list)") then gosub stow_It $0
           }
@@ -1273,19 +907,19 @@ stow_It:
 		var LAST stow_Comp
 			matchre stow_It ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
 			matchre return ^You put
-               matchre stow_ItAlt any more room|no matter how you arrange|^That's too heavy|too thick|too long|too wide|not designed to carry anything|^But that's closed
-		put put %component in my %componentcontainer
-		matchwait
+               matchre stow_ItAlt any more room|no matter how you arrange|^That's too heavy|too thick|too long|too wide|not designed to carry anything|^But that's closed|^You can't
+		put put $righthandnoun in %componentcontainer
+		matchwait 5
 stow_ItAlt:
-     put put %component in my %container1
+     put put $righthandnoun in %container1
      pause 0.5
      return
 
 get_Pick:
      pause 0.1
-     if (toupper("%skeleton.key") = "YES") then goto get_Skeleton
+     if matchre("%skeleton.key", "(?i)(YES|ON)") then goto get_Skeleton
 	var LAST get_Pick
-     if ((toupper("%lockpick.ring") = "YES") && ("$righthand" = "Empty")) then gosub get_Pick
+     if (matchre("%lockpick.ring", "(?i)(YES|ON)") && ("$righthand" = "Empty")) then goto pull_Pick
 		matchre get_Pick ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
 		matchre return You get|You are already
 		matchre no_More_Picks What were you referring to|^I could not
@@ -1309,7 +943,8 @@ pull_Pick:
 		matchre pull_Pick ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
 		matchre return ^You get|^You are already|^You pull
 		matchre get_Pick ^What were you referring to|^But there aren't any lockpicks
-	put pull my lockpick ring
+          matchre no_More_Picks ^You'll need to hold 
+	put pull my %lockpick.ring.type
 	matchwait
 
 no_More_Picks:
@@ -1340,6 +975,8 @@ pick.storage2:
 	else put put lockpick in my %container1
 	matchwait
 
+find_Pick:
+     gosub get_Pick
 pick_ID:
 	var LAST pick_ID
 	var SAVE pick_ID
@@ -1350,7 +987,7 @@ pick_ID:
                put stow $righthand
                pause 0.8
           }
-     if ((toupper("%lockpick.ring") != "YES") && ("$righthand" = "Empty")) || ((toupper("%skeleton.key") = "YES") && ("$righthand" = "Empty")) then gosub get_Pick
+     if ((!matchre("%lockpick.ring", "(?i)(YES|ON)") && ("$righthand" = "Empty")) || (matchre("%skeleton.key", "(?i)(YES|ON)") && ("$righthand" = "Empty"))) then gosub get_Pick
      pause 0.001
      pause 0.001
           matchre pick_ID ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
@@ -1358,10 +995,10 @@ pick_ID:
 		matchre disarm_ERROR is not fully disarmed
 		matchre pick_ID fails to teach you anything about the lock guarding it|just broke
 		matchre return Roundtime|has already helpfully been analyzed|not even locked|^Pick what|^You|Somebody has
-		matchre get_Pick Find a more appropriate tool
+		matchre find_Pick Find a more appropriate tool
 	put pick ID
 	matchwait
-
+     
 pick:
 	var LAST pick
 	var SAVE pick_Cont
@@ -1372,12 +1009,15 @@ pick:
 		matchre pick_Cont Roundtime|has already helpfully been analyzed|not even locked|^Pick what
 	put pick anal
 	matchwait
+     
+find_Pick2:
+     gosub get_Pick
 pick_Cont:
      var multi_lock OFF
-	if ((toupper("%lockpick.ring") != "YES") && ("$righthand" = "Empty")) then gosub get_Pick
-     if (toupper("%GIVEBOX") != "YES") then
+	if (!matchre("%lockpick.ring", "(?i)(YES|ON)") && ("$righthand" = "Empty")) then gosub get_Pick
+     if !matchre("%GIVEBOX", "(?i)(YES|ON)") then
      	{
-          if !matchre(toupper("%keep.picking"), "YES") then
+          if !matchre("%keep.picking", "(?i)(YES|ON)") then
                {
                     if ($Locksmithing.LearningRate > 33) then goto LOCKED_SKILLS
                }
@@ -1388,18 +1028,23 @@ pick_Cont:
      pause 0.1
      pause 0.1
 	pause 0.1
-     if ($Locksmithing.LearningRate > 33) && (toupper("%PET.BOXES") = "YES") then goto LOCKED_SKILLS
-	if (%pickloop > 20) && (toupper("%PET.BOXES") != "YES") then goto toss_Box
+	if (%pickloop > 20) then goto toss_Box
 	if (%pickloop > 6) then var mode careful
+     if (%pickloop > 2) && (%pickloop < 4) then 
+          {
+               send get skeleton key
+               wait
+               pause 0.5
+          }
 	if ((%pickloop > 2) && ("%mode" = "quick")) then var mode normal
 	if ((%pickloop > 2) && ("%mode" = "blind")) then var mode quick
-     if (toupper("%PET.BOXES") = "YES") then var mode blind
-     matchre return With a soft click|A sharp click|Roundtime|^Pick what|It\'s not even locked\, why bother\?
+     if ($Locksmithing.Ranks > 1700) then var mode quick
+     matchre RETURN With a soft click|A sharp click|Roundtime|^Pick what|It\'s not even locked\, why bother\?
 	matchre pick_Cont ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
 	matchre weapon hinders your attempt|knuckles|handwraps|hand claws
 	matchre pick_cont You are unable to make
-	matchre get_Pick Find a more appropriate tool
-     if matchre("$righthand|$lefthand", "skeleton key") then put turn key with %disarmit
+	matchre find_Pick2 Find a more appropriate tool
+     if matchre("$righthand $lefthand", "skeleton key") then put turn key with %disarmit
 	else put pick %mode
 	matchwait
 
@@ -1414,7 +1059,7 @@ toss_Box:
 	var LAST toss_Box
      var failcount 0
 return_Box:
-     if (toupper("%GIVEBOX") = "YES") then
+     if matchre("%GIVEBOX", "(?i)(YES|ON)") then
           {
                if ("$righthand" = "Empty") then send swap
                pause 0.5
@@ -1445,17 +1090,17 @@ return_Box:
 loot:
 open_Box:
 	var LAST open_Box
-     pause 0.001
+     pause 0.2
      pause 0.2
 	pause 0.2
-		matchre loot ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
-		matchre get_Gem_Pouch open
-		matchre pick_ID It is locked
-	put open my %disarmit
+	matchre open_Box ^\.\.\.wait|^Sorry, you may only type|^You are still stunned
+	matchre get_Gem_Pouch open
+	matchre pick_ID It is locked
+	put open my %disarm.noun
 	matchwait
 get_Gem_Pouch:
 	var LAST get_Gem_Pouch
-     if (toupper("%gempouchWorn") = "YES") then goto fill_Gem_Pouch
+     if matchre("%gempouchWorn", "(?i)(YES|ON)") then goto fill_Gem_Pouch
      if ("$righthand" != "Empty") then GOSUB STOW right
      pause 0.001
 	pause 0.2
@@ -1473,7 +1118,7 @@ fill_Gem_Pouch:
 		matchre stow_Pouch ^You take|^There aren't any|You fill your|You open your|You have to be holding
 		matchre full_Pouch anything else|pouch is too full
           matchre lock_sub ^It is locked
-	put fill my %gempouch with my %disarmit
+	put fill my %gempouch with my %disarm.noun
 	matchwait
 
 tied_Pouch:
@@ -1488,7 +1133,7 @@ full_Pouch:
      echo *** FILLED UP A GEM POUCH. STASHING IN %gempouch.container
 	pause 0.5
      gosub PUT open my %gempouch.container
-     if (toupper("%gempouchWorn") = "YES") then
+     if matchre("%gempouchWorn", "(?i)(YES|ON)") then
           {
           put rem my %gempouch
           pause 0.8
@@ -1511,9 +1156,9 @@ get_Pouch:
      pause 0.2
      gosub PUT get my gem pouch
      pause 0.5
-     if (toupper("%tie.pouch") = "YES") then gosub PUT tie my pouch
+     if matchre("%tie.pouch", "(?i)(YES|ON)") then gosub PUT tie my pouch
      pause 0.2
-     if (toupper("%gempouchWorn") = "YES") then put wear my %gempouch
+     if matchre("%gempouchWorn", "(?i)(YES|ON)") then put wear my %gempouch
      pause 0.3
      goto fill_Gem_Pouch
 sell_these_gems:
@@ -1551,6 +1196,14 @@ nonGem_Done:
 
 stow_Pouch:
 	var LAST stow_Pouch
+     pause 0.1
+     if matchre("%gempouchWorn", "(?i)(YES|ON)") then
+          {
+               put wear my %gempouch
+               wait
+               pause 0.7
+          }
+     if !matchre("$righthand $lefthand", pouch) then goto get_Coin
 		matchre stow_Pouch ^\.\.\.wait|^Sorry, you may only type
 		matchre stow_Pouch2 any more room|no matter how you arrange|^That's too heavy|too thick|too long|too wide
 		matchre get_Coin You|Stow|^But that is
@@ -1584,18 +1237,18 @@ map_Check:
      if (%lootcheck > 3) then return
 	var LAST map_Check
      pause 0.1
-		matchre stow_Gear (gear|\bbolt\b|\bnut\b|glarmencoupler|spangleflange|rackensprocket|flarmencrank)
+		matchre stow_Gear (gear|\bbolt\b|\bnut\b|glarmencoupler|spangleflange|rackensprocket|flarmencrank|page|spine|bloodlock|cover)
 		matchre get_Map (map|treasure map|Treasure map)
           matchre soap soap
           matchre get_it (\broll\b|\bscroll\b|nugget|ingot|\bbar\b|jadeite|kyanite|bark|parchment|\bdira\b|papyrus|tablet|vellum|ostracon|leaf|\brune\b)
 		matchre return In the|nothing|What
-	put look in my %disarmit
+	put look in my %disarm.noun
 	matchwait
 
 soap:
      pause 0.1
      pause 0.1
-     gosub PUT get soap from my %disarmit
+     gosub PUT get soap from my %disarm.noun
      pause 0.2
      put drop soap
      pause 0.2
@@ -1605,7 +1258,7 @@ stow_Gear:
      var item $1
      pause 0.001
      pause 0.001
-	gosub PUT get %item from my %disarmit
+	gosub PUT get %item from my %disarm.noun
      pause 0.2
 	gosub STOW %item
 	pause 0.1
@@ -1614,7 +1267,7 @@ stow_Gear:
 get_Map:
      pause 0.001
      pause 0.001
-	gosub PUT get map from my %disarmit
+	gosub PUT get map from my %disarm.noun
      pause 0.1
 	gosub STOW map
 	pause 0.2
@@ -1626,7 +1279,7 @@ get_it:
      var item $1
      pause 0.001
      pause 0.001
-     gosub PUT get %item in my %disarmit
+     gosub PUT get %item in my %disarm.noun
      gosub STOW %item
      pause 0.2
      goto map_Check
@@ -1659,9 +1312,21 @@ dismantle:
 		matchre disarm_sub You must first disarm
 		matchre return Roundtime|Unable to locate|^Dismantle what\?
           matchre return ^You must be holding
-	put disman my %disarmit %dismantle
+	put disman my %disarm.noun %dismantle
 	matchwait
 
+MEDITATE_CHECK:
+     var yogi 0
+     match YOGION Yogi
+     matchre YOGINO ^You have not been trained in any Masteries from the path of the Flame\.
+     put mastery list
+     matchwait 2
+YOGINO:
+     return
+YOGION:
+     var yogi 1
+     return
+     
 DUMPSTER_SET:
 DUMPSTER_CHECK:
      var dumpster NULL
@@ -1710,9 +1375,9 @@ empty_Hand:
 	if ("$righthand" != "Empty") then GOSUB STOW right
 	if ("$lefthand" != "Empty") then GOSUB STOW left
 fix_Lock:
-	if (toupper("%lockpick.ring") != "YES") then gosub get_Pick
-	if (toupper("%lockpick.ring") = "YES") then gosub fix_Ring
-	if (toupper("%lockpick.ring") = "YES") then goto go_On
+	if !matchre("%lockpick.ring", "(?i)(YES|ON)") then gosub get_Pick
+	if matchre("%lockpick.ring", "(?i)(YES|ON)") then gosub fix_Ring
+	if matchre("%lockpick.ring", "(?i)(YES|ON)") then goto go_On
 	fixing:
 	var LAST fixing
 		pause 0.5
@@ -1722,7 +1387,7 @@ fix_Lock:
 	put fix my lock
 	matchwait
 	go_On:
-	if (toupper("%lockpick.ring") != "YES") then gosub put_Away_Pick
+	if !matchre("%lockpick.ring", "(?i)(YES|ON)") then gosub put_Away_Pick
 	return
 
 fix_Ring:
@@ -1734,7 +1399,7 @@ fix_Ring:
 		matchre empty_Hand You must use both hands
 		matchre fixing_Ring ^\.\.\.wait|^Sorry, you may only type
 		matchre return Roundtime|look like it|^You can't figure out how to fix that
-	put repair my lockpick %lockpick.ring.type
+	put repair my %lockpick.ring.type
 	matchwait 20
 	goto empty_Ring
 
@@ -1775,16 +1440,12 @@ exp_Check:
 	math LOCAL add 1
 	math BOXES add 1
 	put #var Boxes %LOCAL
-	echo
+	echo ===================
 	echo **** Boxes popped: %BOXES
-	echo
+	echo ===================
      #END BOX COUNTER
 	##################
-	if !matchre(toupper("%keep.picking"), "YES") then
-          {
-               if ($Locksmithing.LearningRate > 33) then goto LOCKED_SKILLS
-          }
-     if (toupper("%PET.BOXES") = "YES") then
+     if matchre("%keep.picking", "(?i)(NO|OFF)") then
           {
                if ($Locksmithing.LearningRate > 33) then goto LOCKED_SKILLS
           }
@@ -1794,12 +1455,12 @@ lockpick_ring_check:
      pause 0.1
      pause 0.001
      matchre type_ring ^You tap (.+) you are wearing
-     matchre lockpick_ring_type2 ^I could not|^What|^You tap
+     matchre lockpick_ring_type2 ^I could not|^What
      send tap my lockpick ring
      matchwait 3
      goto lockpick_ring_type2
 type_ring:
-     var lockpick.ring.type ring
+     var lockpick.ring.type lockpick ring
      goto fill_lockpick_ring
 lockpick_ring_type2:
      pause 0.1
@@ -1809,7 +1470,7 @@ lockpick_ring_type2:
      send tap my lockpick case
      matchwait 8
 type_case:
-     var lockpick.ring.type case
+     var lockpick.ring.type lockpick case
      goto fill_lockpick_ring
 lockpick_ring_type3:
      pause 0.1
@@ -1819,17 +1480,37 @@ lockpick_ring_type3:
      send tap my lockpick ankle-cuff
      matchwait 8
 type_ankle:
-     var lockpick.ring.type ankle
+     var lockpick.ring.type lockpick ankle
      goto fill_lockpick_ring
 lockpick_ring_type4:
      pause 0.1
      pause 0.001
      matchre type_key ^You tap (.+) you are wearing
-     matchre no_ring ^I could not|^What
+     matchre lockpick_ring_type5 ^I could not|^What
      send tap my golden key
      matchwait 8
 type_key:
      var lockpick.ring.type golden key
+     goto fill_lockpick_ring
+lockpick_ring_type5:
+     pause 0.1
+     pause 0.001
+     matchre type_wrist ^You tap (.+) you are wearing
+     matchre lockpick_ring_type6 ^I could not|^What
+     send tap my lockpick wrist
+     matchwait 8
+type_wrist:
+     var lockpick.ring.type lockpick wrist
+     goto fill_lockpick_ring
+lockpick_ring_type6:
+     pause 0.1
+     pause 0.001
+     matchre type_wrist ^You tap (.+) you are wearing
+     matchre no_ring ^I could not|^What
+     send tap my tool case
+     matchwait 8
+type_wrist:
+     var lockpick.ring.type tool case
      goto fill_lockpick_ring
 no_ring:
      var lockpick.ring NO
@@ -1837,19 +1518,22 @@ no_ring:
 
 
 fill_lockpick_ring:
+     echo *** TYPE: %lockpick.ring.type
      pause 0.1
+     matchre fill_lockpick_ring ^\.\.\.wait|^Sorry\,|^Please wait\.
      matchre empty_lock ^The .* is empty but you think (\d+) lockpicks would probably fit\.
-     matchre new_lock it might hold an additional (\d+)
-     matchre lockpick_ringfull appears to be full|It looks|looks to be holding
+     matchre new_lock The .+ looks to be holding (\d+) lockpicks and it might hold an additional (\d+)\.
+     matchre lockpick_ringfull appears to be full|It looks
      matchre empty_lock (empty)
-     if ("$guild" = "Thief") then put glance my lockpick %lockpick.ring.type
-     else put app my lockpick %lockpick.ring.type
+     if ("$guild" = "Thief") then put glance my %lockpick.ring.type
+     else put app my %lockpick.ring.type
      matchwait
 empty_lock:
      var lockpickcount $1
+     pause 0.2
      pause 0.1
-     pause 0.1
-     matchre No_Picks ^What were you|^I could not find
+     matchre empty_lock ^\.\.\.wait|^Sorry\,|^Please wait\.
+     matchre make_more_locks ^What were you|^I could not find
      matchre put_lock ^You get|already holding|^You need a free
      put get my lockpick
      matchwait
@@ -1857,23 +1541,29 @@ new_lock:
      var lockpickcount $1
      pause 0.1
      pause 0.1
+     matchre new_lock ^\.\.\.wait|^Sorry\,|^Please wait\.
      matchre make_more_locks ^What were you|^I could not find
      matchre put_lock ^You get|already holding|^You need a free
      put get my lockpick
      matchwait
 put_lock:
      pause 0.1
+     pause 0.1
+     matchre put_lock ^\.\.\.wait|^Sorry\,|^Please wait\.
      matchre fill_lockpick_ring ^You put
      matchre stow_lock ^You don't think you should put different kinds|already has as many lockpicks|^What
-     put put my lock in my lock %lockpick.ring.type
+     put put my lock in my %lockpick.ring.type
      matchwait
 stow_lock:
      put stow lock
      pause 0.1
      return
 make_more_locks:
-     if ("%lockpickcount" != "empty") then return
-     put #echo >Log Orange ******** Running low on lockpicks! Make more! *************
+     if ("%lockpickcount" = "empty") then return
+     if (%lockpickcount < 16) then
+          {
+               put #echo >Log Orange **** Lockpicks running low!! %lockpickcount left in %lockpick.ring.type
+          }
      return
 lockpick_ringfull:
      put #var RestockLockpicks 0
@@ -1898,24 +1588,129 @@ out_of_pouches:
      goto LOCKED_SKILLS
      
 LOCKED_SKILLS:
-     echo
+     echo ==================================
      echo *** FINISHED PICKING BOXES!
-     echo
-     put #echo >Log Aqua *** Finished Boxes - Locksmithing: $Locksmithing.Ranks $Locksmithing.LearningRate / 34 ***
+     echo ** Locksmithing: $Locksmithing.Ranks $Locksmithing.LearningRate/34 ***
+     echo ** %BOXES boxes this session - $Boxes boxes over all time
+     echo ==================================
+     put #echo >Log Aqua *** Finished Boxes - Locksmithing: $Locksmithing.Ranks $Locksmithing.LearningRate/34 ***
      put #echo >Log Aqua *** %BOXES boxes this session - $Boxes boxes over all time
 DONE:
      pause 0.1
      #send dump junk
      pause 0.5
-     if (toupper("%PET.BOXES") = "YES") then gosub stowDisarm
      gosub STOWING
      pause 0.1
-     if (toupper("%wear.armor") = "YES") then gosub WEAR_ARMOR
+     if matchre("%wear.armor", "(?i)(YES|ON)") then gosub WEAR_ARMOR
      gosub PUT get my %knuckles
      gosub PUT wear my %knuckles
      pause 0.1
+SELL_COMPONENTS:
+SELLCOMPS:
+     var person NULL
      gosub STOWING
+     var Locksmiths Ragge|Kilam|Hekipe|Sephina|Ss'thran|Cormyn|Bynari|Dorsot|Ioun|Ishh|Oweede|Paedraig|Relf|Saeru|Dumi
+     if (matchre("%keepcomponent", "(?i)(YES|ON)") && ("$guild" = "Thief")) then
+     {
+          echo ======================
+          echo *** Going to Pawnshop/Locksmith 
+          echo *** To Sell Trap Components
+          echo ======================
+          pause 0.5
+          pause 0.4
+          if matchre("$zoneid","\b(150)\b") then gosub LEAVE_SEACAVE
+          pause 0.1
+          if matchre("$zoneid","\b(7|8|4)\b") then gosub AUTOMOVE cross
+          if matchre("$zoneid","\b(124|126|127)\b") then gosub AUTOMOVE hib
+          if matchre("$zoneid","\b(124|126|127)\b") then gosub AUTOMOVE hib
+          if matchre("$zoneid","\b(62|58|59|60|112)\b") then gosub AUTOMOVE leth
+          if matchre("$zoneid","\b(62|58|59|60|112)\b") then gosub AUTOMOVE leth
+          if matchre("$zoneid","\b(34a|31|32|33)\b") then gosub AUTOMOVE river
+          if matchre("$zoneid","\b(34a|31|32|33)\b") then gosub AUTOMOVE river
+          if matchre("$zoneid","\b(34a|31|32|33)\b") then gosub AUTOMOVE river
+          if ("$zoneid" = "40") then gosub AUTOMOVE theren
+          if ("$zoneid" = "66") then gosub AUTOMOVE east
+          if ("$zoneid" = "98") then gosub AUTOMOVE aesry
+          if matchre("$zoneid","\b(40)\b") then gosub AUTOMOVE theren
+          if matchre("$zoneid","\b(66)\b") then gosub AUTOMOVE east
+          if matchre("$zoneid","\b(66)\b") then gosub AUTOMOVE east
+          pause 0.1
+          if !matchre("$zoneid","\b(1|30|42|47|67|90|99|107|116)\b") then
+               {
+                    echo ======================================
+                    echo *** NOT IN A RECOGNIZED AREA TO SELL COMPONENTS
+                    echo ======================================
+                    pause 0.5
+                    goto DONE_DONE
+               }
+          if matchre("$zoneid","\b(1|30|47|67)\b") then gosub AUTOMOVE locks
+          if matchre("$zoneid","\b(42|90|99|107|116)\b") then gosub AUTOMOVE pawn
+          pause
+          pause
+          if (!$standing) then gosub STAND
+          echo ====================
+          echo *** Selling Trap Components!
+          echo ====================
+          pause
+          pause
+          if (!$standing) then gosub STAND
+          if ("$roomplayers" != "") then
+               {
+                    echo ** PEOPLE IN THE ROOM! WAITING TO SELL...
+                    pause 10
+               }
+          if ("$roomplayers" != "") then
+               {
+                    echo ** PEOPLE IN THE ROOM! WAITING TO SELL...
+                    pause 10
+               }
+          if ("$roomplayers" != "") then
+               {
+                    echo ** PEOPLE IN THE ROOM! WAITING TO SELL...
+                    pause 10
+               }
+          if matchre("$roomdesc", "(%Locksmiths)") then var person $1
+          if matchre("$roomobjs", "(%Locksmiths)") then var person $1
+          pause 0.1
+          echo ** Pouch Buyer: %person
+          pause 0.1
+          pause 0.1
+          pause 0.1
+          if ("$roomplayers" != "") then goto ROOM_OCCUPIED
+          if ("%person" = "NULL") then goto NOT_FOUND
+          put get my %componentcontainer
+          wait
+          pause 0.5
+          put give my %componentcontainer to %person
+          put sell my %componentcontainer
+          pause 0.5
+          pause 0.3
+          pause 0.2
+          gosub COMPONENT_CHECK
+          if ("%comp" != "NULL") then put give my %componentcontainer to %person
+          gosub COMPONENT_CHECK
+          if ("%comp" != "NULL") then put give my %componentcontainer to %person
+          pause 0.5
+     }
+     goto DONE_DONE
+NOT_FOUND:
+     echo ==========================
+     echo ** LOCKSMITH/PAWN GUY NOT RECOGNIZED!!
+     echo ==========================
+     pause
+     goto DONE_DONE
+ROOM_OCCUPIED:
+     echo ====================
+     echo ** ROOM IS OCCUPIED 
+     echo ** UNABLE TO SELL COMPONENTS
+     echo ====================
+     pause
+     goto DONE_DONE
+DONE_DONE:
+     gosub STOWING
+     echo ==================
      echo *** DONE PICKING BOXES!
+     echo ==================
      put #parse DONE PICKING BOXES
      put #parse DONE BOXES!
      put #parse BOXES DONE!
@@ -1925,6 +1720,55 @@ SAVE:
      pause 0.2
      pause 0.1
      goto %SAVE
+     
+COMPONENT_CHECK:
+     var comp NULL
+     pause 0.1
+COMPONENT_CHECK_1:
+     var comploop 0
+     var LAST COMPONENT_CHECK_1
+     var bag %container1
+     matchre COMPONENT_GET (%component_list)
+	put look in my %bag
+	matchwait 3
+COMPONENT_CHECK_2:
+     var comploop 0
+     var LAST COMPONENT_CHECK_2
+	var bag %container2
+     pause 0.1
+     matchre COMPONENT_GET (%component_list)
+	put look in my %bag
+	matchwait 3
+COMPONENT_CHECK_3:
+     var comploop 0
+     var LAST COMPONENT_CHECK_3
+	var bag %container3
+     pause 0.1
+     matchre COMPONENT_GET (%component_list)
+	put look in my %bag
+	matchwait 3
+     return
+COMPONENT_GET:
+     var comp $1
+COMPONENT_GET_1:
+     math comploop add 1
+     if (%comploop > 15) then goto %LAST
+     if (%comploop > 7) then
+          {
+               put give my %componentcontainer to %person
+          }
+     pause 0.01
+     put get %comp from %bag
+     wait
+     pause 0.1
+     pause 0.1
+     if matchre("$righthand $lefthand", "(%component_list)") then
+          {
+               if matchre("$righthand", "%component_list") then put put $righthandnoun in %componentcontainer
+               if matchre("$lefthand", "%component_list") then put put $lefthandnoun in %componentcontainer
+               goto COMPONENT_GET_1
+          }
+     goto %LAST
 ####################################################################
 #  BLOWN TRAPS HANDLING SECTION
 # THIS SECTION TELLS THE SCRIPT WHAT TO DO WHEN YOU BLOW A TRAP
@@ -2016,12 +1860,19 @@ CURSE_TRAP:
      echo *** WAITING FOR IT TO WEAR OFF
      echo *** OR GET A CLERIC TO UNCURSE!
      echo
-     matchre DONE_CURSE ^The eerie black radiance fades
-     if !("$roomplayers" = "") then put 'help! I be cursed.. any clerics about?
+     matchre DONE_CURSE ^The eerie black radiance fades|The curse on the .+ breaks
+     pause 3
+     if !("$roomplayers" = "") then
+          {
+               random 1 3
+               if (%r = 1) then put 'help! I be cursed from a box.. any clerics about?
+               if (%r = 2) then put 'anyone able to uncurse?
+               if (%r = 3) then put 'could someone assist with uncursing me?
+          }
      matchwait 100
      goto CURSE_TRAP
 DONE_CURSE:
-     action remove ^The eerie black radiance fades
+     action remove ^The eerie black radiance fades|The curse on the .+ breaks
      gosub stowing
      pause
      goto TOP
@@ -2350,7 +2201,7 @@ HEALTH:
      if (%Necro.Known = 1) then goto NECRO_NOHEAL
      pause 0.5
      gosub HEALTH_CHECK
-     if ($needHealing) && toupper("%autoheal") = "NO") then
+     if ($needHealing) && matchre("%autoheal", "(?i)(NO|OFF)") then
           {
                echo ** AUTOHEAL: OFF
                echo ** Aborting Script! Go Get healed!!
@@ -2625,8 +2476,34 @@ AUTOPATH_LEAVE:
 ######################
 # GOSUBS
 ######################
+LEAVE_SEACAVE:
+LEAVE_SEACAVES:
+     if ("$guild" = "Necromancer") then
+          {
+               if (($spellEOTB = 0) || ($invisible = 0)) then
+                    {
+                         put prep EOTB 15
+                         pause 5
+                    }
+          }
+     if (("$zoneid" = "150") && ($roomid != 85)) then gosub AUTOMOVE 85
+     if (("$zoneid" = "150") && ($roomid != 85)) then gosub AUTOMOVE 85
+     pause 0.4
+     if (("$zoneid" = "150") && ($roomid != 85)) then gosub AUTOMOVE 85
+     pause 0.2
+     if ("$zoneid" = "150") then put go portal
+     pause 0.3
+     pause 0.2
+     put look
+     pause 0.2
+     if ("$guild" = "Necromancer") && ("$preparedspell" != "None") then put cast
+     pause
+     if ("$zoneid" = "150") then goto LEAVE_SEACAVE
+     return
 PUT_STOW:
-     gosub EMPTY_HANDS
+     put stow left
+     put stow right
+     pause
      goto PUT_1
 PUT_STAND:
      gosub stand
@@ -2948,7 +2825,7 @@ STAND:
      STAND_RETURN:
      pause 0.1
      pause 0.1
-     if (!$standing) then goto STAND
+     if ($standing = 0) then send stand
      return
 ### STOWING
 STOWING:
