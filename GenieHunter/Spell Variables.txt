@@ -124,6 +124,8 @@ RANGER
 #trigger {^You sense the Sense of the Tiger spell (upon|surrounding) you, which|^You close your eyes and focus on the catalyst of the spell pattern, the Tiger} {#var SOTT ON} {buff}
 #trigger {^\s+Closing the (StormFront|Wizard) front end does NOT necessarily|^Your death cry echoes in your brain|Connection closed|Last login|^With a slight jolt, you suddenly feel disconnected from the pack} {#var WOTP OFF} {buff}
 #trigger {^You sense the Wisdom of the Pack spell (upon|surrounding) you, which|^You close your eyes and focus on the catalyst of the spell pattern, a pack of Wolves} {#var WOTP ON} {buff}
+#trigger {^You sense the Skein of Shadows spell upon you|^The shadows subtly deepen about you as your movements grow still.} {#var SKS ON} {buff}
+#trigger {^\s+Closing the (StormFront|Wizard) front end does NOT necessarily|Connection closed|^Your death cry echoes in your brain|^As your Skein of Shadows disperses you notice that even your simple movements seem needlessly tumultuous\.$} {#var SKS OFF} {buff}
 
 WARRIOR MAGE
 
