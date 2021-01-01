@@ -5020,7 +5020,7 @@ LOAD:
 	matchre RANGE_GET ^You must|your hand jams|^You can ?not load
 	matchre RANGE_REMOVE_CHECK while wearing an? (.+)
 	matchre RETURN Roundtime|is already
-		if ($guild = Ranger && $HOL = ON && $GH_DUAL_LOAD = ON) || ($guild = Barbarian && $EAGLE = ON && $GH_DUAL_LOAD = ON) then
+		if ($guild = Ranger && $STW = ON && $GH_DUAL_LOAD = ON) || ($guild = Barbarian && $EAGLE = ON && $GH_DUAL_LOAD = ON) then
 		{
 			send load arrows
 			matchwait 80
