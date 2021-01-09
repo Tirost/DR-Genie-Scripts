@@ -113,7 +113,7 @@ EmpathWounds:
 		}
 	if %fountain.known then
 		{
-		if foc.use then
+		if %foc.use then
 			{
 			if %fresh > 10 then
 				{
