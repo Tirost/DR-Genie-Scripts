@@ -42,6 +42,45 @@ var Crossing.West.Gate.Rooms.Swim NONE
 var Crossing.West.Gate.Rooms.Climb NONE
 var Crossing.West.Gate.Room.Cycle 1
 
+#Reshalia Trade Road
+var Reshalia.Trade.Road.Rooms 15|54|61|62|63|64|65|66|80|87|88|89|90|91|92|93|94|101|104|105|106|107|108|36|40|41|42
+var Reshalia.Trade.Road.Rooms.Prem NONE
+var Reshalia.Trade.Road.Rooms.Enemy NONE
+var Reshalia.Trade.Road.Rooms.Swim NONE
+var Reshalia.Trade.Road.Rooms.Climb NONE
+var Reshalia.Trade.Road.Rooms.Cycle 2
+
+#Road to Aesry
+var Road.to.Aesry.Rooms 82|73|61|60|59|58|62|63|64|65|66|67|68|69|70|71|72
+var Road.to.Aesry.Rooms.Prem NONE
+var Road.to.Aesry.Rooms.Enemy NONE
+var Road.to.Aesry.Rooms.Swim NONE
+var Road.to.Aesry.Rooms.Climb NONE
+var Road.to.Aesry.Rooms.Cycle 85
+
+#Aesry Surlaenis'a
+var Aesry.Surlaenis'a.Rooms 281|282|283|284|285|292|297|298|299|300
+var Aesry.Surlaenis'a.Rooms.Prem NONE
+var Aesry.Surlaenis'a.Rooms.Enemy NONE
+var Aesry.Surlaenis'a.Rooms.Swim NONE
+var Aesry.Surlaenis'a.Rooms.Climb NONE
+var Aesry.Surlaenis'a.Rooms.Cycle 108
+
+#M'Riss
+var M'Riss.Rooms NONE
+var M'Riss.Rooms.Prem NONE
+var M'Riss.Rooms.Enemy 166|167|168|171|172|173|175|186|181|205|206|207|212
+var M'Riss.Rooms.Swim NONE
+var M'Riss.Rooms.Climb NONE
+var M'Riss.Rooms.Cycle 168
+
+#Hara'jaal
+var Hara'jaal.Rooms NONE
+var Hara'jaal.Rooms.Prem NONE
+var Hara'jaal.Rooms.Enemy 57|56|55|50
+var Hara'jaal.Rooms.Swim NONE
+var Hara'jaal.Rooms.Climb NONE
+var Hara'jaal.Rooms.Cycle 116
 
 ##Variables##
 var Rare.List azurelle|bloodwood|bocote|cherry|copperwood|darkspine|ebony|goldwood|hickory|ironwood|kapok|lelori|mistwood|osage|redwood|rockwood|sandalwood|silverwood|tamarak|yew
