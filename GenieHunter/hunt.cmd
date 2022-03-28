@@ -68,6 +68,8 @@ put #var save
 ##		can also use .hunt with no arguments to do this                 ##
 ## DMSET: setup for multi-weapon with default settings                  ##
 ##		use is .hunt dmset weapon1 weapon2 ...                          ##
+## DISSECT: will attempt to dissect while First Aid is not locked       ##
+##     reverts to skinning when First Aid is locked			##
 ## DMULTI: Multi-weapon with default settings                           ##
 ## DODGE/EVADE: sets stance to evasion stance                           ##
 ## DSET: used to set up the default settings                            ##
@@ -295,7 +297,7 @@ var barb.tact
 ##Empath Variables
 var Empath_Monster
 
-var OPTIONVARS AMB.*?|ANAL.*?|APPR.*?|ARM.*?|ARRA.*?|AUG|BACKS.*?|BARB.*?|BAST.*?|BLO(?!WGUN).*?|BON.*?|BRA.*?|BS|BUF.*?|BUN.*?|COLL.*?|CONS.*?|COUNTSKIP|COUNT|CUST.*?|DANCE|DANG.*?|DEBIL|DEF.*?|DLOAD|DMSET|DMULTI|DODGE|DSET|DUAL.*?|DYING|EMP.*?|\bENCH.*?|EVA.*?|EXP|FEINT|FLEE|FSWAP|HELP|HUNT|HURL|JUGG.*?|JUNK|KHRI|LOB|LOOTA.*?|LOOTB.*?|LOOTC.*?|LOOTG.*?|MAGIC|MANIP|MARK|MSET|MULTI|NECROH.*?|NECROR.*?|NISS.*?|NOEV.*?|NOPA.*?|NOSH.*?|OFF.*?|PARA(?!NG).*?|PARRY|PARTb|PART\b|PILGRIM|PM|POACH|POINT|POUCH|POWER|\bPP\b|RET.*?|RITUAL|ROAM|SCRAPE.*?|SCREAM|SEARCH|SKIN.*?|SKINRET.*?|SLOW|SMITE|SNAP|SNIP.*?|SPEL.*?|STACK|STANCE|SWAP|TAC.*?|TARG.*?|THIEF|THROWb|THROW\b|TIE|TIME.*?|TM|TRAIN|TSWAP|UTIL|WEAR|YOYO
+var OPTIONVARS AMB.*?|ANAL.*?|APPR.*?|ARM.*?|ARRA.*?|AUG|BACKS.*?|BARB.*?|BAST.*?|BLO(?!WGUN).*?|BON.*?|BRA.*?|BS|BUF.*?|BUN.*?|COLL.*?|CONS.*?|COUNTSKIP|COUNT|CUST.*?|DANCE|DANG.*?|DEBIL|DEF.*?|DISS.*?|DLOAD|DMSET|DMULTI|DODGE|DSET|DUAL.*?|DYING|EMP.*?|\bENCH.*?|EVA.*?|EXP|FEINT|FLEE|FSWAP|HELP|HUNT|HURL|JUGG.*?|JUNK|KHRI|LOB|LOOTA.*?|LOOTB.*?|LOOTC.*?|LOOTG.*?|MAGIC|MANIP|MARK|MSET|MULTI|NECROH.*?|NECROR.*?|NISS.*?|NOEV.*?|NOPA.*?|NOSH.*?|OFF.*?|PARA(?!NG).*?|PARRY|PARTb|PART\b|PILGRIM|PM|POACH|POINT|POUCH|POWER|\bPP\b|RET.*?|RITUAL|ROAM|SCRAPE.*?|SCREAM|SEARCH|SKIN.*?|SKINRET.*?|SLOW|SMITE|SNAP|SNIP.*?|SPEL.*?|STACK|STANCE|SWAP|TAC.*?|TARG.*?|THIEF|THROWb|THROW\b|TIE|TIME.*?|TM|TRAIN|TSWAP|UTIL|WEAR|YOYO
 var OPTION NONE
 
 var lastmaneuver none
@@ -591,6 +593,11 @@ put #var GH_CONSTRUCT OFF
 ## ON - Will retreat while buffing, it will also set BUFF to on if it's not set already
 ## OFF - Default
 put #var GH_BUFF_DANGER OFF
+
+## DISSECT can be OFF or ON
+## ON - Will dissect dead enemies instead of skinning while First Aid is not locked, reverts to skinning when locked
+## OFF = Default
+put #var GH_DISSECT OFF
 
 ## DUALLOAD Can be OFF or ON
 ## ON - Will dual load your ranged weapon
@@ -1536,6 +1543,19 @@ DEFAULT:
 	gosub GENERAL_TRIGGERS
 	if ("$GH_MULTI" != "OFF") then goto DEFAULT_ERROR
 	goto LOAD_DEFAULT_SETTINGS
+	
+DISS:
+DISSE:
+DISSEC:
+DISSECT:
+	if ("%GAG_ECHO" != "YES") then
+	{
+		echo
+		echo *** DISSECT: ***
+		echo
+	}
+	put #var GH_DISSECT ON
+  goto SKIN
 
 DSET:
 	if ("%GAG_ECHO" != "YES") then
@@ -6351,7 +6371,18 @@ PERFORM_RITUAL_2:
 	SKINNING:
 		pause 0.0001
 		if ("$righthand" != "Empty" && "%RANGED" = "ON") then gosub RANGE_SHEATHE $righthandnoun
-		else if ("$righthand" != "Empty") then gosub SHEATHE $righthandnoun
+		else if ("$righthand" != "Empty" && "$righthand" != "skinning knife") then gosub SHEATHE $righthandnoun
+		if ("$GH_DISSECT" == "ON" && $First_Aid.LearningRate > 34) then
+			{
+			matchre NO_DISSECT You do not yet possess the knowledge
+			matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
+			matchre SKIN_CONT a waste of time\.|While likely
+			matchre SKIN_CHECK Roundtime
+			send dissect
+			matchwait 15
+			goto SKIN_ERROR
+			}
+		SKIN_CONT:
 		action put #math GH_SKINS add 1 when into your bundle\.$
 		matchre SKINNING ^You approach
 		matchre DROPPED_SKINNER ^You'll need to have a bladed instrument
@@ -6362,6 +6393,12 @@ PERFORM_RITUAL_2:
 		send skin
 		matchwait 15
 		goto SKIN_ERROR
+		
+NO_DISSECT:
+	echo You do not know how to Dissect yet. Turning Dissection off.
+	put #var GH_DISSECT OFF
+	goto SKINNING
+	
 SKIN_CHECK:
 	var LAST SKIN_CHECK
 	if (matchre("$lefthand","%CURR_WEAPON") && ("%EXP2" = "Offhand_Weapon")) then
