@@ -15,7 +15,7 @@
 	   			var temp = list[i];
 	        list[i] = list[i+1];
 	        list[i+1] = temp;
-	        i = 0;
+	        i = -1;
 	    }
 	   }
 	  break;
