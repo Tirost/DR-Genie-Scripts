@@ -6372,7 +6372,7 @@ PERFORM_RITUAL_2:
 		pause 0.0001
 		if ("$righthand" != "Empty" && "%RANGED" = "ON") then gosub RANGE_SHEATHE $righthandnoun
 		else if ("$righthand" != "Empty" && "$righthand" != "skinning knife") then gosub SHEATHE $righthandnoun
-		if ("$GH_DISSECT" == "ON" && $First_Aid.LearningRate > 34) then
+		if ("$GH_DISSECT" == "ON" && $First_Aid.LearningRate < 34) then
 			{
 			matchre NO_DISSECT You do not yet possess the knowledge
 			matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
