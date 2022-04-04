@@ -1,5 +1,5 @@
 ########################################################
-#Version 60.2 (5/1/2018)
+#Version 60.3 (4/4/2022)
 #Edited by the player of Isharon to work with Combat 3.1
 #Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
 #Download: http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
@@ -25,6 +25,7 @@
 #*added optional Thief/mark syntax (Londrin)
 #*added support for Thief khri (Londrin)
 #*added support for throwing bonded weapons (Azarael)
+#*added support for Non-Necro Dissection (Azarael)
 ########################################################
 
 put #class alert on
