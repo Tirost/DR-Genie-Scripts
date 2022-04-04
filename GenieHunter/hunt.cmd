@@ -2,8 +2,6 @@
 #Version 60.4 (4/4/2022)
 #Edited by the player of Isharon to work with Combat 3.1
 #Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
-#Download: http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
-#Support Thread: http://www.genieclient.com/bulletin/topic/4644-download-combat-geniehunter-31-and-geniebuff-31/
 #*added construct mode (Empath-safe weapon and TM training by Londrin)
 #*added Nissa mode (Empath debilitation training)
 #*added point mode for hidden creatures (Azarael)
