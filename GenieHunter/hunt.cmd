@@ -1,5 +1,5 @@
 ########################################################
-#Version 60.3 (4/4/2022)
+#Version 60.4 (4/4/2022)
 #Edited by the player of Isharon to work with Combat 3.1
 #Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
 #Download: http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
@@ -26,6 +26,7 @@
 #*added support for Thief khri (Londrin)
 #*added support for throwing bonded weapons (Azarael)
 #*added support for Non-Necro Dissection (Azarael)
+#*fixed issues with worn knives, no longer need the list to check, uses 'inv search knife' to find a worn knife (Azarael)
 ########################################################
 
 put #class alert on
@@ -2452,10 +2453,10 @@ SKIN:
 		echo
 	}
 	var BELT_WORN OFF
-	action var BELT_WORN ON when ^You are wearing.+(ankle|arm|belt|outdoors|ritualist'?s?|skinning|tail|thigh|wrist|steel) (blade|knife)
-	put inventory
-	waitforre ^You are wearing
-	action remove ^You are wearing.+(ankle|arm|belt|outdoors|ritualist'?s?|skinning|tail|thigh|wrist) (blade|knife)
+	action var BELT_WORN ON when Your .* knife is being worn\.
+	put inventory search knife
+	waitforre INVENTORY HELP
+	action remove Your .* knife is being worn\.
 	put #var GH_SKIN ON
 	if "$GH_BONE" = "ON" then put #var GH_SKINPART BONE
 	if "$GH_PART" = "ON" then put #var GH_SKINPART PART
