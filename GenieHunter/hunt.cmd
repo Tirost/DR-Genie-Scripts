@@ -6370,8 +6370,12 @@ PERFORM_RITUAL_2:
 		}
 	SKINNING:
 		pause 0.0001
+		pause 0.0001
 		if ("$righthand" != "Empty" && "%RANGED" = "ON") then gosub RANGE_SHEATHE $righthandnoun
-		else if ("$righthand" != "Empty" && "$righthand" != "skinning knife") then gosub SHEATHE $righthandnoun
+		else 
+		  {
+		  if ("$righthand" != "Empty" && "$righthand" != "skinning knife" && "%BELT_WORN" = "OFF") then gosub SHEATHE $righthandnoun
+	  	  }
 		if ("$GH_DISSECT" == "ON" && $First_Aid.LearningRate < 34) then
 			{
 			matchre NO_DISSECT You do not yet possess the knowledge
