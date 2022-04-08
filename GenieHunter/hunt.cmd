@@ -6298,7 +6298,7 @@ DEAD_MONSTER:
 		{
 		matchre NO_DISSECT You do not yet possess the knowledge
 		matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
-		matchre SKIN_CONT a waste of time\.|While likely
+		matchre SKINNABLE a waste of time\.|While likely
 		matchre SKIN_CHECK Roundtime
 		send dissect
 		matchwait 15
@@ -6306,6 +6306,7 @@ DEAD_MONSTER:
 		}
 	else
 		{
+		SKINABBLE:
 		if matchre ("$roomobjs", "(%skinnablecritters) ((which|that) appears dead|\(dead\))") then goto SKIN_MONSTER_$GH_SKIN
 		}
 	if matchre ("$roomobjs", "(which|that) appears dead|\(dead\)") then goto SEAR_MONSTER
