@@ -1,5 +1,5 @@
 ########################################################
-#Version 60.4 (4/4/2022)
+#Version 60.5 (4/4/2022)
 #Edited by the player of Isharon to work with Combat 3.1
 #Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
 #*added construct mode (Empath-safe weapon and TM training by Londrin)
@@ -25,6 +25,7 @@
 #*added support for throwing bonded weapons (Azarael)
 #*added support for Non-Necro Dissection (Azarael)
 #*fixed issues with worn knives, no longer need the list to check, uses 'inv search knife' to find a worn knife (Azarael)
+#*changed location of Dissection check to allow for Dissection of non-skinnable critters. (Azarael)
 ########################################################
 
 put #class alert on
