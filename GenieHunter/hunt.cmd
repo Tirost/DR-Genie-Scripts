@@ -6287,13 +6287,26 @@ DEAD_MONSTER:
 	}
 	NECRO_RETURN:
 	if ("%SHIELD" != "NONE") then
-	{
-		if ("$lefthand" = "Empty") then
 		{
-			gosub EQUIP_SHIELD
+			if ("$lefthand" = "Empty") then
+				{
+				gosub EQUIP_SHIELD
+				}
 		}
-	}
-	if matchre ("$roomobjs", "(%skinnablecritters) ((which|that) appears dead|\(dead\))") then goto SKIN_MONSTER_$GH_SKIN
+	if ("$GH_DISSECT" == "ON" && $First_Aid.LearningRate < 34) then
+		{
+		matchre NO_DISSECT You do not yet possess the knowledge
+		matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
+		matchre SKIN_CONT a waste of time\.|While likely
+		matchre SKIN_CHECK Roundtime
+		send dissect
+		matchwait 15
+		goto SKIN_ERROR
+		}
+	else
+		{
+		if matchre ("$roomobjs", "(%skinnablecritters) ((which|that) appears dead|\(dead\))") then goto SKIN_MONSTER_$GH_SKIN
+		}
 	if matchre ("$roomobjs", "(which|that) appears dead|\(dead\)") then goto SEAR_MONSTER
 	goto NO_MONSTER
 
@@ -6376,16 +6389,6 @@ PERFORM_RITUAL_2:
 		  {
 		  if ("$righthand" != "Empty" && "$righthand" != "skinning knife" && "%BELT_WORN" = "OFF") then gosub SHEATHE $righthandnoun
 	  	  }
-		if ("$GH_DISSECT" == "ON" && $First_Aid.LearningRate < 34) then
-			{
-			matchre NO_DISSECT You do not yet possess the knowledge
-			matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
-			matchre SKIN_CONT a waste of time\.|While likely
-			matchre SKIN_CHECK Roundtime
-			send dissect
-			matchwait 15
-			goto SKIN_ERROR
-			}
 		SKIN_CONT:
 		action put #math GH_SKINS add 1 when into your bundle\.$
 		matchre SKINNING ^You approach
