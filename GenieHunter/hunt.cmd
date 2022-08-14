@@ -1,7 +1,9 @@
 ########################################################
-#Version 60.5 (4/4/2022)
+#Version 6.0.5 (8/13/2022)
 #Edited by the player of Isharon to work with Combat 3.1
 #Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
+#Download: http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
+#Support Thread: http://www.genieclient.com/bulletin/topic/4644-download-combat-geniehunter-31-and-geniebuff-31/
 #*added construct mode (Empath-safe weapon and TM training by Londrin)
 #*added Nissa mode (Empath debilitation training)
 #*added point mode for hidden creatures (Azarael)
@@ -25,7 +27,7 @@
 #*added support for throwing bonded weapons (Azarael)
 #*added support for Non-Necro Dissection (Azarael)
 #*fixed issues with worn knives, no longer need the list to check, uses 'inv search knife' to find a worn knife (Azarael)
-#*changed location of Dissection check to allow for Dissection of non-skinnable critters. (Azarael)
+#*fixed an issue with Skinning after Non-Necro Dissection fails under certain conditions (Azarael)
 ########################################################
 
 put #class alert on
@@ -35,12 +37,11 @@ put #class joust off
 put #class racial off
 put #class rp off
 put #class shop off
-put #clear main
 
 #CHECK HERE
 put #var save
 #debuglevel 10
-##########################################################################
+###########################################################################
 ##		                                                                ##
 ##		             General combat script                              ##
 ##		       By: Warneck (with help from SFHunter)                    ##
@@ -67,10 +68,10 @@ put #var save
 ##		casting                                                         ##
 ## DEFAULT: use the default setting, use DSET fist to set up defaults   ##
 ##		can also use .hunt with no arguments to do this                 ##
+## DISSECT: will attempt to dissect while First Aid is not locked     ##
+##     reverts to skinning when First Aid is locked										##
 ## DMSET: setup for multi-weapon with default settings                  ##
 ##		use is .hunt dmset weapon1 weapon2 ...                          ##
-## DISSECT: will attempt to dissect while First Aid is not locked       ##
-##     reverts to skinning when First Aid is locked			##
 ## DMULTI: Multi-weapon with default settings                           ##
 ## DODGE/EVADE: sets stance to evasion stance                           ##
 ## DSET: used to set up the default settings                            ##
@@ -216,13 +217,9 @@ var GAG_ECHO YES
 var TACTICS weave|circle|bob
 var tact_move 0
 
-#action (hunt) put #queue clear; send 1 $lastcommand when ^\.\.\.wait|^Sorry, you may only type
-#action (hunt) put #queue clear; send 1 $lastcommand when ^You are still stunned
+action (hunt) put #queue clear; send 1 $lastcommand when ^\.\.\.wait|^Sorry, you may only type
+action (hunt) put #queue clear; send 1 $lastcommand when ^You are still stunned
 action goto ADVANCE when ^You must be closer to
-#action put #play Speech;put #flash when ^\w+ asks, \"|exclaims, \"|hisses, \"|lectures, \"|says, \"|^You hear .+ say|^You hear the voice of
-#action put #play Whisper;put #flash when ^\w+ whispers, \"
-#action put #play Whisper;put #flash when ^\[Personal\]\[(\w+)\]\s+\"\<to you\>\"\s+\"(.*)\"$
-#action put #play Whisper;put #flash when ^You hear \w+'s thoughts in your head|^You hear \w+'s (faint|loud) thoughts in your head
 action (stalk) goto SNEAKING when eval $roomid != %starter.room
 action (stalk) off
 action var _COMBO $1;eval _COMBO replacere("%_COMBO", "(,?\s?((an|a)|and (an|a))\s)", "|");eval _COMBO replacere("%_COMBO","^\|","");eval _combocount count("%_COMBO", "|") when by landing (.*)\.$
@@ -257,7 +254,7 @@ var monsters1 \badder\b|ashu hhinvi|atik'et|banshee|bloodvine|bucca|clay archer|
 var monsters2 /bdoll\b|dragon fanatic|dragon priest|dryad|dummy|dusk ogre|dyrachis|eviscerator|faenrae assassin|fendryad|fire maiden|folsi immola
 var monsters3 footpad|frostweaver|gam chaga|\bgeni\b|gidii|goblin shaman|graverobber|guardian|gypsy marauder|\bhag\b|harbinger|\bimp\b|juggernaut
 var monsters4 kelpie|kra'hei|kra'hei hatchling|lipopod|lun'shele hunter|madman|malchata|mountain giant|nipoh oshu|\bnyad\b|orc bandit
-var monsters5 orc clan chief|orc raider|orc reiver|orc scout|pile of rubble|pirate|river sprite|ruffian|sandstone golem|scavenger troll|scout ogre|screamer
+var monsters5 orc clan-chief|orc raider|orc reiver|orc scout|pile of rubble|pirate|river sprite|ruffian|sandstone golem|scavenger troll|scout ogre|screamer
 var monsters6 sentinel|shadow master|shadoweaver|sky giant|sleazy lout|sprite|swain|swamp troll|telga moradu|\bthug\b|trekhalo
 var monsters7 tress|umbramagii|velver|\bvine\b|vykathi builder|vykathi excavator|wood troll|\bwretch\b|young ogre|zealot
 
@@ -266,7 +263,7 @@ var undead2 revivified mutt|shylvic|sinister maelshyvean heirophant|skeletal peo
 var undead3 skeletal kobold headhunter|skeletal kobold savage|snaer hafwa|soul|spectral pirate|spectral sailor
 var undead4 spirit|ur hhrki'izh|wind hound|wir dinego|(?<!arisen \S+ )zombie(?!\s)|zombie (head-splitter|mauler|nomad|stomper)
 
-var skinnablemonsters1 angiswaerd hatchling|antelope|arbelog|armadillo|armored warklin|arzumo|asaren celpeze|badger|barghest|basilisk|\bbear\b|beisswurm|bison|black ape
+var skinnablemonsters1 angiswaerd hatchling|antelope|arbelog|armadillo|(armored )?warklin( mauler)?|arzumo|asaren celpeze|badger|barghest|basilisk|(?<!red )\bbear\b|beisswurm|bison|black ape
 var skinnablemonsters2 blight ogre|blood warrior|\bboa\b|\bboar\b|bobcat|boobrie|brocket deer|burrower|caiman|caracal|carcal|cave troll
 var skinnablemonsters3 cinder beast|cougar|\bcrab\b|crayfish|crocodile|\bdeer\b|dobek moruryn|faenrae stalker|firecat|\bfrog\b|gargoyle|giant blight bat
 var skinnablemonsters4 goblin|grass eel|\bgrub\b|gryphon|Isundjen conjurer|jackal|kartais|kobold|la'heke|larva|la'tami|leucro
@@ -275,7 +272,7 @@ var skinnablemonsters6 \brat\b|retan dolomar|rock troll|scaly seordmaor|serpent|
 var skinnablemonsters7 sleek hele'la|sluagh|snowbeast|\bsow\b|spider|spirit dancer|steed|storm bull|trollkin|\bunyn\b|viper|vulture|vykathi harvester
 var skinnablemonsters8 vykathi soldier|warcat|\bwasp\b|\bwolf\b|\bworm\b|zephyr husk
 
-var skinnableundead1 enraged tusky|fell hog|ghoul|ghoul crow|gremlin|grendel|lach|mastiff|mey|misshapen germish'din|ice adder|ice-covered adder skeleton
+var skinnableundead1 enraged tusky|fell hog|ghoul|ghoul crow|gremlin|grendel|lach|mastiff|mey|misshapen germish'din
 var skinnableundead2 mutant togball|reaver|shadow hound|squirrel|zombie kobold headhunter|zombie kobold savage|skeletal kobold headhunter|skeletal kobold savage
 
 var construct ashu hhinvi|boggle|bone amalgam|clay archer|clay mage|clay soldier|clockwork assistant|clockwork monstrosity|gam chaga|glass construct|granite gargoyle|lachmate|lava drake|marble gargoyle|origami \S+|quartz gargoyle|(alabaster|andesite|breccia|dolomite|marble|obsidian|quartzite|rock) guardian|rough-hewn doll|sandstone golem|Endrus serpent
@@ -314,7 +311,7 @@ TOP:
 #############################################################################
 ###                                                                       ###
 ###                                                                       ###
-###       VARIABLE INIT: ONLY CHANGE VARIABES IN THIS SECTION             ###
+###       VARIABLE INIT: Set the following Globals in your Client         ###
 ###                                                                       ###
 ###                                                                       ###
 #############################################################################
@@ -352,7 +349,7 @@ if matchre("$charactername" = "CHARACTER|NAMES") then
 ########################
 goto gh_buff.end
 gh_buff.start:
-	var buff.secondcambrinth NO
+	var buff.secondcambrinth $buff.secondcambrinth
 	var buff.trace 1
 	var buff.spell $buff.spells
 	var buff.prep $buff.prep
@@ -373,19 +370,20 @@ gh_buff.start:
 		{
 		#var buff.secondcambrinth $secondcambrinth
 		}
-	var buff.worn YES
-	var buff.remove NO
-	var buff.harness NO
+	var buff.worn $buff.worn
+	var buff.remove $buff.remove
+	var buff.harness $buff.harness
 	var buff.prep.message $PREP_MESSAGE
 	var buff.continue $buff.continue
-	var buff.held NO
-	var buff.manalevel 10
+	var buff.held $buff.held
+	var buff.manalevel $buff.manalevel
 
 	if $guild = Paladin then
 		{
 		var buff.ba.thrown yes
 		}
 
+	##Sample Buff arrays
 	#Cleric
 	#var buff.spell GAF|MAF|MPP|PFE|BENE|MAPP|EASE|LW
 	#var buff.prep 5|5|1|5|10|5|1|6
@@ -770,6 +768,11 @@ put #var GH_SKIN_RET OFF
 ## OFF - Default, no pauses
 put #var GH_SLOW OFF
 
+## SMITE can be OFF or ON
+## ON - Turns on Conviction Training with smite (PLD ONLY!)
+## OFF - Default, no smiting
+put #var GH_SMITE OFF
+
 ## SNAP can be OFF or ON
 ## ON - Snap fires a ranged weapon
 ## OFF - Default, waits for a full aim to fire a ranged
@@ -849,7 +852,7 @@ var EMPTY_HANDED OFF
 ## Evasion - evasion stance is current one set, Default
 ## Parry_Ability - parry stance is current one set
 ## Shield_Usage - shield stance is current one set
-var CURR_STANCE Evasion
+var CURR_STANCE Shield
 
 ## EXP2 can be Backstab, Hiding, NONE, Offhand_Weapon, Primay_Magic, Stalking, or Target_Magic
 ## Backstab - Used when backstabbing
@@ -995,7 +998,7 @@ action var ANALYZELEVEL 10 when massive opening
 action var BONDED ON when sense a deep connection
 put info
 waitforre ^Debt:$
-put exp 1
+put exp
 waitforre ^EXP HELP for more information
 put awaken
 
@@ -1165,7 +1168,6 @@ ARRANGE:
 	}
 	if tolower(%1) = all then
 		{
-		if "$guild" = "Ranger" then goto ARRANGE_ALL
 		match ARRANGE_ALL Leather Tanning Expertise
 		match ARRANGE_ALL Basic Bone Collecting
 		put craft tailor
@@ -1242,8 +1244,8 @@ GET_BS_WEAPON2:
 		var WEAPON_EXP Small_Edged
 		var CURR_RATE $Small_Edged.LearningRate
 		var RANGED OFF
-		var _COMBO1 parry
-		var _COMBO2 feint
+		var _COMBO1 attack
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -1255,8 +1257,8 @@ GET_BS_WEAPON2:
 		var WEAPON_EXP Small_Edged
 		var CURR_RATE $Small_Edged.LearningRate
 		var RANGED OFF
-		var _COMBO1 parry
-		var _COMBO2 feint
+		var _COMBO1 attack
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -1268,8 +1270,8 @@ GET_BS_WEAPON2:
 		var WEAPON_EXP Small_Blunt
 		var CURR_RATE $%WEAPON_EXP.LearningRate
 		var RANGED OFF
-		var _COMBO1 parry
-		var _COMBO2 feint
+		var _COMBO1 attack
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -1281,8 +1283,8 @@ GET_BS_WEAPON2:
 		var WEAPON_EXP Small_Blunt
 		var CURR_RATE $%WEAPON_EXP.LearningRate
 		var RANGED OFF
-		var _COMBO1 parry
-		var _COMBO2 feint
+		var _COMBO1 attack
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -1342,6 +1344,7 @@ BUFF:
 	}
 	put #var GH_BUFF ON
 	put #var GH_BUFF_INCLUDE 0
+	gosub gh_buff.start
 	return
 
 ## Will bundle anything skinned.  If skinning not enabled this does nothing.
@@ -2452,14 +2455,14 @@ SKIN:
 		echo
 	}
 	var BELT_WORN OFF
-	action var BELT_WORN ON when Your .* knife is being worn\.
-	put inventory search knife
-	waitforre INVENTORY HELP
-	action remove Your .* knife is being worn\.
-	put #var GH_SKIN ON
-	if "$GH_BONE" = "ON" then put #var GH_SKINPART BONE
-	if "$GH_PART" = "ON" then put #var GH_SKINPART PART
-	if "$GH_BONE" = "OFF" && "$GH_PART" = "OFF" then put #var GH_SKINPART SKIN
+		action var BELT_WORN ON when Your .* knife is being worn\.
+		put inventory search knife
+		waitforre INVENTORY HELP
+		action remove Your .* knife is being worn\.
+		put #var GH_SKIN ON
+		if "$GH_BONE" = "ON" then put #var GH_SKINPART BONE
+		if "$GH_PART" = "ON" then put #var GH_SKINPART PART
+		if "$GH_BONE" = "OFF" && "$GH_PART" = "OFF" then put #var GH_SKINPART SKIN
 	return
 
 ## Retreats while skinning
@@ -3060,8 +3063,8 @@ WEAPON_CHECK:
 		if ("%ALTEXP" != "ON") then var CURR_RATE $%WEAPON_EXP.LearningRate
 		if ("%ALTEXP" = "ON") && ("%EXP2" = "Stealth") then var CURR_RATE $%WEAPON_EXP.LearningRate
 		var RANGED OFF
-		var _COMBO1 parry
-		var _COMBO2 feint
+		var _COMBO1 attack
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -3085,8 +3088,8 @@ WEAPON_CHECK:
 		if ("%ALTEXP" = "ON") && ("%EXP2" = "Stealth") then var CURR_RATE $%WEAPON_EXP.LearningRate
 		var RANGED OFF
 		if matchre("$righthandnoun", "cinquedea") then goto HE_STAB
-		var _COMBO1 parry
-		var _COMBO2 feint
+		var _COMBO1 attack
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -3099,8 +3102,8 @@ WEAPON_CHECK:
 		echo
         echo *** HE Slicer ***
 		echo
-		var _COMBO1 parry
-		var _COMBO2 feint
+		var _COMBO1 attack
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -3114,8 +3117,8 @@ WEAPON_CHECK:
 		echo
 		echo *** HE Stabber ***
 		echo
-		var _COMBO1 parry
-		var _COMBO2 feint
+		var _COMBO1 attack
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -3141,8 +3144,8 @@ WEAPON_CHECK:
 			echo
 			echo *** ME_SLICE: ***
 			echo
-			var _COMBO1 parry
-			var _COMBO2 feint
+			var _COMBO1 attack
+			var _COMBO2 attack
 			var _COMBO3 attack
 			var _COMBO4 attack
 			var _COMBO5 attack
@@ -3156,7 +3159,7 @@ WEAPON_CHECK:
 			echo
 			echo *** ME_ILTESH: ***
 			echo
-			var _COMBO1 feint
+			var _COMBO1 attack
 			var _COMBO2 attack
 			var _COMBO3 attack
 			var _COMBO4 attack
@@ -3171,8 +3174,8 @@ WEAPON_CHECK:
 			echo
 			echo *** ME_THRUST: ***
 			echo
-			var _COMBO1 parry
-			var _COMBO2 feint
+			var _COMBO1 attack
+			var _COMBO2 attack
 			var _COMBO3 attack
 			var _COMBO4 attack
 			var _COMBO5 attack
@@ -3198,8 +3201,8 @@ WEAPON_CHECK:
 			echo
 			echo *** LE_SLICE: ***
 			echo
-			var _COMBO1 parry
-			var _COMBO2 feint
+			var _COMBO1 attack
+			var _COMBO2 attack
 			var _COMBO3 attack
 			var _COMBO4 attack
 			var _COMBO5 attack
@@ -3213,8 +3216,8 @@ WEAPON_CHECK:
 			echo
 			echo *** LE_STAB: ***
 			echo
-			var _COMBO1 parry
-			var _COMBO2 feint
+			var _COMBO1 attack
+			var _COMBO2 attack
 			var _COMBO3 attack
 			var _COMBO4 attack
 			var _COMBO5 attack
@@ -3233,7 +3236,7 @@ WEAPON_CHECK:
 		if "%ALTEXP" != "ON" then var CURR_RATE $%WEAPON_EXP.LearningRate
 		if ("%ALTEXP" = "ON") && ("%EXP2" = "Stealth") then var CURR_RATE $%WEAPON_EXP.LearningRate
 		var _COMBO1 dodge
-		var _COMBO2 feint
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -3257,7 +3260,7 @@ WEAPON_CHECK:
 		if ("%ALTEXP" = "ON") && ("%EXP2" = "Stealth") then var CURR_RATE $%WEAPON_EXP.LearningRate
 		var RANGED OFF
 		var _COMBO1 dodge
-		var _COMBO2 feint
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -3276,7 +3279,7 @@ WEAPON_CHECK:
 		if ("%ALTEXP" = "ON") && ("%EXP2" = "Stealth") then var CURR_RATE $%WEAPON_EXP.LearningRate
 		var RANGED OFF
 		var _COMBO1 dodge
-		var _COMBO2 feint
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -3295,7 +3298,7 @@ WEAPON_CHECK:
 		if ("%ALTEXP" = "ON") && ("%EXP2" = "Stealth") then var CURR_RATE $%WEAPON_EXP.LearningRate
 		var RANGED OFF
 		var _COMBO1 dodge
-		var _COMBO2 feint
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -3314,7 +3317,7 @@ WEAPON_CHECK:
 		if ("%ALTEXP" = "ON") && ("%EXP2" = "Stealth") then var CURR_RATE $%WEAPON_EXP.LearningRate
 		var RANGED OFF
 		var _COMBO1 dodge
-		var _COMBO2 feint
+		var _COMBO2 attack
 		var _COMBO3 attack
 		var _COMBO4 attack
 		var _COMBO5 attack
@@ -3623,6 +3626,7 @@ WIELD_WEAPON:
 	WIELDING_WEAPON:
 			matchre REMOVING_WEAPON out of reach|You'll need to remove|What were you|can't seem|is out of reach|You can only wield
 			matchre RETURN You draw|already holding|You deftly remove|With a flick of your wrist|With fluid and stealthy movements|You slip a
+			matchre GETTING_WEAPON You find it difficult to wield
 		put wield my %STRING
 		matchwait 10
 	REMOVING_WEAPON:
@@ -4040,7 +4044,8 @@ APPR_CREEP:
 	var Monster $0
 APPRAISING:
 	var LAST APPRAISING
-		matchre APPR_NO Roundtime|Appraise|You can't determine|appraise|You don't see|still stunned|Mark what\?
+	match DEAD_MONSTER It's dead!
+	matchre APPR_NO Roundtime|You can't determine|You don't see|still stunned|Mark what\?
 	if ($GH_MARK = ON) then put mark all %Monster
 	else
 		{
@@ -4050,11 +4055,15 @@ APPRAISING:
 	matchwait 15
 	goto APPR_ERROR
 
+APPR_DEAD:
+	pause 10
+	goto APPRAISING
+
 APPR_NO:
 	pause
 	pause
 	var lastdirection none
-	if ("%MAGIC" = "ON") then return
+	if ("%MAGIC" = "ON") then goto MAGIC_PREP
 	goto COUNT_$GH_DANCING
 
 COUNT_ON:
@@ -5152,6 +5161,18 @@ CHECK_AMMO:
 		gosub RANGED_CLEAN
 		goto 1000
 	}
+	else
+	{
+	match AMMO_AT_FEET You tap
+	match NO_AMMO referring
+	send tap %AMMO
+	matchwait
+	}
+	
+AMMO_AT_FEET:
+	gosub RANGED_CLEAN
+	goto 1000
+	
 NO_AMMO:
 	if ("%GAG_ECHO" != "YES") then
 	{
@@ -5318,7 +5339,7 @@ COMBAT_COMMAND:
 	{
 		put stance
 		waitforre ^Last Combat Maneuver
-		send stance set %RITUAL_STANCE
+		send stance %RITUAL_STANCE
 		waitforre ^You are now set|^Setting your
 		if $mana < 70 then waiteval $mana >= 70
 		var rhanditem none
@@ -5407,7 +5428,7 @@ COMBAT_COMMAND:
 		var nissa_time %t
 		math nissa_time add 120
 	}
-	If (("$GH_SCREAM" = "ON" && ("$guild" = "Bard") && ($Bardic_Lore.LearningRate < 30) && ($SCREAM_TIMER < $gametime)) then
+	if (("$GH_SCREAM" = "ON" && ("$guild" = "Bard") && ($Bardic_Lore.LearningRate < 30) && ($SCREAM_TIMER < $gametime)) then
 	{
 		if "%SCREAM_CONCUSSIVE" = "OFF" then
 		{
@@ -5670,7 +5691,6 @@ DO_ANALYZE:
 	matchre ANALYZE_DONE ^Roundtime|^You recall your combo|^Your analysis
 	matchre ADVANCE ^You must be closer
 	matchre FACE ^Analyze what|^You fail to find any
-	matchre RETURN ^You have just recently completed that attack combination, and cannot repeat it so soon.
 	action (combos) on
 	send analyze %barb.tact
 	matchwait 10
@@ -5929,8 +5949,9 @@ MAGIC_FACE_TM:
 	echo
 	echo MAGIC_FACE_TM:
 	echo
+	if !("$preparedspell" == "None") then send release spell
 	match MAGIC_TARGET You turn
-	matchre MAGIC_FACE_TM There is nothing|Face what\?
+	matchre CHECK_FOR_MONSTER There is nothing|Face what\?
 	send face next
 	matchwait 15
 	goto MAGIC_ERROR
@@ -6249,7 +6270,7 @@ TMPARALYSIS_FAIL:
 DEAD_MONSTER:
 	if ("%PREPSPELLWEAVE" = "ON") then
 	{
-		put release
+		put release spell
 		waitforre ^You aren't|^You have no|^You
 		var PREPSPELLWEAVE OFF
 	}
@@ -6288,27 +6309,24 @@ DEAD_MONSTER:
 	}
 	NECRO_RETURN:
 	if ("%SHIELD" != "NONE") then
+	{
+		if ("$lefthand" = "Empty") then
 		{
-			if ("$lefthand" = "Empty") then
-				{
-				gosub EQUIP_SHIELD
-				}
+			gosub EQUIP_SHIELD
 		}
+	}
 	if ("$GH_DISSECT" == "ON" && $First_Aid.LearningRate < 34) then
-		{
-		matchre NO_DISSECT You do not yet possess the knowledge
-		matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
-		matchre SKINNABLE a waste of time\.|While likely
-		matchre SKIN_CHECK Roundtime
-		send dissect
-		matchwait 15
-		goto SKIN_ERROR
-		}
-	else
-		{
-		SKINABBLE:
-		if matchre ("$roomobjs", "(%skinnablecritters) ((which|that) appears dead|\(dead\))") then goto SKIN_MONSTER_$GH_SKIN
-		}
+			{
+			matchre NO_DISSECT You do not yet possess the knowledge
+			matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
+			matchre SKINNABLE a waste of time\.|While likely
+			matchre SKIN_CHECK Roundtime
+			send dissect
+			matchwait 15
+			goto SKIN_ERROR
+			}
+SKINNABLE:
+	if matchre ("$roomobjs", "(%skinnablecritters) ((which|that) appears dead|\(dead\))") then goto SKIN_MONSTER_$GH_SKIN
 	if matchre ("$roomobjs", "(which|that) appears dead|\(dead\)") then goto SEAR_MONSTER
 	goto NO_MONSTER
 
@@ -6338,9 +6356,11 @@ SKIN_MONSTER:
 		}
 	}
 	goto GET_KNIFE
+	
 PERFORM_RITUAL:
 	var GOING_TO PERFORM_RITUAL_2
 	if $mana > 80 && "$GH_NECROHEAL" = "ON" then gosub health_check
+	
 PERFORM_RITUAL_2:
 	if "$GH_NECRORITUAL" = "OFF" then goto NECRO_RETURN
 	if toupper("$GH_NECRORITUAL") = "HARVEST" && ("%SHIELD" != "NONE") then
@@ -6385,12 +6405,11 @@ PERFORM_RITUAL_2:
 		}
 	SKINNING:
 		pause 0.0001
-		pause 0.0001
 		if ("$righthand" != "Empty" && "%RANGED" = "ON") then gosub RANGE_SHEATHE $righthandnoun
 		else 
 		  {
 		  if ("$righthand" != "Empty" && "$righthand" != "skinning knife" && "%BELT_WORN" = "OFF") then gosub SHEATHE $righthandnoun
-	  	  }
+	  	}
 		SKIN_CONT:
 		action put #math GH_SKINS add 1 when into your bundle\.$
 		matchre SKINNING ^You approach
@@ -6407,7 +6426,7 @@ NO_DISSECT:
 	echo You do not know how to Dissect yet. Turning Dissection off.
 	put #var GH_DISSECT OFF
 	goto SKINNING
-	
+
 SKIN_CHECK:
 	var LAST SKIN_CHECK
 	if (matchre("$lefthand","%CURR_WEAPON") && ("%EXP2" = "Offhand_Weapon")) then
@@ -6439,7 +6458,7 @@ DROPPED_SKINNER:
 		echo
 	}
 	pause 1
-	put get knife
+	put wield knife
 	goto SKINNING
 
 ARRANGE_KILL:
@@ -6586,14 +6605,14 @@ TOO_HEAVY:
 	matchwait 15
 	goto SKIN_ERROR
 HAVE_ONE_CONT:
-	if toupper("$GH_WEAR") = "ON" && ("$righthandnoun" = "bundle" || "$lefthandnoun" = "bundle" then gosub WEAR_BUNDLE
+	if (toupper("$GH_WEAR") = "ON" && ("$righthandnoun" = "bundle" || "$lefthandnoun" = "bundle")) then gosub WEAR_BUNDLE
 	if toupper("$GH_WEAR") = "OFF" then
 	{
 		put drop bundle
 		waitfor You drop
 	}
 	if ("%EMPTY_HANDED" = "ON") then goto SKIN_REEQUIP_DONE
-	else goto SKIN_REEQUIP
+	else goto SKIN_KNIFE_SHEATH
 WEAR_BUNDLE:
 matchre PULL_BUNDLE ^You can't wear
 matchre return ^You put|^You attach|^You sling|^You drape|^You are already wearing
@@ -6630,12 +6649,16 @@ BUNDLE_OFF:
 	#put #var GH_SKINS %LOCAL
 	if ("$lefthand" != "Empty") then put empty left
 	pause 1
+HAVE_:
+	var LAST SKIN_KNIFE_SHEATH
+	action remove into your bundle\.$
+	if ("$righthandnoun" = "knife") then gosub SHEATHE knife
+	goto SKIN_REEQUIP
 SKIN_KNIFE_SHEATH:
 	var LAST SKIN_KNIFE_SHEATH
 	action remove into your bundle\.$
 	if ("$righthandnoun" = "knife") then gosub SHEATHE knife
 	goto SKIN_REEQUIP
-
 SKIN_REEQUIP:
 	var LAST SKIN_REEQUIP
 	if ("%EMPTY_HANDED" != "ON") then
@@ -6924,9 +6947,6 @@ EXPCHECK_ON:
 
 	if ((("%EXP2" = "Targeted_Magic") || ("%EXP2" = "Backstab") || ("%EXP2" = "Debilitation")) || (("%WEAPON_EXP" = "Light_Thrown") || ("%WEAPON_EXP" = "Heavy_Thrown"))) then var ROUNDS 15
 	else var ROUNDS 3
-	if ("%EXP2" != "NONE") then put #statusbar 3 Training %EXP2 at $%EXP2.LearningRate and %WEAPON_EXP at $%WEAPON_EXP.LearningRate
-	else put #statusbar 3 Training %WEAPON_EXP at $%WEAPON_EXP.LearningRate
-	put #statusbar 2 Current Rounds: %current_rounds / Rounds: %ROUNDS
 
 	if ("%ALTEXP" = "ON") then gosub ALTEXPCHECK
 	else
@@ -6942,7 +6962,7 @@ EXPCHECK_ON:
 				var CURR_RATE $%WEAPON_EXP.LearningRate
 			}
 		}
-		if ($%WEAPON_EXP.LearningRate >= 30) then goto SWITCH_WEAPON
+		if ($%WEAPON_EXP.LearningRate = 34) then goto SWITCH_WEAPON
 	}
 
 
@@ -7118,7 +7138,7 @@ SWITCH_WEAPON:
 
 	if ("%PREPSPELLWEAVE" = "ON") then
 	{
-		put release
+		put release spell
 		waitforre ^You aren't harnessing any mana\.
 	}
 	action (summon) off
@@ -7549,24 +7569,6 @@ buff.start:
 	var thrown.weapons Heavy_Thrown|Light_Thrown
 	var buff.special.casts Benediction|Cage of Light|Rutilor's Edge|Bond Armaments|Osrel Meraud|Ignite
 
-GH.BUFF.ROTATION:
-	if %c > %buff.total then return
-	if ("$guild" = "Trader" then
-	{
-		if ((toupper("%buff.spell(%c)") = "LGV" && (!$SpellTimer.LastGiftofVithwokIV.active)) then gosub buff.magic
-		if ((toupper("%buff.spell(%c)") = "FIN" && (!$SpellTimer.Finesse.active)) then gosub buff.magic
-		if ((toupper("%buff.spell(%c)") = "BLUR" && (!$SpellTimer.Blur.active)) then gosub buff.magic
-		if ((toupper("%buff.spell(%c)") = "NOU" && (!$SpellTimer.Noumena.active)) then gosub buff.magic
-		if ((toupper("%buff.spell(%c)") = "TURI" && (!$SpellTimer.TurmarIllumination.active)) then gosub buff.magic
-		if ((toupper("%buff.spell(%c)") = "NON" && (!$SpellTimer.Nonchalance.active)) then gosub buff.magic
-		if ((toupper("%buff.spell(%c)") = "MEG" && (!$SpellTimer.MembrachsGreed.active)) then gosub buff.magic
-	}
-
-	if ((toupper("%buff.spell(%c)") = "MAF" && (!$SpellTimer.ManifestForce.active)) then gosub buff.magic
-	counter add 1
-	goto GH.BUFF.ROTATION
-
-
 buff.magic:
 	if matchre("%WEAPON_EXP", "%non.RUE.weapons") then put #var RUE $righthand
 	if "$RUE" != "$righthand" then put #var RUE OFF
@@ -7577,12 +7579,12 @@ buff.magic:
 	if "$BA" != "$righthand" then put #var BA OFF
 	if "%buff.spell(%c)" = "RUE" && "$righthand" = "Empty" then put #var RUE $righthand
 	if "%buff.spell(%c)" = "BA" && "$righthand" = "Empty" then put #var BA $righthand
-	# if "%buff.spell(%c)" != "OM" && toupper("$%buff.spell(%c)") != "OFF" then
-	# {
-		# counter add 1
-		# if %c > %buff.total then return
-		# goto buff.magic
-	# }
+	if "%buff.spell(%c)" != "OM" && toupper("$%buff.spell(%c)") != "OFF" then
+	 {
+	 counter add 1
+	 if %c > %buff.total then return
+	 goto buff.magic
+	 }
 	if "%buff.spell(%c)" = "OM" then
 	{
 		if $gametime !> $OM then
@@ -7874,14 +7876,14 @@ buff.cast.2:
 	var FullPrep 0
 	if $mana < 10 then waiteval $mana >= 15
 	matchre buff.cast.2 ^\.\.\.wait|^Sorry, you may
-	matchre buff.return ^The shadows subtly deepen about you as your movements grow still|^Your words fill you with an unflagging sense of resolve and purpose|^You contribute your harnessed streams|^A soft silver glow|^Disregarding the pain, you grind the dirt brutally|^The .+ (is|are) dim, almost magically null|^You can't cast Rutilor's Edge on yourself|^You can't enhance the|^You clasp your hands|^You don't have|^You gesture|^You let your concentration|^You make a holy gesture|^You reach with both|^Your .+ emits a loud \*snap\* as it discharges all its power to aid your spell|soft silver glow that is absorbed into it\.$|Your spell backfires| You suddenly feel more confident about your skinning abilities|Your senses sharpen considerably|You close yours eyes and focus|You close your eyes and focus|You place your hands on your temples
+	matchre buff.return ^You contribute your harnessed streams|^A soft silver glow|^Disregarding the pain, you grind the dirt brutally|^The .+ (is|are) dim, almost magically null|^You can't cast Rutilor's Edge on yourself|^You can't enhance the|^You clasp your hands|^You don't have|^You gesture|^You let your concentration|^You make a holy gesture|^You reach with both|^Your .+ emits a loud \*snap\* as it discharges all its power to aid your spell|soft silver glow that is absorbed into it\.$|Your spell backfires| You suddenly feel more confident about your skinning abilities|Your senses sharpen considerably|You close yours eyes and focus|You close your eyes and focus|You place your hands on your temples
 	if "$preparedspell" = "Benediction" then put cast %buff.immortal
 	if "$preparedspell" = "Cage of Light" then
 		{
 		if $Time.isKatambaUp = 1 then put cast Katamba
 		if $Time.isYavashUp = 1 then put cast Yavash
 		if $Time.isXibarUp = 1 then put cast Xibar
-		if $Time.isKatambaUp = 0 && $Time.isYavashUp = 0 && $Time.isXibarUp = 0 then put release
+		if $Time.isKatambaUp = 0 && $Time.isYavashUp = 0 && $Time.isXibarUp = 0 then put release spell
 		}
 	if "$preparedspell" = "Rutilor's Edge" || "$preparedspell" = "Bond Armaments" || "$preparedspell" = "Ignite" then put cast $righthandnoun
 	if "$preparedspell" = "Osrel Meraud" then put cast orb
@@ -7919,7 +7921,7 @@ buff.reequip:
 		send wield my %buff.righthand
 		waitforre ^You draw|^Wield what\?|^You're already holding|^You're wearing a
 		send remove my %buff.righthand
-		Waitforre ^You sling|^Remove what|^You aren't wearing
+		Waitforre ^You sling|^Remove what|^You aren't wearing|^You yank
 		send get my %buff.righthand
 		Waitforre ^You are already|^Get what\?|^Please rephrase that command\.$|^You're already holding
 		}
