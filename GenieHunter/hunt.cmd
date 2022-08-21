@@ -837,6 +837,11 @@ var ALTEXP OFF
 ## OFF - Default, will attack normally with weapon
 var BACKSTAB OFF
 
+## BELT_WORN can be OFF or ON
+## ON - Will use a worn knife for skinning
+## OFF - Will not use a worn knife for skinning
+var BELT_WORN OFF
+
 ## BONDED can be OFF or ON
 ## ON - Uses invoke to retrieve bonded throwing weapon.
 ## OFF - Default.
