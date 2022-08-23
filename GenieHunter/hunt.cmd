@@ -1,5 +1,5 @@
 ########################################################
-#Version 6.0.5 (8/13/2022)
+#Version 6.0.6 (8/13/2022)
 #Edited by the player of Isharon to work with Combat 3.1
 #Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
 #Download: http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
@@ -28,6 +28,7 @@
 #*added support for Non-Necro Dissection (Azarael)
 #*fixed issues with worn knives, no longer need the list to check, uses 'inv search knife' to find a worn knife (Azarael)
 #*fixed an issue with Skinning after Non-Necro Dissection fails under certain conditions (Azarael)
+#*fixed an issue with Dissection not wielding a non-worn knife and trying to skin an already skinned monster (Azarael)
 ########################################################
 
 put #class alert on
@@ -6321,16 +6322,22 @@ DEAD_MONSTER:
 		}
 	}
 	if ("$GH_DISSECT" == "ON" && $First_Aid.LearningRate < 34) then
-			{
+	  	{
+	  	if "%BELT_WORN" == "OFF" then
+	  		{
+				var FROM_DISSECT ON
+				gosub GET_KNIFE  	
+		  	}
 			matchre NO_DISSECT You do not yet possess the knowledge
 			matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
 			matchre SKINNABLE a waste of time\.|While likely
-			matchre SKIN_CHECK Roundtime
+			matchre SKIN_CHECK Roundtime|What exactly are you trying to dissect	
 			send dissect
 			matchwait 15
 			goto SKIN_ERROR
 			}
 SKINNABLE:
+	var FROM_DISSECT OFF
 	if matchre ("$roomobjs", "(%skinnablecritters) ((which|that) appears dead|\(dead\))") then goto SKIN_MONSTER_$GH_SKIN
 	if matchre ("$roomobjs", "(which|that) appears dead|\(dead\)") then goto SEAR_MONSTER
 	goto NO_MONSTER
@@ -6401,6 +6408,7 @@ PERFORM_RITUAL_2:
 			if ("$lefthand" != "Empty") then gosub SHEATHE $lefthandnoun
 			gosub WIELD_WEAPON knife
 		}
+		if "%FROM_DISSECT" == "ON" then return
 		var LAST SKINNING
 	ARRANGE_CHECK:
 		if (toupper("$GH_ARRANGE") = "ON") then
@@ -6439,7 +6447,6 @@ SKIN_CHECK:
 	gosub SHEATHE %CURR_WEAPON
 	gosub SWAP_LEFT
 	}
-	if ("$righthand" != "Empty") then gosub SWAP_LEFT
 	if ("$lefthand" != "Empty") then goto SCRAPE_$GH_SCRAPE
 	if "%WEAPON_EXP" = "Brawling" && "%BELT_WORN" = "ON" && "$righthand" != "Empty" then
 	{
@@ -6998,14 +7005,13 @@ ALTEXPCHECK:
 	{
 		if ("%EXP2" = "Stealth" || "%EXP2" = "Backstab") then
 		{
-			if ($%WEAPON_EXP.LearningRate >= 30) then goto SWITCH_WEAPON
 			if %current_rounds < %ROUNDS then math current_rounds add 1
 			else
 			{
 				if ("%EXP2" = "Backstab") then
 				{
 					evalmath BackstabDifference $%EXP2.LearningRate - %CURRBACKSTABEXP
-					if ((%BackstabDifference < 3) || ($Backstab.LearningRate >= 30)) then
+					if ((%BackstabDifference < 2) || ($Backstab.LearningRate >= 30)) then
 					{
 						var BACKSTAB OFF
 						var ALTEXP OFF
