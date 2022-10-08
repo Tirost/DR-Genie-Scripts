@@ -6332,6 +6332,7 @@ DEAD_MONSTER:
 			matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
 			matchre SKINNABLE a waste of time\.|While likely
 			matchre SKIN_CHECK Roundtime|What exactly are you trying to dissect	
+			matchre DISSECT_FAIL You'll gain no insights from this attempt.	
 			send dissect
 			matchwait 15
 			goto SKIN_ERROR
@@ -6439,6 +6440,11 @@ NO_DISSECT:
 	echo You do not know how to Dissect yet. Turning Dissection off.
 	put #var GH_DISSECT OFF
 	goto SKINNING
+	
+DISSECT_FAIL:
+  echo You don't have enough First Aid to dissect this.
+  put #var GH_DISSECT OFF
+  goto SKINNING
 
 SKIN_CHECK:
 	var LAST SKIN_CHECK
