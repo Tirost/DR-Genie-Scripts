@@ -5056,6 +5056,7 @@ LOAD:
 	matchre RANGE_GET ^You must|your hand jams|^You can ?not load
 	matchre RANGE_REMOVE_CHECK while wearing an? (.+)
 	matchre RETURN Roundtime|is already
+	matchre WIELD_RANGED trying to load
 		if ($guild = Ranger && $STW = ON && $GH_DUAL_LOAD = ON) || ($guild = Barbarian && $EAGLE = ON && $GH_DUAL_LOAD = ON) then
 		{
 			send load arrows
@@ -5066,6 +5067,10 @@ LOAD:
 		send load
 		matchwait 80
 	goto RANGED_ERROR
+	
+WIELD_RANGED:
+  send wield my %CURR_WEAPON
+  goto LOAD
 
 AIM:
 	if (matchre("$righthand", "%AMMO\b") || matchre("$lefthand", "%AMMO\b")) then send stow %AMMO
@@ -6026,7 +6031,10 @@ MAGIC_COMBAT:
 		echo *** MAGIC_COMBAT: ***
 		echo
 	}
+	if (%c > 2000) then 
+	{
 	counter subtract 2000
+	}
 	if ("%RETREATING" = "ON") then gosub RETREAT_UNTRIGGERS
 	goto %c
 
@@ -6332,7 +6340,7 @@ DEAD_MONSTER:
 			matchre SKIN_KNIFE_SHEATH With skill|You adeptly|You smoothly|You skillfully|You gracefully|Expertly adapting
 			matchre SKINNABLE a waste of time\.|While likely
 			matchre SKIN_CHECK Roundtime|What exactly are you trying to dissect	
-			matchre DISSECT_FAIL You'll gain no insights from this attempt.	
+			matchre DISSECT_FAIL You'll gain no insights from this attempt.
 			send dissect
 			matchwait 15
 			goto SKIN_ERROR
@@ -6448,10 +6456,14 @@ DISSECT_FAIL:
 
 SKIN_CHECK:
 	var LAST SKIN_CHECK
-	if (matchre("$lefthand","%CURR_WEAPON") && ("%EXP2" = "Offhand_Weapon")) then
+	if (matchre("$lefthand","WIELD:") && ("%EXP2" = "Offhand_Weapon")) then
 	{
 	gosub SHEATHE %CURR_WEAPON
 	gosub SWAP_LEFT
+	}
+	if !("$righthand" == "Empty" || matchre("$righthand","%CURR_WEAPON")) then
+	{
+	send drop $righthand
 	}
 	if ("$lefthand" != "Empty") then goto SCRAPE_$GH_SCRAPE
 	if "%WEAPON_EXP" = "Brawling" && "%BELT_WORN" = "ON" && "$righthand" != "Empty" then
@@ -7904,12 +7916,12 @@ buff.cast.2:
 		}
 	if "$preparedspell" = "Rutilor's Edge" || "$preparedspell" = "Bond Armaments" || "$preparedspell" = "Ignite" then put cast $righthandnoun
 	if "$preparedspell" = "Osrel Meraud" then put cast orb
-	#if "$preparedspell" = "Bless" then
-		#{
-		# if "%WEAPON_EXP" = "Brawling" then put cast $charactername
-		# else
-		# put cast $righthandnoun
-		#}
+	if "$preparedspell" = "Bless" then
+		{
+		 if "%WEAPON_EXP" = "Brawling" then put cast $charactername
+		 else
+		 put cast $righthandnoun
+		}
 	if !matchre("$preparedspell", "%buff.special.casts") then
 		{
 		put cast
