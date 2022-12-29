@@ -1,4 +1,4 @@
-#Moon Mage training script. - Genie3 v6.02
+#Moon Mage training script. - Genie3 v6.03
 ##Change log:
 ## v1.0 : Initial release
 ## v1.x : Archived v1.1 - v1.6
@@ -18,6 +18,7 @@
 ## v6.01  Fixed an issue with the obs.count variable not getting the correct value.
 ## v6.02  Fixed an issue with certain descriptions not showing. Also automated toggle
 ##				for Time Tracker Plugin and removed option for the Prediciton Interpreter.
+## v6.03  Removed Mech Lore training (as it doesn't exist anymore)
 ##
 
 include js_arrays.js
@@ -31,7 +32,7 @@ include js_arrays.js
 ## :Debugging help.
 ################
 
-debug 10
+#debug 10
 
 ##Guild Verification
 GuildCheck:
@@ -88,14 +89,12 @@ ScriptStart:
 	var gemempty 0
 	var pouchplace 0
 	var cambstow 0
-	var mech.foragect 0
 	var forage.ct 0
 	var pg.known 0
 	var cv.known 0
 	var cv.active 0
 	var pg.active 0
 	var clear.sky 0
-	var mechforagect 0
 	var foragect 0
 	var fullprep 0
 	var toPower xibar|planets|trans|yavash|perc|katamba|moonl man|enlightened|psychic
@@ -103,7 +102,6 @@ ScriptStart:
 	var pp.counter 0
 	var pouch.count 0
 	var skip.forage 0
-	var skip.mech 0
 	var prep.override 0
 	var need.moon 0
 	var tool.check 0
@@ -298,10 +296,6 @@ if %gem.pouch then
 if $MM_TRAIN_JUGGLE = ON then
 	{
 	if $Perception.LearningRate < 34 then gosub juggle
-	}
-if $MM_TRAIN_MECH = ON then
-	{
-	if $Mechanical_Lore.LearningRate < 34 then gosub mech.forage
 	}
 if $MM_TRAIN_FORAGE = ON then
 	{
@@ -877,79 +871,6 @@ Kick:
 	send kick $MM_COLLECT_ITEM
 	return
 
-##Mech Section
-Mech.Forage:
-	if (%skip.mech = 1 && $roomid = %script.room) then return
-	else
-		{
-		var skip.mech 0
-		var script.room $roomid
-		}
-	pause 1
-	if contains("$righthand", "$MM_JUGGLIE") then 
-		{
-		send put $MM_JUGGLIE in my %jugglestow
-		}
-	pause
-	pause 1
-	if %mech.foragect > 2 then
-		{
-		echo No $MM_MECH_MAT to forage here. Skipping.
-		var skip.mech 1
-		return
-		}
-	match mech.braid You manage to find some grass.
-	match mech.forageadd Roundtime:
-	put forage $MM_MECH_MATERIAL
-	matchwait
-
-Mech.ForageAdd:
-	math mech.foragect add 1
-	goto mech.forage
-
-Mech.Braid:
-	pause 1
-	match rem.armor Your efforts are hindered by your
-	match mech.forage You need to have more material
-	match mech.pull mistake
-	match mech.dump wasted effort.
-	match mech.braid Roundtime:
-	send braid my $MM_MECH_MATERIAL
-	matchwait
-
-Rem.Armor:
-	pause 1
-	send remove my %hand.armor
-	send stow my %hand.armor
-	goto mech.braid
-
-Mech.Pull:
-	pause 1
-	match mech.forage You need to have more material
-	match mech.braid for your work so far
-	matchre mech.dispose rope|You tug|breaks apart
-	send pull my $MM_MECH_MATERIAL
-	matchwait
-
-Mech.Dispose:
-	pause
-	pause 1
-	if %dump.recepticle = 0 then send drop rope
-	else send put rope in %dump.recepticle
-	waitforre ^You
-	return
-
-Mech.Dump:
-	pause
-	pause 1
-	if %dump.recepticle = 0 then send drop $MM_MECH_MATERIAL
-	else send put $MM_MECH_MATERIAL in %dump.recepticle
-	waitforre ^You
-	return
-
-Return:
-	return
-
 exit
 
 #############################
@@ -967,7 +888,6 @@ Setup:
 		echo Please set values for variables in all sections.
 		put #var MM_TRAIN_MAGIC ON
 		put #var MM_TRAIN_ASTROLOGY ON
-		put #var MM_TRAIN_MECH ON
 		put #var MM_TRAIN_FORAGE ON
 		put #var MM_TRAIN_JUGGLE ON
 		put #var MM_USE_HARNESS ON
@@ -1020,7 +940,7 @@ Setup:
 		var MAIN Magic|Astrology|Extra|Done
 		var ASTROLOGY Train Astrology|CV Prep|PG Prep|Divination Tool|Deal Times|Wait Mode|Wait Script|Back
 		var MAGIC Train Magic|Warding Spell|Warding Prep|Augmentation Spell|Augmentation Prep|Utility Spell|Utility Prep|Harness|Use Harness|Cambrinth|Charge|Use Cambrinth|Back
-		var EXTRA Train Mech|Mech Material|Train Forage|Collect Item|Train Juggle|Jugglie|Back
+		var EXTRA Train Forage|Collect Item|Train Juggle|Jugglie|Back
 		var TOGGLES TRAIN|USE
 		
 		#Menu Window
@@ -1050,8 +970,6 @@ Setup:
 		var WAIT_SCRIPT_DESC This is the name (note the filename ONLY) of the script to run during the observation cooldown.
 		
 		##Misc Variables Descriptions
-		var TRAIN_MECH_DESC This toggles whether or not to train Mechanical Lore while other experience drains.
-		var MECH_MATERIAL_DESC This is the material utilize for braiding during Mechanical Lore training, ie.: grass, vines, etc.
 		var TRAIN_FORAGE_DESC This toggles whether to train Outdoorsmanship through collecting while other experience drains.
 		var COLLECT_ITEM_DESC This is the material collected during Outdoorsmanship training. ie.: rock, branch, vine, etc.
 		var TRAIN_JUGGLE_DESC This toggles whether to train Perception through juggline while other experience drains.
