@@ -25,7 +25,7 @@ include js_arrays.js
 
 #####Credits####
 ##Hervean
-## :Power Perception routine - http://www.genieclient.com/bulletin/topic/3978-mm-power-looper/
+## :Power Perception routine
 ## :Divination Bowl data
 ##
 ##DrtyPrior
