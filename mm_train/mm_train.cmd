@@ -1,4 +1,4 @@
-#Moon Mage training script. - Genie3 v6.03
+#Moon Mage training script. - Genie3 v6.04
 ##Change log:
 ## v1.0 : Initial release
 ## v1.x : Archived v1.1 - v1.6
@@ -7,18 +7,20 @@
 ## v4.x : Archived v4.0 - v4.10
 ## v5.x : Archived v5.0 - v5.31
 ## v6.0 : New version due to major script updates.
-##				Observable object lists updated and optimized.
-##				Script conversion to utilize Javascript array handling
-##				for better performance and exception handling.
-##				Added more documentation to better denote script sections.
-##				Fixed Pouchsort action for new messaging.
-##				Removed Prediction interpreter - may rebuild and add in later.
-##			  Relocated all action definitions to the top of the script for
-##			  consistency.
+##        Observable object lists updated and optimized.
+##        Script conversion to utilize Javascript array handling
+##        for better performance and exception handling.
+##        Added more documentation to better denote script sections.
+##        Fixed Pouchsort action for new messaging.
+##        Removed Prediction interpreter - may rebuild and add in later.
+##        Relocated all action definitions to the top of the script for
+##        consistency.
 ## v6.01  Fixed an issue with the obs.count variable not getting the correct value.
 ## v6.02  Fixed an issue with certain descriptions not showing. Also automated toggle
-##				for Time Tracker Plugin and removed option for the Prediciton Interpreter.
-## v6.03  Removed Mech Lore training (as it doesn't exist anymore)
+##        for Time Tracker Plugin and removed option for the Prediciton Interpreter.
+## v6.03  Removed Mech Lore training (as it doesn't exist anymore).
+## v6.04  Added in triggers and variables for Aura Sight spell along with menu options
+##        and added a warning for when the MM_WAIT_MODE global is not set properly.
 ##
 
 include js_arrays.js
@@ -91,9 +93,11 @@ ScriptStart:
 	var cambstow 0
 	var forage.ct 0
 	var pg.known 0
+	var pg.active 0
 	var cv.known 0
 	var cv.active 0
-	var pg.active 0
+	var aus.known 0
+	var aus.active 0
 	var clear.sky 0
 	var foragect 0
 	var fullprep 0
@@ -140,11 +144,13 @@ ScriptStart:
 	action (time) var time night when sunrise|dusk|night|midnight|late night|sunset|evening
 	action (spells) var pg.known 1 when Piercing Gaze
 	action (spells) var cv.known 1 when Clear Vision
+	action (spells) var aus.known 1 when Aura Sight
 	action remove You strain
 	action remove You have to strain
 	action remove You strain, but
 	action var cv.active 0 when You feel less aware of your environment\.$
 	action var pg.active 0 when The world around you returns to its mundane appearance\.$
+	action var aus.active 0 when Your color vision returns to normal, causing the auras you see to dim and vanish\.$
 	action var hand.armor $1 when Your efforts are hindered by your \w+ (\w+)
 	action var hand.armor $1 when Your efforts are hindered by your \w+ \w+ (\w+)
 	action (pouchcheck) js doPush("pouchname","$1") when (\S+) pouch\.$
@@ -771,6 +777,12 @@ Predict_Wait:
 		goto Predict_Wait
 		}
 
+##WAIT MODE ERROR##
+echo If you are seeing this message, your `MM_WAIT_MODE` is set incorrectly.
+echo Please check that this global is set to 'juggle', 'script' or 'sigil'.
+echo The script will now terminate.
+exit
+
 Open_Sigil:
 	put open my sigilbook
 	goto Predict_Wait
@@ -795,6 +807,14 @@ CV:
 	put cast
 	var cv.active 1
 	pause 0.5
+	return
+	
+AUS:
+	put prep AUS $MM_AUS_PREP
+	waitfor fully prepared
+	put cast
+	var aus.active 1
+	pause 0.3
 	return
 
 ##Supplementary Skills section
@@ -938,7 +958,7 @@ Setup:
 		
 		#Menus
 		var MAIN Magic|Astrology|Extra|Done
-		var ASTROLOGY Train Astrology|CV Prep|PG Prep|Divination Tool|Deal Times|Wait Mode|Wait Script|Back
+		var ASTROLOGY Train Astrology|CV Prep|PG Prep|AUS Prep|Divination Tool|Deal Times|Wait Mode|Wait Script|Back
 		var MAGIC Train Magic|Warding Spell|Warding Prep|Augmentation Spell|Augmentation Prep|Utility Spell|Utility Prep|Harness|Use Harness|Cambrinth|Charge|Use Cambrinth|Back
 		var EXTRA Train Forage|Collect Item|Train Juggle|Jugglie|Back
 		var TOGGLES TRAIN|USE
@@ -964,6 +984,7 @@ Setup:
 		##Astrology Variables Descriptions
 		var CV_PREP_DESC This is the mana amount to prepare the Clear Vision Spell during the Astrology section.
 		var PG_PREP_DESC This is the mana amount to prepare the Piercing Gaze Spell during the Astrology section.
+		var AG_PREP_DESC This is the mana amount to prepare the Aura Sight Spell during the Astrology section.
 		var DIVINATION_TOOL_DESC This is the method used to make predicitons. The standard form is 'visions'.
 		var DEAL_TIMES_DESC This is how many cards to deal from your Tokka Deck for predicitons. Must be between 3 and 6.
 		var WAIT_MODE_DESC This sets an option to perform other various tasks during the cooldown on observations. The current options are: juggle (practices with juggling), sigil (studies sigils in sigilbooks- Must have a book with sigils scribed!) and script (must set the 'Wait Script' variable!).
