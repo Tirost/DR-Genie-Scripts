@@ -239,8 +239,8 @@ OpenChk:
 	matchwait
 
 OpenPou:
-	match jugglechk when has been tied
-	match openchk ^You open
+	match jugglechk has been tied
+	matchre openchk ^You open
 	put open my %pouchplace pou
 	matchwait
 
