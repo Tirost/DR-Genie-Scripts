@@ -1,4 +1,5 @@
 #Moon Mage training script. - Genie3 v6.04
+#Script Author: Azarael
 ##Change log:
 ## v1.0 : Initial release
 ## v1.x : Archived v1.1 - v1.6
