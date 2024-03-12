@@ -242,7 +242,7 @@ OpenPou:
 	match jugglechk when has been tied
 	match openchk ^You open
 	put open my %pouchplace pou
-	goto openchk
+	matchwait
 
 JuggleChk:
 	if %gemempty = 1 then echo Your gem pouch is empty. Skipping appraisal. Get some gems!
