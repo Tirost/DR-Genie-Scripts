@@ -21,6 +21,7 @@
 ## v6.03  Removed Mech Lore training (as it doesn't exist anymore).
 ## v6.04  Added in triggers and variables for Aura Sight spell along with menu options
 ##        and added a warning for when the MM_WAIT_MODE global is not set properly.
+## v6.05  Fixed pouchsort action Regex due to Simu change in output.
 ##
 
 include js_arrays.js
@@ -153,7 +154,7 @@ ScriptStart:
 	action var aus.active 0 when Your color vision returns to normal, causing the auras you see to dim and vanish\.$
 	action var hand.armor $1 when Your efforts are hindered by your \w+ (\w+)
 	action var hand.armor $1 when Your efforts are hindered by your \w+ \w+ (\w+)
-	action (pouchcheck) js doPush("pouchname","$1") when (\S+) pouch\.$
+	action (pouchcheck) js doPush("pouchname","$1") when (\S+)( gem)? pouch
 	action (gemcheck) var gemempty 1 when There is nothing in there.
 	action (tool.check) tool.broken = 1;echo Divination tool broken! when referring
 	action (new.tool) var tool.broken 0 when ^You tap
