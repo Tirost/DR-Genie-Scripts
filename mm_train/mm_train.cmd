@@ -155,7 +155,7 @@ ScriptStart:
 	action var aus.active 0 when Your color vision returns to normal, causing the auras you see to dim and vanish\.$
 	action var hand.armor $1 when Your efforts are hindered by your \w+ (\w+)
 	action var hand.armor $1 when Your efforts are hindered by your \w+ \w+ (\w+)
-	action (pouchcheck) js doPush("pouchname","$1") when ^Your*.(\S+) pouch
+	action (pouchcheck) js doPush("pouchname","$1") when Your*.(\S+) pouch
 	action (gemcheck) var gemempty 1 when There is nothing in there.
 	action (tool.check) tool.broken = 1;echo Divination tool broken! when referring
 	action (new.tool) var tool.broken 0 when ^You tap
