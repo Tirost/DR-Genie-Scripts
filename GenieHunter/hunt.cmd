@@ -1,5 +1,5 @@
 ########################################################
-#Version 6.0.6 (8/13/2022)
+#Version 6.1.0b (10/26/2022)
 #Edited by the player of Isharon to work with Combat 3.1
 #Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
 #Download: http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
@@ -29,6 +29,8 @@
 #*fixed issues with worn knives, no longer need the list to check, uses 'inv search knife' to find a worn knife (Azarael)
 #*fixed an issue with Skinning after Non-Necro Dissection fails under certain conditions (Azarael)
 #*fixed an issue with Dissection not wielding a non-worn knife and trying to skin an already skinned monster (Azarael)
+#*added Barbarian Buffing routine for Berserk and Form (Azarael)
+#*added Barbarian Roar for Debil training (Azarael)
 ########################################################
 
 put #class alert on
@@ -170,6 +172,7 @@ put #var save
 ##		once per critter, then use the primary weapon to kill           ##
 ## OFFHAND: uses weapon in offhand, works with melee or thrown          ##
 ## POACH: poaches with a ranged weapon, checks stealth exp              ##
+## ROAR: uses Barbarian roars once per critter for Debil - ROAR <ability> ##
 ## SMITE: trains Conviction by executing a smite every 60 seconds       ##
 ## SNAP: snap-fires ranged weapon and snapcasting for magic             ##
 ##		Following this command with a # will pause for that many		##
@@ -227,8 +230,6 @@ action var _COMBO $1;eval _COMBO replacere("%_COMBO", "(,?\s?((an|a)|and (an|a))
 action (LOOTBOX) put #math BOXES add 1 when ^You put your.* (\bcoffer\b|\btrunk\b|\bchest\b|\bstrongbox\b|\bskippet\b|\bcaddy\b|\bcrate\b|\bcasket\b|(\bbox\b)(?:\s|\.|\,)) .*\.$
 action put #var GH_LOOT_BOX OFF when eval $BOXES >= 6
 action (standup) send stand when eval $standing = 0
-
-
 
 ##Bodypart Array
 var BODY_PART head|neck|back|chest|abdomen|right arm|left arm|right leg|left leg
@@ -350,6 +351,8 @@ if matchre("$charactername" = "CHARACTER|NAMES") then
 ########################
 goto gh_buff.end
 gh_buff.start:
+	var buff.continue $buff.continue
+	if "$guild" == "Barbarian" then goto buff.barb
 	var buff.secondcambrinth $buff.secondcambrinth
 	var buff.trace 1
 	var buff.spell $buff.spells
@@ -375,7 +378,6 @@ gh_buff.start:
 	var buff.remove $buff.remove
 	var buff.harness $buff.harness
 	var buff.prep.message $PREP_MESSAGE
-	var buff.continue $buff.continue
 	var buff.held $buff.held
 	var buff.manalevel $buff.manalevel
 
@@ -735,10 +737,15 @@ put #var GH_RITUAL OFF
 put #var GH_RETREAT OFF
 
 ## ROAM can be OFF or ON
-## ON - Will roam around the hunting area  on main directions (n,nw,w,sw,s,se,e,ne,u,d)
+## ON - Will roam around the hunting area on main directions (n,nw,w,sw,s,se,e,ne,u,d)
 ##      if you kill all the creatures in your area
-## OFF - Default, will stay in your own room no matter what
+## OFF - Default, will 
 put #var GH_ROAM OFF
+
+## ROAR can be OFF or ON
+## ON - Will use Barbarian Roar specified in command line to train Debilitation
+## OFF - Will not use Barbarian Roars
+put #var GH_ROAR OFF
 
 ## SCRAPE can be OFF or ON
 ## ON - Scrapes skins/pelts/hides after skinning
@@ -2402,6 +2409,23 @@ ROAM:
 	}
 	put #var GH_ROAM ON
 	if "$GH_AMBUSH" = "ON" then action (stalk) off
+	return
+	
+# Barbarian roar to train Debilitation
+ROAR:
+	if ("%GAG_ECHO" != "YES") then
+	{
+		echo
+		echo *** ROAR: ***
+		echo
+	}
+	counter add 2000
+	var MAGIC ON
+	var ALTEXP OFF
+	send #var GH_ROAR ON
+	var EXP2 Debilitation
+	var roar %1
+	shift
 	return
 
 # Scrape skins/pelts/hides after skinning
@@ -5562,31 +5586,6 @@ COMBAT_COMMAND:
 		if $mana < 70 then waiteval $mana >= 70
 		gosub PREPARESPELLWEAVE
 	}
-	if (($Augmentation.LearningRate < 30) && ("%AUGMENTATION" = "off") && ("%WARDING" = "off") && ("%guild" = "Barbarian")) then
-	{
-		send form monkey
-		var AUGMENTATION on
-		pause .5
-		pause .5
-	}
-	if (($Augmentation.LearningRate >= 30) && ("%AUGMENTATION" = "on") && ("%guild" = "Barbarian")) then
-	{
-		send form stop monkey
-		var AUGMENTATION off
-		pause 1
-	}
-	if (($Warding.LearningRate < 30) && ("%AUGMENTATION" = "off") && ("%guild" = "Barbarian")) then
-	{
-		send bers fam
-		var WARDING on
-		pause .5
-		pause .5
-	}
-	if (($Warding.LearningRate >= 30) && ("%WARDING" = "on") && ("%guild" = "Barbarian")) then
-	{
-		send form stop swan
-		var WARDING off
-	}
 	if "$guild" = "Empath" && "$GH_CONSTRUCT" = "ON" && "$GH_ANALYZE" = "OFF" then
 	{
 		gosub ASSESS
@@ -5598,21 +5597,6 @@ COMBAT_COMMAND:
 	if ("%SPELLWEAVE" = "ON" && "%FULL_PREP" = "YES" then
 	{
 		gosub CASTSPELLWEAVE
-	}
-	if ((toupper("$GH_SLOW") = "ON") && ($stamina < 90)) then
-	{
-		if (("%guild" = "Barbarian")) then
-		{
-			send berserk avalanche
-		}
-		waiteval $stamina = 100
-	}
-	if (($Debilitation.LearningRate < 30) && ("%guild" = "Barbarian") && ($hidden != 1)) then
-	{
-		send roar quiet rage
-		waitforre ^You have not been|^Roundtime|^\[Roundtime|^Strain though you might\,
-		pause .5
-		pause .5
 	}
 	if ((toupper("$GH_AMBUSH") = "ON") && ($hidden != 1)) then
 	{
@@ -5872,6 +5856,12 @@ if $GH_APPR = YES then gosub APPR_YES
 if toupper("$GH_TEND") = "ON" && $bleeding = 1 then gosub GH_TEND_ON
 if toupper("$GH_ARMOR") = "ON" then gosub GH_ARMOR_ON
 if toupper("$juggernaut.orb") = "YES" then gosub DISARM_ORB
+if ("$guild" == "Barbarian" && "$GH_ROAR" == "ON") then
+  {
+  send face next
+  send roar %roar at %Monster
+  goto MAGIC_DEATH
+  }
 if $mana < 20 then waiteval $mana >= 20
 	echo
 	echo MAGIC_PREP:
@@ -6461,7 +6451,7 @@ SKIN_CHECK:
 	gosub SHEATHE %CURR_WEAPON
 	gosub SWAP_LEFT
 	}
-	if !("$righthand" == "Empty" || matchre("$righthand","%CURR_WEAPON")) then
+	if !("$righthand" == "Empty" || matchre("$righthand","%CURR_WEAPON") || matchre("$righthand","knife")) then
 	{
 	send drop $righthand
 	}
@@ -8000,6 +7990,28 @@ buff.release:
 	buff.return:
 	action remove ^You are still stunned
 	return
+	
+buff.barb:
+	gosub buff.barb2 berserk
+	gosub buff.barb2 form
+	counter set 0
+	return
+	
+buff.barb2:
+  eval buff.total count("$buff.$1", "|")
+  if toupper("$$buff.$1(%c)") != "OFF" then
+	 {
+	 counter add 1
+	 if %c > %buff.total then
+	   {
+	   counter set 0
+	   return
+	   }
+	 goto buff.barb2
+	 }
+	send $1 $buff.$1(%c)
+	pause 2
+	goto buff.barb2
 
 #################################
 ##                             ##
