@@ -296,7 +296,7 @@ var barb.tact
 ##Empath Variables
 var Empath_Monster
 
-var OPTIONVARS AMB.*?|ANAL.*?|APPR.*?|ARM.*?|ARRA.*?|AUG|BACKS.*?|BARB.*?|BAST.*?|BLO(?!WGUN).*?|BON.*?|BRA.*?|BS|BUF.*?|BUN.*?|COLL.*?|CONS.*?|COUNTSKIP|COUNT|CUST.*?|DANCE|DANG.*?|DEBIL|DEF.*?|DISS.*?|DLOAD|DMSET|DMULTI|DODGE|DSET|DUAL.*?|DYING|EMP.*?|\bENCH.*?|EVA.*?|EXP|FEINT|FLEE|FSWAP|HELP|HUNT|HURL|JUGG.*?|JUNK|KHRI|LOB|LOOTA.*?|LOOTB.*?|LOOTC.*?|LOOTG.*?|MAGIC|MANIP|MARK|MSET|MULTI|NECROH.*?|NECROR.*?|NISS.*?|NOEV.*?|NOPA.*?|NOSH.*?|OFF.*?|PARA(?!NG).*?|PARRY|PARTb|PART\b|PILGRIM|PM|POACH|POINT|POUCH|POWER|\bPP\b|RET.*?|RITUAL|ROAM|SCRAPE.*?|SCREAM|SEARCH|SKIN.*?|SKINRET.*?|SLOW|SMITE|SNAP|SNIP.*?|SPEL.*?|STACK|STANCE|SWAP|TAC(?!HI).*?|TARG.*?|THIEF|THROWb|THROW\b|TIE|TIME.*?|TM|TRAIN|TSWAP|UTIL|WEAR|YOYO
+var OPTIONVARS AMB.*?|ANAL.*?|APPR.*?|ARM.*?|ARRA.*?|AUG|BACKS.*?|BARB.*?|BAST.*?|BLO(?!WGUN).*?|BON.*?|BRA.*?|BS|BUF.*?|BUN.*?|COLL.*?|CONS.*?|COUNTSKIP|COUNT|CUST.*?|DANCE|DANG.*?|DEBIL|DEF.*?|DISS.*?|DLOAD|DMSET|DMULTI|DODGE|DSET|DUAL.*?|DYING|EMP.*?|\bENCH.*?|EVA.*?|EXP|FEINT|FLEE|FSWAP|HELP|HUNT|HURL|JUGG.*?|JUNK|KHRI|LOB|LOOTA.*?|LOOTB.*?|LOOTC.*?|LOOTG.*?|MAGIC|MANIP|MARK|MSET|MULTI|NECROH.*?|NECROR.*?|NISS.*?|NOEV.*?|NOPA.*?|NOSH.*?|OFF.*?|PARA(?!NG).*?|PARRY|PARTb|PART\b|PILGRIM|PM|POACH|POINT|POUCH|POWER|\bPP\b|RET.*?|RITUAL|ROAM|ROAR|SCRAPE.*?|SCREAM|SEARCH|SKIN.*?|SKINRET.*?|SLOW|SMITE|SNAP|SNIP.*?|SPEL.*?|STACK|STANCE|SWAP|TAC(?!HI).*?|TARG.*?|THIEF|THROWb|THROW\b|TIE\b|TIME.*?|TM|TRAIN|TSWAP|UTIL|WEAR|YOYO
 var OPTION NONE
 
 var lastmaneuver none
@@ -3199,7 +3199,7 @@ WEAPON_CHECK:
 		if "%ALTEXP" != "ON" then var CURR_RATE $%WEAPON_EXP.LearningRate
 		if ("%ALTEXP" = "ON") && ("%EXP2" = "Stealth") then var CURR_RATE $%WEAPON_EXP.LearningRate
 		var RANGED OFF
-		if matchre("$righthandnoun", "bin|blade|bodkin|dagger|dirk|kasai|kindjal|lata|marlinspike|misericorde|pick|poignard|pugio|shavi|shriike|stiletto|takouba|telek") then goto LE_STAB
+		if matchre("$righthandnoun", "bin|blade|bodkin|dagger|dirk|kasai|kindjal|lata|marlinspike|misericorde|pick|poignard|pugio|shavi|shriike|stiletto|takouba|telek|tanto") then goto LE_STAB
 		if matchre("$righthandnoun", "fan|dao|falcata|jambiya|kanabu|katar|knife|kounmya|kris|kythe|nehlata|oben|sword|tago|uenlata") then goto LE_SLICE
 		goto WEAPON_APPR_ERROR
 
