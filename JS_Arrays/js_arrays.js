@@ -1,5 +1,5 @@
-﻿function doSort(arrayname, sorting)	{
-	/*Function: Receives an array from a calling statement, format: js doSort("<arrayname>", 0/1);
+function doSort(arrayname, sorting)	{
+	/*Function: Receives an array from a calling statement, format: js doSort("<arrayname>", 0/1)
 		       	  The function will sort the array in the following orders: 0 - ascending, 1 - descending
 	pre: arrayname as a String, sorting as an Integer - 0 or 1
 	post: Variable array with arrayname will be sorted in either ascending or descending order
@@ -35,7 +35,7 @@
   }
   
 function findIndex(arrayname, srch)	{
-	/*Function: Receives an array from a calling statement, format: jscall <variable> findIndex("<arrayname>", "search string");
+	/*Function: Receives an array from a calling statement, format: jscall <variable> findIndex("<arrayname>", "search string")
 	      	    The function will search the array for the matching string and return its index or -1 if not found
 	pre: arrayname as a String, srch as a String
 	post: function will return the index of the search string in the variable array with array name or -1 if string is not found
@@ -45,7 +45,7 @@ function findIndex(arrayname, srch)	{
 		{
 		srch = getVar(srch.replace(/%/,""));
 		}
-	if (srch[0] == "$")
+	else if (srch[0] == "$")
 		{
 		srch = getGlobal(srch.replace("$",""));
 		}
@@ -60,7 +60,7 @@ function findIndex(arrayname, srch)	{
 	}
 
 function checkExists(arrayname, srch) {
-	/*Function: Receives an array from a calling statement, format: jscall <variable> checkExists("<arrayname>", "search string");
+	/*Function: Receives an array from a calling statement, format: jscall <variable> checkExists("<arrayname>", "search string")
 	      	    The function will search the array for the matching string and return 1 if it exists or 0 if it does not.
 	pre: arrayname as a String, srch as a String
 	post: function will return 1 if the search string exists in the variable array with arrayname or 0 if string is not found
@@ -69,6 +69,10 @@ function checkExists(arrayname, srch) {
 	if (srch[0] == "%")
 		{
 		srch = getVar(srch.replace(/%/,""));
+		}
+	else if (srch[0] == "$")
+		{
+		srch = getGlobal(srch.replace("$",""));
 		}
 	for(i = 0; i < list.length();i++)
 		{
@@ -81,7 +85,7 @@ function checkExists(arrayname, srch) {
 	}
 
 function doInsert(arrayname, items, position) {
-	/*Function: Receives an array from a calling statement, format: js doInsert("<arrayname>", "item(s) to insert", position to insert);
+	/*Function: Receives an array from a calling statement, format: js doInsert("<arrayname>", "item(s) to insert", position to insert)
 	    	      The function will insert items into the array at the specified position.
 	pre: arrayname as a String, items as a String or List (separated by |), position as Integer
 	post: function will insert all items starting at specified index into the array and store the list in the variable array called arrayname.
@@ -102,7 +106,7 @@ function doInsert(arrayname, items, position) {
 }
 
 function doRemove(arrayname, srch, amount) {
-	/*Function: Receives an array from a calling statement, format: js doRemove("<arrayname>", String to remove, number of items to remove);
+	/*Function: Receives an array from a calling statement, format: js doRemove("<arrayname>", String to remove, number of items to remove)
 	 		        The function will remove the specified number of items starting at the specified string (the first occurance of that string!).
 	pre: arrayname as a String, srch as  String, amount as Integer
 	post: function will remove the specified number of items starting at index of the search string from array and store list in the variable array called arrayname.
@@ -112,6 +116,10 @@ function doRemove(arrayname, srch, amount) {
 	if(srch[0] == "%")
 		{
 		srch = getVar(srch.replace(/%/,""));
+		}
+	else if (srch[0] == "$")
+		{
+		srch = getGlobal(srch.replace("$",""));
 		}
 	if(index == 0 && list.length() > 1)
 		{
@@ -134,7 +142,7 @@ function doRemove(arrayname, srch, amount) {
 	}
 	
 function doConcat(arrayname, array) {
-	/*Function: Receives two arrays from a calling statement, format: js doConcat("<arrayname>", "<array>");
+	/*Function: Receives two arrays from a calling statement, format: js doConcat("<arrayname>", "<array>")
 	 		        The function concat the second array onto the first and save it in the array variable with arrayname 1. The second array can be an array or a list string.
 	pre: arrayname as a String, array as  String
 	post: the second array will be concatenated onto the first array and stored in the array variable with arrayname
@@ -146,7 +154,7 @@ function doConcat(arrayname, array) {
 	}
 
 function doXCompare(arraysrc, arraytrg, srch) {
-	/*Function: Receives two arrays from a calling statement and a search string, format: jscall <variable> doXCompare("<arraysrc>", "<arraytrg>", "search string");
+	/*Function: Receives two arrays from a calling statement and a search string, format: jscall <variable> doXCompare("<arraysrc>", "<arraytrg>", "search string")
 	 		        The function will search the first array for the search string and set return the matching result from the target array to be stored in the specified variable.
 	 		        The funtion returns -1 if the search string does not exist.
 	pre: arraysrc as a String, arraytrg as String, srch as String
@@ -157,6 +165,10 @@ function doXCompare(arraysrc, arraytrg, srch) {
 	if (srch[0] == "%")
 		{
 		srch = getVar(srch.replace(/%/,""));
+		}
+	else if (srch[0] == "$")
+		{
+		srch = getGlobal(srch.replace("$",""));
 		}
 	for(i = 0; i < list.length();i++)
 		{
@@ -179,11 +191,11 @@ function doPush(arrayname, item) {
 		{
 		item = getVar(item.replace(/%/,""));
 		}
-	if (item[0] == "$")
+	else if (item[0] == "$")
 		{
 		item = getGlobal(item.replace(/$/,""));
 		}
-	if (list[0] == "undefined")
+	if (list[0] == "undefined" || list[0] == "")
 		{
 			list[0] = item;
 		} else {
@@ -193,7 +205,7 @@ function doPush(arrayname, item) {
 	}
 	
 function doPop(arrayname) {
-	/*Function: Receives an array, format: jscall <variable> doPop("<arrayname>");
+	/*Function: Receives an array, format: jscall <variable> doPop("<arrayname>")
 	 		        The function will remove the last item from the array and return the value to be stored in the specified variable.
 	 		        The function will return 0 if the array is already empty.
 	pre: arrayname as a String
@@ -222,7 +234,7 @@ function doUnshift(arrayname, item) {
 		{
 		item = getVar(item.replace(/%/,""));
 		}
-	if (item[0] == "$")
+	else if (item[0] == "$")
 		{
 		item = getGlobal(item.replace(/$/,""));
 		}
@@ -236,7 +248,7 @@ function doUnshift(arrayname, item) {
 	}
 	
 function doShift(arrayname) {
-	/*Function: Receives an array, format: jscall <variable> doShift("<arrayname>");
+	/*Function: Receives an array, format: jscall <variable> doShift("<arrayname>")
 	 		        The function will remove the first item from the array and return the value to be stored in the specified variable.
 	 		        The function will return 0 if the array is already empty.
 	pre: arrayname as a String
@@ -255,7 +267,7 @@ function doShift(arrayname) {
 	}
 
 function buildArray(arrayname, raw) {
-	/*Function: Receives string separated by commas, 'a's, 'an's and ands to build array, format: js buildArray("<arrayname>", "list");
+	/*Function: Receives string separated by commas, 'a's, 'an's and ands to build array, format: js buildArray("<arrayname>", "list")
 	 		        *Note* To build from action data you -must- capture the whole string at the same time to be sent to the function!
 	 		        Actions with Javascript in them will only trigger -once- per instance of the pattern in a line.
 	pre: arrayname as a String, list as a String
@@ -281,6 +293,10 @@ function buildArrayStr(arrayname, raw, pattern) {
 		{
 		pattern = getVar(pattern.replace(/%/,""));
 		}
+	else if (pattern[0] == "$")
+		{
+		pattern = getGlobal(srch.replace("$",""));
+		}
 	pattern = new RegExp(pattern,"i");
 	for(i = 0; i < raw.length();i++)
 		{
@@ -293,7 +309,7 @@ function buildArrayStr(arrayname, raw, pattern) {
 	}
 	
 function findMax(arrayname) {
-	/*Function: Receives an array, format: jscall <variable> findMax("<arrayname>");
+	/*Function: Receives an array, format: jscall <variable> findMax("<arrayname>")
 	 		        The function will search the array for the Max value and store it in the specified variable.
 	 		        Note: The array must be an array of numbers! Strings will not work.
 	pre: arrayname as a String
@@ -311,7 +327,7 @@ function findMax(arrayname) {
 }
 
 function findMin(arrayname) {
-	/*Function: Receives an array, format: jscall <variable> findMin("<arrayname>");
+	/*Function: Receives an array, format: jscall <variable> findMin("<arrayname>")
 	 		        The function will search the array for the Min value and store it in the variable with variablename.
 	 		        Note: The array must be an array of numbers! Strings will not work.
 	pre: arrayname as a String
@@ -329,7 +345,7 @@ function findMin(arrayname) {
 }
 
 function findMaxIndex(arrayname) {
-	/*Function: Receives an array, format: jscall <variable> findMaxIndex("<arrayname>");
+	/*Function: Receives an array, format: jscall <variable> findMaxIndex("<arrayname>")
 	 		        The function will search the array for the Max value and store its index in the array in the specified variable.
 	 		        Note: The array must be an array of numbers! Strings will not work.
 	pre: arrayname as a String
@@ -349,7 +365,7 @@ function findMaxIndex(arrayname) {
 }
 
 function findMinIndex(arrayname) {
-	/*Function: Receives an array, format: jscall <variable> findMinIndex("<arrayname>");
+	/*Function: Receives an array, format: jscall <variable> findMinIndex("<arrayname>")
 	 		        The function will search the array for the Min value and store its index in the array in the specified variable.
 	 		        Note: The array must be an array of numbers! Strings will not work.
 	pre: arrayname as a String
@@ -369,7 +385,7 @@ function findMinIndex(arrayname) {
 }
 
 function findMaxGlobal(arrayname) {
-	/*Function: Receives an array, format: jscall <variable> findMaxGlobal("<arrayname>");
+	/*Function: Receives an array, format: jscall <variable> findMaxGlobal("<arrayname>")
 	 		        The function will search the array for the Max Global value and store its name in the specified variable.
 	 		        Note: The array must be a list of valid Global variable names.
 	pre: arrayname as a String
@@ -394,7 +410,7 @@ function findMaxGlobal(arrayname) {
 }
 
 function findMinGlobal(arrayname) {
-	/*Function: Receives an array, format: jscall <variable> findMinGlobal("<arrayname>");
+	/*Function: Receives an array, format: jscall <variable> findMinGlobal("<arrayname>")
 	 		        The function will search the array for the Min Global value and store its name in the specified variable.
 	 		        Note: The array must be a list of valid Global variable names.
 	pre: arrayname as a String
@@ -416,4 +432,26 @@ function findMinGlobal(arrayname) {
 			}
 		}
 	return list[index];
+}
+
+function zipArrays(firstarray, secondarray) {
+	/*Function: Receives two arrays, format: jscall <newarray> zipArrays("<arrayname1>","<arrayname2>")
+							The function will append the second array to the first skipping duplicates in the second array.
+	pre: firstarray as a String, secondarray as a String
+	post: the variable receives the newly created array
+	*/
+	
+	var temp = getVar(firstarray).toString().split("|");
+	var tozip = getVar(secondarray).toString().split("|");
+	
+	for(j = 0; j < tozip.length(); j++)
+		{
+		if(checkExists(firstarray,tozip[j]) == 0)
+				{
+					temp.push(tozip[j]);
+					echo("Pushed.");
+				}
+		}
+	
+	return temp.join("|");
 }
