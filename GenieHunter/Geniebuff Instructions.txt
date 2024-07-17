@@ -1,6 +1,5 @@
-Open hunt.cmd. This is the file you need to configure with your preferences. Scroll down to the section "gh_buff.start:" for the section that you need to configure.
-
-For the latest version and additional instructions, see http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
+Currently all variables are now set through Global variables. This allows ease of setting the script up on multiple characters with different Guilds as well as removing the need to edit the script file directly. All of the 
+vairables below can be set as globals.
 
 ##Specific Spell Info
 ##Cage Of Light	-	Must have the Time & Moon Plugin written by pbombard, and make sure you have
@@ -9,7 +8,7 @@ For the latest version and additional instructions, see http://www.genieclient.c
 ##Rutilor's Edge	-	Currently does not support offhand use.
 ##Bond Armaments	-	Currently does not support offhand use.
 ##Quicken the Earth - Should work
-##SET THE FOLLOWING VARIABLES IN THE SCRIPT THAT IS INCLUDING THIS ONE
+##SET THE FOLLOWING VARIABLES IN YOUR GLOBALS
 ##
 ##buff.trace	-	Set to YES if you are a Paladin with the Glyph of Mana ability, and you wish to use it in this script.
 ##					set to NO if you don't want to use it
