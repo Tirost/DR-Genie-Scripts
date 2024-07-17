@@ -5487,7 +5487,7 @@ COMBAT_COMMAND:
 			var SCREAM_HAVOC ON
 		}
 	}
-	if (("$Guild" = "Warrior Mage") && ($Summoning.LearningRate < 30) && ($Circle > 3)) then
+	if (("%guild" = "Warrior Mage") && ($Summoning.LearningRate < 30) && ($Circle > 3)) then
 	{
 		send pathway focus damage
 		send pathway stop
