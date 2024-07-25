@@ -12,7 +12,7 @@ vairables below can be set as globals.
 ##
 ##buff.trace	-	Set to YES if you are a Paladin with the Glyph of Mana ability, and you wish to use it in this script.
 ##					set to NO if you don't want to use it
-##buff.spell	-	These are the spells you wish to cast in array form.  The spells must be listed to correspond with the variables for the spells
+##buff.spells	-	These are the spells you wish to cast in array form.  The spells must be listed to correspond with the variables for the spells
 ##					and this is usually the shortened version of the spell name.  ie.  COUR = Courage, AS = Anti Stun,  so the variable would be
 ##					COUR|AS
 ##buff.prep		-	This is the amount of mana you want to prep the corresponding spell to.  This is also in array form.  Working with the
