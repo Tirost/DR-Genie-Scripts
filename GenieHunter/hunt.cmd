@@ -44,7 +44,7 @@ put #class shop off
 
 #CHECK HERE
 put #var save
-debuglevel 10
+#debuglevel 10
 ###########################################################################
 ##		                                                                ##
 ##		             General combat script                              ##
