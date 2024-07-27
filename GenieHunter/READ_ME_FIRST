@@ -1,0 +1,9 @@
+In order to set up Geniehunter it is HIGHLY recommended you first run the `gh_setup.cmd` script to set the variables for your containers, ammo and other basic items. Beyond that, EXPTracker is REQUIRED for the script to function. Please make
+sure it is installed and configured to track ranks.
+
+All other settings for the script are done through Options for your command lines and Global Variables. It is NOT REQUIRED and NOT ADVISED to edit the `hunt.cmd` script directly. The script is fragile and can break easily when things within 
+the file are changed. Any edits you make to the script that are not submitted officially for review and testing will not be supported. If you wish to make changes to the script, please make a fork on your own system and test the changes 
+thoroughly before asking for assistance.
+
+For each self-buffing character you have, please be certain to add all the triggers for their Guild as found within the `Spell Variables.txt` file. These will create the variables needed for the buffing routine to function. Failure to do 
+this will result in the buff routine to fail.
