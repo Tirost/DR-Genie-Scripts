@@ -1,5 +1,5 @@
 ########################################################
-#Version 6.1.0b (10/26/2022)
+#Version 6.1.1b (10/26/2022)
 #Edited by the player of Isharon to work with Combat 3.1
 #Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
 #Download: http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
@@ -31,6 +31,7 @@
 #*fixed an issue with Dissection not wielding a non-worn knife and trying to skin an already skinned monster (Azarael)
 #*added Barbarian Buffing routine for Berserk and Form (Azarael)
 #*added Barbarian Roar for Debil training (Azarael)
+#*fixed Paladin buffing for RUE and BA - skips when utilizing the wrong weapon type and correctly detects when they're ON/OFF (Azarael)
 ########################################################
 
 put #class alert on
@@ -43,7 +44,7 @@ put #class shop off
 
 #CHECK HERE
 put #var save
-#debuglevel 10
+debuglevel 10
 ###########################################################################
 ##		                                                                ##
 ##		             General combat script                              ##
@@ -383,6 +384,8 @@ gh_buff.start:
 
 	if $guild = Paladin then
 		{
+		put #var RUE OFF
+		put #var BA OFF
 		var buff.ba.thrown yes
 		}
 
@@ -1357,7 +1360,6 @@ BUFF:
 	}
 	put #var GH_BUFF ON
 	put #var GH_BUFF_INCLUDE 0
-	gosub gh_buff.start
 	return
 
 ## Will bundle anything skinned.  If skinning not enabled this does nothing.
@@ -5487,7 +5489,7 @@ COMBAT_COMMAND:
 			var SCREAM_HAVOC ON
 		}
 	}
-	if (("%guild" = "Warrior Mage") && ($Summoning.LearningRate < 30) && ($Circle > 3)) then
+	if (("$Guild" = "Warrior Mage") && ($Summoning.LearningRate < 30) && ($Circle > 3)) then
 	{
 		send pathway focus damage
 		send pathway stop
@@ -7589,15 +7591,19 @@ buff.start:
 	var buff.special.casts Benediction|Cage of Light|Rutilor's Edge|Bond Armaments|Osrel Meraud|Ignite
 
 buff.magic:
-	if matchre("%WEAPON_EXP", "%non.RUE.weapons") then put #var RUE $righthand
-	if "$RUE" != "$righthand" then put #var RUE OFF
+	if ("buff.spell(%c)" == "RUE" && matchre("%WEAPON_EXP", "%non.RUE.weapons") then
+	{
+	echo Using a ranged weapon. Disabling RUE for this set.
+	then put #var RUE ON
+	}
 	if toupper("%buff.ba.thrown") = "YES" then
 		{
-		if !matchre("%WEAPON_EXP", "%thrown.weapons") then put #var BA $righthand
+		if !matchre("%WEAPON_EXP", "%thrown.weapons" && (buff.spell(%c) == "BA")) then 
+		{
+		echo Not using a Thrown Weapon. Disabling BA for this set.
+		put #var BA ON
 		}
-	if "$BA" != "$righthand" then put #var BA OFF
-	if "%buff.spell(%c)" = "RUE" && "$righthand" = "Empty" then put #var RUE $righthand
-	if "%buff.spell(%c)" = "BA" && "$righthand" = "Empty" then put #var BA $righthand
+	if (("%buff.spell(%c") == "RUE" || "%buff.spell(%c)" = "BA") && "$righthand" = "Empty") then gosub WIELD_WEAPON
 	if "%buff.spell(%c)" != "OM" && toupper("$%buff.spell(%c)") != "OFF" then
 	 {
 	 counter add 1
