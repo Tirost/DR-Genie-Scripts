@@ -7594,7 +7594,7 @@ buff.magic:
 	if ("buff.spell(%c)" == "RUE" && matchre("%WEAPON_EXP", "%non.RUE.weapons") then
 	{
 	echo Using a ranged weapon. Disabling RUE for this set.
-	then put #var RUE ON
+	put #var RUE ON
 	}
 	if toupper("%buff.ba.thrown") = "YES" then
 		{
