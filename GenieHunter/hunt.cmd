@@ -7599,9 +7599,10 @@ buff.magic:
 	if toupper("%buff.ba.thrown") = "YES" then
 		{
 		if !matchre("%WEAPON_EXP", "%thrown.weapons" && (buff.spell(%c) == "BA")) then 
-		{
-		echo Not using a Thrown Weapon. Disabling BA for this set.
-		put #var BA ON
+			{
+			echo Not using a Thrown Weapon. Disabling BA for this set.
+			put #var BA ON
+			}
 		}
 	if (("%buff.spell(%c") == "RUE" || "%buff.spell(%c)" = "BA") && "$righthand" = "Empty") then gosub WIELD_WEAPON
 	if "%buff.spell(%c)" != "OM" && toupper("$%buff.spell(%c)") != "OFF" then
