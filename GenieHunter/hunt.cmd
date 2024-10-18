@@ -32,6 +32,7 @@
 #*added Barbarian Buffing routine for Berserk and Form (Azarael)
 #*added Barbarian Roar for Debil training (Azarael)
 #*fixed Paladin buffing for RUE and BA - skips when utilizing the wrong weapon type and correctly detects when they're ON/OFF (Azarael)
+#*fixed an issue where the `huntsleg` weapon matches against the `hunt` option and causes an error
 ########################################################
 
 put #class alert on
@@ -298,7 +299,7 @@ var barb.tact
 ##Empath Variables
 var Empath_Monster
 
-var OPTIONVARS AMB.*?|ANAL.*?|APPR.*?|ARM.*?|ARRA.*?|AUG|BACKS.*?|BARB.*?|BAST.*?|BLO(?!WGUN).*?|BON.*?|BRA.*?|BS|BUF.*?|BUN.*?|COLL.*?|CONS.*?|COUNTSKIP|COUNT|CUST.*?|DANCE|DANG.*?|DEBIL|DEF.*?|DISS.*?|DLOAD|DMSET|DMULTI|DODGE|DSET|DUAL.*?|DYING|EMP.*?|\bENCH.*?|EVA.*?|EXP|FEINT|FLEE|FSWAP|HELP|HUNT|HURL|JUGG.*?|JUNK|KHRI|LOB|LOOTA.*?|LOOTB.*?|LOOTC.*?|LOOTG.*?|MAGIC|MANIP|MARK|MSET|MULTI|NECROH.*?|NECROR.*?|NISS.*?|NOEV.*?|NOPA.*?|NOSH.*?|OFF.*?|PARA(?!NG).*?|PARRY|PARTb|PART\b|PILGRIM|PM|POACH|POINT|POUCH|POWER|\bPP\b|RET.*?|RITUAL|ROAM|ROAR|SCRAPE.*?|SCREAM|SEARCH|SKIN.*?|SKINRET.*?|SLOW|SMITE|SNAP|SNIP.*?|SPEL.*?|STACK|STANCE|SWAP|TAC(?!HI).*?|TARG.*?|THIEF|THROWb|THROW\b|TIE\b|TIME.*?|TM|TRAIN|TSWAP|UTIL|WEAR|YOYO
+var OPTIONVARS AMB.*?|ANAL.*?|APPR.*?|ARM.*?|ARRA.*?|AUG|BACKS.*?|BARB.*?|BAST.*?|BLO(?!WGUN).*?|BON.*?|BRA.*?|BS|BUF.*?|BUN.*?|COLL.*?|CONS.*?|COUNTSKIP|COUNT|CUST.*?|DANCE|DANG.*?|DEBIL|DEF.*?|DISS.*?|DLOAD|DMSET|DMULTI|DODGE|DSET|DUAL.*?|DYING|EMP.*?|\bENCH.*?|EVA.*?|EXP|FEINT|FLEE|FSWAP|HELP|HUNT\b|HURL|JUGG.*?|JUNK|KHRI|LOB|LOOTA.*?|LOOTB.*?|LOOTC.*?|LOOTG.*?|MAGIC|MANIP|MARK|MSET|MULTI|NECROH.*?|NECROR.*?|NISS.*?|NOEV.*?|NOPA.*?|NOSH.*?|OFF.*?|PARA(?!NG).*?|PARRY|PARTb|PART\b|PILGRIM|PM|POACH|POINT|POUCH|POWER|\bPP\b|RET.*?|RITUAL|ROAM|ROAR|SCRAPE.*?|SCREAM|SEARCH|SKIN.*?|SKINRET.*?|SLOW|SMITE|SNAP|SNIP.*?|SPEL.*?|STACK|STANCE|SWAP|TAC(?!HI).*?|TARG.*?|THIEF|THROWb|THROW\b|TIE\b|TIME.*?|TM|TRAIN|TSWAP|UTIL|WEAR|YOYO
 var OPTION NONE
 
 var lastmaneuver none
