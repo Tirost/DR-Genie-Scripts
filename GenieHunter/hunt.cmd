@@ -1,5 +1,5 @@
 ########################################################
-#Version 6.1.1b (10/26/2022)
+#Version 6.1.1b (8/18/2024)
 #Edited by the player of Isharon to work with Combat 3.1
 #Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
 #Download: http://www.genieclient.com/bulletin/files/file/175-geniehunter-31-and-geniebuff-31/
