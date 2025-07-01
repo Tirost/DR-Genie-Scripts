@@ -24,7 +24,7 @@ var StoneDeed $MINING_STONE.DEED
 
 # List of metal to keep.
 var MaterialKeepList.metal $MINING_METAL.KEEP
-## var MaterialKeepList.metal (nickel|tin|covellite|silver|iron|zinc|copper|\blead\b|oravir)
+## var MaterialKeepList.metal (nickel|\btin\b|covellite|silver|iron|zinc|copper|\blead\b|oravir)
 
 ## List of stone to keep.
 var MaterialKeepList.stone $MINING_STONE.KEEP
@@ -63,12 +63,11 @@ var sizes.rare tiny|small|medium|large|huge|massive|enormous
 var volumes.rare 1|2|3|4|5|10|20
 var sizes.stone pebble|stone|small rock|large rock|boulder
 var volumes.stone 1|2|3|4|5
-var metal.materiallist (nickel|tin|covellite|silver|iron|zinc|copper|lead|oravir|coal) (\w+)
+var metal.materiallist (nickel|\btin\b|covellite|silver|iron|zinc|copper|lead|oravir|coal) (\w+)
 var stone.materiallist (alabaster|andesite|basalt|breccia|dolomite|gabbro|granite|jade|limestone|marble|obsidian|onyx|pumice|quartzite|sandstone|schist|serpentine|soapstone|travertine) (\w+)
 var Rare.MetalList (animite|audrualm|damite|darkstone|electrum|glaes|gold|haralun|kertig|lumium|niniam|muracite|platinum) (\w+)
 ## Metal Keeplist with rares added.
 eval MaterialKeepList.metal replacere("%MaterialKeepList.metal", "\)", "|animite|audrualm|damite|darkstone|electrum|glaes|gold|haralun|kertig|lumium|niniam|muracite|platinum)")
-
 
 ############################################################################
 ##Miner script overrides.
@@ -92,7 +91,7 @@ Parse.Override:
 		var mine.stone 1
 		var MaterialKeepList.stone %MaterialKeepList.stone|%override.mats(%this.mat)
 		}
-	if matchre("%override.mats(%this.mat)","nickel|tin|covellite|silver|iron|zinc|copper|lead|oravir|coal") then
+	if matchre("%override.mats(%this.mat)","nickel|\btin\b|covellite|silver|iron|zinc|copper|lead|oravir|coal") then
 		{
 		var mine.metal 1
 		var MaterialKeepList.metal %MaterialKeepList.metal|%override.mats(%this.mat)
@@ -121,7 +120,7 @@ action put #queue clear;put #send 1 $lastcommand when ^Sorry,|^\.\.\.wait|that w
 # Check if we find anything when mining
 action (Mining) var FoundStone 1 when topples free\.
 action (Mining) var FoundStone 1;var FoundMetal 1 when are visible on the ground\.
-action (Mining) var FoundMetal 1 when falls to the ground\!
+action (Mining) var FoundMetal 1 when Sparks fly|falls to the ground\!
 
 # Catch what we have mined and update totals.
 action var stone.type $1;var result.type.stone $2;math TotalStone add 1;math minesuccess add 1 when %stone.materiallist (and|topples)
@@ -432,8 +431,9 @@ Volume.Add:
 		action (taprock) var this.size.%type $1 rock when ^You tap a (\w+)
 		pause 1
 		send tap %stone.type rock
-		pause 1
+		waitfor You tap
 		action (taprock) off
+		pause 1
 		}
 	var sizes %sizes.%type
 	var volumes %volumes.%type
@@ -445,7 +445,7 @@ Volume.Add:
 
 Tap.Error:
 	echo Error in determining rock size. Checking room again.
-	if matchre("$roomobjs","small rock|large rock") then 
+	if matchre("$roomobjs","small \w+ rock|large \w+ rock") then 
 		{
 		echo Checking size again.
 		goto Volume.Add
