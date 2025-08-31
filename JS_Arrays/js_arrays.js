@@ -76,6 +76,8 @@ function checkExists(arrayname, srch) {
 		}
 	for(i = 0; i < list.length();i++)
 		{
+		echo(list[i]);
+		echo(srch);
 		if(list[i].localeCompare(srch) == 0)
 			{
 			return 1;
@@ -141,6 +143,17 @@ function doRemove(arrayname, srch, amount) {
 	setVar(arrayname,list.join("|"));
 	}
 	
+function doReplace(arrayname, position, item)	{
+	/*Function: Receives an array from a calling statement, format: js doReplace("<arrayname>", "<index>, "replacement")
+	 		        The function replaces the item in the designated index with the replacement string.
+	pre: arrayname as a String, index as Integer, array as  String
+	post: the array will be returned with the new item in the specified index
+	*/
+	var list = getVar(arrayname).toString().split("|");
+	list[position] = item;
+	setVar(arrayname,list.join("|"));
+	}
+	
 function doConcat(arrayname, array) {
 	/*Function: Receives two arrays from a calling statement, format: js doConcat("<arrayname>", "<array>")
 	 		        The function concat the second array onto the first and save it in the array variable with arrayname 1. The second array can be an array or a list string.
@@ -179,6 +192,7 @@ function doXCompare(arraysrc, arraytrg, srch) {
 		}
 	return -1;
 	}
+	
 	
 function doPush(arrayname, item) {
 	/*Function: Receives an array and a string, format: js doPush("<arrayname>", "new item")
