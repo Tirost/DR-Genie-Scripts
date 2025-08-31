@@ -1,5 +1,6 @@
-﻿#Javascript function tests.
+#Javascript function tests.
 debug 10
+var string Gamma
 
 include js_arrays.js
 
@@ -14,58 +15,62 @@ echo Starting testing.
 
 pause 0.5
 
-js doSort("testarray",0);
+js doSort("testarray",0)
 
 echo Array should be Ascending.
 echo Array: %testarray
 
 pause 0.5
 
-jscall index findIndex("testarray","Gamma");
+jscall index findIndex("testarray","Gamma")
 
 echo Index should be 3.
 echo Index: %index
 
 pause 0.5
 
-js doSort("testarray",1);
+js doSort("testarray",1)
 
 echo Array should be Descending.
 echo Array: %testarray
 
 pause 0.5
 
-jscall index findIndex("testarray","Gamma");
+jscall index findIndex("testarray","%string")
 
 echo Index should be 2.
 echo Index: %index
 
 pause 0.5
 
-js doSort("testarray",0);
+js doSort("testarray",0)
 
 echo Array should be Ascending.
 echo Array: %testarray
 
 pause 0.5
 
-js doInsert("testarray", "Phi|Psy", 5);
+js doInsert("testarray", "Phi|Psy", 5)
 
 echo Entries Phi and Psy should be after entry Omega.
 echo Array: %testarray
 
 pause 0.5
 
-js doRemove("testarray", "Gamma", 1);
+js doRemove("testarray", "Gamma", 1)
 
 echo Entry Gamma should be removed.
 echo Array: %testarray
 
 pause 0.5
 
-js doConcat("testarray", "Upsilon|Zeta");
+js doConcat("testarray", "Upsilon|Zeta")
 
 echo Entries Upsion and Zeta should be added to the array at the end.
+echo Array: %testarray
+
+js doReplace("testarray", "2", "Psi")
+echo Entry in position 3 should be Psi.
 echo Array: %testarray
 
 exit
