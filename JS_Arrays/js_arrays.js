@@ -146,10 +146,18 @@ function doRemove(arrayname, srch, amount) {
 function doReplace(arrayname, position, item)	{
 	/*Function: Receives an array from a calling statement, format: js doReplace("<arrayname>", "<index>, "replacement")
 	 		        The function replaces the item in the designated index with the replacement string.
-	pre: arrayname as a String, index as Integer, array as  String
+	pre: arrayname as a String, index as Integer, array as String
 	post: the array will be returned with the new item in the specified index
 	*/
 	var list = getVar(arrayname).toString().split("|");
+	if(item[0] == "%")
+		{
+		item = getVar(item.replace(/%/,""));
+		}
+	if(position[0] == "%")
+		{
+		position = getVar(position.replace(/%/,""));
+		}
 	list[position] = item;
 	setVar(arrayname,list.join("|"));
 	}
@@ -469,3 +477,4 @@ function zipArrays(firstarray, secondarray) {
 	
 	return temp.join("|");
 }
+
