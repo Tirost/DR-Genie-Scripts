@@ -1,36 +1,37 @@
 ########################################################
 #Version 6.1.1 (8/18/2024)
 #Edited by the player of Isharon to work with Combat 3.1
-#Other major contributors to Geniehunter 3.1 include Azarael and Londrin.
-#*added construct mode (Empath-safe weapon and TM training by Londrin)
-#*added Nissa mode (Empath debilitation training)
-#*added point mode for hidden creatures (Azarael)
-#*added enhanced multi setup support (Azarael)
-#*replaced skill checks with 3.1 skill names
-#*removed humming and all references thereto
-#*replaced damaging combat maneuvers with attack (kludge)
-#*reduced minimum attunement for Geniebuff to 80% (if toupper("$GH_BUFF") = "ON" and $mana > 80 then gosub GH_BUFF_ON)
-#*added tactics training mode for melee weapons (Londrin and Azarael)
-#*fixed TM (Azarael)
-#*removed nuggets and bars from gem loot
-#*fixed issues with worn bundles (Londrin) and ARRANGE ALL (Azarael)
-#*added Barbarian magic training (Londrin)
-#*added manipulation mode (empathy training) (Isharon)
-#*added Paralysis mode (Empath TM training) (Isharon with bug fixes by Londrin)
-#*added Analysis/combo mode (Azarael)
-#*added Thief mark (trains appraisal and perception) (Londrin)
-#*added support for arranging for bones or parts (Londrin)
-#*added optional Thief/mark syntax (Londrin)
-#*added support for Thief khri (Londrin)
-#*added support for throwing bonded weapons (Azarael)
-#*added support for Non-Necro Dissection (Azarael)
-#*fixed issues with worn knives, no longer need the list to check, uses 'inv search knife' to find a worn knife (Azarael)
-#*fixed an issue with Skinning after Non-Necro Dissection fails under certain conditions (Azarael)
-#*fixed an issue with Dissection not wielding a non-worn knife and trying to skin an already skinned monster (Azarael)
-#*added Barbarian Buffing routine for Berserk and Form (Azarael)
-#*added Barbarian Roar for Debil training (Azarael)
-#*fixed Paladin buffing for RUE and BA - skips when utilizing the wrong weapon type and correctly detects when they're ON/OFF (Azarael)
-#*fixed an issue where the `huntsleg` weapon matches against the `hunt` option and causes an error
+#other major contributors to Geniehunter 3.1 include Azarael and Londrin.
+##added construct mode (Empath-safe weapon and TM training by Londrin)
+##added Nissa mode (Empath debilitation training)
+##added point mode for hidden creatures (Azarael)
+##added enhanced multi setup support (Azarael)
+##replaced skill checks with 3.1 skill names
+##removed humming and all references thereto
+##replaced damaging combat maneuvers with attack (kludge)
+##reduced minimum attunement for Geniebuff to 80% (if toupper("$GH_BUFF") = "ON" and $mana > 80 then gosub GH_BUFF_ON)
+##added tactics training mode for melee weapons (Londrin and Azarael)
+##fixed TM (Azarael)
+##removed nuggets and bars from gem loot
+##fixed issues with worn bundles (Londrin) and ARRANGE ALL (Azarael)
+##added Barbarian magic training (Londrin)
+##added manipulation mode (empathy training) (Isharon)
+##added Paralysis mode (Empath TM training) (Isharon with bug fixes by Londrin)
+##added Analysis/combo mode (Azarael)
+##added Thief mark (trains appraisal and perception) (Londrin)
+##added support for arranging for bones or parts (Londrin)
+##added optional Thief/mark syntax (Londrin)
+##added support for Thief khri (Londrin)
+##added support for throwing bonded weapons (Azarael)
+##added support for Non-Necro Dissection (Azarael)
+##fixed issues with worn knives, no longer need the list to check, uses 'inv search knife' to find a worn knife (Azarael)
+##fixed an issue with Skinning after Non-Necro Dissection fails under certain conditions (Azarael)
+##fixed an issue with Dissection not wielding a non-worn knife and trying to skin an already skinned monster (Azarael)
+##added Barbarian Buffing routine for Berserk and Form (Azarael)
+##added Barbarian Roar for Debil training (Azarael)
+##fixed Paladin buffing for RUE and BA - skips when utilizing the wrong weapon type and correctly detects when they're ON/OFF (Azarael)
+##fixed an issue where the `huntsleg` weapon matches against the `hunt` option and causes an error (Azarael)
+##fixed an issue identifying worn knives due to messaging change. (Azarael)
 ########################################################
 
 put #class alert on
@@ -2486,10 +2487,10 @@ SKIN:
 		echo
 	}
 	var BELT_WORN OFF
-		action var BELT_WORN ON when Your .* knife is being worn\.
+		action var BELT_WORN ON when .* knife (?:.*)?is being worn\.
 		put inventory search knife
 		waitforre INVENTORY HELP
-		action remove Your .* knife is being worn\.
+		action remove .* knife (?:.*)?is being worn\.
 		put #var GH_SKIN ON
 		if "$GH_BONE" = "ON" then put #var GH_SKINPART BONE
 		if "$GH_PART" = "ON" then put #var GH_SKINPART PART
@@ -8802,3 +8803,4 @@ HELP_TIMER:
 DYING:
 	var DYING ON
 	return
+
