@@ -94,7 +94,8 @@ Check.List:
 	if ("$MINER_SWIM" = "ON" && "%%zonename.Rooms.Swim" != "NONE") then var Rooms %Rooms|%%zonename.Rooms.Swim
 	if ("$MINER_CLIMB" = "ON" && "%%zonename.Rooms.Climb" != "NONE") then var Rooms %Rooms.%%zonename.Rooms.Climb
 	eval Rooms replacere("%Rooms","^\|","")
-	eval Room.Count count("%Rooms","|")math Room.Count add 1
+	eval Room.Count count("%Rooms","|")
+	math Room.Count add 1
 	if %Room.Count > %prev.count then goto Check.Room
 	goto Cycle.Rooms
 	
