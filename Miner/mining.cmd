@@ -65,9 +65,9 @@ var sizes.stone pebble|stone|small rock|large rock|boulder
 var volumes.stone 1|2|3|4|5
 var metal.materiallist (nickel|\btin\b|covellite|silver|iron|zinc|copper|lead|oravir|coal) (\w+)
 var stone.materiallist (alabaster|andesite|basalt|breccia|dolomite|gabbro|granite|jade|limestone|marble|obsidian|onyx|pumice|quartzite|sandstone|schist|serpentine|soapstone|travertine) (\w+)
-var Rare.MetalList (animite|audrualm|damite|darkstone|electrum|glaes|gold|haralun|kertig|lumium|niniam|muracite|platinum) (\w+)
+var Rare.MetalList (animite|audrualm|damite|darkstone|electrum|glaes|gold|haralun|kertig|lumium|niniam|muracite|platinum|quelium|selatila) (\w+)
 ## Metal Keeplist with rares added.
-eval MaterialKeepList.metal replacere("%MaterialKeepList.metal", "\)", "|animite|audrualm|damite|darkstone|electrum|glaes|gold|haralun|kertig|lumium|niniam|muracite|platinum)")
+eval MaterialKeepList.metal replacere("%MaterialKeepList.metal", "\)", "|animite|audrualm|damite|darkstone|electrum|glaes|gold|haralun|kertig|lumium|niniam|muracite|platinum|quelium|selatila)")
 
 ############################################################################
 ##Miner script overrides.
